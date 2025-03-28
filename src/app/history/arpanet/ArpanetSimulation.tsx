@@ -353,6 +353,8 @@ const ArpanetSimulation = () => {
                     const node1 = nodes.find((n) => n.id === nodeId1);
                     const node2 = nodes.find((n) => n.id === nodeId2);
 
+                    if (!(node1 && node2)) return null;
+
                     const highlighted = isConnectionHighlighted(
                       nodeId1,
                       nodeId2
