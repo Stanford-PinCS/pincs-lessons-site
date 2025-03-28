@@ -18,12 +18,14 @@ const ArpanetSimulation = () => {
   // State variables
   const [currentYear, setCurrentYear] = useState(1969);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [packetRoute, setPacketRoute] = useState([]);
-  const [packetPosition, setPacketPosition] = useState(null);
-  const [selectedSource, setSelectedSource] = useState(null);
-  const [selectedDestination, setSelectedDestination] = useState(null);
+  const [packetRoute, setPacketRoute] = useState<any[]>([]);
+  const [packetPosition, setPacketPosition] = useState<number | null>(null);
+  const [selectedSource, setSelectedSource] = useState<number | null>(null);
+  const [selectedDestination, setSelectedDestination] = useState<number | null>(
+    null
+  );
   const [showInfo, setShowInfo] = useState(false);
-  const [packetSteps, setPacketSteps] = useState([]);
+  const [packetSteps, setPacketSteps] = useState<any[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
 
   // Cold War events for historical context
@@ -165,9 +167,9 @@ const ArpanetSimulation = () => {
   };
 
   // Handle node click for selecting source/destination
-  const handleNodeClick = (nodeId) => {
+  const handleNodeClick = (nodeId: number) => {
     // Can only click active nodes
-    if (!nodes.find((n) => n.id === nodeId).active) return;
+    if (!nodes.find((n) => n.id === nodeId)?.active) return;
 
     // If no source selected, set as source
     if (!selectedSource) {
@@ -195,14 +197,14 @@ const ArpanetSimulation = () => {
   };
 
   // Simple path finding between nodes (breadth-first search)
-  const findPath = (startId, endId) => {
+  const findPath = (startId: number, endId: number) => {
     const activeNodeIds = nodes.filter((n) => n.active).map((n) => n.id);
     const queue = [[startId]];
     const visited = new Set([startId]);
 
     while (queue.length > 0) {
       const path = queue.shift();
-      const currentNode = path[path.length - 1];
+      const currentNode = path![path!.length - 1];
 
       if (currentNode === endId) {
         return path;
@@ -218,7 +220,7 @@ const ArpanetSimulation = () => {
 
       for (const nextNode of connectedNodes) {
         visited.add(nextNode);
-        queue.push([...path, nextNode]);
+        queue.push([...path!, nextNode]);
       }
     }
 
@@ -226,7 +228,7 @@ const ArpanetSimulation = () => {
   };
 
   // Helper to determine node color
-  const getNodeColor = (nodeId) => {
+  const getNodeColor = (nodeId: number) => {
     if (selectedSource === nodeId) return "#10B981"; // Source is green
     if (selectedDestination === nodeId) return "#3B82F6"; // Destination is blue
     if (packetRoute.includes(nodeId)) return "#8B5CF6"; // Route nodes are purple
@@ -234,7 +236,7 @@ const ArpanetSimulation = () => {
   };
 
   // Helper to determine if a connection is highlighted (part of the route)
-  const isConnectionHighlighted = (node1, node2) => {
+  const isConnectionHighlighted = (node1: number, node2: number) => {
     if (!packetRoute || packetRoute.length <= 1) return false;
 
     for (let i = 0; i < packetRoute.length - 1; i++) {

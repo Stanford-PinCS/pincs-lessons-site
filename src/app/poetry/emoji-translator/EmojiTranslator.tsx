@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 
 const EmojiTranslator = () => {
   const [inputText, setInputText] = useState("");
-  const [outputText, setOutputText] = useState([]);
+  const [outputText, setOutputText] = useState<any[]>([]);
   const [speed, setSpeed] = useState(50);
   const [isAnimating, setIsAnimating] = useState(false);
   const [currentWord, setCurrentWord] = useState("");
@@ -12,7 +12,7 @@ const EmojiTranslator = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   // This is our dictionary data structure - a JavaScript object that maps words to emojis
-  const emojiDictionary = {
+  const emojiDictionary: Record<string, string> = {
     // Emotions
     happy: "😊",
     sad: "😢",
@@ -206,7 +206,7 @@ const EmojiTranslator = () => {
             </label>
             <textarea
               className="w-full p-3 border rounded-lg shadow-sm"
-              rows="4"
+              rows={4}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Type something like: I am happy to see my dog at home"

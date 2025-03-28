@@ -2,15 +2,13 @@
 import React, { useState, useEffect } from "react";
 
 const BFSDiseaseSpread = () => {
-  const [grid, setGrid] = useState([]);
-  const [queue, setQueue] = useState([]);
-  const [visited, setVisited] = useState([]);
+  const [grid, setGrid] = useState<any[]>([]);
   const [speed, setSpeed] = useState(1000);
   const [isRunning, setIsRunning] = useState(false);
   const [currentDay, setCurrentDay] = useState(0);
   const [gridSize, setGridSize] = useState(5);
   const [showLabels, setShowLabels] = useState(true);
-  const [animationHistory, setAnimationHistory] = useState([]);
+  const [animationHistory, setAnimationHistory] = useState<any[]>([]);
   const [historyIndex, setHistoryIndex] = useState(0);
   const [autoAdvance, setAutoAdvance] = useState(true);
 
@@ -20,7 +18,7 @@ const BFSDiseaseSpread = () => {
   }, [gridSize]);
 
   // Create initial grid
-  const createGrid = (size) => {
+  const createGrid = (size: number) => {
     const newGrid = [];
     for (let i = 0; i < size; i++) {
       const row = [];
@@ -116,9 +114,10 @@ const BFSDiseaseSpread = () => {
       }
 
       // Process all nodes in the current wave
-      const newNeighbors = [];
+      const newNeighbors: any[] = [];
 
       currentWaveNodes.forEach((node) => {
+        if (!node) return;
         directions.forEach(([dx, dy]) => {
           const newRow = node.row + dx;
           const newCol = node.col + dy;
@@ -177,8 +176,6 @@ const BFSDiseaseSpread = () => {
   const resetSimulation = () => {
     setIsRunning(false);
     setGrid(createGrid(gridSize));
-    setQueue([]);
-    setVisited([]);
     setCurrentDay(0);
     setAnimationHistory([]);
     setHistoryIndex(0);
@@ -210,7 +207,7 @@ const BFSDiseaseSpread = () => {
     }
   };
 
-  const getNodeColor = (status, wave) => {
+  const getNodeColor = (status: string, wave: number) => {
     if (status === "healthy") return "bg-green-200";
 
     // Create a gradient of reds based on wave number

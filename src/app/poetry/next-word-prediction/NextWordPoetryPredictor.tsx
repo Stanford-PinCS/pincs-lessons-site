@@ -4,10 +4,10 @@ import _ from "lodash";
 
 const NextWordPoetryPredictor = () => {
   // Core states
-  const [poem, setPoem] = useState(null);
-  const [options, setOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [isCorrect, setIsCorrect] = useState(null);
+  const [poem, setPoem] = useState<any>(null);
+  const [options, setOptions] = useState<any[]>([]);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [isCorrect, setIsCorrect] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
   const [showProbabilities, setShowProbabilities] = useState(false);
 
@@ -80,17 +80,17 @@ const NextWordPoetryPredictor = () => {
     setPoem(randomPoem);
     setOptions(_.shuffle(randomPoem.options));
     setSelectedOption(null);
-    setIsCorrect(null);
+    setIsCorrect(false);
     setShowExplanation(false);
   };
 
-  const handleOptionSelect = (option) => {
+  const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
     setIsCorrect(option === poem.nextWord);
     setShowExplanation(true);
   };
 
-  const getOptionProbability = (option) => {
+  const getOptionProbability = (option: string) => {
     const index = poem.options.indexOf(option);
     return index >= 0 ? poem.probabilities[index] : 0;
   };
