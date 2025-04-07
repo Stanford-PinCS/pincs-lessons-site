@@ -11,6 +11,7 @@ const lessons = [
   { title: "Emoji Translator", link: "/poetry/emoji-translator" },
   { title: "Next Word Prediction", link: "/poetry/next-word-prediction" },
   { title: "Probability Intro", link: "/probability" },
+  { title: "Code Editor Example", link: "/code-editor-example" },
 ];
 
 export default function Home() {
