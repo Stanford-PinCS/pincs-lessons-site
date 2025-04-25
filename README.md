@@ -1,36 +1,139 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Setup
 
-## Getting Started
+_At any step if you get stuck, explain to ChatGPT or Claude that you want to install `nodejs` using `asdf` and `brew` and give it your errors._
 
-First, run the development server:
+Our goal is to install `node.js`. We will use `asdf`, a tool for managing programming language installations, to do this.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+`brew` is a common package manager for Mac that will allow us to install `asdf`.
+
+Install `brew` by running this command:
+
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, run
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+brew install asdf
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Add this to your `.bash_profile`, or `.zshrc` file:
 
-## Learn More
+```
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
+```
 
-To learn more about Next.js, take a look at the following resources:
+Then, open a new terminal window so the changes will take effect.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Now, we can get `asdf` ready to install `node` with this command:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+```
 
-## Deploy on Vercel
+Finally, from the root of this repo, run
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+asdf install
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Verify that node is installed by running
+
+```
+node -v
+```
+
+This command should run without errors. If by now node isn't working, consult ChatGPT. If you're really stuck, feel free to email charlie@pickode.io
+
+## Running the dev server
+
+Before we run the server, we need to install a bunch of dependencies. We do this using `npm`
+
+Run
+
+```
+npm i
+```
+
+(`i` is short for "install")
+
+This will take a couple of seconds.
+
+When this is complete, you can run
+
+```
+npm run dev
+```
+
+This will get you a dev server running at `http://localhost:3000`!
+
+To access the site, navigate to `http://localhost:3000/pickcode`
+
+## Adding a lesson
+
+For this example, let's say you want to add a lesson about physics.
+
+First, make a git branch for your lesson
+
+`git checkout -b charlie-new-physics-lesson`
+
+You can check out all of the existing lessons we've added in `/src/app`. The "probability" example is a good one to use as an example.
+
+Let's say you want to add a lesson about phsyics. The pattern we follow is:
+
+- Add a folder for your lesson in `/src/app`, for example, in this case we could say `physics-simulation`.
+- Add a file called `page.tsx`. It's easiest to copy this from another example and modify from there
+- Add a file for the react component that your actual lesson content will contain, you could call yours `PhysicsSimulation.tsx`.
+
+Again, it's probably easiest from here to copy paste from an existing example.
+
+You should be able to go to `http://localhost:3000/pickcode/physics-simulation` and every time you save your code, the app will recompile and you can see the changes!
+
+## Configuring VSCode
+
+VSCode can automatically format your react code. Insall the `Prettier` plugin as well as `ESLint`. Press `cmd+shift+P` and open "Settings (JSON)".
+
+Add the following block to the file and hit save
+
+```
+  "editor.formatOnSave": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+```
+
+Do `cmd+shift+p` again and do "Developer (Reload window)"
+
+Now, every time you save your file, it will be formatted.
+
+## Git stuff
+
+When you want to actually add your lesson to the real site, you need to commit it to our git repo.
+
+Add all your new files to be commited
+
+```
+git add .
+```
+
+Check that everything will be added
+
+```
+git status
+```
+
+(all of your new files should be green)
+
+```
+git commit -m "added new physics lesson"
+```
+
+```
+git push
+```
+
+Then, go on the github repo page and there will be a green button for making a new pull request. Click that and fill out the fields, you'll be good to go!
