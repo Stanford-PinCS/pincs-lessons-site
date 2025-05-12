@@ -19,21 +19,25 @@ export const MusicMoodAnalyzer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [synth, setSynth] = useState<Tone.Synth | null>(null);
 
-  // Define piano keys - one octave for simplicity
-  const pianoKeys: Note[] = [
+  // Define white and black keys separately for correct rendering
+  const whiteKeys: Note[] = [
     { note: "C4", label: "C", type: "white" },
-    { note: "C#4", label: "C#", type: "black" },
     { note: "D4", label: "D", type: "white" },
-    { note: "D#4", label: "D#", type: "black" },
     { note: "E4", label: "E", type: "white" },
     { note: "F4", label: "F", type: "white" },
-    { note: "F#4", label: "F#", type: "black" },
     { note: "G4", label: "G", type: "white" },
-    { note: "G#4", label: "G#", type: "black" },
     { note: "A4", label: "A", type: "white" },
-    { note: "A#4", label: "A#", type: "black" },
     { note: "B4", label: "B", type: "white" },
     { note: "C5", label: "C", type: "white" },
+  ];
+  const blackKeys: (Note | null)[] = [
+    { note: "C#4", label: "C#", type: "black" },
+    { note: "D#4", label: "D#", type: "black" },
+    null, // E, F
+    { note: "F#4", label: "F#", type: "black" },
+    { note: "G#4", label: "G#", type: "black" },
+    { note: "A#4", label: "A#", type: "black" },
+    null, // B, C
   ];
 
   // Initialize the synth
@@ -168,35 +172,35 @@ export const MusicMoodAnalyzer: React.FC = () => {
         <h2 className="text-lg font-semibold mb-2">
           Play notes to create a melody:
         </h2>
-        <div className="flex relative h-40 mb-4 justify-center">
-          {pianoKeys.map((key, index) => (
-            <div
-              key={index}
-              className={`
-                ${
-                  key.type === "white"
-                    ? "bg-white border border-gray-300 w-12 h-40 relative z-0"
-                    : "bg-black w-8 h-24 absolute z-10"
-                } 
-                ${key.type === "black" ? `-ml-4 mt-0` : ""}
-                cursor-pointer hover:bg-blue-100 flex items-end justify-center
-                ${notes.includes(key.note) ? "bg-blue-200" : ""}
-              `}
-              style={{
-                left: key.type === "black" ? `${index * 48 - 16}px` : "",
-                marginLeft: key.type === "black" ? "" : "0",
-              }}
-              onClick={() => playNote(key.note)}
-            >
-              <span
-                className={`mb-2 ${
-                  key.type === "black" ? "text-white" : "text-black"
-                }`}
+        <div className="relative" style={{ width: `${whiteKeys.length * 48}px`, height: '160px' }}>
+          {/* White keys */}
+          <div className="flex">
+            {whiteKeys.map((key, idx) => (
+              <div
+                key={key.note}
+                className={`bg-white border border-gray-300 w-12 h-40 relative z-0 cursor-pointer hover:bg-blue-100 flex items-end justify-center ${notes.includes(key.note) ? "bg-blue-200" : ""}`}
+                onClick={() => playNote(key.note)}
               >
-                {key.label}
-              </span>
-            </div>
-          ))}
+                <span className="mb-2 text-black">{key.label}</span>
+              </div>
+            ))}
+          </div>
+          {/* Black keys */}
+          {blackKeys.map((key, idx) =>
+            key ? (
+              <div
+                key={key.note}
+                className={`bg-black w-8 h-24 absolute z-10 cursor-pointer flex items-end justify-center rounded-b-md ${notes.includes(key.note) ? "bg-blue-800" : ""}`}
+                style={{
+                  left: `${(idx + 1) * 48 - 16}px`, // position black between white keys
+                  top: 0, // and above the white keys
+                }}
+                onClick={() => playNote(key.note)}
+              >
+                <span className="mb-2 text-white">{key.label}</span>
+              </div>
+            ) : null
+          )}
         </div>
       </div>
 
