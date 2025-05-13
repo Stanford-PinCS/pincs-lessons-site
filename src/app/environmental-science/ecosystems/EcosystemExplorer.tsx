@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import PopulationSimulator from "./PopulationSimulator";
 
 interface Node {
   id: string;
@@ -205,104 +206,108 @@ const EcosystemExplorer: React.FC = () => {
   }, [nodes, edges, currentStep]);
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-4 text-center text-green-700">
-        🌿 Ecosystem Explorer 🦁
-      </h2>
+    <div className="space-y-8">
+      <div className="p-4 bg-white rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-4 text-center text-green-700">
+          🌿 Ecosystem Explorer 🦁
+        </h2>
 
-      <div className="mb-4">
-        <canvas
-          ref={canvasRef}
-          width={600}
-          height={400}
-          className="border-4 border-green-300 rounded-lg shadow-lg cursor-pointer"
-          onClick={handleCanvasClick}
-        />
-      </div>
+        <div className="mb-4">
+          <canvas
+            ref={canvasRef}
+            width={600}
+            height={400}
+            className="border-4 border-green-300 rounded-lg shadow-lg cursor-pointer"
+            onClick={handleCanvasClick}
+          />
+        </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div>
-          <h3 className="font-semibold mb-2 text-blue-600">🎮 Controls</h3>
-          <div className="space-y-4">
-            <div className="flex space-x-2">
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <h3 className="font-semibold mb-2 text-blue-600">🎮 Controls</h3>
+            <div className="space-y-4">
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => setAlgorithm("bfs")}
+                  className={`px-4 py-2 rounded-full ${
+                    algorithm === "bfs"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-gray-700"
+                  }`}
+                >
+                  BFS
+                </button>
+                <button
+                  onClick={() => setAlgorithm("dfs")}
+                  className={`px-4 py-2 rounded-full ${
+                    algorithm === "dfs"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-gray-700"
+                  }`}
+                >
+                  DFS
+                </button>
+              </div>
               <button
-                onClick={() => setAlgorithm("bfs")}
-                className={`px-4 py-2 rounded-full ${
-                  algorithm === "bfs"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
+                onClick={() => setIsSimulating(!isSimulating)}
+                className="px-6 py-3 bg-green-500 text-white rounded-full hover:bg-green-600 transform hover:scale-105 transition-transform shadow-lg"
               >
-                BFS
+                {isSimulating ? "⏸️ Pause" : "▶️ Start"} Simulation
               </button>
-              <button
-                onClick={() => setAlgorithm("dfs")}
-                className={`px-4 py-2 rounded-full ${
-                  algorithm === "dfs"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                DFS
-              </button>
+              <div>
+                <label className="block text-sm text-gray-600">
+                  Speed: 🐢 → 🐇
+                </label>
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  value={simulationSpeed}
+                  onChange={(e) => setSimulationSpeed(Number(e.target.value))}
+                  className="w-full"
+                />
+              </div>
             </div>
-            <button
-              onClick={() => setIsSimulating(!isSimulating)}
-              className="px-6 py-3 bg-green-500 text-white rounded-full hover:bg-green-600 transform hover:scale-105 transition-transform shadow-lg"
-            >
-              {isSimulating ? "⏸️ Pause" : "▶️ Start"} Simulation
-            </button>
-            <div>
-              <label className="block text-sm text-gray-600">
-                Speed: 🐢 → 🐇
-              </label>
-              <input
-                type="range"
-                min="1"
-                max="5"
-                value={simulationSpeed}
-                onChange={(e) => setSimulationSpeed(Number(e.target.value))}
-                className="w-full"
-              />
+          </div>
+
+          <div>
+            <h3 className="font-semibold mb-2 text-purple-600">
+              🎨 Species Palette
+            </h3>
+            <div className="space-y-2">
+              {nodeTypes.map((type) => (
+                <button
+                  key={type.type}
+                  onClick={() => handleNodeTypeChange(type.type)}
+                  className={`w-full p-2 rounded-lg ${
+                    selectedNode
+                      ? "bg-gray-50 hover:bg-gray-100"
+                      : "bg-gray-200 cursor-not-allowed"
+                  } flex items-center space-x-2`}
+                  disabled={!selectedNode}
+                >
+                  <span className="text-2xl">{type.emoji}</span>
+                  <span>{type.name}</span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
 
-        <div>
-          <h3 className="font-semibold mb-2 text-purple-600">
-            🎨 Species Palette
+        <div className="mt-6 p-4 bg-green-50 rounded-lg">
+          <h3 className="font-semibold mb-2 text-green-700">
+            📚 Learning Points
           </h3>
-          <div className="space-y-2">
-            {nodeTypes.map((type) => (
-              <button
-                key={type.type}
-                onClick={() => handleNodeTypeChange(type.type)}
-                className={`w-full p-2 rounded-lg ${
-                  selectedNode
-                    ? "bg-gray-50 hover:bg-gray-100"
-                    : "bg-gray-200 cursor-not-allowed"
-                } flex items-center space-x-2`}
-                disabled={!selectedNode}
-              >
-                <span className="text-2xl">{type.emoji}</span>
-                <span>{type.name}</span>
-              </button>
-            ))}
-          </div>
+          <ul className="list-disc list-inside space-y-2 text-sm">
+            <li>Click to place species in the ecosystem</li>
+            <li>Click one species then another to create a connection</li>
+            <li>Watch how BFS and DFS explore the ecosystem differently</li>
+            <li>Notice how energy flows through the food web</li>
+          </ul>
         </div>
       </div>
 
-      <div className="mt-6 p-4 bg-green-50 rounded-lg">
-        <h3 className="font-semibold mb-2 text-green-700">
-          📚 Learning Points
-        </h3>
-        <ul className="list-disc list-inside space-y-2 text-sm">
-          <li>Click to place species in the ecosystem</li>
-          <li>Click one species then another to create a connection</li>
-          <li>Watch how BFS and DFS explore the ecosystem differently</li>
-          <li>Notice how energy flows through the food web</li>
-        </ul>
-      </div>
+      {nodes.length > 0 && <PopulationSimulator nodes={nodes} edges={edges} />}
     </div>
   );
 };

@@ -1,3 +1,5 @@
+"use client";
+
 import EcosystemExplorer from "./EcosystemExplorer";
 
 export default function EcosystemsPage() {
