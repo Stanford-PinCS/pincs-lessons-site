@@ -12,6 +12,7 @@ const lessons = [
   { title: "Next Word Prediction", link: "/poetry/next-word-prediction" },
   { title: "Probability Intro", link: "/probability" },
   { title: "Code Editor Example", link: "/code-editor-example" },
+  { title: "Ecosystems", link: "/environmental-science/ecosystems" },
 ];
 
 export default function Home() {
