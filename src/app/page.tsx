@@ -17,7 +17,7 @@ const lessons = [
 export default function Home() {
   return (
     <div className="h-[100vh] w-full flex flex-col items-center justify-center gap-8">
-      <h1 className="text-xl">PinCS interactive lessons</h1>
+      <h1 className="text-xl">PinCS Interactive Lessons</h1>
       <div className="flex flex-row flex-wrap gap-4 w-2xl justify-center items-center">
         {lessons.map((l, i) => (
           <Link
