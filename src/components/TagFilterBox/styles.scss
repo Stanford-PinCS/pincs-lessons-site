@@ -1,0 +1,28 @@
+.tag {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid #adb0b4;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  
+    &:hover {
+      border-color: #f3f4f6;
+    }
+  
+    &[data-selected="true"] {
+      background-color: #4f46e5;
+      color: white;
+    }
+  
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px #6366f1;
+    }
+  
+    &[data-disabled="true"] {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+  
