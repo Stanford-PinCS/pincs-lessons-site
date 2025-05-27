@@ -1,6 +1,5 @@
 "use client";
 import { Dispatch, SetStateAction, useState } from "react";
-import "./styles.scss";
 import { Checkbox, Field, Input, Label } from "@headlessui/react";
 import { Tag } from "@/app/types";
 import { CheckIcon } from "@heroicons/react/20/solid";
