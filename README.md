@@ -6,7 +6,7 @@ Our goal is to install `node.js`. We will use `asdf`, a tool for managing progra
 
 `brew` is a common package manager for Mac that will allow us to install `asdf`.
 
-Install `brew` by running this command:
+Install `brew` by running this command: <b>Make sure that you run the follow-up actions recommended by the installer.</b>
 
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
