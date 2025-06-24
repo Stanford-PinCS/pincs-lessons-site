@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 
 // An array representing the satisfaction (utility) gained from each additional slice.
 // Notice how it decreases and eventually becomes negative.
-const marginalUtilities = [5, 5, 4, 2, 1, -1, -3, -7];
+const marginalUtilities = [7, 5, 4, 2, 1, -2, -5, -15];
 
-const PizzaUtility = () => {
+const InteractivePizza = () => {
   const [selectedSlices, setSelectedSlices] = useState(1);
 
   // Calculate the total utility by summing the utilities of the selected slices.
@@ -56,7 +56,7 @@ const PizzaUtility = () => {
 
         {/* Left Column: Pizza Visualization */}
         <div className="lg:w-1/2 flex-col justify-center items-center">
-          <h1 className="text-3xl font-bold text-yellow-500 mb-4">Utility</h1>
+          <h1 className="text-3xl font-bold text-yellow-500 mb-4">Example: Pizza</h1>
           <div className="relative w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] lg:w-full lg:h-auto lg:aspect-square">
             <svg viewBox="0 0 300 300" className="w-full h-full">
               {/* Render each pizza slice */}
@@ -92,7 +92,7 @@ const PizzaUtility = () => {
               The next slice is not quite as good, since you already have the taste in your mouth.
               As you keep going, you become more and more sick with the flavor and become fuller and fuller.
               Consequently, the last slice of the pizza has negative utility.
-              Drag the slider to see what the optimal number of slices is.
+              Drag the slider below to see what the optimal number of slices is.
             </p>
           </div>
 
@@ -152,11 +152,23 @@ const PizzaUtility = () => {
   );
 };
 
-export default function ProjectileMotion() {
+export default function MarginalUtility() {
   return (
     <div className="flex flex-col h-full">
         <main className="max-w-4xl mx-auto px-6 py-12">
             <div className="bg-white rounded-xl shadow-lg p-8 space-y-8">
+                {/* Title of Page, Utility Optimization */}
+                <h1 className="text-4xl font-bold text-gray-800 mb-8">Utility Optimization</h1>
+                {/* Learning Targets: (1) Learn about utility and marginal utility, (2) Apply optimization in economics, and (3) Learn about greedy algorithms.*/}
+                <section className="border-l-4 border-green-500 pl-6">
+                    <h2 className="text-2xl font-semibold text-green-500 mb-4">Learning Targets</h2>
+                    <ul className="list-disc pl-6 space-y-2 text-gray-600">
+                        <li>Learn about utility and marginal utility.</li>
+                        <li>Apply optimization in economics.</li>
+                        <li>Learn about greedy algorithms.</li>
+                    </ul>
+                </section>
+                {/* Lesson */}
                 <section className="border-l-4 border-blue-500 pl-6">
                     <h1 className="text-3xl font-bold text-blue-500 mb-4">Utility</h1>
                     <div className="space-y-4 text-gray-700 leading-relaxed">
@@ -177,8 +189,8 @@ export default function ProjectileMotion() {
                     </div>
                 </section>
 
-                <section className="border-l-4 border-green-500 pl-6">
-                    <h1 className="text-3xl font-bold text-green-500 mb-4">Marginal Utility</h1>
+                <section className="border-l-4 border-blue-500 pl-6">
+                    <h1 className="text-3xl font-bold text-blue-500 mb-4">Marginal Utility</h1>
                     <div className="space-y-4 text-gray-700 leading-relaxed">
                         <p className="text-lg">
                             <span className="font-semibold">Marginal utility is the utility of just the next item.</span> For example, if you have 3 slices of pizza and you eat one more slice, the marginal utility is the utility of that one slice.
@@ -186,18 +198,80 @@ export default function ProjectileMotion() {
                         <p className="text-lg">
                             If you are <span className="font-semibold">very hungry</span>, the marginal utility of that slice might be very high. But if you are <span className="font-semibold">already full</span>, the marginal utility might be very low.
                         </p>
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div className="bg-yellow-100 border border-yellow-200 rounded-lg p-4">
                             <p className="text-lg">
                                 One key concept is the... 
-                                <span className="font-bold text-green-800 text-xl"> Law of Decreasing Marginal Utility</span>, 
+                                <span className="font-bold text-yellow-600 text-xl"> Law of Decreasing Marginal Utility</span>, 
                                 which states that as you have more items, the marginal utility of each item decreases.
                             </p>
                         </div>
                     </div>
                 </section>
 
+                {/* Interactive Pizza Demo */}
                 <section className="border-l-4 border-yellow-500 pl-6">
-                  <PizzaUtility />
+                  <InteractivePizza />
+                </section>
+
+                {/* Putting These Terms together, explaining how utility and marginal utility fit in graphs. */}
+                <section className="border-l-4 border-blue-500 pl-6">
+                  <h1 className="text-3xl font-bold text-blue-500 mb-4">Putting These Terms together</h1>
+                  <div className="space-y-4 text-gray-700 leading-relaxed">
+                      <p className="text-lg">
+                        Now let's see what these curves look like on a graph.
+                      </p>
+                      {/* TODO: Insert graph of the curve from above */}
+                  </div>
+                </section>
+
+                {/* Check in, asking students about utility and marginal utility, highlighting in green when they click the correct mcq answer. */}
+                <section className="border-l-4 border-purple-500 pl-6">
+                  <h1 className="text-3xl font-bold text-purple-500 mb-4">Check In</h1>
+                  <div className="space-y-4 text-gray-700 leading-relaxed">
+                    <p className="text-lg">
+                      <span className="font-semibold">What is utility?</span>
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                      <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
+                        A service like gas, electricity, and water.
+                      </li>
+                      <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
+                        A measurement of how valuable something is.
+                      </li>
+                      <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
+                        A measurement of how much something costs.
+                      </li>
+                    </ul>
+
+                    <p className="text-lg">
+                      <span className="font-semibold">What is marginal utility?</span>
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                      <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
+                        The utility of just the next item.
+                      </li>
+                      <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
+                        The total utility of all items.
+                      </li>
+                      <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
+                        The utility of the first item only.
+                      </li>
+                    </ul>
+                    <p className="text-lg">
+                      <span className="font-semibold">What is the Law of Decreasing Marginal Utility?</span>
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                      <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
+                        As you have more items, the marginal utility of each item decreases.
+                      </li>
+                      <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
+                        As you have more items, the total utility increases.
+                      </li>
+                      <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
+                        As you have more items, the total cost increases.
+                      </li>
+                    </ul>
+                  </div>
                 </section>
             </div>
         </main>
