@@ -11,5 +11,6 @@ export const AllLessons : Lesson[] = [
     { title: "Emoji Translator", link: "/poetry/emoji-translator", tags: [ {type: "subject", value: Subject.English} ] },
     { title: "Next Word Prediction", link: "/poetry/next-word-prediction", tags: [ {type: "subject", value: Subject.English} ] },
     { title: "Probability Intro", link: "/probability", tags: [ {type: "subject", value: Subject.Mathematics} ] },
+    { title: "Marginal Utility", link: "/econ/marginal-utility", tags: [ {type: "subject", value: Subject.Economics} ] },
     { title: "Code Editor Example", link: "/code-editor-example", tags: [ {type: "subject", value: Subject.ComputerScience} ] },
   ];

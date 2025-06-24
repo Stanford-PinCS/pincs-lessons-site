@@ -6,7 +6,8 @@ export enum Subject {
     Music = "Music",
     Mathematics = "Mathematics",
     ComputerScience = "Computer Science",
-    History = "History"
+    History = "History",
+    Economics = "Economics",
 }
 
 
