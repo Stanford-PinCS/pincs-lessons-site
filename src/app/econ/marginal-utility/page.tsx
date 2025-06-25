@@ -4,27 +4,106 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
 
-type CoinPickingExampleProps = {
+interface CoinPickingExampleProps {
   coins: number[];
-  amount: number;
-};
+  initialAmount: number;
+}
 
-const CoinPickingExample: React.FC<CoinPickingExampleProps> = ({ coins, amount }) => {
+const CoinPickingExample: React.FC<CoinPickingExampleProps> = ({ coins, initialAmount }) => {
   const [changeMade, setChangeMade] = useState<number>(0);
   const [coinsUsed, setCoinsUsed] = useState<number[]>([]);
 
+  const changeLeft = initialAmount - changeMade;
+
   function useCoin(coin: number) {
-    setChangeMade(prev => prev + coin);
-    setCoinsUsed(prev => [...prev, coin]);
+    // Prevent adding a coin that would exceed the amount
+    if (changeMade + coin <= initialAmount) {
+      setChangeMade(prev => prev + coin);
+      setCoinsUsed(prev => [...prev, coin].sort((a, b) => b - a)); // Sort for consistency
+    }
+  }
+
+  function reset() {
+    setChangeMade(0);
+    setCoinsUsed([]);
   }
 
   return (
-    <div>
-      {coins.map((coin, index) => (
-        <button style={{margin: '10px', background: "yellow"}} key={index} onClick={() => useCoin(coin)}>{coin}</button>
-      ))}
-      <span>Change left: {amount - changeMade}</span>
-      <span>Coins used: {coinsUsed.join(", ")}</span>
+    // Card Container
+    <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8 space-y-6 font-sans">
+      
+      {/* Header */}
+      <div className="text-center">
+        <h1 className="text-2xl font-bold text-gray-800">Vending Machine Change</h1>
+        <p className="text-gray-500">Click coins to make change</p>
+      </div>
+
+      {/* Available Coins Section */}
+      <div>
+        <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3">Available Coins</h2>
+        <div className="flex flex-wrap justify-center gap-4">
+          {coins.map((coin, index) => (
+            <button
+              key={index}
+              onClick={() => useCoin(coin)}
+              // Dynamically apply classes for disabled state
+              disabled={changeMade + coin > initialAmount}
+              className={`
+                w-16 h-16 rounded-full flex items-center justify-center
+                text-xl font-bold text-yellow-900 bg-yellow-400
+                transition-all duration-200 ease-in-out
+                hover:bg-yellow-500 hover:shadow-lg hover:-translate-y-1
+                focus:outline-none focus:ring-4 focus:ring-yellow-300
+                disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed
+                disabled:shadow-none disabled:transform-none
+              `}
+            >
+              {coin}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Divider */}
+      <hr className="border-gray-200" />
+      
+      {/* Results Section */}
+      <div className="space-y-4">
+        {/* Change Left */}
+        <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+          <span className="text-lg font-medium text-gray-700">Change Left:</span>
+          <span className="text-3xl font-mono font-bold text-green-600">
+            {changeLeft}
+          </span>
+        </div>
+
+        {/* Coins Used */}
+        <div className="space-y-2">
+           <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider">Coins Used ({coinsUsed.length})</h2>
+          <div className="bg-gray-50 p-4 rounded-lg min-h-[6rem] flex flex-wrap gap-2 items-start">
+            {coinsUsed.length > 0 ? (
+              coinsUsed.map((coin, index) => (
+                <span key={index} className="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">
+                  {coin}
+                </span>
+              ))
+            ) : (
+              <span className="text-gray-400 italic self-center mx-auto">No coins used yet.</span>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      {/* Action Buttons */}
+      <div className="pt-2">
+         <button 
+          onClick={reset}
+          className="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+        >
+          Reset
+        </button>
+      </div>
+
     </div>
   );
 };
@@ -1178,7 +1257,7 @@ export default function MarginalUtility() {
                       Let's solve this using a greedy approach, by picking the largest coin that does not exceed the remaining amount
                       until we have reached the desired change.
                     </p>
-                    <CoinPickingExample coins={[25, 10, 5, 1]} amount={75}/>
+                    <CoinPickingExample coins={[25, 10, 5, 1]} initialAmount={67}/>
                   </div>
                 </section>
 
