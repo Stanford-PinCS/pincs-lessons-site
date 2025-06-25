@@ -4,6 +4,31 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
 
+type CoinPickingExampleProps = {
+  coins: number[];
+  amount: number;
+};
+
+const CoinPickingExample: React.FC<CoinPickingExampleProps> = ({ coins, amount }) => {
+  const [changeMade, setChangeMade] = useState<number>(0);
+  const [coinsUsed, setCoinsUsed] = useState<number[]>([]);
+
+  function useCoin(coin: number) {
+    setChangeMade(prev => prev + coin);
+    setCoinsUsed(prev => [...prev, coin]);
+  }
+
+  return (
+    <div>
+      {coins.map((coin, index) => (
+        <button style={{margin: '10px', background: "yellow"}} key={index} onClick={() => useCoin(coin)}>{coin}</button>
+      ))}
+      <span>Change left: {amount - changeMade}</span>
+      <span>Coins used: {coinsUsed.join(", ")}</span>
+    </div>
+  );
+};
+
 const CupcakesCookiesUtilityTable = () => {
 
   // Define reusable types for better maintainability and readability
@@ -180,7 +205,11 @@ const CupcakesCookiesUtilityTable = () => {
         ...prev,
         [item]: prev[item] + 1
       }));
-      setFeedback(`Correct! ${item.charAt(0).toUpperCase() + item.slice(1)} had the highest MU/P ratio.`);
+      if (budget > 0) {
+        setFeedback(`Correct! ${item.charAt(0).toUpperCase() + item.slice(1)} had the highest MU/P ratio.`);
+      } else {
+        setFeedback(`Correct! ${item.charAt(0).toUpperCase() + item.slice(1)} had the highest MU/P ratio. Now you've spent your whole budget! Horray!`);
+      }
       setFeedbackType('correct');
     } else {
       setFeedback(`Incorrect! The optimal choice is ${optimalChoice} (higher MU/P ratio).`);
@@ -1101,6 +1130,66 @@ export default function MarginalUtility() {
                     <CupcakesCookiesUtilityTable />
                   </div>
                 </section>
+
+                {/* Section to Explain the Greedy Approach */}
+                <section className="border-l-4 border-blue-500 pl-6">
+                  <h1 className="text-3xl font-bold text-blue-500 mb-4">Greedy Approach</h1>
+                  <div className="space-y-4 text-gray-700 leading-relaxed">
+                    <p className="text-lg">
+                      The greedy approach is a method of solving optimization problems by making the locally optimal choice at each step.
+                      In the context of utility optimization, it means always choosing the item with the highest marginal utility per price (MU/P) ratio that you can afford.
+                    </p>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+                        <p className="text-blue-800 font-medium">
+                          It's called "greedy" because it always wants the best immediate choice, without considering future consequences.
+                        </p>
+                    </div>
+                    <p className="text-lg">
+                      This approach works well for many problems, but it may not always yield the global optimum in every scenario.
+                      However, for our dessert examples, it provided a simple and effective way to maximize your utility given a budget constraint.
+                    </p>
+                    <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-md">
+                      <strong>(Bonus) More Applications of The Greedy Algorithm:</strong> 
+                      <ol className="list-decimal list-inside mt-2 space-y-1">
+                        <li>Finding nearly-optimal solutions to extremely difficult problems.</li>
+                        <li>Map routing algorithms, data compression, and more!</li>
+                        <li>Making change with the fewest number of coins (we'll see next).</li>
+                      </ol>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Section on The Change Problem */}
+                <section className="border-l-4 border-blue-500 pl-6">
+                  <h1 className="text-3xl font-bold text-blue-500 mb-4">The Change Problem</h1>
+                  <div className="space-y-4 text-gray-700 leading-relaxed">
+                    <p className="text-lg">
+                      The change problem is a classic optimization problem where you need to make change for a given amount using the fewest number of coins.
+                      For example, if you need to make 63 cents using coins of 1, 5, 10, and 25 cents, the optimal solution would use:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                      <li>2 quarters (50 cents)</li>
+                      <li>1 dime (10 cents)</li>
+                      <li>1 nickel (5 cents)</li>
+                      <li>3 pennies (3 cents)</li>
+                    </ul>
+                    <p className="text-lg">
+                      This gives you a total of 7 coins, which is the fewest possible.
+                      Let's solve this using a greedy approach, by picking the largest coin that does not exceed the remaining amount
+                      until we have reached the desired change.
+                    </p>
+                    <CoinPickingExample coins={[25, 10, 5, 1]} amount={75}/>
+                  </div>
+                </section>
+
+                {/* Section on The Problematic Change Problem */}
+
+
+                {/* How You Know if it Works in Utility Optimization... */}
+
+                {/* Writing Code */}
+
+                {/* Recap */}
             </div>
         </main>
     </div>
