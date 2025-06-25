@@ -7,6 +7,7 @@ export enum Subject {
   Mathematics = "Mathematics",
   ComputerScience = "Computer Science",
   History = "History",
+  EnvironmentalScience = "Environmental Science",
 }
 
 export type Tag =

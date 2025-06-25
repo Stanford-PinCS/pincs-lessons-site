@@ -89,6 +89,15 @@ export const AllLessons: Lesson[] = [
       { type: "hidden", value: false },
     ],
   },
+
+  {
+    title: "Ecosystems",
+    link: "/environmental-science/ecosystems",
+    tags: [
+      { type: "subject", value: Subject.EnvironmentalScience },
+      { type: "hidden", value: false },
+    ],
+  },
   {
     title: "Example Lesson",
     link: "/example-lesson",
