@@ -1,9 +1,224 @@
 "use client";
 import React, { useState } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 
-// An array representing the satisfaction (utility) gained from each additional slice.
-// Notice how it decreases and eventually becomes negative.
-const marginalUtilities = [7, 5, 4, 2, 1, -2, -5, -15];
+const marginalUtilities = [6, 4, 2, 0, -2, -4, -6, -8];
+
+
+const InteractiveChart = () => {
+  const [selectedSlices, setSelectedSlices] = useState(1);
+  
+  const totalUtility = marginalUtilities.slice(0, selectedSlices).reduce((sum, util) => sum + util, 0);
+  const currentMarginalUtility = marginalUtilities[selectedSlices - 1];
+  
+  // Calculate data for charts
+  const data = [];
+  let cumulativeUtility = 0;
+  
+  for (let i = 0; i < 8; i++) {
+    cumulativeUtility += marginalUtilities[i];
+    data.push({
+      slice: i + 1,
+      marginalUtility: marginalUtilities[i],
+      totalUtility: cumulativeUtility,
+      isSelected: i < selectedSlices
+    });
+  }
+
+
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active){// && payload && payload.length) {
+      return (
+        <div className="bg-white p-4 border border-gray-300 rounded shadow-lg">
+          <p className="font-semibold text-gray-800 mb-2">{`Slice ${label}`}</p>
+          {payload.map((entry: { color: string; name: string; value: number }, index: React.Key | null | undefined) => (
+            <p key={index} style={{ color: entry.color }} className="font-medium">
+              {`${entry.name}: ${entry.value}`}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
+        Interactive Utility Analysis
+      </h1>
+      
+      <div className="space-y-8">
+        {/* Slider Control */}
+        <div className="w-full max-w-md mx-auto">
+          <label className="block text-lg font-medium text-gray-700 mb-3 text-center">
+            Number of Pizza Slices: {selectedSlices}
+          </label>
+          <input
+            type="range"
+            min="1"
+            max="8"
+            value={selectedSlices}
+            onChange={(e) => setSelectedSlices(parseInt(e.target.value))}
+            className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+          />
+          <div className="flex justify-between text-sm text-gray-500 mt-2">
+            <span>1 slice</span>
+            <span>8 slices</span>
+          </div>
+        </div>
+
+        {/* Current Values Display */}
+        <div className="bg-gradient-to-r from-blue-50 to-green-50 p-6 rounded-lg max-w-2xl mx-auto">
+          <div className="grid grid-cols-3 gap-6 text-center">
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Slices Consumed</p>
+              <p className="text-3xl font-bold text-purple-600">{selectedSlices}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Marginal Utility</p>
+              <p className={`text-3xl font-bold ${currentMarginalUtility >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                {currentMarginalUtility}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Total Utility</p>
+              <p className={`text-3xl font-bold ${totalUtility >= 0 ? 'text-blue-600' : 'text-red-600'}`}>
+                {totalUtility}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Combined Chart */}
+        <div className="bg-gray-50 p-8 rounded-lg">
+          <h3 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
+            Total Utility vs Marginal Utility
+          </h3>
+          <ResponsiveContainer width="100%" height={500}>
+            <LineChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis 
+                dataKey="slice" 
+                stroke="#6b7280"
+                fontSize={14}
+                label={{ value: 'Pizza Slices', position: 'insideBottom', offset: -40, style: { textAnchor: 'middle', fontSize: '16px', fontWeight: 'bold' } }}
+              />
+              <YAxis 
+                stroke="#6b7280"
+                fontSize={14}
+                label={{ value: 'Utility', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fontSize: '16px', fontWeight: 'bold' } }}
+              />
+              {/* <Tooltip content={<CustomTooltip />} /> */}
+              
+              {/* Total Utility Line */}
+              <Line 
+                type="monotone" 
+                dataKey="totalUtility" 
+                stroke="#2563eb" 
+                strokeWidth={4}
+                dot={{ fill: '#2563eb', strokeWidth: 2, r: 6 }}
+                activeDot={{ r: 8, fill: '#1d4ed8', strokeWidth: 2, stroke: '#ffffff' }}
+                name="Total Utility"
+              />
+              
+              {/* Marginal Utility Line */}
+              <Line 
+                type="monotone" 
+                dataKey="marginalUtility" 
+                stroke="#10b981" 
+                strokeWidth={4}
+                dot={{ fill: '#10b981', strokeWidth: 2, r: 6 }}
+                activeDot={{ r: 8, fill: '#059669', strokeWidth: 2, stroke: '#ffffff' }}
+                name="Marginal Utility"
+              />
+              
+              {/* Current Selection Reference Line */}
+              <ReferenceLine 
+                x={selectedSlices} 
+                stroke="#dc2626" 
+                strokeDasharray="8 4" 
+                strokeWidth={3}
+                label={{ value: `Slice ${selectedSlices}`, position: 'top', style: { fill: '#dc2626', fontWeight: 'bold', fontSize: '14px' } }}
+              />
+              
+              {/* Zero Reference Line for Marginal Utility */}
+              <ReferenceLine 
+                y={0} 
+                stroke="#374151" 
+                strokeWidth={2}
+                strokeDasharray="2 2"
+                label={{ value: 'Zero Utility', position: 'right', style: { fill: '#374151', fontSize: '12px' } }}
+              />
+              <Tooltip content={<CustomTooltip />} />
+            </LineChart>
+          </ResponsiveContainer>
+          
+          {/* Chart Legend */}
+          <div className="flex justify-center mt-4 space-x-8">
+            <div className="flex items-center">
+              <div className="w-4 h-1 bg-blue-600 mr-2"></div>
+              <span className="text-sm font-medium text-gray-700">Total Utility</span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-4 h-1 bg-green-600 mr-2"></div>
+              <span className="text-sm font-medium text-gray-700">Marginal Utility</span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-4 h-1 bg-red-600 mr-2" style={{borderTop: '2px dashed'}}></div>
+              <span className="text-sm font-medium text-gray-700">Current Selection</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Educational Insights */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-blue-50 p-6 rounded-lg">
+            <h4 className="font-semibold text-blue-800 mb-3 text-lg">Key Observations:</h4>
+            <ul className="text-sm text-blue-700 space-y-2">
+              <li>• <strong>Total Utility</strong> (blue) rises then falls as consumption increases</li>
+              <li>• <strong>Marginal Utility</strong> (green) consistently decreases (diminishing returns)</li>
+              <li>• When marginal utility hits zero, total utility peaks</li>
+              <li>• Negative marginal utility reduces total satisfaction</li>
+            </ul>
+          </div>
+          
+          <div className="bg-green-50 p-6 rounded-lg">
+            <h4 className="font-semibold text-green-800 mb-3 text-lg">Economic Principles:</h4>
+            <ul className="text-sm text-green-700 space-y-2">
+              <li>• <strong>Law of Diminishing Marginal Utility:</strong> Each additional unit provides less satisfaction</li>
+              <li>• <strong>Optimal Consumption:</strong> Stop when marginal utility approaches zero</li>
+              <li>• <strong>Overconsumption:</strong> Negative marginal utility reduces total welfare</li>
+              <li>• <strong>Consumer Choice:</strong> Rational consumers maximize total utility</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <style jsx>{`
+        .slider::-webkit-slider-thumb {
+          appearance: none;
+          height: 24px;
+          width: 24px;
+          border-radius: 50%;
+          background: #8b5cf6;
+          cursor: pointer;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .slider::-moz-range-thumb {
+          height: 24px;
+          width: 24px;
+          border-radius: 50%;
+          background: #8b5cf6;
+          cursor: pointer;
+          border: none;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+      `}</style>
+    </div>
+  );
+};
 
 const InteractivePizza = () => {
   const [selectedSlices, setSelectedSlices] = useState(1);
@@ -214,13 +429,14 @@ export default function MarginalUtility() {
                 </section>
 
                 {/* Putting These Terms together, explaining how utility and marginal utility fit in graphs. */}
-                <section className="border-l-4 border-blue-500 pl-6">
-                  <h1 className="text-3xl font-bold text-blue-500 mb-4">Putting These Terms together</h1>
+                <section className="border-l-4 border-yellow-500 pl-6">
+                  <h1 className="text-3xl font-bold text-yellow-500 mb-4">Putting it Together in a Chart</h1>
                   <div className="space-y-4 text-gray-700 leading-relaxed">
                       <p className="text-lg">
                         Now let's see what these curves look like on a graph.
+                        Use the slider to select a different number of slices and hover over the graph to see the value of each curve.
                       </p>
-                      {/* TODO: Insert graph of the curve from above */}
+                      <InteractiveChart />
                   </div>
                 </section>
 
