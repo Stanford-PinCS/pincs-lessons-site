@@ -6,7 +6,7 @@ Our goal is to install `node.js`. We will use `asdf`, a tool for managing progra
 
 `brew` is a common package manager for Mac that will allow us to install `asdf`.
 
-Install `brew` by running this command:
+Install `brew` by running this command: <b>Make sure that you run the follow-up actions recommended by the installer.</b>
 
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -68,7 +68,7 @@ npm run dev
 
 This will get you a dev server running at `http://localhost:3000`!
 
-To access the site, navigate to `http://localhost:3000/pickcode`
+To access the site, navigate to `http://localhost:3000/interactive-lessons`
 
 ## Adding a lesson
 
@@ -88,7 +88,7 @@ Let's say you want to add a lesson about phsyics. The pattern we follow is:
 
 Again, it's probably easiest from here to copy paste from an existing example.
 
-You should be able to go to `http://localhost:3000/pickcode/physics-simulation` and every time you save your code, the app will recompile and you can see the changes!
+You should be able to go to `http://localhost:3000/interactive-lessons/physics-simulation` and every time you save your code, the app will recompile and you can see the changes!
 
 ## Configuring VSCode
 
