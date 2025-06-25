@@ -1129,7 +1129,7 @@ export default function MarginalUtility() {
                         <div className="bg-yellow-100 border border-yellow-200 rounded-lg p-4">
                             <p className="text-lg">
                                 One key concept is the... 
-                                <span className="font-bold text-yellow-600 text-xl"> Law of Decreasing Marginal Utility</span>, 
+                                <span className="font-bold text-yellow-600 text-xl"> Law of Diminishing Marginal Utility</span>, 
                                 which states that as you have more items, the marginal utility of each item decreases.
                             </p>
                         </div>
@@ -1378,11 +1378,12 @@ export default function MarginalUtility() {
 
                 {/* Writing Code */}
                 <section className="border-l-4 border-yellow-500 pl-6">
+                  <h1 className='text-3xl font-bold text-yellow-500 mb-4'>Try Coding it up Yourself!</h1>
                   <iframe
                     id="inlinePickcodePlugin"
                     title="Code Up a Greedy Algorithm"
-                    width="400"
-                    height="300"
+                    width="100%"
+                    height="500"
                     // TODO: change into a permalink
                     src="http://localhost:5173/sandbox/marginal-utility">
                   </iframe>
@@ -1393,20 +1394,21 @@ export default function MarginalUtility() {
                     <h1 className="text-3xl font-bold text-blue-500 mb-4">Recap</h1>
                     <div className="space-y-4 text-gray-700 leading-relaxed">
                       <p className="text-lg">
-                        First, we learned about the meaning of <span className="text-yellow-500">utility</span> and <span className="text-yellow-500">marginal utility</span>.
+                        First, we learned about the meaning of <span className="font-bold text-yellow-600">utility</span> and <span className="font-bold text-yellow-600">marginal utility</span>.
                         Utility means the "value" or satisfaction you get from something. Marginal Utility (MU) is the utility of one particular item (usually the next item, or the last item).
-                        Utility is measured in <span className="text-yellow-500">utils</span>.
+                        Utility is measured in <span className="font-bold text-yellow-600">utils</span>.
                       </p>
                       <p className="text-lg">
-                        Next, we learned about how utility would look in a <span className="text-yellow-500">chart</span> and <span className="text-yellow-500">table</span>.
+                        Next, we learned about how utility would look in a <span className="font-bold text-yellow-600">chart</span> and <span className="font-bold text-yellow-600">table</span>.
                         It's important to remember that the marginal utility curve is the slope of the total utility curve.
+                        Also, by the <span className="font-bold text-yellow-600"> Law of Diminishing Marginal Utility</span>, the marginal utility goes down the more of that item you get.
                       </p>
                       <p className="text-lg">
-                        Then, we learned how to use a greedy algorithm to make decisions about <span className="text-yellow-500">utility optimization</span>.
-                        Using the greedy algorithm, we pick the next best option at each step. The next best option is the option with the highest <span className="text-yellow-500">MU/P ratio of Marginal Utility (MU) to Price (P)</span>
+                        Then, we learned how to use a greedy algorithm to make decisions about <span className="font-bold text-yellow-600">utility optimization</span>.
+                        Using the greedy algorithm, we pick the next best option at each step. The next best option is the option with the highest <span className="font-bold text-yellow-600">MU/P ratio of Marginal Utility (MU) to Price (P)</span>
                       </p>
                       <p className="text-lg">
-                        Finally, we learned the <span className="text-yellow-500">logic behind the greedy algorithm</span> and the <span className="text-yellow-500">drawbacks</span> associated with the greedy algorithm.
+                        Finally, we learned the <span className="font-bold text-yellow-600">logic behind the greedy algorithm</span> and the <span className="font-bold text-yellow-600">drawbacks</span> associated with the greedy algorithm.
                       </p>
                     </div>
                 </section>
