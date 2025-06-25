@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 
-const marginalUtilities = [6, 4, 2, 0, -2, -4, -6, -8];
+const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
 
 
 const InteractiveChart = () => {
@@ -405,7 +405,7 @@ export default function MarginalUtility() {
                 </section>
 
                 <section className="border-l-4 border-blue-500 pl-6">
-                    <h1 className="text-3xl font-bold text-blue-500 mb-4">Marginal Utility</h1>
+                    <h1 className="text-3xl font-bold text-blue-500 mb-4">Marginal Utility (MU)</h1>
                     <div className="space-y-4 text-gray-700 leading-relaxed">
                         <p className="text-lg">
                             <span className="font-semibold">Marginal utility is the utility of just the next item.</span> For example, if you have 3 slices of pizza and you eat one more slice, the marginal utility is the utility of that one slice.
@@ -434,7 +434,7 @@ export default function MarginalUtility() {
                   <div className="space-y-4 text-gray-700 leading-relaxed">
                       <p className="text-lg">
                         Now let's see what these curves look like on a graph.
-                        Use the slider to select a different number of slices and hover over the graph to see the value of each curve.
+                        Use the slider to select a different number of slices and hover over the graph to inspect different values.
                       </p>
                       <InteractiveChart />
                   </div>
@@ -487,6 +487,50 @@ export default function MarginalUtility() {
                         As you have more items, the total cost increases.
                       </li>
                     </ul>
+                  </div>
+                </section>
+
+                {/* Section Showing Multiple Items */}
+                <section className="border-l-4 border-blue-500 pl-6">
+                  <h1 className="text-3xl font-bold text-blue-500 mb-4">Buying Multiple Items</h1>
+                  <div className="space-y-4 text-gray-700 leading-relaxed">
+                    <p className="text-lg">
+                      Imagine you were going to get three scoops of ice cream. You may really love chocolate ice cream, but because each chocolate scoop provides you less and less utility (Law of Decreasing Marginal Utility),
+                      you may want to get a chocolate scoop, and then pick another flavor. Notice that after you pick one scoop, you would reconsider the utility of each flavor for the next scoop.
+                      Below is an example of a table showing the utility of each flavor of ice cream for each number of scoops you get.
+                    </p>
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                        <thead>
+                          <tr className="bg-gray-100">
+                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700"># of Scoops</th>
+                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Chocolate</th>
+                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Vanilla</th>
+                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Strawberry</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="hover:bg-gray-50 transition-colors duration-200">
+                            <td className="px-6 py-4 border-b border-gray-200">1st Scoop (utils)</td>
+                            <td className="px-6 py-4 border-b border-gray-200">10</td>
+                            <td className="px-6 py-4 border-b border-gray-200">8</td>
+                            <td className="px-6 py-4 border-b border-gray-200">9</td>
+                          </tr>
+                          <tr className="hover:bg-gray-50 transition-colors duration-200">
+                            <td className="px-6 py-4 border-b border-gray-200">2nd Scoop (utils)</td>
+                            <td className="px-6 py-4 border-b border-gray-200">7</td>
+                            <td className="px-6 py-4 border-b border-gray-200">5</td>
+                            <td className="px-6 py-4 border-b border-gray-200">6</td>
+                          </tr>
+                          <tr className="hover:bg-gray-50 transition-colors duration-200">
+                            <td className="px-6 py-4 border-b border-gray-200">3rd Scoop (utils)</td>
+                            <td className="px-6 py-4 border-b border-gray-200">4</td>
+                            <td className="px-6 py-4 border-b border-gray-200">2</td>
+                            <td className="px-6 py-4 border-b border-gray-200">3</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </section>
             </div>
