@@ -4,6 +4,196 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
 
+const IceCreamUtilityTable = () => {
+  const [scoopCount, setScoopCount] = useState(0);
+  const [totalUtility, setTotalUtility] = useState(0);
+  const [selectedScoops, setSelectedScoops] = useState<Flavor[]>([]);
+  type Flavor = 'chocolate' | 'vanilla' | 'strawberry';
+
+  const [scoopCounts, setScoopCounts] = useState<Record<Flavor, number>>({
+    chocolate: 0,
+    vanilla: 0,
+    strawberry: 0
+  });
+
+  const utilityData: Record<Flavor, number[]> = {
+    chocolate: [10, 7, 4],
+    vanilla: [2, 1, 0],
+    strawberry: [9, 6, 3]
+  };
+
+  const flavorColors: Record<Flavor, string> = {
+    chocolate: 'bg-amber-700',
+    vanilla: 'bg-yellow-200 border-2 border-yellow-600',
+    strawberry: 'bg-pink-300'
+  };
+
+  const getCurrentUtility = (flavor: Flavor) => {
+    const currentCount = scoopCounts[flavor];
+    return currentCount < 3 ? utilityData[flavor][currentCount] : 0;
+  };
+
+  const getHighestUtilityFlavor = () => {
+    const utilities: Record<Flavor, number> = {
+      chocolate: getCurrentUtility('chocolate'),
+      vanilla: getCurrentUtility('vanilla'),
+      strawberry: getCurrentUtility('strawberry')
+    };
+    
+    return (Object.keys(utilities) as Flavor[]).reduce((a, b) => 
+      utilities[a] > utilities[b] ? a : b
+    );
+  };
+
+  const handleNextScoop = () => {
+    if (scoopCount >= 3) return;
+    
+    const selectedFlavor = getHighestUtilityFlavor();
+    const utility = getCurrentUtility(selectedFlavor);
+    
+    setScoopCount(prev => prev + 1);
+    setTotalUtility(prev => prev + utility);
+    setSelectedScoops(prev => [...prev, selectedFlavor]);
+    setScoopCounts(prev => ({
+      ...prev,
+      [selectedFlavor]: prev[selectedFlavor] + 1
+    }));
+  };
+
+  const reset = () => {
+    setScoopCount(0);
+    setTotalUtility(0);
+    setSelectedScoops([]);
+    setScoopCounts({
+      chocolate: 0,
+      vanilla: 0,
+      strawberry: 0
+    });
+  };
+
+  const getHighlightClass = (flavor: Flavor, scoopIndex: number) => {
+    if (scoopCounts[flavor] > scoopIndex) {
+      if (flavor === 'vanilla') {
+        return `${flavorColors[flavor]} text-black font-bold`;
+      }
+      return `${flavorColors[flavor]} text-white font-bold`;
+    }
+    return '';
+  };
+
+  return (
+    <div className="space-y-4 text-gray-700 leading-relaxed max-w-4xl mx-auto p-6">
+      {/* Control Panel */}
+      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={handleNextScoop}
+              disabled={scoopCount >= 3}
+              className={`px-6 py-2 rounded-md font-medium transition-colors ${
+                scoopCount >= 3 
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
+              }`}
+            >
+              {scoopCount >= 3 ? 'Out of Scoops' : 'Next Scoop'}
+            </button>
+            <button 
+              onClick={reset}
+              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+            >
+              Reset
+            </button>
+          </div>
+          <div className="text-right">
+            <div className="text-sm text-gray-600">Scoops Selected: {scoopCount}/3</div>
+            <div className="text-lg font-bold text-blue-700">Total Utility: {totalUtility} utils</div>
+          </div>
+        </div>
+        
+        {/* Selected Scoops Display */}
+        {selectedScoops.length > 0 && (
+          <div className="flex items-center space-x-2">
+            <span className="text-sm font-medium">Your scoops:</span>
+            {selectedScoops.map((flavor, index) => (
+              <div key={index} className="flex items-center space-x-1">
+                <div className={`w-6 h-6 rounded-full ${flavorColors[flavor]}`}></div>
+                <span className="text-sm capitalize">{flavor}</span>
+                {index < selectedScoops.length - 1 && <span className="text-gray-400">→</span>}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700"># of Scoops</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                <div className="flex items-center space-x-2">
+                  <span>Chocolate</span>
+                  <div className={`w-4 h-4 rounded-full ${flavorColors.chocolate}`}></div>
+                </div>
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                <div className="flex items-center space-x-2">
+                  <span>Vanilla</span>
+                  <div className={`w-4 h-4 rounded-full ${flavorColors.vanilla}`}></div>
+                </div>
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                <div className="flex items-center space-x-2">
+                  <span>Strawberry</span>
+                  <div className={`w-4 h-4 rounded-full ${flavorColors.strawberry}`}></div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="hover:bg-gray-50 transition-colors duration-200">
+              <td className="px-6 py-4 border-b border-gray-200 font-medium">1st Scoop MU (utils)</td>
+              <td className={`px-6 py-4 border-b border-gray-200 transition-colors duration-300 ${getHighlightClass('chocolate', 0)}`}>
+                10
+              </td>
+              <td className={`px-6 py-4 border-b border-gray-200 transition-colors duration-300 ${getHighlightClass('vanilla', 0)}`}>
+                2
+              </td>
+              <td className={`px-6 py-4 border-b border-gray-200 transition-colors duration-300 ${getHighlightClass('strawberry', 0)}`}>
+                9
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-50 transition-colors duration-200">
+              <td className="px-6 py-4 border-b border-gray-200 font-medium">2nd Scoop MU (utils)</td>
+              <td className={`px-6 py-4 border-b border-gray-200 transition-colors duration-300 ${getHighlightClass('chocolate', 1)}`}>
+                7
+              </td>
+              <td className={`px-6 py-4 border-b border-gray-200 transition-colors duration-300 ${getHighlightClass('vanilla', 1)}`}>
+                1
+              </td>
+              <td className={`px-6 py-4 border-b border-gray-200 transition-colors duration-300 ${getHighlightClass('strawberry', 1)}`}>
+                6
+              </td>
+            </tr>
+            <tr className="hover:bg-gray-50 transition-colors duration-200">
+              <td className="px-6 py-4 border-b border-gray-200 font-medium">3rd Scoop MU (utils)</td>
+              <td className={`px-6 py-4 border-b border-gray-200 transition-colors duration-300 ${getHighlightClass('chocolate', 2)}`}>
+                4
+              </td>
+              <td className={`px-6 py-4 border-b border-gray-200 transition-colors duration-300 ${getHighlightClass('vanilla', 2)}`}>
+                0
+              </td>
+              <td className={`px-6 py-4 border-b border-gray-200 transition-colors duration-300 ${getHighlightClass('strawberry', 2)}`}>
+                3
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
 
 const InteractiveChart = () => {
   const [selectedSlices, setSelectedSlices] = useState(1);
@@ -497,40 +687,10 @@ export default function MarginalUtility() {
                     <p className="text-lg">
                       Imagine you were going to get three scoops of ice cream. You may really love chocolate ice cream, but because each chocolate scoop provides you less and less utility (Law of Decreasing Marginal Utility),
                       you may want to get a chocolate scoop, and then pick another flavor. Notice that after you pick one scoop, you would reconsider the utility of each flavor for the next scoop.
-                      Below is an example of a table showing the utility of each flavor of ice cream for each number of scoops you get.
+                      Below is an example table showing the marginal utility (MU) of each flavor of ice cream for each number of scoops you get.
+                      Click the "Next Scoop" button and see if you can guess which scoop it will pick next.
                     </p>
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-                        <thead>
-                          <tr className="bg-gray-100">
-                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700"># of Scoops</th>
-                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Chocolate</th>
-                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Vanilla</th>
-                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Strawberry</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr className="hover:bg-gray-50 transition-colors duration-200">
-                            <td className="px-6 py-4 border-b border-gray-200">1st Scoop (utils)</td>
-                            <td className="px-6 py-4 border-b border-gray-200">10</td>
-                            <td className="px-6 py-4 border-b border-gray-200">8</td>
-                            <td className="px-6 py-4 border-b border-gray-200">9</td>
-                          </tr>
-                          <tr className="hover:bg-gray-50 transition-colors duration-200">
-                            <td className="px-6 py-4 border-b border-gray-200">2nd Scoop (utils)</td>
-                            <td className="px-6 py-4 border-b border-gray-200">7</td>
-                            <td className="px-6 py-4 border-b border-gray-200">5</td>
-                            <td className="px-6 py-4 border-b border-gray-200">6</td>
-                          </tr>
-                          <tr className="hover:bg-gray-50 transition-colors duration-200">
-                            <td className="px-6 py-4 border-b border-gray-200">3rd Scoop (utils)</td>
-                            <td className="px-6 py-4 border-b border-gray-200">4</td>
-                            <td className="px-6 py-4 border-b border-gray-200">2</td>
-                            <td className="px-6 py-4 border-b border-gray-200">3</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                    <IceCreamUtilityTable />
                   </div>
                 </section>
             </div>
