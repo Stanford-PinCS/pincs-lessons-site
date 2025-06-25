@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 
 const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
@@ -9,101 +9,150 @@ interface CoinPickingExampleProps {
   initialAmount: number;
 }
 
-const CoinPickingExample: React.FC<CoinPickingExampleProps> = ({ coins, initialAmount }) => {
+interface CoinPickingExampleProps {
+  coins: number[];
+  initialAmount: number;
+  greedyStrict?: boolean; // If true, enforces picking the largest possible coin
+}
+
+const CoinPickingExample: React.FC<CoinPickingExampleProps> = ({
+  coins,
+  initialAmount,
+  greedyStrict = false,
+}) => {
   const [changeMade, setChangeMade] = useState<number>(0);
   const [coinsUsed, setCoinsUsed] = useState<number[]>([]);
+  const [feedback, setFeedback] = useState<string | null>(null);
+
+  const feedbackTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const changeLeft = initialAmount - changeMade;
+  const progressPercent = initialAmount > 0 ? (changeMade / initialAmount) * 100 : 0;
 
-  function useCoin(coin: number) {
-    // Prevent adding a coin that would exceed the amount
-    if (changeMade + coin <= initialAmount) {
-      setChangeMade(prev => prev + coin);
-      setCoinsUsed(prev => [...prev, coin].sort((a, b) => b - a)); // Sort for consistency
+  const sortedCoins = useMemo(() => [...coins].sort((a, b) => b - a), [coins]);
+
+  function showFeedback(message: string) {
+    if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
+    setFeedback(message);
+    feedbackTimerRef.current = setTimeout(() => setFeedback(null), 3000);
+  }
+
+  function useCoin(clickedCoin: number) {
+    setFeedback(null); // Clear feedback on any new valid action
+
+    if (greedyStrict) {
+      const greedyChoice = sortedCoins.find(c => c <= changeLeft);
+      if (greedyChoice && clickedCoin < greedyChoice) {
+        showFeedback(`Try picking the largest possible coin: ${greedyChoice}.`);
+        return;
+      }
     }
+
+    setChangeMade(prev => prev + clickedCoin);
+    setCoinsUsed(prev => [...prev, clickedCoin].sort((a, b) => b - a));
   }
 
   function reset() {
     setChangeMade(0);
     setCoinsUsed([]);
+    setFeedback(null);
+    if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
   }
 
   return (
-    // Card Container
-    <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8 space-y-6 font-sans">
-      
-      {/* Header */}
-      <div className="text-center">
-        <h1 className="text-2xl font-bold text-gray-800">Vending Machine Change</h1>
-        <p className="text-gray-500">Click coins to make change</p>
-      </div>
-
-      {/* Available Coins Section */}
-      <div>
-        <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3">Available Coins</h2>
-        <div className="flex flex-wrap justify-center gap-4">
-          {coins.map((coin, index) => (
-            <button
-              key={index}
-              onClick={() => useCoin(coin)}
-              // Dynamically apply classes for disabled state
-              disabled={changeMade + coin > initialAmount}
-              className={`
-                w-16 h-16 rounded-full flex items-center justify-center
-                text-xl font-bold text-yellow-900 bg-yellow-400
-                transition-all duration-200 ease-in-out
-                hover:bg-yellow-500 hover:shadow-lg hover:-translate-y-1
-                focus:outline-none focus:ring-4 focus:ring-yellow-300
-                disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed
-                disabled:shadow-none disabled:transform-none
-              `}
-            >
-              {coin}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Divider */}
-      <hr className="border-gray-200" />
-      
-      {/* Results Section */}
-      <div className="space-y-4">
-        {/* Change Left */}
-        <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
-          <span className="text-lg font-medium text-gray-700">Change Left:</span>
-          <span className="text-3xl font-mono font-bold text-green-600">
-            {changeLeft}
-          </span>
+    <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8 font-sans">
+      <div className="space-y-6 flex flex-col">
+        
+        {/* Header */}
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-slate-800">Cashier Change Demo</h1>
+          <p className="text-slate-500 mt-1">
+            Click coins to make change for <span className="font-bold text-slate-700">{initialAmount}</span>
+          </p>
         </div>
 
-        {/* Coins Used */}
-        <div className="space-y-2">
-           <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider">Coins Used ({coinsUsed.length})</h2>
-          <div className="bg-gray-50 p-4 rounded-lg min-h-[6rem] flex flex-wrap gap-2 items-start">
-            {coinsUsed.length > 0 ? (
-              coinsUsed.map((coin, index) => (
-                <span key={index} className="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">
-                  {coin}
-                </span>
-              ))
-            ) : (
-              <span className="text-gray-400 italic self-center mx-auto">No coins used yet.</span>
+        {/* Available Coins Section */}
+        <div className="relative"> {/* Parent for absolute positioning of feedback */}
+          <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider pb-4">Available Coins</h2>
+          <div className="flex flex-wrap justify-center gap-4">
+            {sortedCoins.map((coin, index) => (
+              <button
+                key={index}
+                onClick={() => useCoin(coin)}
+                disabled={changeLeft < coin}
+                className={`
+                  w-16 h-16 rounded-full flex items-center justify-center text-xl font-medium text-slate-700
+                  bg-slate-200 transition-colors duration-200
+                  hover:enabled:bg-slate-300
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400
+                  disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed
+                `}
+              >
+                {coin}
+              </button>
+            ))}
+          </div>
+
+          {/* Feedback Area (Absolutely Positioned) */}
+          <div className="absolute top-full w-full flex justify-center mt-3 transition-opacity duration-300">
+            {feedback && (
+              <p className="bg-red-100 text-red-700 text-sm font-medium px-4 py-2 rounded-lg shadow-md">
+                {feedback}
+              </p>
             )}
           </div>
         </div>
-      </div>
-      
-      {/* Action Buttons */}
-      <div className="pt-2">
-         <button 
-          onClick={reset}
-          className="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
-        >
-          Reset
-        </button>
-      </div>
 
+        {/* Spacer for feedback area */}
+        {feedback && (
+          <div className="h-8"></div>
+        )}
+
+        {/* Progress Bar */}
+        <div>
+          <div className="w-full bg-slate-200 rounded-full h-2">
+            <div
+              className="bg-green-500 h-2 rounded-full transition-all duration-300 ease-out"
+              style={{ width: `${progressPercent}%` }}
+            ></div>
+          </div>
+        </div>
+        
+        {/* Results Section */}
+        <div className="space-y-4 pt-4 border-t border-slate-200">
+          <div className="flex justify-between items-center bg-slate-50 p-4 rounded-lg">
+            <span className="text-lg text-slate-600">Change Left:</span>
+            <span className={`text-3xl font-bold ${changeLeft > 0 ? 'text-slate-800' : 'text-green-600'}`}>
+              {changeLeft}
+            </span>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Coins Used ({coinsUsed.length})</h2>
+            <div className="bg-slate-50 p-4 rounded-lg min-h-[5rem] flex flex-wrap gap-2 items-start">
+              {coinsUsed.length > 0 ? (
+                coinsUsed.map((coin, index) => (
+                  <div key={index} className="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-800 text-sm font-semibold rounded-full">
+                    {coin}
+                  </div>
+                ))
+              ) : (
+                <span className="text-slate-400 italic self-center mx-auto">No coins used yet.</span>
+              )}
+            </div>
+          </div>
+        </div>
+        
+        {/* Reset Button */}
+        <div className="pt-2">
+          <button 
+            onClick={reset}
+            className="w-full bg-red-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-red-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
@@ -1039,7 +1088,7 @@ const InteractivePizza = () => {
 export default function MarginalUtility() {
   return (
     <div className="flex flex-col h-full">
-        <main className="max-w-4xl mx-auto px-6 py-12">
+        <main className="max-w-5xl mx-auto px-6 py-12">
             <div className="bg-white rounded-xl shadow-lg p-8 space-y-8">
                 {/* Title of Page, Utility Optimization */}
                 <h1 className="text-4xl font-bold text-gray-800 mb-8">Utility Optimization</h1>
@@ -1224,7 +1273,7 @@ export default function MarginalUtility() {
                         </p>
                     </div>
                     <p className="text-lg">
-                      This approach works well for many problems, but it may not always yield the global optimum in every scenario.
+                      This approach works well for many problems, but it may not always yield the best choice.
                       However, for our dessert examples, it provided a simple and effective way to maximize your utility given a budget constraint.
                     </p>
                     <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-md">
@@ -1239,30 +1288,58 @@ export default function MarginalUtility() {
                 </section>
 
                 {/* Section on The Change Problem */}
-                <section className="border-l-4 border-blue-500 pl-6">
-                  <h1 className="text-3xl font-bold text-blue-500 mb-4">The Change Problem</h1>
-                  <div className="space-y-4 text-gray-700 leading-relaxed">
-                    <p className="text-lg">
-                      The change problem is a classic optimization problem where you need to make change for a given amount using the fewest number of coins.
-                      For example, if you need to make 63 cents using coins of 1, 5, 10, and 25 cents, the optimal solution would use:
-                    </p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li>2 quarters (50 cents)</li>
-                      <li>1 dime (10 cents)</li>
-                      <li>1 nickel (5 cents)</li>
-                      <li>3 pennies (3 cents)</li>
-                    </ul>
-                    <p className="text-lg">
-                      This gives you a total of 7 coins, which is the fewest possible.
-                      Let's solve this using a greedy approach, by picking the largest coin that does not exceed the remaining amount
-                      until we have reached the desired change.
-                    </p>
-                    <CoinPickingExample coins={[25, 10, 5, 1]} initialAmount={67}/>
+                <section className="border-l-4 border-yellow-500 pl-6">
+                  <h1 className="text-3xl font-bold text-yellow-500 mb-4">The Change Problem</h1>
+                  <div className='flex flex-col lg:flex-row lg:gap-10'>
+                    <div className="lg:w-1/2 space-y-4 text-gray-700 leading-relaxed">
+                      <p className="text-lg">
+                        The change problem is a classic optimization problem where you need to make change for a given amount using the fewest number of coins.
+                        For example, if you need to make 63 cents using coins of 1, 5, 10, and 25 cents, the optimal solution would use:
+                      </p>
+                      <ul className="list-disc pl-6 space-y-2">
+                        <li>2 quarters (50 cents)</li>
+                        <li>1 dime (10 cents)</li>
+                        <li>1 nickel (5 cents)</li>
+                        <li>3 pennies (3 cents)</li>
+                      </ul>
+                      <p className="text-lg">
+                        This gives you a total of 7 coins, which is the fewest possible.
+                        Let's solve this using a greedy approach, by picking the largest coin that does not exceed the remaining amount
+                        until we have reached the desired change.
+                      </p>
+                    </div>
+                    <div className="lg:w-1/2">
+                      <CoinPickingExample coins={[25, 10, 5, 1]} initialAmount={67} greedyStrict={true}/>
+                    </div>
                   </div>
+
                 </section>
 
                 {/* Section on The Problematic Change Problem */}
-
+                <section className="border-l-4 border-yellow-500 pl-6">
+                  <h1 className="text-3xl font-bold text-yellow-500 mb-4">The Problematic Change Problem</h1>
+                  <div className='flex flex-col lg:flex-row lg:gap-10'>
+                    <div className="lg:w-1/2 space-y-4 text-gray-700 leading-relaxed">
+                      <p className="text-lg">
+                        The greedy approach works well for many problems, but it can fail in some cases.
+                        The US coins lend themselves to a greedy solution, but not all coin systems do.
+                        For example, consider a coin system with coins of 1, 3, and 4 cents. If you were trying to make 6 cents of change,
+                        the greedy approach would give you 3 coins, but the optimal solution is 2 coins.
+                      </p>
+                      <p className="text-lg">
+                        Explore different ways of making 6 cents of change with the interactive module.
+                        Figure out what the greedy solution and the best solution are and ponder why the greedy solution breaks down.
+                      </p>
+                      <p className="text-lg">
+                        This shows that the greedy approach does not always yield the best solution.
+                        However, it is still a useful tool for many problems, especially when the problem has a structure that allows for a greedy solution.
+                      </p>
+                    </div>
+                    <div className="lg:w-1/2">
+                      <CoinPickingExample coins={[1, 3, 4]} initialAmount={6} greedyStrict={false}/>
+                    </div>
+                  </div>
+                </section>
 
                 {/* How You Know if it Works in Utility Optimization... */}
 
