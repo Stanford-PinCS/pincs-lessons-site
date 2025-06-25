@@ -7,12 +7,7 @@ const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
 interface CoinPickingExampleProps {
   coins: number[];
   initialAmount: number;
-}
-
-interface CoinPickingExampleProps {
-  coins: number[];
-  initialAmount: number;
-  greedyStrict?: boolean; // If true, enforces picking the largest possible coin
+  greedyStrict?: boolean;
 }
 
 const CoinPickingExample: React.FC<CoinPickingExampleProps> = ({
@@ -1349,14 +1344,12 @@ export default function MarginalUtility() {
                       We've seen a few examples where the greedy approach works and one where it breaks down.
                       Let's look at how we know if it works in utility optimization.
                     </p>
-                    <p className="text-lg">
-                      Constraints:
-                      <ul className="list-disc pl-6 space-y-2">
-                        <li>There are two items to choose from. (For three, it can break down??????????????????)</li>
-                        <li>You spend your whole budget.</li>
-                        <li>When you're done, the MU/P's for the last purchased item had the same values.</li>
-                      </ul>
-                    </p>
+                    <p className="text-lg">Constraints: you know it works if...</p>
+                    <ul className="list-disc pl-6 space-y-2">
+                      <li>There are two items to choose from. (For three, it can break down??????????????????)</li>
+                      <li>You spend your whole budget.</li>
+                      <li>When you're done, the MU/P's for the last purchased item had the same values.</li>
+                    </ul>
                   </div>
                 </section>
 
@@ -1384,8 +1377,39 @@ export default function MarginalUtility() {
                   </section>
 
                 {/* Writing Code */}
+                <section className="border-l-4 border-yellow-500 pl-6">
+                  <iframe
+                    id="inlinePickcodePlugin"
+                    title="Code Up a Greedy Algorithm"
+                    width="400"
+                    height="300"
+                    // TODO: change into a permalink
+                    src="http://localhost:5173/sandbox/marginal-utility">
+                  </iframe>
+                </section>
 
                 {/* Recap */}
+                <section className="border-l-4 border-blue-500 pl-6">
+                    <h1 className="text-3xl font-bold text-blue-500 mb-4">Recap</h1>
+                    <div className="space-y-4 text-gray-700 leading-relaxed">
+                      <p className="text-lg">
+                        First, we learned about the meaning of <span className="text-yellow-500">utility</span> and <span className="text-yellow-500">marginal utility</span>.
+                        Utility means the "value" or satisfaction you get from something. Marginal Utility (MU) is the utility of one particular item (usually the next item, or the last item).
+                        Utility is measured in <span className="text-yellow-500">utils</span>.
+                      </p>
+                      <p className="text-lg">
+                        Next, we learned about how utility would look in a <span className="text-yellow-500">chart</span> and <span className="text-yellow-500">table</span>.
+                        It's important to remember that the marginal utility curve is the slope of the total utility curve.
+                      </p>
+                      <p className="text-lg">
+                        Then, we learned how to use a greedy algorithm to make decisions about <span className="text-yellow-500">utility optimization</span>.
+                        Using the greedy algorithm, we pick the next best option at each step. The next best option is the option with the highest <span className="text-yellow-500">MU/P ratio of Marginal Utility (MU) to Price (P)</span>
+                      </p>
+                      <p className="text-lg">
+                        Finally, we learned the <span className="text-yellow-500">logic behind the greedy algorithm</span> and the <span className="text-yellow-500">drawbacks</span> associated with the greedy algorithm.
+                      </p>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
