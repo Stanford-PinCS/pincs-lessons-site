@@ -4,6 +4,377 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
 
+const CupcakesCookiesUtilityTable = () => {
+
+  // Define reusable types for better maintainability and readability
+  type Item = 'cupcakes' | 'cookies';
+  type FeedbackType = 'correct' | 'incorrect' | '';
+
+  // Define types for complex state and data structures
+  type PurchaseCounts = Record<Item, number>;
+  type MuValues = Record<Item, string[]>;
+  type CorrectMuValues = Record<Item, number[]>;
+
+  interface ItemDetails {
+    price: number;
+    marginalUtility: number[];
+    color: string;
+  }
+
+  type ItemData = Record<Item, ItemDetails>;
+
+  // State hooks are now strongly typed using generics
+  const [budget, setBudget] = useState<number>(13);
+  const [originalBudget] = useState<number>(13);
+  const [purchases, setPurchases] = useState<Item[]>([]);
+  const [purchaseCounts, setPurchaseCounts] = useState<PurchaseCounts>({
+    cupcakes: 0,
+    cookies: 0
+  });
+  const [muPerDollar, setMuPerDollar] = useState<MuValues>({
+    cupcakes: ['', '', ''],
+    cookies: ['', '', '']
+  });
+  const [isTableLocked, setIsTableLocked] = useState<boolean>(false);
+  const [feedback, setFeedback] = useState<string>('');
+  const [feedbackType, setFeedbackType] = useState<FeedbackType>('');
+
+  // Fixed data is typed to match the defined interfaces and types
+  const itemData: ItemData = {
+    cupcakes: {
+      price: 3,
+      marginalUtility: [18, 15, 6],
+      color: 'bg-green-200'
+    },
+    cookies: {
+      price: 2,
+      marginalUtility: [8, 6, 2],
+      color: 'bg-green-200'
+    }
+  };
+
+  const correctMuPerDollar: CorrectMuValues = {
+    cupcakes: [6, 5, 2],
+    cookies: [4, 3, 1]
+  };
+
+  // Function parameters are typed, and the return type is specified as 'void'
+  const handleMuPerDollarChange = (item: Item, index: number, value: string): void => {
+    if (isTableLocked) return;
+    
+    setMuPerDollar(prev => ({
+      ...prev,
+      [item]: prev[item].map((val, i) => (i === index ? value : val))
+    }));
+  };
+
+  // The function's return type is explicitly defined
+  const checkMuPerDollarCalculations = (): { allCorrect: boolean; incorrectItems: string[] } => {
+    let allCorrect = true;
+    let incorrectItems: string[] = [];
+    
+    // Using a type assertion to safely iterate over object keys
+    (Object.keys(muPerDollar) as Item[]).forEach(item => {
+      muPerDollar[item].forEach((value, index) => {
+        const inputValue = parseFloat(value);
+        const correctValue = correctMuPerDollar[item][index];
+        
+        if (isNaN(inputValue) || Math.abs(inputValue - correctValue) > 0.01) {
+          allCorrect = false;
+          incorrectItems.push(`${item} #${index + 1}`);
+        }
+      });
+    });
+    
+    return { allCorrect, incorrectItems };
+  };
+
+  const getInputBorderClass = (item: Item, index: number): string => {
+    if (!isTableLocked && muPerDollar[item][index] !== '') {
+      const inputValue = parseFloat(muPerDollar[item][index]);
+      const correctValue = correctMuPerDollar[item][index];
+      
+      if (!isNaN(inputValue) && Math.abs(inputValue - correctValue) <= 0.01) {
+        return 'border-green-500 bg-green-50';
+      } else if (!isNaN(inputValue)) {
+        return 'border-red-500 bg-red-50';
+      }
+    }
+    return '';
+  };
+
+  const lockTable = (): void => {
+    const allFilled = Object.values(muPerDollar).every(arr => 
+      arr.every(val => val !== '')
+    );
+    
+    if (!allFilled) {
+      setFeedback('Please fill in all MU/P values before locking the table.');
+      setFeedbackType('incorrect');
+      return;
+    }
+    
+    const { allCorrect, incorrectItems } = checkMuPerDollarCalculations();
+    
+    if (!allCorrect) {
+      setFeedback(`Incorrect calculations detected for: ${incorrectItems.join(', ')}. Please double-check your MU/P calculations (MU ÷ Price).`);
+      setFeedbackType('incorrect');
+      return;
+    }
+    
+    setIsTableLocked(true);
+    setFeedback('✅ All calculations correct! Table locked. Now select the optimal items to purchase.');
+    setFeedbackType('correct');
+  };
+
+  const getCurrentMuPerDollar = (item: Item): number => {
+    const currentCount = purchaseCounts[item];
+    if (currentCount >= 3) return 0;
+    
+    const inputValue = parseFloat(muPerDollar[item][currentCount]);
+    return isNaN(inputValue) ? 0 : inputValue;
+  };
+
+  // Return type can be 'Item' or 'null'
+  const getOptimalChoice = (): Item | null => {
+    const cupcakeMuPerDollar = getCurrentMuPerDollar('cupcakes');
+    const cookieMuPerDollar = getCurrentMuPerDollar('cookies');
+    
+    const canAffordCupcake = budget >= itemData.cupcakes.price && purchaseCounts.cupcakes < 3;
+    const canAffordCookie = budget >= itemData.cookies.price && purchaseCounts.cookies < 3;
+    
+    if (!canAffordCupcake && !canAffordCookie) return null;
+    if (!canAffordCupcake) return 'cookies';
+    if (!canAffordCookie) return 'cupcakes';
+    
+    return cupcakeMuPerDollar >= cookieMuPerDollar ? 'cupcakes' : 'cookies';
+  };
+
+  const handlePurchase = (item: Item): void => {
+    if (!isTableLocked) {
+      setFeedback('Please calculate and lock the MU/P values first!');
+      setFeedbackType('incorrect');
+      return;
+    }
+
+    const price = itemData[item].price;
+    
+    if (budget < price) {
+      setFeedback(`Not enough budget! You need $${price} but only have $${budget}.`);
+      setFeedbackType('incorrect');
+      return;
+    }
+    
+    if (purchaseCounts[item] >= 3) {
+      setFeedback(`You can't buy more than 3 ${item}!`);
+      setFeedbackType('incorrect');
+      return;
+    }
+
+    const optimalChoice = getOptimalChoice();
+    
+    if (item === optimalChoice) {
+      setBudget(prev => prev - price);
+      setPurchases(prev => [...prev, item]);
+      setPurchaseCounts(prev => ({
+        ...prev,
+        [item]: prev[item] + 1
+      }));
+      setFeedback(`Correct! ${item.charAt(0).toUpperCase() + item.slice(1)} had the highest MU/P ratio.`);
+      setFeedbackType('correct');
+    } else {
+      setFeedback(`Incorrect! The optimal choice is ${optimalChoice} (higher MU/P ratio).`);
+      setFeedbackType('incorrect');
+    }
+  };
+
+  const reset = (): void => {
+    setBudget(originalBudget);
+    setPurchases([]);
+    setPurchaseCounts({ cupcakes: 0, cookies: 0 });
+    setMuPerDollar({ cupcakes: ['', '', ''], cookies: ['', '', ''] });
+    setIsTableLocked(false);
+    setFeedback('');
+    setFeedbackType('');
+  };
+
+  const getHighlightClass = (item: Item, index: number): string => {
+    if (purchaseCounts[item] > index) {
+      return `${itemData[item].color} font-bold`;
+    }
+    return '';
+  };
+
+  const allPossiblePurchasesMade = (): boolean => {
+    const optimalChoice = getOptimalChoice();
+    return optimalChoice === null;
+  };
+
+  return (
+    <div className="space-y-4 text-gray-700 leading-relaxed max-w-5xl mx-auto p-6">
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Quantity</th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
+                <div className="text-center">
+                  <div>🧁 Cupcakes</div>
+                  <div className="text-xs text-gray-500">Price: $3</div>
+                </div>
+              </th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
+                <div className="text-center">
+                  <div>🍪 Cookies</div>
+                  <div className="text-xs text-gray-500">Price: $2</div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="bg-blue-50">
+              <td className="px-4 py-3 border-b border-gray-200 font-medium">Marginal Utility</td>
+              <td className="px-4 py-3 border-b border-gray-200 text-center">
+                <div className="flex justify-center space-x-2">
+                  {itemData.cupcakes.marginalUtility.map((mu, index) => (
+                    <span key={index} className="px-2 py-1 bg-white rounded">#{index + 1}: {mu}</span>
+                  ))}
+                </div>
+              </td>
+              <td className="px-4 py-3 border-b border-gray-200 text-center">
+                <div className="flex justify-center space-x-2">
+                  {itemData.cookies.marginalUtility.map((mu, index) => (
+                    <span key={index} className="px-2 py-1 bg-white rounded">#{index + 1}: {mu}</span>
+                  ))}
+                </div>
+              </td>
+            </tr>
+            
+            <tr className="bg-yellow-50">
+              <td className="px-4 py-3 border-b border-gray-200 font-medium">MU/P (Calculate!)</td>
+              <td className="px-4 py-3 border-b border-gray-200 text-center">
+                <div className="flex justify-center space-x-2">
+                  {muPerDollar.cupcakes.map((value, index) => (
+                    <input
+                      key={index}
+                      type="number"
+                      value={value}
+                      // Event handlers in JSX are typed for better developer experience
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleMuPerDollarChange('cupcakes', index, e.target.value)}
+                      disabled={isTableLocked}
+                      className={`w-16 px-2 py-1 border rounded text-center ${
+                        isTableLocked ? 'bg-gray-100' : 'bg-white'
+                      } ${getHighlightClass('cupcakes', index)} ${getInputBorderClass('cupcakes', index)}`}
+                      placeholder="?"
+                    />
+                  ))}
+                </div>
+              </td>
+              <td className="px-4 py-3 border-b border-gray-200 text-center">
+                <div className="flex justify-center space-x-2">
+                  {muPerDollar.cookies.map((value, index) => (
+                    <input
+                      key={index}
+                      type="number"
+                      step="0.1"
+                      value={value}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleMuPerDollarChange('cookies', index, e.target.value)}
+                      disabled={isTableLocked}
+                      className={`w-16 px-2 py-1 border rounded text-center ${
+                        isTableLocked ? 'bg-gray-100' : 'bg-white'
+                      } ${getHighlightClass('cookies', index)} ${getInputBorderClass('cookies', index)}`}
+                      placeholder="?"
+                    />
+                  ))}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+        <h2 className="text-xl font-bold mb-2">Marginal Utility Per Dollar Exercise</h2>
+        <p className="text-sm mb-4">
+          Calculate the marginal utility per dollar (MU/P) for each item, then make optimal purchasing decisions based on your budget.
+        </p>
+        
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-4">
+            {!isTableLocked ? (
+              <button 
+                onClick={lockTable}
+                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              >
+                Check Calculations & Start Shopping
+              </button>
+            ) : (
+              <div className="flex space-x-2">
+                <button 
+                  onClick={() => handlePurchase('cupcakes')}
+                  disabled={allPossiblePurchasesMade()}
+                  className={`px-4 py-2 rounded-md transition-colors ${
+                    allPossiblePurchasesMade() 
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                      : 'bg-pink-500 text-white hover:bg-pink-600'
+                  }`}
+                >
+                  Buy Cupcake ($3)
+                </button>
+                <button 
+                  onClick={() => handlePurchase('cookies')}
+                  disabled={allPossiblePurchasesMade()}
+                  className={`px-4 py-2 rounded-md transition-colors ${
+                    allPossiblePurchasesMade() 
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                      : 'bg-amber-500 text-white hover:bg-amber-600'
+                  }`}
+                >
+                  Buy Cookie ($2)
+                </button>
+              </div>
+            )}
+            <button 
+              onClick={reset}
+              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+            >
+              Reset
+            </button>
+          </div>
+          <div className="text-right">
+            <div className="text-lg font-bold text-green-700">Budget: ${budget}</div>
+            <div className="text-sm text-gray-600">Spent: ${originalBudget - budget}</div>
+          </div>
+        </div>
+        
+        {feedback && (
+          <div className={`p-3 rounded-md flex items-center space-x-2 ${
+            feedbackType === 'correct' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+          }`}>
+            <span className="text-xl">
+              {feedbackType === 'correct' ? '✅' : '❌'}
+            </span>
+            <span>{feedback}</span>
+          </div>
+        )}
+        
+        {purchases.length > 0 && (
+          <div className="mt-4 p-3 bg-gray-50 rounded-md">
+            <span className="font-medium">Your purchases: </span>
+            {purchases.map((item, index) => (
+              <span key={index} className="inline-block mx-1 px-2 py-1 rounded text-sm bg-white border">
+                {item.charAt(0).toUpperCase() + item.slice(1, -1)} ${itemData[item].price}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+      
+    </div>
+  );
+}
+
 const IceCreamUtilityTable = () => {
   const [scoopCount, setScoopCount] = useState(0);
   const [totalUtility, setTotalUtility] = useState(0);
@@ -83,49 +454,6 @@ const IceCreamUtilityTable = () => {
 
   return (
     <div className="space-y-4 text-gray-700 leading-relaxed max-w-4xl mx-auto p-6">
-      {/* Control Panel */}
-      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-4">
-            <button 
-              onClick={handleNextScoop}
-              disabled={scoopCount >= 3}
-              className={`px-6 py-2 rounded-md font-medium transition-colors ${
-                scoopCount >= 3 
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-                  : 'bg-blue-600 text-white hover:bg-blue-700'
-              }`}
-            >
-              {scoopCount >= 3 ? 'Out of Scoops' : 'Next Scoop'}
-            </button>
-            <button 
-              onClick={reset}
-              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
-            >
-              Reset
-            </button>
-          </div>
-          <div className="text-right">
-            <div className="text-sm text-gray-600">Scoops Selected: {scoopCount}/3</div>
-            <div className="text-lg font-bold text-blue-700">Total Utility: {totalUtility} utils</div>
-          </div>
-        </div>
-        
-        {/* Selected Scoops Display */}
-        {selectedScoops.length > 0 && (
-          <div className="flex items-center space-x-2">
-            <span className="text-sm font-medium">Your scoops:</span>
-            {selectedScoops.map((flavor, index) => (
-              <div key={index} className="flex items-center space-x-1">
-                <div className={`w-6 h-6 rounded-full ${flavorColors[flavor]}`}></div>
-                <span className="text-sm capitalize">{flavor}</span>
-                {index < selectedScoops.length - 1 && <span className="text-gray-400">→</span>}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
           <thead>
@@ -190,6 +518,49 @@ const IceCreamUtilityTable = () => {
             </tr>
           </tbody>
         </table>
+      </div>
+
+      {/* Control Panel */}
+      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={handleNextScoop}
+              disabled={scoopCount >= 3}
+              className={`px-6 py-2 rounded-md font-medium transition-colors ${
+                scoopCount >= 3 
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
+              }`}
+            >
+              {scoopCount >= 3 ? 'Out of Scoops' : 'Next Scoop'}
+            </button>
+            <button 
+              onClick={reset}
+              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+            >
+              Reset
+            </button>
+          </div>
+          <div className="text-right">
+            <div className="text-sm text-gray-600">Scoops Selected: {scoopCount}/3</div>
+            <div className="text-lg font-bold text-blue-700">Total Utility: {totalUtility} utils</div>
+          </div>
+        </div>
+        
+        {/* Selected Scoops Display */}
+        {selectedScoops.length > 0 && (
+          <div className="flex items-center space-x-2">
+            <span className="text-sm font-medium">Your scoops:</span>
+            {selectedScoops.map((flavor, index) => (
+              <div key={index} className="flex items-center space-x-1">
+                <div className={`w-6 h-6 rounded-full ${flavorColors[flavor]}`}></div>
+                <span className="text-sm capitalize">{flavor}</span>
+                {index < selectedScoops.length - 1 && <span className="text-gray-400">→</span>}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -688,9 +1059,46 @@ export default function MarginalUtility() {
                       Imagine you were going to get three scoops of ice cream. You may really love chocolate ice cream, but because each chocolate scoop provides you less and less utility (Law of Decreasing Marginal Utility),
                       you may want to get a chocolate scoop, and then pick another flavor. Notice that after you pick one scoop, you would reconsider the utility of each flavor for the next scoop.
                       Below is an example table showing the marginal utility (MU) of each flavor of ice cream for each number of scoops you get.
-                      Click the "Next Scoop" button and see if you can guess which scoop it will pick next.
+                      Click the "Next Scoop" button below the table and see if you can guess which scoop it will pick next.
                     </p>
                     <IceCreamUtilityTable />
+                  </div>
+                </section>
+
+                {/* Section Showing Multiple Items with Different Prices, introducing MU/P */}
+                <section className="border-l-4 border-blue-500 pl-6">
+                  <h1 className="text-3xl font-bold text-blue-500 mb-4">Buying Multiple Items with Different Prices</h1>
+                  <div className="space-y-4 text-gray-700 leading-relaxed">
+                    <p className="text-lg">
+                      Since each scoop of ice cream had one price, we could just pick scoop with the highest marginal utility.
+                      However, must take price into account when there are multiple items.
+                    </p>
+                    <p className="text-lg">
+                      This is called <span className="font-semibold text-blue-700">Marginal Utility per Price (MU/P)</span>, which describes how much value we are getting from each dollar we spend.
+                      Let's apply it to an example.
+                    </p>
+                  </div>
+                </section>
+
+                {/* Section to Practice MU/P */}
+                <section className="border-l-4 border-yellow-500 pl-6">
+                  <h1 className="text-3xl font-bold text-yellow-500 mb-4">Practice: Marginal Utility per Price</h1>
+                  <div className="space-y-4 text-gray-700 leading-relaxed">
+                    <p className="text-lg">
+                      If ice cream wasn't enough, let's try a different store!
+                      Below is practice problem showing the marginal utility (MU) and price of each cupcake and cookie,
+                      so you can practice finding an optimal combination.
+                    </p>
+                    <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-md">
+                      <strong>Instructions:</strong> 
+                      <ol className="list-decimal list-inside mt-2 space-y-1">
+                        <li>Calculate MU/P for each item (Marginal Utility ÷ Price)</li>
+                        <li>Click "Check Calculations & Start Shopping" when done</li>
+                        <li>Always choose the item with the highest MU/P ratio you can afford</li>
+                        <li>Watch your budget decrease and get feedback on your choices!</li>
+                      </ol>
+                    </div>
+                    <CupcakesCookiesUtilityTable />
                   </div>
                 </section>
             </div>
