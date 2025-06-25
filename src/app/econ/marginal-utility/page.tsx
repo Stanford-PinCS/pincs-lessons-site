@@ -1342,6 +1342,46 @@ export default function MarginalUtility() {
                 </section>
 
                 {/* How You Know if it Works in Utility Optimization... */}
+                <section className='border-l-4 border-blue-500 pl-6'>
+                  <h1 className="text-3xl font-bold text-blue-500 mb-4">How You Know if it Works in Utility Optimization</h1>
+                  <div className="space-y-4 text-gray-700 leading-relaxed">
+                    <p className="text-lg">
+                      We've seen a few examples where the greedy approach works and one where it breaks down.
+                      Let's look at how we know if it works in utility optimization.
+                    </p>
+                    <p className="text-lg">
+                      Constraints:
+                      <ul className="list-disc pl-6 space-y-2">
+                        <li>There are two items to choose from. (For three, it can break down??????????????????)</li>
+                        <li>You spend your whole budget.</li>
+                        <li>When you're done, the MU/P's for the last purchased item had the same values.</li>
+                      </ul>
+                    </p>
+                  </div>
+                </section>
+
+                {/* Quiz */}
+                <section className="border-l-4 border-purple-500 pl-6">
+                    <h1 className="text-3xl font-bold text-purple-500 mb-4">Quiz</h1>
+                    <div className="space-y-4 text-gray-700 leading-relaxed">
+                        <p className="text-lg">
+                            Test your understanding of utility optimization and the greedy approach with this quiz.
+                            Answer the questions below to check your knowledge.
+                        </p>
+                        {/* Quiz Questions */}
+                        <ul className="list-disc pl-6 space-y-2">
+                          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
+                              What is the Law of Diminishing Marginal Utility?
+                          </li>
+                          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
+                              How does the greedy approach apply to utility optimization?
+                          </li>
+                          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
+                              Can the greedy approach fail in some cases? If so, give an example.
+                          </li>
+                        </ul>
+                    </div>
+                  </section>
 
                 {/* Writing Code */}
 
