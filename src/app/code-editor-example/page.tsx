@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "",
 };
 
-export default function () {
+export default function CodeEditorExampleLesson() {
   return (
     <LessonWrapper>
       <MusicMoodAnalyzer />

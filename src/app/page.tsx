@@ -47,7 +47,7 @@ export default function Home() {
           {!filterDrawerOpen && (
             <button
               className="flex self-start flex-row gap-2 m-4 p-2 bg-[#ff80cc] text-white rounded hover:bg-pink-400 cursor-pointer"
-              onClick={() => setFilterDrawerOpen((prev) => !prev)}
+              onClick={() => setFilterDrawerOpen((o) => !o)}
             >
               {`Filter`}
               <FunnelIcon width={16} />
