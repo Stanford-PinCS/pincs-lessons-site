@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, Children } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 
 const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
@@ -8,6 +8,10 @@ interface CoinPickingExampleProps {
   coins: number[];
   initialAmount: number;
   greedyStrict?: boolean;
+}
+
+interface HasChildrenProps {
+  children: React.ReactNode
 }
 
 const CoinPickingExample: React.FC<CoinPickingExampleProps> = ({
@@ -364,166 +368,174 @@ const CupcakesCookiesUtilityTable = () => {
 
   return (
     <div className="space-y-4 text-gray-700 leading-relaxed max-w-5xl mx-auto p-6">
-
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Quantity</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
-                <div className="text-center">
-                  <div>🧁 Cupcakes</div>
-                  <div className="text-xs text-gray-500">Price: $3</div>
-                </div>
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
-                <div className="text-center">
-                  <div>🍪 Cookies</div>
-                  <div className="text-xs text-gray-500">Price: $2</div>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="bg-blue-50">
-              <td className="px-4 py-3 border-b border-gray-200 font-medium">Marginal Utility</td>
-              <td className="px-4 py-3 border-b border-gray-200 text-center">
-                <div className="flex justify-center space-x-2">
-                  {itemData.cupcakes.marginalUtility.map((mu, index) => (
-                    <span key={index} className="px-2 py-1 bg-white rounded">#{index + 1}: {mu}</span>
-                  ))}
-                </div>
-              </td>
-              <td className="px-4 py-3 border-b border-gray-200 text-center">
-                <div className="flex justify-center space-x-2">
-                  {itemData.cookies.marginalUtility.map((mu, index) => (
-                    <span key={index} className="px-2 py-1 bg-white rounded">#{index + 1}: {mu}</span>
-                  ))}
-                </div>
-              </td>
-            </tr>
-            
-            <tr className="bg-yellow-50">
-              <td className="px-4 py-3 border-b border-gray-200 font-medium">MU/P (Calculate!)</td>
-              <td className="px-4 py-3 border-b border-gray-200 text-center">
-                <div className="flex justify-center space-x-2">
-                  {muPerDollar.cupcakes.map((value, index) => (
-                    <input
-                      key={index}
-                      type="number"
-                      value={value}
-                      // Event handlers in JSX are typed for better developer experience
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleMuPerDollarChange('cupcakes', index, e.target.value)}
-                      disabled={isTableLocked}
-                      className={`w-16 px-2 py-1 border rounded text-center ${
-                        isTableLocked ? 'bg-gray-100' : 'bg-white'
-                      } ${getHighlightClass('cupcakes', index)} ${getInputBorderClass('cupcakes', index)}`}
-                      placeholder="?"
-                    />
-                  ))}
-                </div>
-              </td>
-              <td className="px-4 py-3 border-b border-gray-200 text-center">
-                <div className="flex justify-center space-x-2">
-                  {muPerDollar.cookies.map((value, index) => (
-                    <input
-                      key={index}
-                      type="number"
-                      step="0.1"
-                      value={value}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleMuPerDollarChange('cookies', index, e.target.value)}
-                      disabled={isTableLocked}
-                      className={`w-16 px-2 py-1 border rounded text-center ${
-                        isTableLocked ? 'bg-gray-100' : 'bg-white'
-                      } ${getHighlightClass('cookies', index)} ${getInputBorderClass('cookies', index)}`}
-                      placeholder="?"
-                    />
-                  ))}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-        <h2 className="text-xl font-bold mb-2">Marginal Utility Per Dollar Exercise</h2>
-        <p className="text-sm mb-4">
-          Calculate the marginal utility per dollar (MU/P) for each item, then make optimal purchasing decisions based on your budget.
-        </p>
-        
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-4">
-            {!isTableLocked ? (
-              <button 
-                onClick={lockTable}
-                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-              >
-                Check Calculations & Start Shopping
-              </button>
-            ) : (
-              <div className="flex space-x-2">
-                <button 
-                  onClick={() => handlePurchase('cupcakes')}
-                  disabled={allPossiblePurchasesMade()}
-                  className={`px-4 py-2 rounded-md transition-colors ${
-                    allPossiblePurchasesMade() 
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-                      : 'bg-pink-500 text-white hover:bg-pink-600'
-                  }`}
-                >
-                  Buy Cupcake ($3)
-                </button>
-                <button 
-                  onClick={() => handlePurchase('cookies')}
-                  disabled={allPossiblePurchasesMade()}
-                  className={`px-4 py-2 rounded-md transition-colors ${
-                    allPossiblePurchasesMade() 
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-                      : 'bg-amber-500 text-white hover:bg-amber-600'
-                  }`}
-                >
-                  Buy Cookie ($2)
-                </button>
-              </div>
-            )}
-            <button 
-              onClick={reset}
-              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+  
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+        <thead className="bg-gray-100">
+          <tr>
+            <th
+              rowSpan={2}
+              className="px-4 py-3 text-center text-sm font-medium text-gray-700 align-bottom border-b-2 border-r border-gray-300"
             >
-              Reset
+              Quantity
+            </th>
+            <th
+              colSpan={2}
+              className="px-4 py-3 text-center text-lg font-medium text-gray-700 border-b border-r border-gray-300"
+            >
+              <div>🧁 Cupcakes ($3)</div>
+            </th>
+            <th
+              colSpan={2}
+              className="px-4 py-3 text-center text-lg font-medium text-gray-700 border-b border-gray-300"
+            >
+              <div>🍪 Cookies ($2)</div>
+            </th>
+          </tr>
+          <tr>
+            <th className="px-4 py-2 text-center text-xs font-medium text-gray-600 border-b-2 border-r border-gray-300">
+              Marginal Utility
+            </th>
+            <th className="px-4 py-2 text-center text-xs font-medium text-gray-600 border-b-2 border-r border-gray-300">
+              MU/P (Calculate!)
+            </th>
+            <th className="px-4 py-2 text-center text-xs font-medium text-gray-600 border-b-2 border-r border-gray-300">
+              Marginal Utility
+            </th>
+            <th className="px-4 py-2 text-center text-xs font-medium text-gray-600 border-b-2 border-gray-300">
+              MU/P (Calculate!)
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* Assuming itemData.cupcakes.marginalUtility has the definitive length for rows */}
+          {itemData.cupcakes.marginalUtility.map((_, index) => (
+            <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+              {/* Quantity */}
+              <td className="px-4 py-3 border-b border-r border-gray-200 font-medium text-center">
+                {index + 1}
+              </td>
+              
+              {/* Cupcake Data */}
+              <td className="px-4 py-3 border-b border-r border-gray-200 text-center">
+                {itemData.cupcakes.marginalUtility[index]}
+              </td>
+              <td className="px-4 py-3 border-b border-r border-gray-200 text-center">
+                <input
+                  key={`cupcake-${index}`}
+                  type="number"
+                  value={muPerDollar.cupcakes[index]}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleMuPerDollarChange('cupcakes', index, e.target.value)}
+                  disabled={isTableLocked}
+                  className={`w-20 mx-auto block px-2 py-1 border rounded text-center ${
+                    isTableLocked ? 'bg-gray-100' : 'bg-white'
+                  } ${getHighlightClass('cupcakes', index)} ${getInputBorderClass('cupcakes', index)}`}
+                  placeholder="?"
+                />
+              </td>
+
+              {/* Cookie Data */}
+              <td className="px-4 py-3 border-b border-r border-gray-200 text-center">
+                {itemData.cookies.marginalUtility[index]}
+              </td>
+              <td className="px-4 py-3 border-b border-gray-200 text-center">
+                <input
+                  key={`cookie-${index}`}
+                  type="number"
+                  step="0.1"
+                  value={muPerDollar.cookies[index]}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleMuPerDollarChange('cookies', index, e.target.value)}
+                  disabled={isTableLocked}
+                  className={`w-20 mx-auto block px-2 py-1 border rounded text-center ${
+                    isTableLocked ? 'bg-gray-100' : 'bg-white'
+                  } ${getHighlightClass('cookies', index)} ${getInputBorderClass('cookies', index)}`}
+                  placeholder="?"
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+        
+    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+      <h2 className="text-xl font-bold mb-2">Marginal Utility Per Dollar Exercise</h2>
+      <p className="text-sm mb-4">
+        Calculate the marginal utility per dollar (MU/P) for each item, then make optimal purchasing decisions based on your budget.
+      </p>
+      
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-4">
+          {!isTableLocked ? (
+            <button 
+              onClick={lockTable}
+              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            >
+              Check Calculations & Start Shopping
             </button>
-          </div>
-          <div className="text-right">
-            <div className="text-lg font-bold text-green-700">Budget: ${budget}</div>
-            <div className="text-sm text-gray-600">Spent: ${originalBudget - budget}</div>
-          </div>
+          ) : (
+            <div className="flex space-x-2">
+              <button 
+                onClick={() => handlePurchase('cupcakes')}
+                disabled={allPossiblePurchasesMade()}
+                className={`px-4 py-2 rounded-md transition-colors ${
+                  allPossiblePurchasesMade() 
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                    : 'bg-pink-500 text-white hover:bg-pink-600'
+                }`}
+              >
+                Buy Cupcake ($3)
+              </button>
+              <button 
+                onClick={() => handlePurchase('cookies')}
+                disabled={allPossiblePurchasesMade()}
+                className={`px-4 py-2 rounded-md transition-colors ${
+                  allPossiblePurchasesMade() 
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                    : 'bg-amber-500 text-white hover:bg-amber-600'
+                }`}
+              >
+                Buy Cookie ($2)
+              </button>
+            </div>
+          )}
+          <button 
+            onClick={reset}
+            className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+          >
+            Reset
+          </button>
         </div>
-        
-        {feedback && (
-          <div className={`p-3 rounded-md flex items-center space-x-2 ${
-            feedbackType === 'correct' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-          }`}>
-            <span className="text-xl">
-              {feedbackType === 'correct' ? '✅' : '❌'}
-            </span>
-            <span>{feedback}</span>
-          </div>
-        )}
-        
-        {purchases.length > 0 && (
-          <div className="mt-4 p-3 bg-gray-50 rounded-md">
-            <span className="font-medium">Your purchases: </span>
-            {purchases.map((item, index) => (
-              <span key={index} className="inline-block mx-1 px-2 py-1 rounded text-sm bg-white border">
-                {item.charAt(0).toUpperCase() + item.slice(1, -1)} ${itemData[item].price}
-              </span>
-            ))}
-          </div>
-        )}
+        <div className="text-right">
+          <div className="text-lg font-bold text-green-700">Budget: ${budget}</div>
+          <div className="text-sm text-gray-600">Spent: ${originalBudget - budget}</div>
+        </div>
       </div>
       
+      {feedback && (
+        <div className={`p-3 rounded-md flex items-center space-x-2 ${
+          feedbackType === 'correct' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+        }`}>
+          <span className="text-xl">
+            {feedbackType === 'correct' ? '✅' : '❌'}
+          </span>
+          <span>{feedback}</span>
+        </div>
+      )}
+      
+      {purchases.length > 0 && (
+        <div className="mt-4 p-3 bg-gray-50 rounded-md">
+          <span className="font-medium">Your purchases: </span>
+          {purchases.map((item, index) => (
+            <span key={index} className="inline-block mx-1 px-2 py-1 rounded text-sm bg-white border">
+              {item.charAt(0).toUpperCase() + item.slice(1, -1)} ${itemData[item].price}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
+        
+  </div>
   );
 }
 
@@ -718,7 +730,7 @@ const IceCreamUtilityTable = () => {
   );
 }
 
-const InteractiveChart = () => {
+const InteractiveChart: React.FC<HasChildrenProps> = ({ children }) => {
   const [selectedSlices, setSelectedSlices] = useState(1);
   
   const totalUtility = marginalUtilities.slice(0, selectedSlices).reduce((sum, util) => sum + util, 0);
@@ -757,58 +769,37 @@ const InteractiveChart = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
-        Interactive Utility Analysis
-      </h1>
-      
-      <div className="space-y-8">
-        {/* Slider Control */}
-        <div className="w-full max-w-md mx-auto">
-          <label className="block text-lg font-medium text-gray-700 mb-3 text-center">
-            Number of Pizza Slices: {selectedSlices}
-          </label>
-          <input
-            type="range"
-            min="1"
-            max="8"
-            value={selectedSlices}
-            onChange={(e) => setSelectedSlices(parseInt(e.target.value))}
-            className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-          />
-          <div className="flex justify-between text-sm text-gray-500 mt-2">
-            <span>1 slice</span>
-            <span>8 slices</span>
-          </div>
-        </div>
+      <div className="flex flex-row gap-6">
+        {/* Text & Slider */}
+        <div className='basis-1/2 space-y-8 p-8'>
+          {children}
 
-        {/* Current Values Display */}
-        <div className="bg-gradient-to-r from-blue-50 to-green-50 p-6 rounded-lg max-w-2xl mx-auto">
-          <div className="grid grid-cols-3 gap-6 text-center">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Slices Consumed</p>
-              <p className="text-3xl font-bold text-purple-600">{selectedSlices}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Marginal Utility</p>
-              <p className={`text-3xl font-bold ${currentMarginalUtility >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                {currentMarginalUtility}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Total Utility</p>
-              <p className={`text-3xl font-bold ${totalUtility >= 0 ? 'text-blue-600' : 'text-red-600'}`}>
-                {totalUtility}
-              </p>
+          {/* Slider Control */}
+          <div className="w-full max-w-md mx-auto">
+            <label className="block text-lg font-medium text-gray-700 mb-3 text-center">
+              Number of Pizza Slices: {selectedSlices}
+            </label>
+            <input
+              type="range"
+              min="1"
+              max="8"
+              value={selectedSlices}
+              onChange={(e) => setSelectedSlices(parseInt(e.target.value))}
+              className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+            />
+            <div className="flex justify-between text-sm text-gray-500 mt-2">
+              <span>1 slice</span>
+              <span>8 slices</span>
             </div>
           </div>
         </div>
 
         {/* Combined Chart */}
-        <div className="bg-gray-50 p-8 rounded-lg">
+        <div className="flex flex-col bg-gray-50 p-8 rounded-lg justify-center">
           <h3 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
             Total Utility vs Marginal Utility
           </h3>
-          <ResponsiveContainer width="100%" height={500}>
+          <ResponsiveContainer width="100%" height={400}>
             <LineChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis 
@@ -822,7 +813,7 @@ const InteractiveChart = () => {
                 fontSize={14}
                 label={{ value: 'Utility', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fontSize: '16px', fontWeight: 'bold' } }}
               />
-              {/* <Tooltip content={<CustomTooltip />} /> */}
+              <Tooltip content={<CustomTooltip />} />
               
               {/* Total Utility Line */}
               <Line 
@@ -863,9 +854,30 @@ const InteractiveChart = () => {
                 strokeDasharray="2 2"
                 label={{ value: 'Zero Utility', position: 'right', style: { fill: '#374151', fontSize: '12px' } }}
               />
-              <Tooltip content={<CustomTooltip />} />
             </LineChart>
           </ResponsiveContainer>
+
+          {/* Current Values Display */}
+          <div className="border-2 border-gray-300 p-3 rounded-lg max-w-2xl mx-auto">
+            <div className="grid grid-cols-3 gap-6 text-center">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Slices</p>
+                <p className="text-3xl font-bold text-purple-600">{selectedSlices}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 mb-1">MU</p>
+                <p className={`text-3xl font-bold ${currentMarginalUtility >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {currentMarginalUtility}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 mb-1">TU</p>
+                <p className={`text-3xl font-bold ${totalUtility >= 0 ? 'text-blue-600' : 'text-red-600'}`}>
+                  {totalUtility}
+                </p>
+              </div>
+            </div>
+          </div>
           
           {/* Chart Legend */}
           <div className="flex justify-center mt-4 space-x-8">
@@ -881,29 +893,6 @@ const InteractiveChart = () => {
               <div className="w-4 h-1 bg-red-600 mr-2" style={{borderTop: '2px dashed'}}></div>
               <span className="text-sm font-medium text-gray-700">Current Selection</span>
             </div>
-          </div>
-        </div>
-
-        {/* Educational Insights */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-blue-50 p-6 rounded-lg">
-            <h4 className="font-semibold text-blue-800 mb-3 text-lg">Key Observations:</h4>
-            <ul className="text-sm text-blue-700 space-y-2">
-              <li>• <strong>Total Utility</strong> (blue) rises then falls as consumption increases</li>
-              <li>• <strong>Marginal Utility</strong> (green) consistently decreases (diminishing returns)</li>
-              <li>• When marginal utility hits zero, total utility peaks</li>
-              <li>• Negative marginal utility reduces total satisfaction</li>
-            </ul>
-          </div>
-          
-          <div className="bg-green-50 p-6 rounded-lg">
-            <h4 className="font-semibold text-green-800 mb-3 text-lg">Economic Principles:</h4>
-            <ul className="text-sm text-green-700 space-y-2">
-              <li>• <strong>Law of Diminishing Marginal Utility:</strong> Each additional unit provides less satisfaction</li>
-              <li>• <strong>Optimal Consumption:</strong> Stop when marginal utility approaches zero</li>
-              <li>• <strong>Overconsumption:</strong> Negative marginal utility reduces total welfare</li>
-              <li>• <strong>Consumer Choice:</strong> Rational consumers maximize total utility</li>
-            </ul>
           </div>
         </div>
       </div>
@@ -1007,6 +996,17 @@ const InteractivePizza = () => {
                 </g>
               ))}
             </svg>
+            {/* Legend */}
+            <div className="flex justify-center space-x-6 text-sm text-gray-600 pt-2">
+              <div className="flex items-center">
+                <span className="inline-block w-3.5 h-3.5 bg-emerald-500 rounded-full mr-2 border border-emerald-600"></span>
+                Positive Utility
+              </div>
+              <div className="flex items-center">
+                <span className="inline-block w-3.5 h-3.5 bg-red-500 rounded-full mr-2 border border-red-600"></span>
+                Negative Utility
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1014,12 +1014,14 @@ const InteractivePizza = () => {
         <div className="lg:w-1/2 flex flex-col justify-center space-y-6 mt-6 lg:mt-0">
           
           {/* Header */}
-          <div>
-            <p className="mt-2 text-gray-600">
-              The first slice tastes good since you're hungry and haven't had pizza in a while.
+          <div className='space-y-4'>
+            <p className="text-lg">
+              The <span className='font-semibold'>first slice tastes amazing (high utility)</span> since you're hungry and haven't had pizza in a while.
               The next slice is not quite as good, since you already have the taste in your mouth.
-              As you keep going, you become more and more sick with the flavor and become fuller and fuller.
-              Consequently, the last slice of the pizza has negative utility.
+              As you keep going, <span className='font-semibold'>you become less and less satisfied</span> with pizza.
+            </p>
+            <p className="text-lg">
+              Eventually, you may be <span className='font-semibold'>eating pizza on a full stomach</span>, providing negative utility.
               Drag the slider below to see what the optimal number of slices is.
             </p>
           </div>
@@ -1063,17 +1065,7 @@ const InteractivePizza = () => {
             </div>
           </div>
 
-          {/* Legend */}
-          <div className="flex items-center space-x-6 text-sm text-gray-600 pt-2">
-            <div className="flex items-center">
-              <span className="inline-block w-3.5 h-3.5 bg-emerald-500 rounded-full mr-2 border border-emerald-600"></span>
-              Positive Utility
-            </div>
-            <div className="flex items-center">
-              <span className="inline-block w-3.5 h-3.5 bg-red-500 rounded-full mr-2 border border-red-600"></span>
-              Negative Utility
-            </div>
-          </div>
+          
         </div>
       </div>
     </div>
@@ -1145,11 +1137,22 @@ export default function MarginalUtility() {
                 <section className="border-l-4 border-yellow-500 pl-6">
                   <h1 className="text-3xl font-bold text-yellow-500 mb-4">Putting it Together in a Chart</h1>
                   <div className="space-y-4 text-gray-700 leading-relaxed">
-                      <p className="text-lg">
-                        Now let's see what these curves look like on a graph.
-                        Use the slider to select a different number of slices and hover over the graph to inspect different values.
-                      </p>
-                      <InteractiveChart />
+                      <InteractiveChart>
+                        <div className='space-y-6'>
+                          <p className="text-lg">
+                            Now let's see what these curves look like on a graph.
+                            The <span className='font-semibold'>blue Total Utility (TU) curve</span> shows the utility of all the slices up to that point.
+                            The <span className='font-semibold'>green Marginal Utility (TU) curve</span> shows the marginal utility of that particular slice.
+                          </p>
+                          <p className="text-lg">
+                            See if you can <span className='font-semibold'>explain why MU is always decreasing</span> and why TU goes up and then goes down.
+                            Specifically, find the relationship between the two curves.
+                          </p>
+                          <p className="text-lg">
+                            <span className='font-semibold'>Use the slider</span> to select a different number of slices and hover over the graph to inspect different values.
+                          </p>
+                        </div>
+                      </InteractiveChart>
                   </div>
                 </section>
 
@@ -1208,10 +1211,16 @@ export default function MarginalUtility() {
                   <h1 className="text-3xl font-bold text-blue-500 mb-4">Buying Multiple Items</h1>
                   <div className="space-y-4 text-gray-700 leading-relaxed">
                     <p className="text-lg">
-                      Imagine you were going to get three scoops of ice cream. You may really love chocolate ice cream, but because each chocolate scoop provides you less and less utility (Law of Decreasing Marginal Utility),
-                      you may want to get a chocolate scoop, and then pick another flavor. Notice that after you pick one scoop, you would reconsider the utility of each flavor for the next scoop.
+                      Imagine you were going to get <span className='font-semibold'>three scoops of ice cream</span>.
+                      You may really love chocolate ice cream, but because <span className='font-semibold'>each chocolate scoop provides you less and less utility</span> (Law of Decreasing Marginal Utility),
+                      you may want to get a chocolate scoop, and then pick another flavor.
+                    </p>
+                    <p className="text-lg">
+                      Notice that <span className='font-semibold'>after you pick one scoop, you would reconsider the utility of each flavor for the next scoop</span>.
                       Below is an example table showing the marginal utility (MU) of each flavor of ice cream for each number of scoops you get.
-                      Click the "Next Scoop" button below the table and see if you can guess which scoop it will pick next.
+                    </p>
+                    <p className="text-lg">
+                      <span className='font-semibold'>Click the "Next Scoop" button</span> the table and see if you can <span className='font-semibold'>guess which scoop would be the next best pick</span>.
                     </p>
                     <IceCreamUtilityTable />
                   </div>
@@ -1222,11 +1231,11 @@ export default function MarginalUtility() {
                   <h1 className="text-3xl font-bold text-blue-500 mb-4">Buying Multiple Items with Different Prices</h1>
                   <div className="space-y-4 text-gray-700 leading-relaxed">
                     <p className="text-lg">
-                      Since each scoop of ice cream had one price, we could just pick scoop with the highest marginal utility.
-                      However, must take price into account when there are multiple items.
+                      Since each scoop of ice cream had one price, we could just pick the scoop with the highest marginal utility.
+                      However, <span className='font-semibold'>we must take price into account</span> when there are multiple prices or a budget.
                     </p>
                     <p className="text-lg">
-                      This is called <span className="font-semibold text-blue-700">Marginal Utility per Price (MU/P)</span>, which describes how much value we are getting from each dollar we spend.
+                      We use the <span className="font-semibold text-blue-700">Marginal Utility over Price (MU/P) ratio</span>, which describes <span className='font-semibold'>how much value we are getting from each dollar</span> we spend.
                       Let's apply it to an example.
                     </p>
                   </div>
@@ -1237,12 +1246,12 @@ export default function MarginalUtility() {
                   <h1 className="text-3xl font-bold text-yellow-500 mb-4">Practice: Marginal Utility per Price</h1>
                   <div className="space-y-4 text-gray-700 leading-relaxed">
                     <p className="text-lg">
-                      If ice cream wasn't enough, let's try a different store!
+                      If ice cream wasn't enough, let's try some different desserts!
                       Below is practice problem showing the marginal utility (MU) and price of each cupcake and cookie,
                       so you can practice finding an optimal combination.
                     </p>
-                    <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-md">
-                      <strong>Instructions:</strong> 
+                    <div className="text-lg text-gray-600 bg-gray-50 p-3 rounded-md">
+                      <span className='font-semibold'>Instructions:</span> 
                       <ol className="list-decimal list-inside mt-2 space-y-1">
                         <li>Calculate MU/P for each item (Marginal Utility ÷ Price)</li>
                         <li>Click "Check Calculations & Start Shopping" when done</li>
@@ -1271,7 +1280,7 @@ export default function MarginalUtility() {
                       This approach works well for many problems, but it may not always yield the best choice.
                       However, for our dessert examples, it provided a simple and effective way to maximize your utility given a budget constraint.
                     </p>
-                    <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-md">
+                    <div className="border border-gray-300 text-lg text-gray-600 bg-gray-50 p-3 rounded-md">
                       <strong>(Bonus) More Applications of The Greedy Algorithm:</strong> 
                       <ol className="list-decimal list-inside mt-2 space-y-1">
                         <li>Finding nearly-optimal solutions to extremely difficult problems.</li>
@@ -1288,18 +1297,20 @@ export default function MarginalUtility() {
                   <div className='flex flex-col lg:flex-row lg:gap-10'>
                     <div className="lg:w-1/2 space-y-4 text-gray-700 leading-relaxed">
                       <p className="text-lg">
-                        The change problem is a classic optimization problem where you need to make change for a given amount using the fewest number of coins.
+                        The change problem is a classic optimization problem where <span className='font-semibold'>you need to make change for a given amount using the fewest number of coins</span>.
                         For example, if you need to make 63 cents using coins of 1, 5, 10, and 25 cents, the optimal solution would use:
                       </p>
-                      <ul className="list-disc pl-6 space-y-2">
+                      <ul className="text-lg list-disc pl-6 space-y-2">
                         <li>2 quarters (50 cents)</li>
                         <li>1 dime (10 cents)</li>
                         <li>1 nickel (5 cents)</li>
                         <li>3 pennies (3 cents)</li>
                       </ul>
                       <p className="text-lg">
-                        This gives you a total of 7 coins, which is the fewest possible.
-                        Let's solve this using a greedy approach, by picking the largest coin that does not exceed the remaining amount
+                        This gives you a total of 7 coins, which is the fewest possible in this case.
+                      </p>
+                      <p className="text-lg">
+                        Let's <span className='font-semibold'>solve a 67 cent example on the right using a greedy approach</span>, by picking the largest coin that does not exceed the remaining amount
                         until we have reached the desired change.
                       </p>
                     </div>
@@ -1316,18 +1327,18 @@ export default function MarginalUtility() {
                   <div className='flex flex-col lg:flex-row lg:gap-10'>
                     <div className="lg:w-1/2 space-y-4 text-gray-700 leading-relaxed">
                       <p className="text-lg">
-                        The greedy approach works well for many problems, but it can fail in some cases.
+                        The <span className='font-semibold'>greedy approach works well for many problems, but it can fail in some cases</span>.
                         The US coins lend themselves to a greedy solution, but not all coin systems do.
                         For example, consider a coin system with coins of 1, 3, and 4 cents. If you were trying to make 6 cents of change,
                         the greedy approach would give you 3 coins, but the optimal solution is 2 coins.
                       </p>
                       <p className="text-lg">
-                        Explore different ways of making 6 cents of change with the interactive module.
+                        <span className='font-semibold'>Explore different ways of making 6 cents of change with the interactive module</span>.
                         Figure out what the greedy solution and the best solution are and ponder why the greedy solution breaks down.
                       </p>
                       <p className="text-lg">
                         This shows that the greedy approach does not always yield the best solution.
-                        However, it is still a useful tool for many problems, especially when the problem has a structure that allows for a greedy solution.
+                        However, <span className='font-semibold'>the greedy approach is still a useful tool for many problems</span>, especially when the problem has a structure that allows for a greedy solution.
                       </p>
                     </div>
                     <div className="lg:w-1/2">
@@ -1342,13 +1353,13 @@ export default function MarginalUtility() {
                   <div className="space-y-4 text-gray-700 leading-relaxed">
                     <p className="text-lg">
                       We've seen a few examples where the greedy approach works and one where it breaks down.
-                      Let's look at how we know if it works in utility optimization.
+                      Let's look at how we know if the greedy approach will work in utility optimization.
                     </p>
-                    <p className="text-lg">Constraints: you know it works if...</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li>There are two items to choose from. (For three, it can break down??????????????????)</li>
+                    <p className="text-lg font-semibold">Constraints: you know the greedy approach works if...</p>
+                    <ul className="text-lg list-disc pl-6 space-y-2">
+                      <li>There are two items to choose from.</li>
                       <li>You spend your whole budget.</li>
-                      <li>When you're done, the MU/P's for the last purchased item had the same values.</li>
+                      <li>When you're done, the MU/P ratios for the last purchased items had the same values.</li>
                     </ul>
                   </div>
                 </section>
