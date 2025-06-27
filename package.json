@@ -13,6 +13,7 @@
     "@heroicons/react": "^2.2.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.484.0",
+    "motion": "^12.19.1",
     "next": "15.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
