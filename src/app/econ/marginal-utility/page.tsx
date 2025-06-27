@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
+import QuizQuestion from "@/components/QuizQuestion";
 
 const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
 
@@ -1339,7 +1340,7 @@ export default function MarginalUtility() {
         <h2 className="text-2xl font-semibold text-green-500 mb-4">
           Learning Targets
         </h2>
-        <ul className="text-lg list-disc pl-6 space-y-2 text-gray-600">
+        <ul className="text-lg list-disc pl-6 space-y-2">
           <li>Learn about utility and marginal utility.</li>
           <li>Apply optimization in economics.</li>
           <li>Learn about greedy algorithms.</li>
@@ -1468,55 +1469,77 @@ export default function MarginalUtility() {
     </section>,
 
     // Slide 6: Definition Check-in.
-    <section className="border-l-4 border-purple-500 pl-6">
+    <section className="border-l-4 border-purple-500 pl-6 space-y-4">
       <h1 className="text-3xl font-bold text-purple-500 mb-4">Check In</h1>
-      <div className="space-y-4 text-gray-700 leading-relaxed">
-        <p className="text-lg">
-          <span className="font-semibold">What is utility?</span>
-        </p>
-        <ul className="list-disc pl-6 space-y-2">
-          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-            A service like gas, electricity, and water.
-          </li>
-          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-            A measurement of how valuable something is.
-          </li>
-          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-            A measurement of how much something costs.
-          </li>
-        </ul>
-
-        <p className="text-lg">
-          <span className="font-semibold">What is marginal utility?</span>
-        </p>
-        <ul className="list-disc pl-6 space-y-2">
-          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-            The utility of just the next item.
-          </li>
-          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-            The total utility of all items.
-          </li>
-          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-            The utility of the first item only.
-          </li>
-        </ul>
-        <p className="text-lg">
-          <span className="font-semibold">
-            What is the Law of Decreasing Marginal Utility?
-          </span>
-        </p>
-        <ul className="list-disc pl-6 space-y-2">
-          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-            As you have more items, the marginal utility of each item decreases.
-          </li>
-          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-            As you have more items, the total utility increases.
-          </li>
-          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-            As you have more items, the total cost increases.
-          </li>
-        </ul>
-      </div>
+      <QuizQuestion
+        question="What is utility?"
+        choices={[
+          {
+            text: "A service like gas, electricity, and water.",
+            isCorrect: false,
+            explanation:
+              "Not quite! While that may be true generally, in an economic context, utility refers to something else.",
+          },
+          {
+            text: "A measurement of how valuable something is.",
+            isCorrect: true,
+            explanation:
+              "Exactly! Utility is a measurement of satisfaction from a good or service.",
+          },
+          {
+            text: "A measurement of how much something costs.",
+            isCorrect: false,
+            explanation:
+              "This is a closely related concept called marginal cost, not marginal utility.",
+          },
+        ]}
+      />
+      <QuizQuestion
+        question="What is marginal utility?"
+        choices={[
+          {
+            text: "The utility of all the items.",
+            isCorrect: false,
+            explanation:
+              "Not quite! That would be Total Utility.",
+          },
+          {
+            text: "The average utility of the first and last items (the marginal items).",
+            isCorrect: false,
+            explanation:
+              "Almost, but there's no averaging and we just need to consider one item.",
+          },
+          {
+            text: "The utility of a particular item, usually the last item.",
+            isCorrect: true,
+            explanation:
+              "Exactly! It is the utility given by just one item.",
+          },
+        ]}
+      />
+      <QuizQuestion
+        question="What is the Law of Diminishing Marginal Utility"
+        choices={[
+          {
+            text: "As you have more items, the marginal utility of each item decreases.",
+            isCorrect: true,
+            explanation:
+              "Exactly! The more we get, the less value each item has.",
+          },
+          {
+            text: "As you have more items, the total utility increases.",
+            isCorrect: false,
+            explanation:
+              "This isn't always true, since at some point, having more items will often provide negative utility.",
+          },
+          {
+            text: "As you have more items, the total cost increases.",
+            isCorrect: false,
+            explanation:
+              "Almost! The cost is often constant, but the value we get from each item decreases.",
+          },
+        ]}
+      />
     </section>,
 
     // Slide 7: Understanding choice with utility.
@@ -1775,17 +1798,26 @@ export default function MarginalUtility() {
           knowledge.
         </p>
         {/* Quiz Questions */}
-        <ul className="list-disc pl-6 space-y-2">
-          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-            What is the Law of Diminishing Marginal Utility?
-          </li>
-          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-            How does the greedy approach apply to utility optimization?
-          </li>
-          <li className="cursor-pointer hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-            Can the greedy approach fail in some cases? If so, give an example.
-          </li>
-        </ul>
+        <QuizQuestion
+          question="How does the greedy approach apply to utility optimization?"
+          choices={[
+            {
+              text: "The greedy approach is the solution to utility optimization problems.",
+              isCorrect: false,
+              explanation: "Not quite! The greedy approach is a more general problem solving technique and there are certain cases where it does not work in utility optimization."
+            },
+            {
+              text: "The greedy approach is a problem solving strategy and we can often use it to find the maximal utility.",
+              isCorrect: true,
+              explanation: "Exactly!"
+            },
+            {
+              text: "The greedy approach means maximizing utility that's what utility optimization is, so they are the same thing.",
+              isCorrect: false,
+              explanation: "Not quite! The greedy approach is a technique to solving maximization problems, but utility optimization is a specific type of problem in economics that the greedy approach applies to."
+            },
+          ]}
+        />
       </div>
     </section>,
 
