@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Slide from "./Slide";
 
 interface LessonProps {
@@ -8,18 +9,52 @@ interface LessonProps {
 }
 
 const Lesson: React.FC<LessonProps> = ({ slides }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const goToNextSlide = () => {
-    if (currentSlide < slides.length - 1) {
-      setCurrentSlide(currentSlide + 1);
+  useEffect(() => {
+    // On mount, set the slide # to what's in the URL, or 0 if not present.
+    const slideParam = searchParams.get("slide");
+    let slideFromUrl = slideParam ? parseInt(slideParam, 10) - 1 : 0;
+    if (isNaN(slideFromUrl) || slideFromUrl < 0 || slideFromUrl >= slides.length) {
+      slideFromUrl = 0;
+    }
+
+    if (slideFromUrl !== currentSlide) {
+      // Update current slide if needed.
+      setCurrentSlide(slideFromUrl);
+    }
+    else if (!slideParam && slides.length > 0) {
+      // Set the URL if unset.
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("slide", "1");
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    }
+  }, [searchParams, slides.length]);
+
+
+  // This function handles the navigation logic.
+  const navigateToSlide = (slideIndex: number) => {
+    if (slideIndex >= 0 && slideIndex < slides.length) {
+      // Update state.
+      setCurrentSlide(slideIndex);
+
+      // Update URL so that it's not in the browswer history.
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("slide", String(slideIndex + 1));
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     }
   };
 
+  const goToNextSlide = () => {
+    navigateToSlide(currentSlide + 1);
+  };
+
   const goToPreviousSlide = () => {
-    if (currentSlide > 0) {
-      setCurrentSlide(currentSlide - 1);
-    }
+    navigateToSlide(currentSlide - 1);
   };
 
   const progress = ((currentSlide + 1) / slides.length) * 100;
