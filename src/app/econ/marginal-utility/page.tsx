@@ -11,6 +11,9 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
+  ReferenceDot,
+  Label,
+  Legend,
 } from "recharts";
 import QuizQuestion from "@/components/QuizQuestion";
 
@@ -25,6 +28,58 @@ interface CoinPickingExampleProps {
 interface HasChildrenProps {
   children: React.ReactNode;
 }
+
+const data = [
+  { quantity: 1, mb: 18, mc: 8 },
+  { quantity: 2, mb: 16, mc: 8 },
+  { quantity: 3, mb: 14, mc: 8 },
+  { quantity: 4, mb: 12, mc: 8 },
+  { quantity: 5, mb: 10, mc: 8 },
+  { quantity: 6, mb: 8,  mc: 8 }, // <-- Optimal Point (MC = MB)
+  { quantity: 7, mb: 6,  mc: 8 },
+  { quantity: 8, mb: 4,  mc: 8 },
+];
+
+const McMbChart = () => {
+  return (
+    <ResponsiveContainer width="100%" height={400}>
+      <LineChart
+        data={data}
+        margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+      >
+        <CartesianGrid stroke="#e0e0e0" strokeDasharray="5 5" />
+        <XAxis dataKey="quantity" label={{ value: 'Quantity of Lemons', position: 'insideBottom', dy: 10 }} />
+        <YAxis label={{ value: 'Price ($)', angle: -90, position: 'insideLeft' }}/>
+        <Tooltip />
+        <Legend />
+        
+        {/* Marginal Benefit Line (Downward Sloping) */}
+        <Line 
+          type="monotone" 
+          dataKey="mb" 
+          name="Marginal Benefit" 
+          stroke="#8884d8" 
+          strokeWidth={2} 
+        />
+        
+        {/* Marginal Cost Line (Constant / Horizontal) */}
+        <Line 
+          type="monotone" 
+          dataKey="mc" 
+          name="Marginal Cost" 
+          stroke="#82ca9d" 
+          strokeWidth={2} 
+        />
+
+        {/* Reference Dot to highlight the intersection */}
+        <ReferenceDot x={6} y={8} r={8} fill="red" stroke="white">
+          <Label value="Optimal" position="top" fill="rgba(0,0,0,0.7)" />
+        </ReferenceDot>
+
+      </LineChart>
+    </ResponsiveContainer>
+  );
+};
 
 const CoinPickingExample: React.FC<CoinPickingExampleProps> = ({
   coins,
@@ -1542,7 +1597,73 @@ export default function MarginalUtility() {
       />
     </section>,
 
-    // Slide 7: Understanding choice with utility.
+    // Slide 7: Understanding choice deeper with MB & MC.
+    <section className="border-l-4 border-blue-500 pl-6">
+      <h1 className="text-3xl font-bold text-blue-500 mb-4">
+        Marginal Benefit and Marginal Cost
+      </h1>
+      <div className="space-y-4 text-gray-700 leading-relaxed">
+        <p className="text-lg">
+          Often, we don't just care about how much "satisfaction" or utility something gives us.
+          We also sometimes <span className="font-semibold">want to consider the cost</span>.
+        </p>
+        <p className="text-lg">
+          This is where marginal benefit and marginal cost come in.
+          <span className="font-semibold text-blue-700"> Marginal Benefit (MB) </span>is the amount of monetary value we get from one item.
+          It is just like Marginal Utility, but measured in dollars instead of utils.
+        </p>
+        <p className="text-lg">
+          <span className="font-semibold text-blue-700">Marginal Cost (MC) </span>is the price of one item.
+          This is how much we have to pay to get the marginal benefit from that item.
+          Here is an example chart, showing how many lemons we should buy for our lemonade stand.
+        </p>
+        <McMbChart />
+        <p className="text-lg">
+          Consider what would happen <span className="font-semibold">if we bought 7 lemons</span>.
+          The 7th lemon would have a MB of $6 and an MC of $8.
+          That means <span className="font-semibold">we would spend $8 to get $6 back in value</span>, which would not be good.
+        </p>
+        <p className="text-lg">
+          However, <span className="font-semibold">if we bought only 4 lemons</span>, we'd see that if we bought one more lemon, we would make $10 more for only the cost of $8.
+          Since we could still get more value than the cost for another lemon, <span className="font-semibold">we should have bought at least 5</span>.
+        </p>
+        <p className="text-lg">
+          <span className="font-semibold">Ponder what the intersection of MB and MC means</span> and what the optimal quantity is for a general problem involving MB and MC.
+        </p>
+      </div>
+    </section>,
+
+    // Check-in on MB & MC
+    <section className="border-l-4 border-purple-500 pl-6">
+      <h1 className="text-3xl font-bold text-purple-500 mb-4">Practice</h1>
+      <QuizQuestion
+        question="Suppose you're a restaurant owner buying napkins. You determine that you bought 20,000 napkins and realize that the marginal benefit of the last napkin you bought was 0.4 cents. Also, the cost of the last pack of 2,000 napkins you bought was $11.75. Based on this information, which of the following best describes the quantity of napkins bought?"
+        choices={[
+          {
+            text: "You should have bought more napkins.",
+            isCorrect: false,
+            explanation: "This isn't quite true. Try calculating the marginal benefit and marginal cost of the 20,000th napkin.",
+          },
+          {
+            text: "You bought the right number of napkins.",
+            isCorrect: false,
+            explanation: "This isn't quite true. Try calculating the marginal benefit and marginal cost of the 20,000th napkin.",
+          },
+          {
+            text: "You should have bought less napkins.",
+            isCorrect: true,
+            explanation: "Exactly. The marginal cost of each napkin is ~0.6 cents whereas the marginal benefit is 0.4 cents. This means the last napkin was not worth it, so you should have bought less.",
+          },
+          {
+            text: "Not enough information.",
+            isCorrect: false,
+            explanation: "There is enough information. It's not given as a straightforward marginal cost and marginal benefit, but we can calculate it!",
+          },
+        ]}
+      />
+    </section>,
+
+    // Slide 8: Understanding choice deeper.
     <section className="border-l-4 border-blue-500 pl-6">
       <h1 className="text-3xl font-bold text-blue-500 mb-4">
         Buying Multiple Items
@@ -1579,7 +1700,7 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 8: Understanding price with choices.
+    // Slide 9: Understanding price with choices.
     <section className="border-l-4 border-blue-500 pl-6">
       <h1 className="text-3xl font-bold text-blue-500 mb-4">
         Buying Multiple Items with Different Prices
@@ -1605,7 +1726,7 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 9: Defining MU/P.
+    // Slide 10: Defining MU/P.
     <section className="border-l-4 border-yellow-500 pl-6">
       <h1 className="text-3xl font-bold text-yellow-500 mb-4">
         Practice: Marginal Utility per Price
@@ -1634,7 +1755,7 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 10: Introduction to the greedy approach.
+    // Slide 11: Introduction to the greedy approach.
     <section className="border-l-4 border-blue-500 pl-6">
       <h1 className="text-3xl font-bold text-blue-500 mb-4">Greedy Approach</h1>
       <div className="space-y-4 text-gray-700 leading-relaxed">
@@ -1671,7 +1792,7 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 11: Getting a feel for the greedy approach.
+    // Slide 12: Getting a feel for the greedy approach.
     <section className="border-l-4 border-yellow-500 pl-6">
       <h1 className="text-3xl font-bold text-yellow-500 mb-4">
         The Change Problem
@@ -1716,7 +1837,7 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 12: Finding a drawback to the greedy approach.
+    // Slide 13: Finding a drawback to the greedy approach.
     <section className="border-l-4 border-yellow-500 pl-6">
       <h1 className="text-3xl font-bold text-yellow-500 mb-4">
         The Problematic Change Problem
@@ -1763,7 +1884,7 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 13: Listed constraints.
+    // Slide 14: Listed constraints.
     <section className="border-l-4 border-blue-500 pl-6">
       <h1 className="text-3xl font-bold text-blue-500 mb-4">
         How You Know if it Works in Utility Optimization
@@ -1788,7 +1909,7 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 14: Check-in on greedy approach.
+    // Slide 15: Check-in on greedy approach.
     <section className="border-l-4 border-purple-500 pl-6">
       <h1 className="text-3xl font-bold text-purple-500 mb-4">Quiz</h1>
       <div className="space-y-4 text-gray-700 leading-relaxed">
@@ -1836,7 +1957,7 @@ export default function MarginalUtility() {
       ></iframe>
     </section>,
 
-    // Slide 16: Recap.
+    // Slide 17: Recap.
     <section className="border-l-4 border-blue-500 pl-6">
       <h1 className="text-3xl font-bold text-blue-500 mb-4">Recap</h1>
       <div className="space-y-4 text-gray-700 leading-relaxed">
@@ -1860,6 +1981,11 @@ export default function MarginalUtility() {
             Law of Diminishing Marginal Utility
           </span>
           , the marginal utility goes down the more of that item you get.
+        </p>
+        <p className="text-lg">
+          Then, we learned about metrics when we have concrete dollar values.
+          We can use the <span className="font-bold text-yellow-600">Marginal Benefit</span> (dollar value of one item) and <span className="font-bold text-yellow-600">Marginal Cost</span> (dollar cost of one item) to determine when we should stop buying.
+          <span className="font-semibold"> We should buy as long as Marginal Benefit &ge; Marginal Cost</span>.
         </p>
         <p className="text-lg">
           Then, we learned how to use a greedy algorithm to make decisions about{" "}
