@@ -1535,15 +1535,11 @@ export default function MarginalUtility() {
             soon.
           </p>
         </div>
-        <p className="text-lg">
-          You should think...
-        </p>
+        <p className="text-lg">You should think...</p>
         <p className="text-3xl text-blue-500">
           Utility = "Satisfaction" or "Happiness"{" "}
         </p>
-        <p className="text-lg">
-          because it is measured in utils, not dollars.
-        </p>
+        <p className="text-lg">because it is measured in utils, not dollars.</p>
       </div>
     </section>,
 
@@ -1607,10 +1603,10 @@ export default function MarginalUtility() {
             <p className="text-lg">
               See if you can{" "}
               <span className="font-semibold">
-                explain why MU is always decreasing
+                explain why Marginal Utility (MU) is always decreasing
               </span>{" "}
-              and why TU goes up and then goes down. Specifically, find the
-              relationship between the two curves.
+              and why Total Utility (TU) goes up and then goes down.
+              Specifically, find the relationship between the two curves.
             </p>
             <p className="text-lg">
               <span className="font-semibold">Use the slider</span> to select a
@@ -1711,18 +1707,23 @@ export default function MarginalUtility() {
             {" "}
             Marginal Benefit (MB){" "}
           </span>
-          is the amount of monetary value we get from one item. <span className="font-semibold">It is just like
-          Marginal Utility, but measured in dollars instead of utils</span>.
+          is the amount of monetary value we get from one item.{" "}
+          <span className="font-semibold">
+            It is just like Marginal Utility (MU), but measured in dollars
+            instead of utils
+          </span>
+          .
         </p>
         <p className="text-lg">
           <span className="font-semibold text-blue-700">
             Marginal Cost (MC){" "}
           </span>
-          <span className="font-semibold">is the price of one item</span>. This is how much we have to pay to get the
-          marginal benefit from that item.
+          <span className="font-semibold">is the price of one item</span>. This
+          is how much we have to pay to get the marginal benefit from that item.
         </p>
         <p className="text-lg">
-          Here is an example chart, showing how many lemons we should buy for our lemonade stand.
+          Here is an example chart, showing how many lemons we should buy for
+          our lemonade stand.
         </p>
         <McMbChart />
         <p className="text-lg">
@@ -1747,15 +1748,16 @@ export default function MarginalUtility() {
         </p>
         <p className="text-lg">
           <span className="font-semibold">
-            Ponder what the intersection of MB and MC means
+            Ponder what the intersection of Marginal Benefit (MB) and Marginal
+            Cost (MC) means
           </span>{" "}
-          and what the optimal quantity is for a general problem involving MB
-          and MC.
+          and what the optimal quantity is for a general problem involving
+          Marginal Benefit (MB) and Marginal Cost (MC).
         </p>
       </div>
     </section>,
 
-    // Check-in on MB & MC
+    // Slide 8: Check-in on MB & MC
     <section className="border-l-4 border-purple-500 pl-6">
       <h1 className="text-3xl font-bold text-purple-500 mb-4">Practice</h1>
       <QuizQuestion
@@ -1789,7 +1791,7 @@ export default function MarginalUtility() {
       />
     </section>,
 
-    // Slide 8: Understanding choice deeper.
+    // Slide 9: Understanding choice deeper.
     <section className="border-l-4 border-blue-500 pl-6">
       <h1 className="text-3xl font-bold text-blue-500 mb-4">
         Buying Multiple Items
@@ -1811,7 +1813,7 @@ export default function MarginalUtility() {
             after you pick one scoop, you would reconsider the utility of each
             flavor for the next scoop
           </span>
-          . Below is an example table showing the marginal utility (MU) of each
+          . Below is an example table showing the Marginal Utility (MU) of each
           flavor of ice cream for each number of scoops you get.
         </p>
         <p className="text-lg">
@@ -1826,7 +1828,7 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 9: Understanding price with choices.
+    // Slide 10: Understanding price with choices.
     <section className="border-l-4 border-blue-500 pl-6">
       <h1 className="text-3xl font-bold text-blue-500 mb-4">
         Buying Multiple Items with Different Prices
@@ -1849,22 +1851,15 @@ export default function MarginalUtility() {
           </span>{" "}
           we spend. Let's apply it to an example.
         </p>
-        <p className="text-lg">
-          Here's the formula for our ratio:
-        </p>
+        <p className="text-lg">Here's the formula for our ratio:</p>
 
         {/* Formula Display */}
         <div className="flex items-center justify-center gap-4 text-blue-700 bg-blue-50 p-6 rounded-lg">
-          
           {/* Left Side: The Ratio */}
-          <div className="text-2xl sm:text-3xl font-bold">
-            MU/P Ratio
-          </div>
+          <div className="text-2xl sm:text-3xl font-bold">MU/P Ratio</div>
 
           {/* Equals Sign */}
-          <div className="text-3xl">
-            =
-          </div>
+          <div className="text-3xl">=</div>
 
           {/* Right Side: The Fraction */}
           <div className="flex flex-col text-center">
@@ -1872,16 +1867,13 @@ export default function MarginalUtility() {
               Marginal Utility (utils)
             </span>
             <span className="border-b-2 border-blue-700 w-full" />
-            <span className="text-xl font-semibold px-2 pt-1">
-              Price ($)
-            </span>
+            <span className="text-xl font-semibold px-2 pt-1">Price ($)</span>
           </div>
-
         </div>
       </div>
     </section>,
 
-    // Slide 10: Defining MU/P.
+    // Slide 11: Defining MU/P.
     <section className="border-l-4 border-yellow-500 pl-6">
       <h1 className="text-3xl font-bold text-yellow-500 mb-4">
         Practice: Marginal Utility per Price
@@ -1910,19 +1902,26 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 11: Introduction to the greedy approach.
+    // Slide 12: Introduction to the greedy approach.
     <section className="border-l-4 border-blue-500 pl-6">
       <h1 className="text-3xl font-bold text-blue-500 mb-4">Greedy Approach</h1>
       <div className="space-y-4 text-gray-700 leading-relaxed">
         <p className="text-lg">
-          <span className="font-semibold">The greedy approach</span> is a way of solving optimization problems by
-          making the immediately optimal choice at each step. In the context of
-          utility optimization, it means <span className="font-semibold">always choosing the item with the
-          highest marginal utility per price (MU/P) ratio that you can afford</span>.
+          <span className="font-semibold">The greedy approach</span> is a way of
+          solving optimization problems by making the immediately optimal choice
+          at each step. In the context of utility optimization, it means{" "}
+          <span className="font-semibold">
+            always choosing the item with the highest marginal utility per price
+            (MU/P) ratio that you can afford
+          </span>
+          .
         </p>
         <p className="text-lg">
-          This is a <span className="font-semibold">useful tool to solve optimization problems on tests</span>.
-          Plus, this works well in many problem solving scenarios.
+          This is a{" "}
+          <span className="font-semibold">
+            useful tool to solve optimization problems on tests
+          </span>
+          . Plus, this works well in many problem solving scenarios.
         </p>
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
           <p className="text-lg text-blue-800">
@@ -1931,10 +1930,12 @@ export default function MarginalUtility() {
           </p>
         </div>
         <p className="text-lg">
-          <span className="font-semibold">This approach works well for many problems, but it may not always
-          yield the best choice</span>. However, for our dessert examples, it provided
-          a simple and effective way to maximize your utility given a budget
-          constraint.
+          <span className="font-semibold">
+            This approach works well for many problems, but it may not always
+            yield the best choice
+          </span>
+          . However, for our dessert examples, it provided a simple and
+          effective way to maximize your utility given a budget constraint.
         </p>
         <div className="border border-gray-300 text-lg text-gray-600 bg-gray-50 p-3 rounded-md">
           <strong>(Bonus) More Applications of The Greedy Algorithm:</strong>
@@ -1951,7 +1952,7 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 12: Getting a feel for the greedy approach.
+    // Slide 13: Getting a feel for the greedy approach.
     <section className="border-l-4 border-yellow-500 pl-6">
       <h1 className="text-3xl font-bold text-yellow-500 mb-4">
         The Change Problem
@@ -1997,7 +1998,7 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 13: Finding a drawback to the greedy approach.
+    // Slide 14: Finding a drawback to the greedy approach.
     <section className="border-l-4 border-yellow-500 pl-6">
       <h1 className="text-3xl font-bold text-yellow-500 mb-4">
         The Problematic Change Problem
@@ -2045,7 +2046,7 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 14: Listed constraints.
+    // Slide 15: Listed constraints.
     <section className="border-l-4 border-blue-500 pl-6">
       <h1 className="text-3xl font-bold text-blue-500 mb-4">
         How You Know if it Works in Utility Optimization
@@ -2070,7 +2071,7 @@ export default function MarginalUtility() {
       </div>
     </section>,
 
-    // Slide 15: Check-in on greedy approach.
+    // Slide 16: Check-in on greedy approach.
     <section className="border-l-4 border-purple-500 pl-6">
       <h1 className="text-3xl font-bold text-purple-500 mb-4">Quiz</h1>
       <div className="space-y-4 text-gray-700 leading-relaxed">
@@ -2120,7 +2121,7 @@ export default function MarginalUtility() {
       ></iframe>
     </section>,
 
-    // Slide 17: Recap.
+    // Slide 18: Recap.
     <section className="border-l-4 border-blue-500 pl-6">
       <h1 className="text-3xl font-bold text-blue-500 mb-4">Recap</h1>
       <div className="space-y-4 text-gray-700 leading-relaxed">
