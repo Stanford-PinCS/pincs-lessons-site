@@ -1854,7 +1854,7 @@ export default function MarginalUtility() {
         </p>
 
         {/* Formula Display */}
-        <div className="flex items-center justify-center gap-4 text-blue-700 bg-blue-50 p-6">
+        <div className="flex items-center justify-center gap-4 text-blue-700 bg-blue-50 p-6 rounded-lg">
           
           {/* Left Side: The Ratio */}
           <div className="text-2xl sm:text-3xl font-bold">

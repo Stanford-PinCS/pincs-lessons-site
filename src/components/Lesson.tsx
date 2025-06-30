@@ -59,6 +59,8 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
 
   const progress = ((currentSlide + 1) / slides.length) * 100;
 
+  const navButtonStyle = "p-2 rounded-full bg-slate-100 text-slate-600 border border-slate-300 shadow-lg transition-all";
+
   return (
     <div className="relative w-full h-full min-h-[600px]">
       {/* Main content area */}
@@ -70,7 +72,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
       <button
         onClick={goToPreviousSlide}
         disabled={currentSlide === 0}
-        className={`fixed left-4 top-10 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white shadow-lg transition-all
+        className={`fixed left-4 top-6 ${navButtonStyle}
           ${
             currentSlide === 0
               ? "opacity-50 cursor-not-allowed"
@@ -96,7 +98,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
       <button
         onClick={goToNextSlide}
         disabled={currentSlide === slides.length - 1}
-        className={`fixed right-4 top-10 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white shadow-lg transition-all
+        className={`fixed right-4 top-6 ${navButtonStyle}
           ${
             currentSlide === slides.length - 1
               ? "opacity-50 cursor-not-allowed"
@@ -130,7 +132,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
       </div>
 
       {/* Slide counter */}
-      <div className="fixed top-8 right-20 text-sm text-gray-600">
+      <div className="fixed top-9 right-20 text-sm text-gray-600">
         {currentSlide + 1} / {slides.length}
       </div>
     </div>
