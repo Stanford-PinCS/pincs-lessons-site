@@ -1761,7 +1761,7 @@ export default function MarginalUtility() {
     <section className="border-l-4 border-purple-500 pl-6">
       <h1 className="text-3xl font-bold text-purple-500 mb-4">Practice</h1>
       <QuizQuestion
-        question="Suppose you're a restaurant owner buying napkins. You determine that you bought 20,000 napkins and realize that the marginal benefit of the last napkin you bought was 0.4 cents. Also, the cost of the last pack of 2,000 napkins you bought was $11.75. Based on this information, which of the following best describes the quantity of napkins bought?"
+        question="Suppose you're a restaurant owner buying napkins. You determine that you bought 20,000 napkins and realize that the marginal benefit of the last napkins you bought was 0.4 cents. Also, the cost of the last pack of 2,000 napkins you bought was $11.75. Based on this information, which of the following best describes the quantity of napkins bought?"
         choices={[
           {
             text: "You should have bought more napkins.",
