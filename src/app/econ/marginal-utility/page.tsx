@@ -1,6 +1,7 @@
 "use client";
 import LessonWrapper from "@/components/LessonWrapper";
 import Lesson from "@/components/Lesson";
+import QuizQuestion from "@/components/QuizQuestion";
 import React, { useState, useRef, useMemo, Children } from "react";
 import {
   LineChart,
@@ -15,7 +16,6 @@ import {
   Label,
   Legend,
 } from "recharts";
-import QuizQuestion from "@/components/QuizQuestion";
 
 const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
 
@@ -35,9 +35,9 @@ const data = [
   { quantity: 3, mb: 14, mc: 8 },
   { quantity: 4, mb: 12, mc: 8 },
   { quantity: 5, mb: 10, mc: 8 },
-  { quantity: 6, mb: 8,  mc: 8 }, // <-- Optimal Point (MC = MB)
-  { quantity: 7, mb: 6,  mc: 8 },
-  { quantity: 8, mb: 4,  mc: 8 },
+  { quantity: 6, mb: 8, mc: 8 }, // <-- Optimal Point (MC = MB)
+  { quantity: 7, mb: 6, mc: 8 },
+  { quantity: 8, mb: 4, mc: 8 },
 ];
 
 const McMbChart = () => {
@@ -48,34 +48,42 @@ const McMbChart = () => {
         margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
       >
         <CartesianGrid stroke="#e0e0e0" strokeDasharray="5 5" />
-        <XAxis dataKey="quantity" label={{ value: 'Quantity of Lemons', position: 'insideBottom', dy: 10 }} />
-        <YAxis label={{ value: 'Price ($)', angle: -90, position: 'insideLeft' }}/>
+        <XAxis
+          dataKey="quantity"
+          label={{
+            value: "Quantity of Lemons",
+            position: "insideBottom",
+            dy: 10,
+          }}
+        />
+        <YAxis
+          label={{ value: "Price ($)", angle: -90, position: "insideLeft" }}
+        />
         <Tooltip />
         <Legend />
-        
+
         {/* Marginal Benefit Line (Downward Sloping) */}
-        <Line 
-          type="monotone" 
-          dataKey="mb" 
-          name="Marginal Benefit" 
-          stroke="#8884d8" 
-          strokeWidth={2} 
+        <Line
+          type="monotone"
+          dataKey="mb"
+          name="Marginal Benefit"
+          stroke="#8884d8"
+          strokeWidth={2}
         />
-        
+
         {/* Marginal Cost Line (Constant / Horizontal) */}
-        <Line 
-          type="monotone" 
-          dataKey="mc" 
-          name="Marginal Cost" 
-          stroke="#82ca9d" 
-          strokeWidth={2} 
+        <Line
+          type="monotone"
+          dataKey="mc"
+          name="Marginal Cost"
+          stroke="#82ca9d"
+          strokeWidth={2}
         />
 
         {/* Reference Dot to highlight the intersection */}
         <ReferenceDot x={6} y={8} r={8} fill="red" stroke="white">
           <Label value="Optimal" position="top" fill="rgba(0,0,0,0.7)" />
         </ReferenceDot>
-
       </LineChart>
     </ResponsiveContainer>
   );
@@ -788,7 +796,7 @@ const IceCreamUtilityTable = () => {
           <tbody>
             <tr className="hover:bg-gray-50 transition-colors duration-200">
               <td className="px-6 py-4 border-b border-gray-200 font-medium">
-                1st Scoop MU (utils)
+                1 Scoop (utils)
               </td>
               <td
                 className={`px-6 py-4 border-b border-gray-200 transition-colors duration-300 ${getHighlightClass(
@@ -817,7 +825,7 @@ const IceCreamUtilityTable = () => {
             </tr>
             <tr className="hover:bg-gray-50 transition-colors duration-200">
               <td className="px-6 py-4 border-b border-gray-200 font-medium">
-                2nd Scoop MU (utils)
+                2 Scoops (utils)
               </td>
               <td
                 className={`px-6 py-4 border-b border-gray-200 transition-colors duration-300 ${getHighlightClass(
@@ -846,7 +854,7 @@ const IceCreamUtilityTable = () => {
             </tr>
             <tr className="hover:bg-gray-50 transition-colors duration-200">
               <td className="px-6 py-4 border-b border-gray-200 font-medium">
-                3rd Scoop MU (utils)
+                3 Scoops (utils)
               </td>
               <td
                 className={`px-6 py-4 border-b border-gray-200 transition-colors duration-300 ${getHighlightClass(
@@ -1384,6 +1392,77 @@ const InteractivePizza = () => {
   );
 };
 
+const UtilityGraph = () => {
+  const utilityData = [
+    { units: 0, totalUtility: 0 },
+    { units: 1, totalUtility: 10 },
+    { units: 2, totalUtility: 18 },
+    { units: 3, totalUtility: 24 },
+    { units: 4, totalUtility: 28 },
+    { units: 5, totalUtility: 30 },
+    { units: 6, totalUtility: 30 },
+    { units: 7, totalUtility: 28 },
+    { units: 8, totalUtility: 25 },
+  ];
+
+  const maxUtility = Math.max(...utilityData.map((item) => item.totalUtility));
+
+  return (
+    <ResponsiveContainer width="95%" height={400}>
+      <LineChart
+        data={utilityData}
+        margin={{
+          top: 20,
+          right: 30,
+          left: 20,
+          bottom: 20,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          dataKey="units"
+          type="number"
+          label={{
+            value: "Units Consumed",
+            position: "insideBottom",
+            offset: -10,
+          }}
+          domain={["dataMin", "dataMax"]}
+        />
+        <YAxis
+          label={{ value: "Total Utility", angle: -90, position: "insideLeft" }}
+        />
+        <Tooltip formatter={(value, name) => [value, "Total Utility"]} />
+        <Legend verticalAlign="top" height={36} />
+
+        {/* 4. Line for Total Utility */}
+        <Line
+          type="monotone"
+          dataKey="totalUtility"
+          stroke="#8884d8"
+          strokeWidth={3}
+          activeDot={{ r: 8 }}
+          name="Total Utility"
+        />
+
+        {/* 5. Horizontal ReferenceLine for Maximum Utility */}
+        <ReferenceLine
+          y={maxUtility}
+          stroke="red"
+          strokeDasharray="5 5"
+          strokeWidth={2}
+          label={{
+            value: `Max Utility (${maxUtility})`,
+            position: "insideTopRight",
+            fill: "red",
+            fontSize: 14,
+          }}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+};
+
 export default function MarginalUtility() {
   const slides = [
     // Slide 1: Introduction
@@ -1403,13 +1482,21 @@ export default function MarginalUtility() {
         <p className="text-lg">
           In this lesson, we're going to start with the basics of what utility
           is and how it looks in economics. Then, we'll look into an important
-          application in economics. We'll tie in a common problem solving
-          strategy from computer science. We'll end by piecing it all together
-          in an interactive logic puzzle.
+          application in economics. We'll then learn about how this ties in with
+          the greedy approach to problem solving. We'll end by piecing it all
+          together in an interactive logic puzzle.
         </p>
+        <h2 className="text-2xl font-bold">Finding the Maximum Utility</h2>
+        <UtilityGraph />
         <p className="text-lg">
-          Click the arrow on the right side of the screen to continue with the
-          lesson.
+          By the end of the lesson, you'll have a good ideas of what this above
+          graph means, but no need to worry about it just yet.
+          <span className="font-semibold">
+            {" "}
+            Click the arrow at the top right of the screen to continue with the
+            lesson
+          </span>
+          .
         </p>
       </section>
     </div>,
@@ -1428,8 +1515,11 @@ export default function MarginalUtility() {
           <span className="font-semibold text-blue-700"> "utils."</span>
         </p>
         <p className="text-lg">
-          Utility does not just measure the monetary value of goods or services,
-          but more generally the
+          Utility{" "}
+          <span className="font-semibold">
+            does not just measure the monetary value
+          </span>{" "}
+          of goods or services, but more generally the
           <span className="font-semibold text-blue-700">
             {" "}
             "satisfaction"
@@ -1445,6 +1535,15 @@ export default function MarginalUtility() {
             soon.
           </p>
         </div>
+        <p className="text-lg">
+          You should think...
+        </p>
+        <p className="text-3xl text-blue-500">
+          Utility = "Satisfaction" or "Happiness"{" "}
+        </p>
+        <p className="text-lg">
+          because it is measured in utils, not dollars.
+        </p>
       </div>
     </section>,
 
@@ -1555,8 +1654,7 @@ export default function MarginalUtility() {
           {
             text: "The utility of all the items.",
             isCorrect: false,
-            explanation:
-              "Not quite! That would be Total Utility.",
+            explanation: "Not quite! That would be Total Utility.",
           },
           {
             text: "The average utility of the first and last items (the marginal items).",
@@ -1565,10 +1663,9 @@ export default function MarginalUtility() {
               "Almost, but there's no averaging and we just need to consider one item.",
           },
           {
-            text: "The utility of a particular item, usually the last item.",
+            text: "The utility of a particular item, usually the last item you bought or the next item you'll buy.",
             isCorrect: true,
-            explanation:
-              "Exactly! It is the utility given by just one item.",
+            explanation: "Exactly! It is the utility given by just one item.",
           },
         ]}
       />
@@ -1604,31 +1701,56 @@ export default function MarginalUtility() {
       </h1>
       <div className="space-y-4 text-gray-700 leading-relaxed">
         <p className="text-lg">
-          Often, we don't just care about how much "satisfaction" or utility something gives us.
-          We also sometimes <span className="font-semibold">want to consider the cost</span>.
+          Often, we don't just care about how much "satisfaction" or utility
+          something gives us. We also sometimes{" "}
+          <span className="font-semibold">want to consider the cost</span>.
         </p>
         <p className="text-lg">
           This is where marginal benefit and marginal cost come in.
-          <span className="font-semibold text-blue-700"> Marginal Benefit (MB) </span>is the amount of monetary value we get from one item.
-          It is just like Marginal Utility, but measured in dollars instead of utils.
+          <span className="font-semibold text-blue-700">
+            {" "}
+            Marginal Benefit (MB){" "}
+          </span>
+          is the amount of monetary value we get from one item. <span className="font-semibold">It is just like
+          Marginal Utility, but measured in dollars instead of utils</span>.
         </p>
         <p className="text-lg">
-          <span className="font-semibold text-blue-700">Marginal Cost (MC) </span>is the price of one item.
-          This is how much we have to pay to get the marginal benefit from that item.
+          <span className="font-semibold text-blue-700">
+            Marginal Cost (MC){" "}
+          </span>
+          <span className="font-semibold">is the price of one item</span>. This is how much we have to pay to get the
+          marginal benefit from that item.
+        </p>
+        <p className="text-lg">
           Here is an example chart, showing how many lemons we should buy for our lemonade stand.
         </p>
         <McMbChart />
         <p className="text-lg">
-          Consider what would happen <span className="font-semibold">if we bought 7 lemons</span>.
-          The 7th lemon would have a MB of $6 and an MC of $8.
-          That means <span className="font-semibold">we would spend $8 to get $6 back in value</span>, which would not be good.
+          Consider what would happen{" "}
+          <span className="font-semibold">if we bought 7 lemons</span>. The 7th
+          lemon would have a MB of $6 and an MC of $8. That means{" "}
+          <span className="font-semibold">
+            we would spend $8 to get $6 back in value
+          </span>
+          , which would not be good.
         </p>
         <p className="text-lg">
-          However, <span className="font-semibold">if we bought only 4 lemons</span>, we'd see that if we bought one more lemon, we would make $10 more for only the cost of $8.
-          Since we could still get more value than the cost for another lemon, <span className="font-semibold">we should have bought at least 5</span>.
+          However,{" "}
+          <span className="font-semibold">if we bought only 4 lemons</span>,
+          we'd see that if we bought one more lemon, we would make $10 more for
+          only the cost of $8. Since we could still get more value than the cost
+          for another lemon,{" "}
+          <span className="font-semibold">
+            we should have bought at least 5
+          </span>
+          .
         </p>
         <p className="text-lg">
-          <span className="font-semibold">Ponder what the intersection of MB and MC means</span> and what the optimal quantity is for a general problem involving MB and MC.
+          <span className="font-semibold">
+            Ponder what the intersection of MB and MC means
+          </span>{" "}
+          and what the optimal quantity is for a general problem involving MB
+          and MC.
         </p>
       </div>
     </section>,
@@ -1642,22 +1764,26 @@ export default function MarginalUtility() {
           {
             text: "You should have bought more napkins.",
             isCorrect: false,
-            explanation: "This isn't quite true. Try calculating the marginal benefit and marginal cost of the 20,000th napkin.",
+            explanation:
+              "This isn't quite true. Try calculating the marginal benefit and marginal cost of the 20,000th napkin.",
           },
           {
             text: "You bought the right number of napkins.",
             isCorrect: false,
-            explanation: "This isn't quite true. Try calculating the marginal benefit and marginal cost of the 20,000th napkin.",
+            explanation:
+              "This isn't quite true. Try calculating the marginal benefit and marginal cost of the 20,000th napkin.",
           },
           {
             text: "You should have bought less napkins.",
             isCorrect: true,
-            explanation: "Exactly. The marginal cost of each napkin is ~0.6 cents whereas the marginal benefit is 0.4 cents. This means the last napkin was not worth it, so you should have bought less.",
+            explanation:
+              "Exactly. The marginal cost of each napkin is ~0.6 cents whereas the marginal benefit is 0.4 cents. This means the last napkin was not worth it, so you should have bought less.",
           },
           {
             text: "Not enough information.",
             isCorrect: false,
-            explanation: "There is enough information. It's not given as a straightforward marginal cost and marginal benefit, but we can calculate it!",
+            explanation:
+              "There is enough information. It's not given as a straightforward marginal cost and marginal benefit, but we can calculate it!",
           },
         ]}
       />
@@ -1723,6 +1849,35 @@ export default function MarginalUtility() {
           </span>{" "}
           we spend. Let's apply it to an example.
         </p>
+        <p className="text-lg">
+          Here's the formula for our ratio:
+        </p>
+
+        {/* Formula Display */}
+        <div className="flex items-center justify-center gap-4 text-blue-700 bg-blue-50 p-6">
+          
+          {/* Left Side: The Ratio */}
+          <div className="text-2xl sm:text-3xl font-bold">
+            MU/P Ratio
+          </div>
+
+          {/* Equals Sign */}
+          <div className="text-3xl">
+            =
+          </div>
+
+          {/* Right Side: The Fraction */}
+          <div className="flex flex-col text-center">
+            <span className="text-xl font-semibold px-2 pb-1">
+              Marginal Utility (utils)
+            </span>
+            <span className="border-b-2 border-blue-700 w-full" />
+            <span className="text-xl font-semibold px-2 pt-1">
+              Price ($)
+            </span>
+          </div>
+
+        </div>
       </div>
     </section>,
 
@@ -1760,20 +1915,24 @@ export default function MarginalUtility() {
       <h1 className="text-3xl font-bold text-blue-500 mb-4">Greedy Approach</h1>
       <div className="space-y-4 text-gray-700 leading-relaxed">
         <p className="text-lg">
-          The greedy approach is a method of solving optimization problems by
-          making the locally optimal choice at each step. In the context of
-          utility optimization, it means always choosing the item with the
-          highest marginal utility per price (MU/P) ratio that you can afford.
+          <span className="font-semibold">The greedy approach</span> is a way of solving optimization problems by
+          making the immediately optimal choice at each step. In the context of
+          utility optimization, it means <span className="font-semibold">always choosing the item with the
+          highest marginal utility per price (MU/P) ratio that you can afford</span>.
+        </p>
+        <p className="text-lg">
+          This is a <span className="font-semibold">useful tool to solve optimization problems on tests</span>.
+          Plus, this works well in many problem solving scenarios.
         </p>
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-          <p className="text-blue-800 font-medium">
+          <p className="text-lg text-blue-800">
             It's called "greedy" because it always wants the best immediate
             choice, without considering future consequences.
           </p>
         </div>
         <p className="text-lg">
-          This approach works well for many problems, but it may not always
-          yield the best choice. However, for our dessert examples, it provided
+          <span className="font-semibold">This approach works well for many problems, but it may not always
+          yield the best choice</span>. However, for our dessert examples, it provided
           a simple and effective way to maximize your utility given a budget
           constraint.
         </p>
@@ -1832,6 +1991,7 @@ export default function MarginalUtility() {
             coins={[25, 10, 5, 1]}
             initialAmount={67}
             greedyStrict={true}
+            key="1"
           />
         </div>
       </div>
@@ -1879,6 +2039,7 @@ export default function MarginalUtility() {
             coins={[1, 3, 4]}
             initialAmount={6}
             greedyStrict={false}
+            key="2"
           />
         </div>
       </div>
@@ -1925,17 +2086,19 @@ export default function MarginalUtility() {
             {
               text: "The greedy approach is the solution to utility optimization problems.",
               isCorrect: false,
-              explanation: "Not quite! The greedy approach is a more general problem solving technique and there are certain cases where it does not work in utility optimization."
+              explanation:
+                "Not quite! The greedy approach is a more general problem solving technique and there are certain cases where it does not work in utility optimization.",
             },
             {
               text: "The greedy approach is a problem solving strategy and we can often use it to find the maximal utility.",
               isCorrect: true,
-              explanation: "Exactly!"
+              explanation: "Exactly!",
             },
             {
               text: "The greedy approach means maximizing utility that's what utility optimization is, so they are the same thing.",
               isCorrect: false,
-              explanation: "Not quite! The greedy approach is a technique to solving maximization problems, but utility optimization is a specific type of problem in economics that the greedy approach applies to."
+              explanation:
+                "Not quite! The greedy approach is a technique to solving maximization problems, but utility optimization is a specific type of problem in economics that the greedy approach applies to.",
             },
           ]}
         />
@@ -1983,9 +2146,17 @@ export default function MarginalUtility() {
           , the marginal utility goes down the more of that item you get.
         </p>
         <p className="text-lg">
-          Then, we learned about metrics when we have concrete dollar values.
-          We can use the <span className="font-bold text-yellow-600">Marginal Benefit</span> (dollar value of one item) and <span className="font-bold text-yellow-600">Marginal Cost</span> (dollar cost of one item) to determine when we should stop buying.
-          <span className="font-semibold"> We should buy as long as Marginal Benefit &ge; Marginal Cost</span>.
+          Then, we learned about metrics when we have concrete dollar values. We
+          can use the{" "}
+          <span className="font-bold text-yellow-600">Marginal Benefit</span>{" "}
+          (dollar value of one item) and{" "}
+          <span className="font-bold text-yellow-600">Marginal Cost</span>{" "}
+          (dollar cost of one item) to determine when we should stop buying.
+          <span className="font-semibold">
+            {" "}
+            We should buy as long as Marginal Benefit &ge; Marginal Cost
+          </span>
+          .
         </p>
         <p className="text-lg">
           Then, we learned how to use a greedy algorithm to make decisions about{" "}
