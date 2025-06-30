@@ -70,7 +70,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
       <button
         onClick={goToPreviousSlide}
         disabled={currentSlide === 0}
-        className={`absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white shadow-lg transition-all
+        className={`absolute left-4 top-4 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white shadow-lg transition-all
           ${
             currentSlide === 0
               ? "opacity-50 cursor-not-allowed"
@@ -96,7 +96,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
       <button
         onClick={goToNextSlide}
         disabled={currentSlide === slides.length - 1}
-        className={`absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white shadow-lg transition-all
+        className={`absolute right-4 top-4 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white shadow-lg transition-all
           ${
             currentSlide === slides.length - 1
               ? "opacity-50 cursor-not-allowed"
@@ -120,7 +120,9 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
       </button>
 
       {/* Progress bar */}
-      <div className="absolute bottom-0 left-0 w-full h-2 bg-gray-200">
+      <div
+        className="fixed top-0 left-0 right-0 h-2 bg-gray-200 z-50"
+      >
         <div
           className="h-full bg-blue-600 transition-all duration-300"
           style={{ width: `${progress}%` }}
@@ -128,7 +130,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
       </div>
 
       {/* Slide counter */}
-      <div className="absolute bottom-4 right-4 text-sm text-gray-600">
+      <div className="absolute top-2 right-20 text-sm text-gray-600">
         {currentSlide + 1} / {slides.length}
       </div>
     </div>
