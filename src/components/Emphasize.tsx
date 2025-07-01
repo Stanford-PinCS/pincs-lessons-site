@@ -6,11 +6,7 @@ interface EmphasizeProps {
 }
 
 const Emphasize: React.FC<EmphasizeProps> = ({ children }) => {
-  return (
-    <span className="font-semibold">
-        {children}
-    </span>
-  );
+  return <span className="font-semibold">{children}</span>;
 };
 
 export default Emphasize;

@@ -19,22 +19,24 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
     // On mount, set the slide # to what's in the URL, or 0 if not present.
     const slideParam = searchParams.get("slide");
     let slideFromUrl = slideParam ? parseInt(slideParam, 10) - 1 : 0;
-    if (isNaN(slideFromUrl) || slideFromUrl < 0 || slideFromUrl >= slides.length) {
+    if (
+      isNaN(slideFromUrl) ||
+      slideFromUrl < 0 ||
+      slideFromUrl >= slides.length
+    ) {
       slideFromUrl = 0;
     }
 
     if (slideFromUrl !== currentSlide) {
       // Update current slide if needed.
       setCurrentSlide(slideFromUrl);
-    }
-    else if (!slideParam && slides.length > 0) {
+    } else if (!slideParam && slides.length > 0) {
       // Set the URL if unset.
       const params = new URLSearchParams(searchParams.toString());
       params.set("slide", "1");
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     }
   }, [searchParams, slides.length]);
-
 
   // This function handles the navigation logic.
   const navigateToSlide = (slideIndex: number) => {
@@ -59,7 +61,8 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
 
   const progress = ((currentSlide + 1) / slides.length) * 100;
 
-  const navButtonStyle = "p-2 rounded-full bg-slate-100 text-slate-600 border border-slate-300 shadow-lg transition-all";
+  const navButtonStyle =
+    "p-2 rounded-full bg-slate-100 text-slate-600 border border-slate-300 shadow-lg transition-all";
 
   return (
     <div className="relative w-full h-full min-h-[600px]">
@@ -122,9 +125,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
       </button>
 
       {/* Progress bar */}
-      <div
-        className="fixed top-0 left-0 right-0 h-2 bg-gray-200 z-50"
-      >
+      <div className="fixed top-0 left-0 right-0 h-2 bg-gray-200 z-50">
         <div
           className="h-full bg-blue-600 transition-all duration-300"
           style={{ width: `${progress}%` }}
@@ -139,8 +140,10 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
   );
 };
 
-export default function(props: LessonProps) {
-  return <Suspense>
-    <Lesson {...props}></Lesson>
-  </Suspense>
-};
+export default function (props: LessonProps) {
+  return (
+    <Suspense>
+      <Lesson {...props}></Lesson>
+    </Suspense>
+  );
+}
