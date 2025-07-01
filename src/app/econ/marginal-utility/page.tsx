@@ -20,6 +20,12 @@ import Block from "@/components/Block";
 import Emphasize from "@/components/Emphasize";
 import ColorBox from "@/components/ColorBox";
 import KeyTerm from "@/components/KeyTerm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Utility Optimization",
+  description: "This is a lesson that teaches how to apply the greedy algorithm to optimize for utility for economics.",
+}
 
 const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
 
