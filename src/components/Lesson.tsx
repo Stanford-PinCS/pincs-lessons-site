@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Slide from "./Slide";
 
@@ -139,4 +139,8 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
   );
 };
 
-export default Lesson;
+export default function(props: LessonProps) {
+  return <Suspense>
+    <Lesson {...props}></Lesson>
+  </Suspense>
+};
