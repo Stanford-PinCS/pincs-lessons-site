@@ -164,7 +164,7 @@ export default function EcosystemsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 pb-32">
-      <h1 className="text-3xl font-bold mb-6">Ecosystems x Algorithms</h1>
+      <h1 className="ml-14 text-3xl font-bold mb-6">Ecosystems x Algorithms</h1>
       <Lesson slides={slides} />
     </div>
   );

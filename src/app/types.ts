@@ -8,6 +8,7 @@ export enum Subject {
   ComputerScience = "Computer Science",
   History = "History",
   EnvironmentalScience = "Environmental Science",
+  Economics = "Economics",
 }
 
 export type Tag =
