@@ -16,6 +16,10 @@ import {
   Label,
   Legend,
 } from "recharts";
+import Block from "@/components/Block";
+import Emphasize from "@/components/Emphasize";
+import ColorBox from "@/components/ColorBox";
+import KeyTerm from "@/components/KeyTerm";
 
 const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
 
@@ -1307,24 +1311,18 @@ const InteractivePizza = () => {
           <div className="space-y-4">
             <p className="text-lg">
               The{" "}
-              <span className="font-semibold">
-                first slice tastes amazing (high utility)
-              </span>{" "}
+              <Emphasize>first slice tastes amazing (high utility)</Emphasize>{" "}
               since you're hungry and haven't had pizza in a while. The next
               slice is not quite as good, since you already have the taste in
               your mouth. As you keep going,{" "}
-              <span className="font-semibold">
-                you become less and less satisfied
-              </span>{" "}
-              with pizza.
+              <Emphasize>you become less and less satisfied</Emphasize> with
+              pizza.
             </p>
             <p className="text-lg">
               Eventually, you may be{" "}
-              <span className="font-semibold">
-                eating pizza on a full stomach
-              </span>
-              , providing negative utility. Drag the slider below to see what
-              the optimal number of slices is.
+              <Emphasize>eating pizza on a full stomach</Emphasize>, providing
+              negative utility. Drag the slider below to see what the optimal
+              number of slices is.
             </p>
           </div>
 
@@ -1470,16 +1468,13 @@ export default function MarginalUtility() {
       <h1 className="text-4xl font-bold text-gray-800 mb-8">
         Utility Optimization
       </h1>
-      <section className="border-l-4 border-green-500 pl-6 space-y-8">
-        <h2 className="text-2xl font-semibold text-green-500 mb-4">
-          Learning Targets
-        </h2>
-        <ul className="text-lg list-disc pl-6 space-y-2">
+      <Block color="green" title="Learning Targets">
+        <ul className="list-disc pl-6 space-y-2">
           <li>Learn about utility and marginal utility.</li>
           <li>Apply optimization in economics.</li>
           <li>Learn about greedy algorithms.</li>
         </ul>
-        <p className="text-lg">
+        <p>
           In this lesson, we're going to start with the basics of what utility
           is and how it looks in economics. Then, we'll look into an important
           application in economics. We'll then learn about how this ties in with
@@ -1488,93 +1483,74 @@ export default function MarginalUtility() {
         </p>
         <h2 className="text-2xl font-bold">Finding the Maximum Utility</h2>
         <UtilityGraph />
-        <p className="text-lg">
+        <p>
           By the end of the lesson, you'll have a good ideas of what this above
           graph means, but no need to worry about it just yet.
-          <span className="font-semibold">
+          <Emphasize>
             {" "}
             Click the arrow at the top right of the screen to continue with the
             lesson
-          </span>
+          </Emphasize>
           .
         </p>
-      </section>
+      </Block>
     </div>,
 
     // Slide 2: Utility Definition
-    <section className="border-l-4 border-blue-500 pl-6">
-      <h1 className="text-3xl font-bold text-blue-500 mb-4">Utility</h1>
-      <div className="space-y-4 text-gray-700 leading-relaxed">
-        <p className="text-lg">
-          <span className="font-semibold">
-            Utility is a measurement of how valuable something is.
-          </span>{" "}
-          For example, we might say that a box of wrenches provides more utility
-          than a single wrench. Utility is measured in a (fun-to-pronounce) unit
-          called
-          <span className="font-semibold text-blue-700"> "utils."</span>
-        </p>
-        <p className="text-lg">
-          Utility{" "}
-          <span className="font-semibold">
-            does not just measure the monetary value
-          </span>{" "}
-          of goods or services, but more generally the
-          <span className="font-semibold text-blue-700">
-            {" "}
-            "satisfaction"
-          </span>{" "}
-          from those goods or services. For example, if you like chocolate ice
-          cream more than vanilla ice cream, then chocolate ice cream has more
-          utility for you than vanilla ice cream.
-        </p>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-          <p className="text-blue-800 font-medium">
-            This is a useful measurement because it allows us to make
-            quantitative decisions about what we should do, which we'll see
-            soon.
-          </p>
-        </div>
-        <p className="text-lg">You should think...</p>
-        <p className="text-3xl text-blue-500">
-          Utility = "Satisfaction" or "Happiness"{" "}
-        </p>
-        <p className="text-lg">because it is measured in utils, not dollars.</p>
-      </div>
-    </section>,
+    <Block color="blue" title="Utility">
+      <p>
+        <Emphasize>
+          Utility is a measurement of how valuable something is.
+        </Emphasize>{" "}
+        For example, we might say that a box of wrenches provides more utility
+        than a single wrench. Utility is measured in a (fun-to-pronounce) unit
+        called
+        <KeyTerm> utils</KeyTerm>.
+      </p>
+      <p>
+        Utility <Emphasize>does not just measure the monetary value</Emphasize>{" "}
+        of goods or services, but more generally the
+        <KeyTerm> "satisfaction"</KeyTerm> from those goods or services. For
+        example, if you like chocolate ice cream more than vanilla ice cream,
+        then chocolate ice cream has more utility for you than vanilla ice
+        cream.
+      </p>
+      <ColorBox color="blue">
+        This is a useful measurement because it allows us to make quantitative
+        decisions about what we should do, which we'll see soon.
+      </ColorBox>
+      <p>You should think...</p>
+      <ColorBox color="blue">
+        <Emphasize>Utility = "Satisfaction" or "Happiness" </Emphasize>
+      </ColorBox>
+      <p>because it is measured in utils, not dollars.</p>
+    </Block>,
 
     // Slide 3: Marginal Utility Definition
-    <section className="border-l-4 border-blue-500 pl-6">
-      <h1 className="text-3xl font-bold text-blue-500 mb-4">
-        Marginal Utility (MU)
-      </h1>
-      <div className="space-y-4 text-gray-700 leading-relaxed">
-        <p className="text-lg">
-          <span className="font-semibold">
-            Marginal utility is the utility of just the next item.
-          </span>{" "}
-          For example, if you have 3 slices of pizza and you eat one more slice,
-          the marginal utility is the utility of that one slice.
-        </p>
-        <p className="text-lg">
-          If you are <span className="font-semibold">very hungry</span>, the
-          marginal utility of that slice might be very high. But if you are{" "}
-          <span className="font-semibold">already full</span>, the marginal
-          utility might be very low.
-        </p>
-        <div className="bg-yellow-100 border border-yellow-200 rounded-lg p-4">
-          <p className="text-lg">
-            One key concept is the...
-            <span className="font-bold text-yellow-600 text-xl">
-              {" "}
-              Law of Diminishing Marginal Utility
-            </span>
-            , which states that as you have more items, the marginal utility of
-            each item decreases.
-          </p>
-        </div>
-      </div>
-    </section>,
+    <Block color="blue" title="Marginal Utility (MU)">
+      <p>
+        <Emphasize>
+          Marginal utility is the utility of just the next item.
+        </Emphasize>{" "}
+        For example, if you have 3 slices of pizza and you eat one more slice,
+        the marginal utility is the utility of that one slice.
+      </p>
+      <p>
+        If you are <Emphasize>very hungry</Emphasize>, the marginal utility of
+        that slice might be very high. But if you are{" "}
+        <Emphasize>already full</Emphasize>, the marginal utility might be very
+        low.
+      </p>
+      <ColorBox color="yellow">
+        One key concept is the...
+        <span className="font-bold text-yellow-600 text-xl">
+          {" "}
+          Law of Diminishing Marginal Utility
+        </span>
+        , which states that as you have more items, the marginal utility of each
+        item decreases.
+      </ColorBox>
+    </Block>,
 
     // Slide 4: Getting a feel for marginal utility.
     <section className="border-l-4 border-yellow-500 pl-6">
@@ -1582,45 +1558,34 @@ export default function MarginalUtility() {
     </section>,
 
     // Slide 5: Understanding the MU & TU graph.
-    <section className="border-l-4 border-yellow-500 pl-6">
-      <h1 className="text-3xl font-bold text-yellow-500 mb-4">
-        Putting it Together in a Chart
-      </h1>
-      <div className="space-y-4 text-gray-700 leading-relaxed">
-        <InteractiveChart>
-          <div className="space-y-6">
-            <p className="text-lg">
-              Now let's see what these curves look like on a graph. The{" "}
-              <span className="font-semibold">
-                blue Total Utility (TU) curve
-              </span>{" "}
-              shows the utility of all the slices up to that point. The{" "}
-              <span className="font-semibold">
-                green Marginal Utility (TU) curve
-              </span>{" "}
-              shows the marginal utility of that particular slice.
-            </p>
-            <p className="text-lg">
-              See if you can{" "}
-              <span className="font-semibold">
-                explain why Marginal Utility (MU) is always decreasing
-              </span>{" "}
-              and why Total Utility (TU) goes up and then goes down.
-              Specifically, find the relationship between the two curves.
-            </p>
-            <p className="text-lg">
-              <span className="font-semibold">Use the slider</span> to select a
-              different number of slices and hover over the graph to inspect
-              different values.
-            </p>
-          </div>
-        </InteractiveChart>
-      </div>
-    </section>,
+    <Block color="yellow" title="Putting it Together in a Chart">
+      <InteractiveChart>
+        <div className="space-y-6">
+          <p>
+            Now let's see what these curves look like on a graph. The{" "}
+            <Emphasize>blue Total Utility (TU) curve</Emphasize> shows the
+            utility of all the slices up to that point. The{" "}
+            <Emphasize>green Marginal Utility (TU) curve</Emphasize> shows the
+            marginal utility of that particular slice.
+          </p>
+          <p>
+            See if you can{" "}
+            <Emphasize>
+              explain why Marginal Utility (MU) is always decreasing
+            </Emphasize>{" "}
+            and why Total Utility (TU) goes up and then goes down. Specifically,
+            find the relationship between the two curves.
+          </p>
+          <p>
+            <Emphasize>Use the slider</Emphasize> to select a different number
+            of slices and hover over the graph to inspect different values.
+          </p>
+        </div>
+      </InteractiveChart>
+    </Block>,
 
     // Slide 6: Definition Check-in.
-    <section className="border-l-4 border-purple-500 pl-6 space-y-4">
-      <h1 className="text-3xl font-bold text-purple-500 mb-4">Check In</h1>
+    <Block color="purple" title="Check In">
       <QuizQuestion
         question="What is utility?"
         choices={[
@@ -1688,78 +1653,59 @@ export default function MarginalUtility() {
           },
         ]}
       />
-    </section>,
+    </Block>,
 
     // Slide 7: Understanding choice deeper with MB & MC.
-    <section className="border-l-4 border-blue-500 pl-6">
-      <h1 className="text-3xl font-bold text-blue-500 mb-4">
-        Marginal Benefit and Marginal Cost
-      </h1>
-      <div className="space-y-4 text-gray-700 leading-relaxed">
-        <p className="text-lg">
-          Often, we don't just care about how much "satisfaction" or utility
-          something gives us. We also sometimes{" "}
-          <span className="font-semibold">want to consider the cost</span>.
-        </p>
-        <p className="text-lg">
-          This is where marginal benefit and marginal cost come in.
-          <span className="font-semibold text-blue-700">
-            {" "}
-            Marginal Benefit (MB){" "}
-          </span>
-          is the amount of monetary value we get from one item.{" "}
-          <span className="font-semibold">
-            It is just like Marginal Utility (MU), but measured in dollars
-            instead of utils
-          </span>
-          .
-        </p>
-        <p className="text-lg">
-          <span className="font-semibold text-blue-700">
-            Marginal Cost (MC){" "}
-          </span>
-          <span className="font-semibold">is the price of one item</span>. This
-          is how much we have to pay to get the marginal benefit from that item.
-        </p>
-        <p className="text-lg">
-          Here is an example chart, showing how many lemons we should buy for
-          our lemonade stand.
-        </p>
-        <McMbChart />
-        <p className="text-lg">
-          Consider what would happen{" "}
-          <span className="font-semibold">if we bought 7 lemons</span>. The 7th
-          lemon would have a MB of $6 and an MC of $8. That means{" "}
-          <span className="font-semibold">
-            we would spend $8 to get $6 back in value
-          </span>
-          , which would not be good.
-        </p>
-        <p className="text-lg">
-          However,{" "}
-          <span className="font-semibold">if we bought only 4 lemons</span>,
-          we'd see that if we bought one more lemon, we would make $10 more for
-          only the cost of $8. Since we could still get more value than the cost
-          for another lemon,{" "}
-          <span className="font-semibold">
-            we should have bought at least 5
-          </span>
-          .
-        </p>
-        <p className="text-lg">
-          <span className="font-semibold">
-            Ponder what the intersection of Marginal Benefit (MB) and Marginal
-            Cost (MC) means
-          </span>{" "}
-          and what the optimal quantity is for a general problem involving
-          Marginal Benefit (MB) and Marginal Cost (MC).
-        </p>
-      </div>
-    </section>,
+    <Block color="blue" title="Marginal Benefit and Marginal Cost">
+      <p>
+        Often, we don't just care about how much "satisfaction" or utility
+        something gives us. We also sometimes{" "}
+        <Emphasize>want to consider the cost</Emphasize>.
+      </p>
+      <p>
+        This is where marginal benefit and marginal cost come in.
+        <KeyTerm> Marginal Benefit (MB) </KeyTerm>
+        is the amount of monetary value we get from one item.{" "}
+        <Emphasize>
+          It is just like Marginal Utility (MU), but measured in dollars instead
+          of utils
+        </Emphasize>
+        .
+      </p>
+      <p>
+        <KeyTerm>Marginal Cost (MC) </KeyTerm>
+        <Emphasize>is the price of one item</Emphasize>. This is how much we
+        have to pay to get the marginal benefit from that item.
+      </p>
+      <p>
+        Here is an example chart, showing how many lemons we should buy for our
+        lemonade stand.
+      </p>
+      <McMbChart />
+      <p>
+        Consider what would happen <Emphasize>if we bought 7 lemons</Emphasize>.
+        The 7th lemon would have a MB of $6 and an MC of $8. That means{" "}
+        <Emphasize>we would spend $8 to get $6 back in value</Emphasize>, which
+        would not be good.
+      </p>
+      <p>
+        However, <Emphasize>if we bought only 4 lemons</Emphasize>, we'd see
+        that if we bought one more lemon, we would make $10 more for only the
+        cost of $8. Since we could still get more value than the cost for
+        another lemon, <Emphasize>we should have bought at least 5</Emphasize>.
+      </p>
+      <p>
+        <Emphasize>
+          Ponder what the intersection of Marginal Benefit (MB) and Marginal
+          Cost (MC) means
+        </Emphasize>{" "}
+        and what the optimal quantity is for a general problem involving
+        Marginal Benefit (MB) and Marginal Cost (MC).
+      </p>
+    </Block>,
 
     // Slide 8: Check-in on MB & MC
-    <section className="border-l-4 border-purple-500 pl-6">
-      <h1 className="text-3xl font-bold text-purple-500 mb-4">Practice</h1>
+    <Block color="purple" title="Practice">
       <QuizQuestion
         question="Suppose you're a restaurant owner buying napkins. You determine that you bought 20,000 napkins and realize that the marginal benefit of the last napkins you bought was 0.4 cents. Also, the cost of the last pack of 2,000 napkins you bought was $11.75. Based on this information, which of the following best describes the quantity of napkins bought?"
         choices={[
@@ -1789,72 +1735,56 @@ export default function MarginalUtility() {
           },
         ]}
       />
-    </section>,
+    </Block>,
 
     // Slide 9: Understanding choice deeper.
-    <section className="border-l-4 border-blue-500 pl-6">
-      <h1 className="text-3xl font-bold text-blue-500 mb-4">
-        Buying Multiple Items
-      </h1>
-      <div className="space-y-4 text-gray-700 leading-relaxed">
-        <p className="text-lg">
-          Imagine you were going to get{" "}
-          <span className="font-semibold">three scoops of ice cream</span>. You
-          may really love chocolate ice cream, but because{" "}
-          <span className="font-semibold">
-            each chocolate scoop provides you less and less utility
-          </span>{" "}
-          (Law of Decreasing Marginal Utility), you may want to get a chocolate
-          scoop, and then pick another flavor.
-        </p>
-        <p className="text-lg">
-          Notice that{" "}
-          <span className="font-semibold">
-            after you pick one scoop, you would reconsider the utility of each
-            flavor for the next scoop
-          </span>
-          . Below is an example table showing the Marginal Utility (MU) of each
-          flavor of ice cream for each number of scoops you get.
-        </p>
-        <p className="text-lg">
-          <span className="font-semibold">Click the "Next Scoop" button</span>{" "}
-          the table and see if you can{" "}
-          <span className="font-semibold">
-            guess which scoop would be the next best pick
-          </span>
-          .
-        </p>
-        <IceCreamUtilityTable />
-      </div>
-    </section>,
+    <Block color="blue" title="Buying Multiple Items">
+      <p>
+        Imagine you were going to get{" "}
+        <Emphasize>three scoops of ice cream</Emphasize>. You may really love
+        chocolate ice cream, but because{" "}
+        <Emphasize>
+          each chocolate scoop provides you less and less utility
+        </Emphasize>{" "}
+        (Law of Decreasing Marginal Utility), you may want to get a chocolate
+        scoop, and then pick another flavor.
+      </p>
+      <p>
+        Notice that{" "}
+        <Emphasize>
+          after you pick one scoop, you would reconsider the utility of each
+          flavor for the next scoop
+        </Emphasize>
+        . Below is an example table showing the Marginal Utility (MU) of each
+        flavor of ice cream for each number of scoops you get.
+      </p>
+      <p>
+        <Emphasize>Click the "Next Scoop" button</Emphasize> the table and see
+        if you can{" "}
+        <Emphasize>guess which scoop would be the next best pick</Emphasize>.
+      </p>
+      <IceCreamUtilityTable />
+    </Block>,
 
     // Slide 10: Understanding price with choices.
-    <section className="border-l-4 border-blue-500 pl-6">
-      <h1 className="text-3xl font-bold text-blue-500 mb-4">
-        Buying Multiple Items with Different Prices
-      </h1>
-      <div className="space-y-4 text-gray-700 leading-relaxed">
-        <p className="text-lg">
-          Since each scoop of ice cream had one price, we could just pick the
-          scoop with the highest marginal utility. However,{" "}
-          <span className="font-semibold">we must take price into account</span>{" "}
-          when there are multiple prices or a budget.
-        </p>
-        <p className="text-lg">
-          We use the{" "}
-          <span className="font-semibold text-blue-700">
-            Marginal Utility over Price (MU/P) ratio
-          </span>
-          , which describes{" "}
-          <span className="font-semibold">
-            how much value we are getting from each dollar
-          </span>{" "}
-          we spend. Let's apply it to an example.
-        </p>
-        <p className="text-lg">Here's the formula for our ratio:</p>
+    <Block color="blue" title="Buying Multiple Items with Different Prices">
+      <p>
+        Since each scoop of ice cream had one price, we could just pick the
+        scoop with the highest marginal utility. However,{" "}
+        <Emphasize>we must take price into account</Emphasize> when there are
+        multiple prices or a budget.
+      </p>
+      <p>
+        We use the <KeyTerm>Marginal Utility over Price (MU/P) ratio</KeyTerm>,
+        which describes{" "}
+        <Emphasize>how much value we are getting from each dollar</Emphasize> we
+        spend. Let's apply it to an example.
+      </p>
+      <p>Here's the formula for our ratio:</p>
 
-        {/* Formula Display */}
-        <div className="flex items-center justify-center gap-4 text-blue-700 bg-blue-50 p-6 rounded-lg">
+      {/* Formula Display */}
+      <ColorBox color="blue">
+        <div className="flex items-center justify-center gap-4">
           {/* Left Side: The Ratio */}
           <div className="text-2xl sm:text-3xl font-bold">MU/P Ratio</div>
 
@@ -1870,119 +1800,105 @@ export default function MarginalUtility() {
             <span className="text-xl font-semibold px-2 pt-1">Price ($)</span>
           </div>
         </div>
-      </div>
-    </section>,
+      </ColorBox>
+    </Block>,
 
     // Slide 11: Defining MU/P.
-    <section className="border-l-4 border-yellow-500 pl-6">
-      <h1 className="text-3xl font-bold text-yellow-500 mb-4">
-        Practice: Marginal Utility per Price
-      </h1>
-      <div className="space-y-4 text-gray-700 leading-relaxed">
-        <p className="text-lg">
-          If ice cream wasn't enough, let's try some different desserts! Below
-          is practice problem showing the marginal utility (MU) and price of
-          each cupcake and cookie, so you can practice finding an optimal
-          combination.
-        </p>
-        <div className="text-lg text-gray-600 bg-gray-50 p-3 rounded-md">
-          <span className="font-semibold">Instructions:</span>
-          <ol className="list-decimal list-inside mt-2 space-y-1">
-            <li>Calculate MU/P for each item (Marginal Utility ÷ Price)</li>
-            <li>Click "Check Calculations & Start Shopping" when done</li>
-            <li>
-              Always choose the item with the highest MU/P ratio you can afford
-            </li>
-            <li>
-              Watch your budget decrease and get feedback on your choices!
-            </li>
-          </ol>
-        </div>
-        <CupcakesCookiesUtilityTable />
-      </div>
-    </section>,
+    <Block color="yellow" title="Practice: Marginal Utility per Price">
+      <p>
+        If ice cream wasn't enough, let's try some different desserts! Below is
+        practice problem showing the marginal utility (MU) and price of each
+        cupcake and cookie, so you can practice finding an optimal combination.
+      </p>
+      <ColorBox color="gray">
+        <Emphasize>Instructions:</Emphasize>
+        <ol className="list-decimal list-inside mt-2 space-y-1">
+          <li>Calculate MU/P for each item (Marginal Utility ÷ Price)</li>
+          <li>Click "Check Calculations & Start Shopping" when done</li>
+          <li>
+            Always choose the item with the highest MU/P ratio you can afford
+          </li>
+          <li>Watch your budget decrease and get feedback on your choices!</li>
+        </ol>
+      </ColorBox>
+      <CupcakesCookiesUtilityTable />
+    </Block>,
 
     // Slide 12: Introduction to the greedy approach.
-    <section className="border-l-4 border-blue-500 pl-6">
-      <h1 className="text-3xl font-bold text-blue-500 mb-4">Greedy Approach</h1>
-      <div className="space-y-4 text-gray-700 leading-relaxed">
-        <p className="text-lg">
-          <span className="font-semibold">The greedy approach</span> is a way of
-          solving optimization problems by making the immediately optimal choice
-          at each step. In the context of utility optimization, it means{" "}
-          <span className="font-semibold">
-            always choosing the item with the highest marginal utility per price
-            (MU/P) ratio that you can afford
-          </span>
-          .
-        </p>
-        <p className="text-lg">
-          This is a{" "}
-          <span className="font-semibold">
-            useful tool to solve optimization problems on tests
-          </span>
-          . Plus, this works well in many problem solving scenarios.
-        </p>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-          <p className="text-lg text-blue-800">
-            It's called "greedy" because it always wants the best immediate
-            choice, without considering future consequences.
-          </p>
-        </div>
-        <p className="text-lg">
-          <span className="font-semibold">
-            This approach works well for many problems, but it may not always
-            yield the best choice
-          </span>
-          . However, for our dessert examples, it provided a simple and
-          effective way to maximize your utility given a budget constraint.
-        </p>
-        <div className="border border-gray-300 text-lg text-gray-600 bg-gray-50 p-3 rounded-md">
-          <strong>(Bonus) More Applications of The Greedy Algorithm:</strong>
-          <ol className="list-decimal list-inside mt-2 space-y-1">
-            <li>
-              Finding nearly-optimal solutions to extremely difficult problems.
-            </li>
-            <li>Map routing algorithms, data compression, and more!</li>
-            <li>
-              Making change with the fewest number of coins (we'll see next).
-            </li>
-          </ol>
-        </div>
+    <Block color="blue" title="Greedy Approach">
+      <p>
+        <Emphasize>The greedy approach</Emphasize> is a way of solving
+        optimization problems by making the immediately optimal choice at each
+        step. In the context of utility optimization, it means{" "}
+        <Emphasize>
+          always choosing the item with the highest marginal utility per price
+          (MU/P) ratio that you can afford
+        </Emphasize>
+        .
+      </p>
+      <p>
+        This is a{" "}
+        <Emphasize>
+          useful tool to solve optimization problems on tests
+        </Emphasize>
+        . Plus, this works well in many problem solving scenarios.
+      </p>
+      <ColorBox color="blue">
+        It's called "greedy" because it always wants the best immediate choice,
+        without considering future consequences.
+      </ColorBox>
+      <p>
+        <Emphasize>
+          This approach works well for many problems, but it may not always
+          yield the best choice
+        </Emphasize>
+        . However, for our dessert examples, it provided a simple and effective
+        way to maximize your utility given a budget constraint.
+      </p>
+      <div className="border border-gray-300 text-lg text-gray-600 bg-gray-50 p-3 rounded-md">
+        <Emphasize>
+          (Bonus) More Applications of The Greedy Algorithm:
+        </Emphasize>
+        <ol className="list-decimal list-inside mt-2 space-y-1">
+          <li>
+            Finding nearly-optimal solutions to extremely difficult problems.
+          </li>
+          <li>Map routing algorithms, data compression, and more!</li>
+          <li>
+            Making change with the fewest number of coins (we'll see next).
+          </li>
+        </ol>
       </div>
-    </section>,
+    </Block>,
 
     // Slide 13: Getting a feel for the greedy approach.
-    <section className="border-l-4 border-yellow-500 pl-6">
-      <h1 className="text-3xl font-bold text-yellow-500 mb-4">
-        The Change Problem
-      </h1>
+    <Block color="yellow" title="The Change Problem">
       <div className="flex flex-col lg:flex-row lg:gap-10">
         <div className="lg:w-1/2 space-y-4 text-gray-700 leading-relaxed">
-          <p className="text-lg">
+          <p>
             The change problem is a classic optimization problem where{" "}
-            <span className="font-semibold">
+            <Emphasize>
               you need to make change for a given amount using the fewest number
               of coins
-            </span>
+            </Emphasize>
             . For example, if you need to make 63 cents using coins of 1, 5, 10,
             and 25 cents, the optimal solution would use:
           </p>
-          <ul className="text-lg list-disc pl-6 space-y-2">
+          <ul className="list-disc pl-6 space-y-2">
             <li>2 quarters (50 cents)</li>
             <li>1 dime (10 cents)</li>
             <li>1 nickel (5 cents)</li>
             <li>3 pennies (3 cents)</li>
           </ul>
-          <p className="text-lg">
+          <p>
             This gives you a total of 7 coins, which is the fewest possible in
             this case.
           </p>
-          <p className="text-lg">
+          <p>
             Let's{" "}
-            <span className="font-semibold">
+            <Emphasize>
               solve a 67 cent example on the right using a greedy approach
-            </span>
+            </Emphasize>
             , by picking the largest coin that does not exceed the remaining
             amount until we have reached the desired change.
           </p>
@@ -1996,41 +1912,38 @@ export default function MarginalUtility() {
           />
         </div>
       </div>
-    </section>,
+    </Block>,
 
     // Slide 14: Finding a drawback to the greedy approach.
-    <section className="border-l-4 border-yellow-500 pl-6">
-      <h1 className="text-3xl font-bold text-yellow-500 mb-4">
-        The Problematic Change Problem
-      </h1>
+    <Block color="yellow" title="The Problematic Change Problem">
       <div className="flex flex-col lg:flex-row lg:gap-10">
         <div className="lg:w-1/2 space-y-4 text-gray-700 leading-relaxed">
-          <p className="text-lg">
+          <p>
             The{" "}
-            <span className="font-semibold">
+            <Emphasize>
               greedy approach works well for many problems, but it can fail in
               some cases
-            </span>
+            </Emphasize>
             . The US coins lend themselves to a greedy solution, but not all
             coin systems do. For example, consider a coin system with coins of
             1, 3, and 4 cents. If you were trying to make 6 cents of change, the
             greedy approach would give you 3 coins, but the optimal solution is
             2 coins.
           </p>
-          <p className="text-lg">
-            <span className="font-semibold">
+          <p>
+            <Emphasize>
               Explore different ways of making 6 cents of change with the
               interactive module
-            </span>
+            </Emphasize>
             . Figure out what the greedy solution and the best solution are and
             ponder why the greedy solution breaks down.
           </p>
-          <p className="text-lg">
+          <p>
             This shows that the greedy approach does not always yield the best
             solution. However,{" "}
-            <span className="font-semibold">
+            <Emphasize>
               the greedy approach is still a useful tool for many problems
-            </span>
+            </Emphasize>
             , especially when the problem has a structure that allows for a
             greedy solution.
           </p>
@@ -2044,73 +1957,62 @@ export default function MarginalUtility() {
           />
         </div>
       </div>
-    </section>,
+    </Block>,
 
     // Slide 15: Listed constraints.
-    <section className="border-l-4 border-blue-500 pl-6">
-      <h1 className="text-3xl font-bold text-blue-500 mb-4">
-        How You Know if it Works in Utility Optimization
-      </h1>
-      <div className="space-y-4 text-gray-700 leading-relaxed">
-        <p className="text-lg">
-          We've seen a few examples where the greedy approach works and one
-          where it breaks down. Let's look at how we know if the greedy approach
-          will work in utility optimization.
-        </p>
-        <p className="text-lg font-semibold">
+    <Block color="blue" title="How You Know If You Can Be Greedy">
+      <p>
+        We've seen a few examples where the greedy approach works and one where
+        it breaks down. Let's look at how we know if the greedy approach will
+        work in utility optimization.
+      </p>
+      <p>
+        <Emphasize>
           Constraints: you know the greedy approach works if...
-        </p>
-        <ul className="text-lg list-disc pl-6 space-y-2">
-          <li>There are two items to choose from.</li>
-          <li>You spend your whole budget.</li>
-          <li>
-            When you're done, the MU/P ratios for the last purchased items had
-            the same values.
-          </li>
-        </ul>
-      </div>
-    </section>,
+        </Emphasize>
+      </p>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>There are two items to choose from.</li>
+        <li>You spend your whole budget.</li>
+        <li>
+          When you're done, the MU/P ratios for the last purchased items had the
+          same values.
+        </li>
+      </ul>
+    </Block>,
 
     // Slide 16: Check-in on greedy approach.
-    <section className="border-l-4 border-purple-500 pl-6">
-      <h1 className="text-3xl font-bold text-purple-500 mb-4">Quiz</h1>
-      <div className="space-y-4 text-gray-700 leading-relaxed">
-        <p className="text-lg">
-          Test your understanding of utility optimization and the greedy
-          approach with this quiz. Answer the questions below to check your
-          knowledge.
-        </p>
-        {/* Quiz Questions */}
-        <QuizQuestion
-          question="How does the greedy approach apply to utility optimization?"
-          choices={[
-            {
-              text: "The greedy approach is the solution to utility optimization problems.",
-              isCorrect: false,
-              explanation:
-                "Not quite! The greedy approach is a more general problem solving technique and there are certain cases where it does not work in utility optimization.",
-            },
-            {
-              text: "The greedy approach is a problem solving strategy and we can often use it to find the maximal utility.",
-              isCorrect: true,
-              explanation: "Exactly!",
-            },
-            {
-              text: "The greedy approach means maximizing utility that's what utility optimization is, so they are the same thing.",
-              isCorrect: false,
-              explanation:
-                "Not quite! The greedy approach is a technique to solving maximization problems, but utility optimization is a specific type of problem in economics that the greedy approach applies to.",
-            },
-          ]}
-        />
-      </div>
-    </section>,
+    <Block color="purple" title="Greedy Check In">
+      <p>
+        Test your understanding of utility optimization and the greedy approach
+        with this quiz. Answer the questions below to check your knowledge.
+      </p>
+      <QuizQuestion
+        question="How does the greedy approach apply to utility optimization?"
+        choices={[
+          {
+            text: "The greedy approach is the solution to utility optimization problems.",
+            isCorrect: false,
+            explanation:
+              "Not quite! The greedy approach is a more general problem solving technique and there are certain cases where it does not work in utility optimization.",
+          },
+          {
+            text: "The greedy approach is a problem solving strategy and we can often use it to find the maximal utility.",
+            isCorrect: true,
+            explanation: "Exactly!",
+          },
+          {
+            text: "The greedy approach means maximizing utility that's what utility optimization is, so they are the same thing.",
+            isCorrect: false,
+            explanation:
+              "Not quite! The greedy approach is a technique to solving maximization problems, but utility optimization is a specific type of problem in economics that the greedy approach applies to.",
+          },
+        ]}
+      />
+    </Block>,
 
     // Section 15: Coding it up.
-    <section className="border-l-4 border-yellow-500 pl-6">
-      <h1 className="text-3xl font-bold text-yellow-500 mb-4">
-        Try Coding it up Yourself!
-      </h1>
+    <Block color="yellow" title="Try Coding it up Yourself!">
       <iframe
         id="inlinePickcodePlugin"
         title="Code Up a Greedy Algorithm"
@@ -2119,67 +2021,49 @@ export default function MarginalUtility() {
         // TODO: change into a permalink
         src="http://localhost:5173/sandbox/marginal-utility"
       ></iframe>
-    </section>,
+    </Block>,
 
     // Slide 18: Recap.
-    <section className="border-l-4 border-blue-500 pl-6">
-      <h1 className="text-3xl font-bold text-blue-500 mb-4">Recap</h1>
-      <div className="space-y-4 text-gray-700 leading-relaxed">
-        <p className="text-lg">
-          First, we learned about the meaning of{" "}
-          <span className="font-bold text-yellow-600">utility</span> and{" "}
-          <span className="font-bold text-yellow-600">marginal utility</span>.
-          Utility means the "value" or satisfaction you get from something.
-          Marginal Utility (MU) is the utility of one particular item (usually
-          the next item, or the last item). Utility is measured in{" "}
-          <span className="font-bold text-yellow-600">utils</span>.
-        </p>
-        <p className="text-lg">
-          Next, we learned about how utility would look in a{" "}
-          <span className="font-bold text-yellow-600">chart</span> and{" "}
-          <span className="font-bold text-yellow-600">table</span>. It's
-          important to remember that the marginal utility curve is the slope of
-          the total utility curve. Also, by the{" "}
-          <span className="font-bold text-yellow-600">
-            {" "}
-            Law of Diminishing Marginal Utility
-          </span>
-          , the marginal utility goes down the more of that item you get.
-        </p>
-        <p className="text-lg">
-          Then, we learned about metrics when we have concrete dollar values. We
-          can use the{" "}
-          <span className="font-bold text-yellow-600">Marginal Benefit</span>{" "}
-          (dollar value of one item) and{" "}
-          <span className="font-bold text-yellow-600">Marginal Cost</span>{" "}
-          (dollar cost of one item) to determine when we should stop buying.
-          <span className="font-semibold">
-            {" "}
-            We should buy as long as Marginal Benefit &ge; Marginal Cost
-          </span>
-          .
-        </p>
-        <p className="text-lg">
-          Then, we learned how to use a greedy algorithm to make decisions about{" "}
-          <span className="font-bold text-yellow-600">
-            utility optimization
-          </span>
-          . Using the greedy algorithm, we pick the next best option at each
-          step. The next best option is the option with the highest{" "}
-          <span className="font-bold text-yellow-600">
-            MU/P ratio of Marginal Utility (MU) to Price (P)
-          </span>
-        </p>
-        <p className="text-lg">
-          Finally, we learned the{" "}
-          <span className="font-bold text-yellow-600">
-            logic behind the greedy algorithm
-          </span>{" "}
-          and the <span className="font-bold text-yellow-600">drawbacks</span>{" "}
-          associated with the greedy algorithm.
-        </p>
-      </div>
-    </section>,
+    <Block color="blue" title="Recap">
+      <p>
+        First, we learned about the meaning of <KeyTerm>utility</KeyTerm> and{" "}
+        <KeyTerm>marginal utility</KeyTerm>. Utility means the "value" or
+        satisfaction you get from something. Marginal Utility (MU) is the
+        utility of one particular item (usually the next item, or the last
+        item). Utility is measured in <KeyTerm>utils</KeyTerm>.
+      </p>
+      <p>
+        Next, we learned about how utility would look in a{" "}
+        <KeyTerm>chart</KeyTerm> and <KeyTerm>table</KeyTerm>. It's important to
+        remember that the marginal utility curve is the slope of the total
+        utility curve. Also, by the{" "}
+        <KeyTerm> Law of Diminishing Marginal Utility</KeyTerm>, the marginal
+        utility goes down the more of that item you get.
+      </p>
+      <p>
+        Then, we learned about metrics when we have concrete dollar values. We
+        can use the <KeyTerm>Marginal Benefit</KeyTerm> (dollar value of one
+        item) and <KeyTerm>Marginal Cost</KeyTerm> (dollar cost of one item) to
+        determine when we should stop buying.
+        <Emphasize>
+          {" "}
+          We should buy as long as Marginal Benefit &ge; Marginal Cost
+        </Emphasize>
+        .
+      </p>
+      <p>
+        Then, we learned how to use a greedy algorithm to make decisions about{" "}
+        <KeyTerm>utility optimization</KeyTerm>. Using the greedy algorithm, we
+        pick the next best option at each step. The next best option is the
+        option with the highest{" "}
+        <KeyTerm>MU/P ratio of Marginal Utility (MU) to Price (P)</KeyTerm>
+      </p>
+      <p>
+        Finally, we learned the{" "}
+        <KeyTerm>logic behind the greedy algorithm</KeyTerm> and the{" "}
+        <KeyTerm>drawbacks</KeyTerm> associated with the greedy algorithm.
+      </p>
+    </Block>,
   ];
 
   return (
