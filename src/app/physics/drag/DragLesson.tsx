@@ -328,7 +328,7 @@ function AirflowAnimation() {
 
 export default function DragLesson() {
   const slides = [
-    <Block color="green" title="This is an example block">
+    <Block color="green" title="Modeling Drag">
       <p>
         <Emphasize>In this lesson, you'll...</Emphasize>
       </p>
@@ -353,7 +353,7 @@ export default function DragLesson() {
         .
       </p>
       <ColorBox color="blue">
-        "Resistive" means opposing, so it{" "}
+        "Resistive" means opposing, so this force{" "}
         <Emphasize>goes in the opposite direction of motion</Emphasize>.
       </ColorBox>
       <p>
@@ -378,7 +378,18 @@ export default function DragLesson() {
       </p>
       <FluidDragSimulator />
     </Block>,
-    <Block color="blue" title="What are the equations?">
+    <Block color="blue" title="What is the equation for drag?">
+      <p>
+        We would love if drag were a simple polynomial equation. Then we could
+        put it on our formula sheet and be done.
+      </p>
+      <p>
+        However, it's not so simple. There's a fancy equation for a{" "}
+        <KeyTerm>Reynolds number</KeyTerm>.
+      </p>
+      <p></p>
+    </Block>,
+    <Block color="blue" title="High Velocity Drag">
       <p>
         You've now seen why the drag force exists. It's because the motion of
         the object displaces the fluid's particles.
@@ -387,6 +398,340 @@ export default function DragLesson() {
         Consequently, the big and scary <KeyTerm>drag equation</KeyTerm> looks
         like this:
       </p>
+      {/* Equation Box: Monospaced font for a "codey" feel, slightly different background. */}
+      <div className="p-4 my-5 text-2xl text-center rounded bg-slate-200 font-mono">
+        F<sub>D</sub> = ½ ρ v<sup>2</sup> C<sub>D</sub> A
+      </div>
+
+      <p className="mb-5 text-slate-700">
+        Here's what each part means and how it relates to our simulation:
+      </p>
+
+      {/* Definition List: A list without bullets, where each item has some space below it. */}
+      <ul className="pl-0 list-none">
+        <li className="mb-5">
+          <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
+            F<sub>D</sub>
+          </code>
+          <Emphasize>Drag Force</Emphasize>
+          <p className="mt-1 text-slate-600">
+            This is the total force pushing against the object (and also against
+            the fluid).
+          </p>
+        </li>
+        <li className="mb-5">
+          <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
+            ρ
+          </code>
+          <Emphasize>Fluid Density (rho)</Emphasize>
+          <p className="mt-1 text-slate-600">
+            How much "stuff" is in the fluid. More particles would create a
+            denser, more resistant fluid.
+          </p>
+        </li>
+        <li className="mb-5">
+          <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
+            v
+          </code>
+          <Emphasize>Velocity</Emphasize>
+          <p className="mt-1 text-slate-600">
+            The speed and direction of the object relative to the fluid. Notice
+            how moving the ball faster creates a much stronger reaction. This is
+            because the force increases with the <Emphasize>square</Emphasize>{" "}
+            of the velocity (v<sup>2</sup>), making speed a huge factor!
+          </p>
+        </li>
+        <li className="mb-5">
+          <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
+            C<sub>D</sub>
+          </code>
+          <Emphasize>Drag Coefficient</Emphasize>
+          <p className="mt-1 text-slate-600">
+            This accounts for the object's shape. A pointy, aerodynamic shape
+            has a low C<sub>D</sub>.
+          </p>
+        </li>
+        <li className="mb-5">
+          <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
+            A
+          </code>
+          <Emphasize>Cross-Sectional Area</Emphasize>
+          <p className="mt-1 text-slate-600">
+            The area of the object facing the fluid. A larger ball displaces
+            more particles and experiences more drag.
+          </p>
+        </li>
+      </ul>
+    </Block>,
+    <Block color="yellow" title="What does this look like in practice?">
+      <p>
+        In practice, depending on the scenario, the fluid density, drag
+        coefficient, and cross-sectional area factors may all become constant,
+        in which case, our formula becomes much simpler:
+      </p>
+      <div className="p-4 my-5 text-2xl text-center rounded bg-slate-200 font-mono">
+        F<sub>D</sub> = k v<sup>2</sup>
+      </div>
+    </Block>,
+    <Block color="blue" title="Forces on a Falling Object">
+      <p>
+        Let's look at the forces acting on a tennis ball falling through the
+        air.
+      </p>
+      <p>
+        Gravity (
+        <KeyTerm>
+          F<sub>g</sub>
+        </KeyTerm>
+        ) constantly pulls the ball downward. As the ball's speed increases, the
+        drag force (
+        <KeyTerm>
+          F<sub>D</sub>
+        </KeyTerm>
+        ) pushing upward grows stronger.
+      </p>
+      {/* <FreeBodyDiagram /> */}
+      <p>
+        Initially, when the ball is slow, gravity is much stronger than drag, so
+        the ball accelerates downward.
+      </p>
+    </Block>,
+
+    // 5. Defining Terminal Velocity
+    <Block color="blue" title="Terminal Velocity">
+      <p>
+        What happens when the upward drag force becomes exactly as strong as the
+        downward force of gravity?
+      </p>
+      <p>
+        The forces become balanced, meaning the{" "}
+        <Emphasize>net force is zero</Emphasize>. According to Newton's Second
+        Law (F=ma), if the net force is zero, the acceleration must also be
+        zero.
+      </p>
+      <p>
+        This constant, maximum velocity is called{" "}
+        <KeyTerm>terminal velocity</KeyTerm>.
+      </p>
+      {/* <FreeBodyDiagram isTerminalVelocity={true} /> */}
+    </Block>,
+
+    // 6. Reynolds Number and the Quadratic Drag Equation
+    <Block color="blue" title="The Full Drag Equation">
+      <p>
+        The exact drag force depends on many factors, like fluid viscosity and
+        flow speed, often summarized by a complex value called the{" "}
+        <KeyTerm>Reynolds number</KeyTerm>.
+      </p>
+      <p>
+        For most everyday objects moving at a reasonable speed (like a tennis
+        ball), the drag force is dominated by the object's velocity. The big and
+        scary <KeyTerm>drag equation</KeyTerm> looks like this:
+      </p>
+      {/* <EquationBlock> */}F<sub>D</sub> = ½ ρ v<sup>2</sup> C<sub>D</sub> A
+      {/* </EquationBlock> */}
+      <p className="mt-4">
+        This is called <KeyTerm>quadratic drag</KeyTerm> because the force is
+        proportional to the velocity squared (v<sup>2</sup>).
+      </p>
+    </Block>,
+
+    // 7. Modeling
+    <Block color="yellow" title="Making it Simpler">
+      <p>
+        In many situations, the fluid density (ρ), drag coefficient (C
+        <sub>D</sub>), and area (A) are constant. We can combine them all into a
+        single drag constant, <KeyTerm>k</KeyTerm>.
+      </p>
+      <p>
+        This allows us to work with a much simpler, "good enough" model for
+        high-velocity drag:
+      </p>
+      {/* <EquationBlock> */}
+      <code>
+        F<sub>D</sub> = k v<sup>2</sup>
+      </code>
+      {/* </EquationBlock> */}
+    </Block>,
+
+    // 8. Solving by Separation of Variables
+    <Block color="green" title="Solving an Easier Case">
+      <p>
+        While the quadratic drag equation is common, solving it analytically is
+        hard. Let's look at a simpler model for{" "}
+        <Emphasize>very low speeds</Emphasize>, called linear drag, where{" "}
+        {/* <EquationBlock> */}
+        <code>
+          F<sub>D</sub> = -b v
+        </code>
+        {/* </EquationBlock> */}
+      </p>
+      <p>
+        We can solve this using Newton's second law (<KeyTerm>F=ma</KeyTerm>)
+        and a calculus technique called{" "}
+        <KeyTerm>separation of variables</KeyTerm>.
+      </p>
+      <ol className="list-decimal list-inside my-4 space-y-2">
+        <li>
+          Start with Newton's Law: <code>ma = -bv</code>
+        </li>
+        <li>
+          Replace acceleration (a) with <code>dv/dt</code>:{" "}
+          <code>m(dv/dt) = -bv</code>
+        </li>
+        <li>
+          Separate variables: Get all 'v' terms on one side and 't' terms on the
+          other: <code>(1/v)dv = -(b/m)dt</code>
+        </li>
+        <li>Integrate both sides to find the velocity equation.</li>
+      </ol>
+      <p>
+        This shows how we can find an exact equation for motion in some simple
+        cases.
+      </p>
+    </Block>,
+
+    // 9. Intro of Numerical Methods
+    <Block color="yellow" title="Approximating the Harder Case">
+      <p>
+        What if we can't solve the equation exactly, like with our{" "}
+        {/* <EquationBlock> */}
+        <code>
+          F = -kv<sup>2</sup>
+        </code>
+        {/* </EquationBlock>{" "} */}
+        model? We can <Emphasize>approximate</Emphasize> the answer by taking
+        small steps forward in time.
+      </p>
+      <p>
+        This is the core idea of <KeyTerm>numerical methods</KeyTerm>. The
+        simplest is the <KeyTerm>Forward Euler method</KeyTerm>:
+      </p>
+      {/* <EulerMethodDiagram /> */}
+      <ColorBox color="yellow">
+        To find the next position and velocity, we use the{" "}
+        <Emphasize>current</Emphasize> acceleration to step forward by a small
+        amount of time, Δt.
+      </ColorBox>
+    </Block>,
+
+    // 10. Coding Forward Euler
+    <Block color="yellow" title="Challenge: Code the Forward Euler Method">
+      <p>
+        Now it's your turn. Use the logic from the previous slide to complete
+        the code below.
+      </p>
+      <p>
+        You'll need to calculate the current acceleration based on gravity and
+        drag, then use it to update the ball's velocity and position over a
+        small timestep <code>dt</code>.
+      </p>
+      {/* <CodingChallenge /> */}
+    </Block>,
+
+    // 11. See the Results in a Simulation
+    <Block color="yellow" title="Simulation: Tennis Ball vs. Headwind">
+      <p>
+        Let's see your code in action! This simulation uses your Forward Euler
+        implementation to model a tennis ball thrown into a headwind.
+      </p>
+      {/* <TennisBallSimulation /> */}
+      <p>
+        Notice how the drag from the wind quickly slows the ball's forward
+        motion, causing it to follow a steep arc.
+      </p>
+    </Block>,
+
+    // 12. Higher Order Methods
+    <Block color="blue" title="Improving Accuracy">
+      <p>
+        The Forward Euler method is simple, but it can be inaccurate, especially
+        with larger timesteps (Δt). It calculates the acceleration at the start
+        of the step and assumes it's constant throughout.
+      </p>
+      <p>
+        More advanced methods improve accuracy by sampling the acceleration at
+        multiple points within the timestep.
+      </p>
+      <ul className="list-disc list-inside">
+        <li>
+          <KeyTerm>2nd-Order Methods</KeyTerm> (like the Midpoint Method) "look
+          ahead" to the middle of the timestep to get a better average
+          acceleration.
+        </li>
+        <li>
+          <KeyTerm>Runge-Kutta 4th Order (RK4)</KeyTerm> is a popular and highly
+          accurate method that uses a weighted average of four different
+          estimates.
+        </li>
+      </ul>
+    </Block>,
+
+    // 13. Coding a 2nd-Order Numerical Method
+    <Block color="yellow" title="Challenge: A More Accurate Method">
+      <p>Let's try implementing a 2nd-order method. The idea is to:</p>
+      <ol className="list-decimal list-inside my-4 space-y-2">
+        <li>
+          Use Forward Euler to "predict" the velocity at the midpoint of the
+          timestep.
+        </li>
+        <li>Calculate acceleration at that midpoint.</li>
+        <li>
+          Use this improved acceleration to take the full step from the
+          beginning.
+        </li>
+      </ol>
+      <p>Try coding this "predict-correct" logic.</p>
+      {/* <CodingChallenge /> */}
+    </Block>,
+
+    // 14. Seeing the accuracy
+    <Block color="yellow" title="Comparing Methods">
+      <p>
+        Let's see how much of a difference the method makes. The chart below
+        compares the path of an object calculated with Forward Euler vs. a
+        2nd-order method, using the same medium-sized timestep.
+      </p>
+      {/* <MethodComparisonChart /> */}
+      <p>
+        As you can see, the 2nd-order method gives a much more accurate result.
+        This is why higher-order methods are crucial for reliable physics
+        simulations.
+      </p>
+    </Block>,
+
+    // 15. Recap
+    <Block color="green" title="Lesson Recap">
+      <p>Here's what we learned about modeling drag:</p>
+      <ul className="list-disc list-inside">
+        <li>
+          <KeyTerm>Drag</KeyTerm> is a resistive force that opposes motion
+          through a fluid.
+        </li>
+        <li>
+          For high speeds, drag is proportional to velocity squared (
+          <KeyTerm>
+            F<sub>D</sub> = kv<sup>2</sup>
+          </KeyTerm>
+          ).
+        </li>
+        <li>
+          <KeyTerm>Terminal velocity</KeyTerm> is reached when the drag force
+          equals the force of gravity.
+        </li>
+        <li>
+          Simple models can be solved exactly using techniques like{" "}
+          <KeyTerm>separation of variables</KeyTerm>.
+        </li>
+        <li>
+          Complex models require approximation with{" "}
+          <KeyTerm>numerical methods</KeyTerm> like Forward Euler and RK4.
+        </li>
+        <li>
+          Higher-order numerical methods provide better accuracy for a given
+          timestep.
+        </li>
+      </ul>
     </Block>,
   ];
   return <Lesson slides={slides} />;
