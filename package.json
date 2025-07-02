@@ -13,9 +13,11 @@
     "@heroicons/react": "^2.2.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.484.0",
-    "next": "15.2.3",
+    "motion": "^12.19.1",
+    "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "recharts": "^3.0.0",
     "tone": "^15.0.4"
   },
   "devDependencies": {

@@ -11,9 +11,16 @@ export default function Home() {
   const [selectedSubjects, setSelectedSubjects] = useState<Tag[]>([]);
   const subjects = Object.values(Subject);
 
-  /* TRUE iff the lesson has at least one tag in selectedSubjects */
+  /* TRUE iff the lesson has at least one tag in selectedSubjects AND it's not hidden*/
   const filterLesson = useCallback(
     (lesson: Lesson) => {
+      if (
+        lesson.tags.some((tag) => tag.type === "hidden" && tag.value === true)
+      ) {
+        return false;
+      } else if (selectedSubjects.length === 0) {
+        return true;
+      }
       return lesson.tags.some((tag) =>
         selectedSubjects.some((sel) => tagsMatch(tag, sel))
       );
@@ -79,7 +86,6 @@ export default function Home() {
 
           <div className="flex flex-wrap gap-4 justify-center">
             {AllLessons.filter((lesson) => {
-              if (selectedSubjects.length === 0) return true;
               return filterLesson(lesson);
             }).map((l, i) => (
               <Link
