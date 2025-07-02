@@ -13,6 +13,370 @@ import {
   Suspense,
   MouseEvent,
 } from "react";
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  ReferenceLine,
+  Label,
+  Customized,
+} from "recharts";
+import type { CartesianViewBox } from "recharts/types/util/types";
+
+// --- Data & Constants ---
+const chartData = [
+  { time: 0, truePath: 100, approxPath: 100 },
+  { time: 2.5, truePath: 135 },
+  { time: 5, truePath: 160 },
+  { time: 7.5, truePath: 175 },
+  { time: 10, truePath: 180, approxPath: 240 },
+];
+const startPoint = chartData[0];
+const endPoint = chartData[chartData.length - 1];
+
+// --- Custom Renderer Components (Robust Method) ---
+
+/**
+ * Renders the custom Y-Axis ticks with specific text and colors.
+ * This component receives calculated props from Recharts, including x, y coordinates.
+ */
+const CustomYAxisTick = (props: any) => {
+  const { x, y, payload } = props;
+  let text = "";
+  let color = "#1e293b"; // slate-800
+
+  switch (payload.value) {
+    case startPoint.truePath:
+      text = "xₙ";
+      break;
+    case endPoint.truePath:
+      text = "xₙ₊₁ (true)";
+      color = "#3b82f6"; // blue-500
+      break;
+    case endPoint.approxPath:
+      text = "xₙ₊₁ (approx)";
+      color = "#ef4444"; // red-500
+      break;
+    default:
+      return null;
+  }
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={-10}
+        y={0}
+        dy={4}
+        textAnchor="end"
+        fill={color}
+        className="font-mono text-lg"
+      >
+        {text}
+      </text>
+    </g>
+  );
+};
+
+/**
+ * Renders the Error arrow and label using the chart's coordinate system.
+ * This is the most reliable way to position custom elements.
+ */
+const ErrorAndLabels = (props: any) => {
+  const { xAxisMap, yAxisMap } = props;
+  if (!xAxisMap || !yAxisMap) return null;
+
+  // Get the scale functions from the maps
+  const xScale = xAxisMap[0].scale;
+  const yScale = yAxisMap[0].scale;
+
+  // Calculate pixel coordinates from data values
+  const endX = xScale(endPoint.time);
+  const trueY = yScale(endPoint.truePath);
+  const approxY = yScale(endPoint.approxPath);
+  const startX = xScale(startPoint.time);
+
+  return (
+    <g>
+      {/* Error Arrow */}
+      <line
+        x1={endX}
+        y1={approxY}
+        x2={endX}
+        y2={trueY}
+        stroke="#f97316"
+        strokeWidth="2"
+      />
+      <path
+        d={`M ${endX - 4} ${approxY + 5} L ${endX} ${approxY}`}
+        stroke="#f97316"
+        fill="none"
+        strokeWidth="2"
+      />
+      <path
+        d={`M ${endX + 4} ${approxY + 5} L ${endX} ${approxY}`}
+        stroke="#f97316"
+        fill="none"
+        strokeWidth="2"
+      />
+      <path
+        d={`M ${endX - 4} ${trueY - 5} L ${endX} ${trueY}`}
+        stroke="#f97316"
+        fill="none"
+        strokeWidth="2"
+      />
+      <path
+        d={`M ${endX + 4} ${trueY - 5} L ${endX} ${trueY}`}
+        stroke="#f97316"
+        fill="none"
+        strokeWidth="2"
+      />
+      <text
+        x={endX + 10}
+        y={(approxY + trueY) / 2}
+        fill="#f97316"
+        className="font-bold text-lg"
+        dominantBaseline="middle"
+      >
+        Error
+      </text>
+
+      {/* Euler Approximation Label */}
+      <text
+        x={startX + (endX - startX) * 0.15}
+        y={yScale(140)}
+        className="fill-[#ef4444] font-bold text-2xl"
+      >
+        Euler Approximation
+      </text>
+    </g>
+  );
+};
+
+/**
+ * A responsive, explanatory diagram of the Forward Euler method, built with Recharts.
+ * This version is robust and avoids using the 'viewBox' property.
+ */
+export const EulerMethodDiagram: React.FC = () => {
+  return (
+    <div className="flex flex-col items-center p-4 my-6 bg-slate-50 rounded-lg border border-slate-200 w-full max-w-2xl mx-auto">
+      <ResponsiveContainer width="100%" aspect={1.2}>
+        <LineChart
+          data={chartData}
+          margin={{ top: 40, right: 80, left: 100, bottom: 60 }}
+        >
+          {/* --- AXES --- */}
+          <XAxis
+            dataKey="time"
+            type="number"
+            domain={["dataMin - 1", "dataMax + 1"]}
+            axisLine={{ stroke: "#475569", strokeWidth: 2 }}
+            tickLine={false}
+            ticks={[startPoint.time, endPoint.time]}
+            tick={{ fill: "#1e293b", fontSize: 16, fontFamily: "monospace" }}
+            tickFormatter={(value) =>
+              value === startPoint.time ? "tₙ" : "tₙ₊₁"
+            }
+          >
+            <Label
+              value="Time"
+              position="bottom"
+              offset={25}
+              className="text-xl fill-slate-700"
+            />
+          </XAxis>
+          <YAxis
+            type="number"
+            domain={[80, "dataMax + 20"]}
+            axisLine={{ stroke: "#475569", strokeWidth: 2 }}
+            tickLine={false}
+            tick={<CustomYAxisTick />} // Use the custom tick component
+          >
+            <Label
+              value="Position"
+              angle={-90}
+              position="left"
+              offset={-80}
+              className="text-xl fill-slate-700"
+            />
+          </YAxis>
+
+          {/* --- REFERENCE LINES & LABELS --- */}
+          <ReferenceLine
+            x={startPoint.time}
+            stroke="#94a3b8"
+            strokeDasharray="3 3"
+          />
+          <ReferenceLine
+            x={endPoint.time}
+            stroke="#94a3b8"
+            strokeDasharray="3 3"
+          />
+          <ReferenceLine
+            y={startPoint.truePath}
+            stroke="#ef4444"
+            strokeDasharray="3 3"
+          />
+
+          {/* --- DATA LINES --- */}
+          <Line
+            dataKey="truePath"
+            type="monotone"
+            stroke="#3b82f6"
+            strokeWidth={3}
+            dot={{ r: 4, fill: "#3b82f6" }}
+            activeDot={false}
+            isAnimationActive={false}
+          >
+            <Label
+              value="True Path"
+              position="top"
+              offset={10}
+              className="fill-[#3b82f6] font-bold text-2xl"
+            />
+          </Line>
+          <Line
+            dataKey="approxPath"
+            stroke="#ef4444"
+            strokeWidth={3}
+            activeDot={false}
+            connectNulls={true}
+            isAnimationActive={false}
+          />
+
+          {/* --- CUSTOMIZED ELEMENTS (The reliable way) --- */}
+          <Customized component={ErrorAndLabels} />
+
+          {/* Rise / Run Labels (positioned relative to chart area) */}
+          <Label
+            position="insideBottom"
+            content={() => (
+              <text
+                x="50%"
+                y="81%"
+                className="fill-[#ef4444] font-mono text-lg"
+                textAnchor="middle"
+              >
+                run ≈ Δt
+              </text>
+            )}
+          />
+          <Label
+            position="insideRight"
+            content={() => (
+              <text
+                x="85%"
+                y="60%"
+                className="fill-[#ef4444] font-mono text-lg"
+              >
+                rise ≈ vₙ * Δt
+              </text>
+            )}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+
+      <div className="mt-4 text-center text-slate-700 max-w-lg">
+        {/* Explanatory text remains the same */}
+        <p>
+          The <strong className="text-red-600">Forward Euler method</strong>{" "}
+          approximates the next step by assuming the velocity (the slope of the
+          graph) is constant over the whole time interval{" "}
+          <strong className="font-mono">Δt</strong>.
+        </p>
+        <p className="mt-2">
+          It uses the slope calculated at the{" "}
+          <strong className="font-semibold">start</strong> of the interval,
+          which leads to some error compared to the{" "}
+          <strong className="text-blue-600">True Path</strong>.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+interface FreeBodyDiagramProps {
+  /** If true, drag and gravity vectors are equal length. Defaults to false. */
+  isTerminalVelocity?: boolean;
+}
+
+/**
+ * A React component that renders a Free Body Diagram for a falling object.
+ * It visually represents the forces of gravity and drag.
+ *
+ * @param {isTerminalVelocity} - Controls whether the forces are balanced (terminal velocity)
+ * or unbalanced (gravity is greater than drag).
+ */
+export const FreeBodyDiagram: React.FC<FreeBodyDiagramProps> = ({
+  isTerminalVelocity = false,
+}) => {
+  // Define arrow heights based on the state.
+  // Using Tailwind's arbitrary values for precise control, but could use h-16, h-28 etc.
+  const gravityArrowHeight = "h-[120px]";
+  const dragArrowHeight = isTerminalVelocity ? "h-[120px]" : "h-[70px]";
+
+  return (
+    // Main container for positioning. my-8 adds vertical margin.
+    <div className="relative flex justify-center items-center my-8 h-80">
+      {/* Optional: Label for direction of motion */}
+      <div className="absolute top-0 text-slate-500 text-sm">
+        (Motion is downward)
+      </div>
+
+      {/* The Object: A tennis ball */}
+      <div className="relative z-10 w-24 h-24 bg-gradient-to-br from-yellow-200 to-yellow-400 rounded-full border-2 border-slate-700 flex justify-center items-center">
+        <span className="font-bold text-slate-800">Ball</span>
+      </div>
+
+      {/* --- FORCES --- */}
+
+      {/* Gravity Force (Downward) */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 z-0"
+        aria-label="Gravity Force Vector"
+      >
+        {/* Arrow Line */}
+        <div className={`w-1 bg-red-500 ${gravityArrowHeight}`} />
+        {/* Arrowhead (CSS Triangle) */}
+        <div
+          className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0"
+          style={{
+            borderLeft: "8px solid transparent",
+            borderRight: "8px solid transparent",
+            borderTop: "12px solid rgb(239 68 68)", // Tailwind's red-500
+          }}
+        />
+        {/* Label */}
+        <div className="absolute -bottom-8 left-4 text-red-600 font-bold text-lg">
+          F<sub>g</sub>
+        </div>
+      </div>
+
+      {/* Drag Force (Upward) */}
+      <div
+        className="absolute bottom-1/2 left-1/2 -translate-x-1/2 z-0"
+        aria-label="Drag Force Vector"
+      >
+        {/* Arrow Line */}
+        <div className={`w-1 bg-blue-500 ${dragArrowHeight}`} />
+        {/* Arrowhead (CSS Triangle) */}
+        <div
+          className="absolute -top-1 left-1/2 -translate-x-1/2 w-0 h-0"
+          style={{
+            borderLeft: "8px solid transparent",
+            borderRight: "8px solid transparent",
+            borderBottom: "12px solid rgb(59 130 246)", // Tailwind's blue-500
+          }}
+        />
+        {/* Label */}
+        <div className="absolute -top-8 left-4 text-blue-600 font-bold text-lg">
+          F<sub>D</sub>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const FluidDragSimulator = () => {
   const NUM_PARTICLES = 250;
@@ -328,6 +692,7 @@ function AirflowAnimation() {
 
 export default function DragLesson() {
   const slides = [
+    // Slide 1: Learning targets.
     <Block color="green" title="Modeling Drag">
       <p>
         <Emphasize>In this lesson, you'll...</Emphasize>
@@ -344,6 +709,7 @@ export default function DragLesson() {
         </Emphasize>
       </p>
     </Block>,
+    // Slide 2: Defining Drag
     <Block color="blue" title="What is drag?">
       <p>
         <KeyTerm>Drag</KeyTerm>, also known as fluid resistance,{" "}
@@ -367,6 +733,7 @@ export default function DragLesson() {
       </p>
       <AirflowAnimation />
     </Block>,
+    // Slide 3: Feeling drag.
     <Block color="yellow" title="Why is there a drag force?">
       <p>
         Use the interactive demo below to see what happens when you click and
@@ -378,6 +745,49 @@ export default function DragLesson() {
       </p>
       <FluidDragSimulator />
     </Block>,
+    // Slide 4: Free Body Diagram.
+    <Block color="blue" title="Forces on a Falling Object">
+      <p>
+        Let's look at the forces acting on a tennis ball falling through the
+        air.
+      </p>
+      <p>
+        Gravity (
+        <KeyTerm>
+          F<sub>g</sub>
+        </KeyTerm>
+        ) constantly pulls the ball downward. As the ball's speed increases, the
+        drag force (
+        <KeyTerm>
+          F<sub>D</sub>
+        </KeyTerm>
+        ) pushing upward grows stronger.
+      </p>
+      <FreeBodyDiagram />
+      <p>
+        Initially, when the ball is slow, gravity is much stronger than drag, so
+        the ball accelerates downward.
+      </p>
+    </Block>,
+    // Slide 5: Terminal Velocity.
+    <Block color="blue" title="Terminal Velocity">
+      <p>
+        What happens when the upward drag force becomes exactly as strong as the
+        downward force of gravity?
+      </p>
+      <p>
+        The forces become balanced, meaning the{" "}
+        <Emphasize>net force is zero</Emphasize>. According to Newton's Second
+        Law (F=ma), if the net force is zero, the acceleration must also be
+        zero.
+      </p>
+      <p>
+        This constant, maximum velocity is called{" "}
+        <KeyTerm>terminal velocity</KeyTerm>.
+      </p>
+      <FreeBodyDiagram isTerminalVelocity={true} />
+    </Block>,
+    // Slide 6: Reynolds number.
     <Block color="blue" title="What is the equation for drag?">
       <p>
         We would love if drag were a simple polynomial equation. Then we could
@@ -386,9 +796,11 @@ export default function DragLesson() {
       <p>
         However, it's not so simple. There's a fancy equation for a{" "}
         <KeyTerm>Reynolds number</KeyTerm>.
+        {/* TODO: Improve explanation here. */}
       </p>
       <p></p>
     </Block>,
+    // Slide 7: Quadratic Drag Equation.
     <Block color="blue" title="High Velocity Drag">
       <p>
         You've now seen why the drag force exists. It's because the motion of
@@ -463,109 +875,41 @@ export default function DragLesson() {
         </li>
       </ul>
     </Block>,
+    // Slide 8: Explaining Modeling.
     <Block color="yellow" title="What does this look like in practice?">
       <p>
-        In practice, depending on the scenario, the fluid density, drag
-        coefficient, and cross-sectional area factors may all become constant,
-        in which case, our formula becomes much simpler:
+        When modeling drag, we often use a simple formula like a constant times
+        velocity ( 𝑘 𝑣 kv) or velocity squared ( 𝑘 𝑣 2 kv 2 ) instead of writing
+        out the full formula with fluid density, drag coefficient, and
+        cross-sectional area.
+      </p>
+      <p>
+        This is because those extra details usually stay the same for a given
+        object moving through the same fluid, and they can be combined into one
+        constant.
+      </p>
+      <p>
+        Using a simpler formula makes the math easier and still gives us a good
+        idea of how drag works, especially when we're mostly interested in how
+        drag changes with speed.
       </p>
       <div className="p-4 my-5 text-2xl text-center rounded bg-slate-200 font-mono">
         F<sub>D</sub> = k v<sup>2</sup>
       </div>
     </Block>,
-    <Block color="blue" title="Forces on a Falling Object">
-      <p>
-        Let's look at the forces acting on a tennis ball falling through the
-        air.
-      </p>
-      <p>
-        Gravity (
-        <KeyTerm>
-          F<sub>g</sub>
-        </KeyTerm>
-        ) constantly pulls the ball downward. As the ball's speed increases, the
-        drag force (
-        <KeyTerm>
-          F<sub>D</sub>
-        </KeyTerm>
-        ) pushing upward grows stronger.
-      </p>
-      {/* <FreeBodyDiagram /> */}
-      <p>
-        Initially, when the ball is slow, gravity is much stronger than drag, so
-        the ball accelerates downward.
-      </p>
-    </Block>,
 
-    // 5. Defining Terminal Velocity
-    <Block color="blue" title="Terminal Velocity">
-      <p>
-        What happens when the upward drag force becomes exactly as strong as the
-        downward force of gravity?
-      </p>
-      <p>
-        The forces become balanced, meaning the{" "}
-        <Emphasize>net force is zero</Emphasize>. According to Newton's Second
-        Law (F=ma), if the net force is zero, the acceleration must also be
-        zero.
-      </p>
-      <p>
-        This constant, maximum velocity is called{" "}
-        <KeyTerm>terminal velocity</KeyTerm>.
-      </p>
-      {/* <FreeBodyDiagram isTerminalVelocity={true} /> */}
-    </Block>,
-
-    // 6. Reynolds Number and the Quadratic Drag Equation
-    <Block color="blue" title="The Full Drag Equation">
-      <p>
-        The exact drag force depends on many factors, like fluid viscosity and
-        flow speed, often summarized by a complex value called the{" "}
-        <KeyTerm>Reynolds number</KeyTerm>.
-      </p>
-      <p>
-        For most everyday objects moving at a reasonable speed (like a tennis
-        ball), the drag force is dominated by the object's velocity. The big and
-        scary <KeyTerm>drag equation</KeyTerm> looks like this:
-      </p>
-      {/* <EquationBlock> */}F<sub>D</sub> = ½ ρ v<sup>2</sup> C<sub>D</sub> A
-      {/* </EquationBlock> */}
-      <p className="mt-4">
-        This is called <KeyTerm>quadratic drag</KeyTerm> because the force is
-        proportional to the velocity squared (v<sup>2</sup>).
-      </p>
-    </Block>,
-
-    // 7. Modeling
-    <Block color="yellow" title="Making it Simpler">
-      <p>
-        In many situations, the fluid density (ρ), drag coefficient (C
-        <sub>D</sub>), and area (A) are constant. We can combine them all into a
-        single drag constant, <KeyTerm>k</KeyTerm>.
-      </p>
-      <p>
-        This allows us to work with a much simpler, "good enough" model for
-        high-velocity drag:
-      </p>
-      {/* <EquationBlock> */}
-      <code>
-        F<sub>D</sub> = k v<sup>2</sup>
-      </code>
-      {/* </EquationBlock> */}
-    </Block>,
-
-    // 8. Solving by Separation of Variables
-    <Block color="green" title="Solving an Easier Case">
+    // Slide 9: Solving by Separation of Variables.
+    <Block color="yellow" title="Solving an Easier Case">
       <p>
         While the quadratic drag equation is common, solving it analytically is
         hard. Let's look at a simpler model for{" "}
         <Emphasize>very low speeds</Emphasize>, called linear drag, where{" "}
-        {/* <EquationBlock> */}
+      </p>
+      <ColorBox color="yellow">
         <code>
           F<sub>D</sub> = -b v
         </code>
-        {/* </EquationBlock> */}
-      </p>
+      </ColorBox>
       <p>
         We can solve this using Newton's second law (<KeyTerm>F=ma</KeyTerm>)
         and a calculus technique called{" "}
@@ -573,15 +917,23 @@ export default function DragLesson() {
       </p>
       <ol className="list-decimal list-inside my-4 space-y-2">
         <li>
-          Start with Newton's Law: <code>ma = -bv</code>
+          Start with Newton's Law:
+          <ColorBox color="blue">
+            <code>ma = -bv</code>
+          </ColorBox>
         </li>
         <li>
-          Replace acceleration (a) with <code>dv/dt</code>:{" "}
-          <code>m(dv/dt) = -bv</code>
+          Replace acceleration (a) with <code>dv/dt</code>:
+          <ColorBox color="blue">
+            <code>m(dv/dt) = -bv</code>
+          </ColorBox>
         </li>
         <li>
           Separate variables: Get all 'v' terms on one side and 't' terms on the
-          other: <code>(1/v)dv = -(b/m)dt</code>
+          other:
+          <ColorBox color="blue">
+            <code>(1/v)dv = -(b/m)dt</code>
+          </ColorBox>
         </li>
         <li>Integrate both sides to find the velocity equation.</li>
       </ol>
@@ -591,23 +943,19 @@ export default function DragLesson() {
       </p>
     </Block>,
 
-    // 9. Intro of Numerical Methods
+    // Slide 10: Intro of Numerical Methods.
     <Block color="yellow" title="Approximating the Harder Case">
       <p>
-        What if we can't solve the equation exactly, like with our{" "}
-        {/* <EquationBlock> */}
-        <code>
-          F = -kv<sup>2</sup>
-        </code>
-        {/* </EquationBlock>{" "} */}
-        model? We can <Emphasize>approximate</Emphasize> the answer by taking
-        small steps forward in time.
+        What if we can't solve the equation exactly? We can{" "}
+        <Emphasize>approximate</Emphasize> the answer by taking small steps
+        forward in time.
       </p>
       <p>
-        This is the core idea of <KeyTerm>numerical methods</KeyTerm>. The
-        simplest is the <KeyTerm>Forward Euler method</KeyTerm>:
+        This is the core idea of <KeyTerm>numerical methods</KeyTerm>, which are
+        mathematical techniques of approximating hard or unsolvable equation.
+        The simplest is the <KeyTerm>Forward Euler method</KeyTerm>:
       </p>
-      {/* <EulerMethodDiagram /> */}
+      <EulerMethodDiagram />
       <ColorBox color="yellow">
         To find the next position and velocity, we use the{" "}
         <Emphasize>current</Emphasize> acceleration to step forward by a small
@@ -615,7 +963,7 @@ export default function DragLesson() {
       </ColorBox>
     </Block>,
 
-    // 10. Coding Forward Euler
+    // Slide 11. Coding Forward Euler.
     <Block color="yellow" title="Challenge: Code the Forward Euler Method">
       <p>
         Now it's your turn. Use the logic from the previous slide to complete
@@ -629,20 +977,7 @@ export default function DragLesson() {
       {/* <CodingChallenge /> */}
     </Block>,
 
-    // 11. See the Results in a Simulation
-    <Block color="yellow" title="Simulation: Tennis Ball vs. Headwind">
-      <p>
-        Let's see your code in action! This simulation uses your Forward Euler
-        implementation to model a tennis ball thrown into a headwind.
-      </p>
-      {/* <TennisBallSimulation /> */}
-      <p>
-        Notice how the drag from the wind quickly slows the ball's forward
-        motion, causing it to follow a steep arc.
-      </p>
-    </Block>,
-
-    // 12. Higher Order Methods
+    // Slide 12: Higher Order Methods.
     <Block color="blue" title="Improving Accuracy">
       <p>
         The Forward Euler method is simple, but it can be inaccurate, especially
@@ -667,7 +1002,7 @@ export default function DragLesson() {
       </ul>
     </Block>,
 
-    // 13. Coding a 2nd-Order Numerical Method
+    // Slide 13: Coding a 2nd-Order Numerical Method.
     <Block color="yellow" title="Challenge: A More Accurate Method">
       <p>Let's try implementing a 2nd-order method. The idea is to:</p>
       <ol className="list-decimal list-inside my-4 space-y-2">
@@ -685,22 +1020,7 @@ export default function DragLesson() {
       {/* <CodingChallenge /> */}
     </Block>,
 
-    // 14. Seeing the accuracy
-    <Block color="yellow" title="Comparing Methods">
-      <p>
-        Let's see how much of a difference the method makes. The chart below
-        compares the path of an object calculated with Forward Euler vs. a
-        2nd-order method, using the same medium-sized timestep.
-      </p>
-      {/* <MethodComparisonChart /> */}
-      <p>
-        As you can see, the 2nd-order method gives a much more accurate result.
-        This is why higher-order methods are crucial for reliable physics
-        simulations.
-      </p>
-    </Block>,
-
-    // 15. Recap
+    // Slide 14: Recap.
     <Block color="green" title="Lesson Recap">
       <p>Here's what we learned about modeling drag:</p>
       <ul className="list-disc list-inside">
