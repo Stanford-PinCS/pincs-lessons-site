@@ -30,7 +30,7 @@ export default function Example() {
         whenever we have a term that deserves extra attention.
       </p>
     </Block>,
-    <Block color="orange" title="Breaking up longer sections">
+    <Block color="yellow" title="Breaking up longer sections">
       <p>
         <Emphasize>Sometimes the paragraphs get big...</Emphasize> (and yes
         that's an Emphasize tag.)
