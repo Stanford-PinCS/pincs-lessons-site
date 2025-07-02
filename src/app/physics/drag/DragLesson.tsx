@@ -7,9 +7,221 @@ import Lesson from "@/components/Lesson";
 import QuizQuestion from "@/components/QuizQuestion";
 import { useState, useEffect, useRef, useCallback, Suspense } from "react";
 
-function ParticlePushDemo() {
-  return <>hello</>;
-}
+const FluidDragSimulator = () => {
+  // --- Constants for Simulation ---
+  const NUM_PARTICLES = 150;
+  const CONTAINER_WIDTH = 600;
+  const CONTAINER_HEIGHT = 400;
+  const BALL_SIZE = 80;
+  const PARTICLE_SIZE = 10;
+
+  // Physics parameters
+  const REPULSION_STRENGTH = 80;
+  const DRAG_FORCE = 0.2; // How much the ball's movement drags particles
+  const DAMPING = 0.96; // Friction/air resistance for particles
+
+  // --- Type Definitions ---
+  interface Vector2D {
+    x: number;
+    y: number;
+  }
+
+  interface Particle extends Vector2D {
+    vx: number; // velocity x
+    vy: number; // velocity y
+  }
+
+  // --- State Management ---
+  const [ballPosition, setBallPosition] = useState<Vector2D>({
+    x: CONTAINER_WIDTH / 2,
+    y: CONTAINER_HEIGHT / 2,
+  });
+
+  const [particles, setParticles] = useState<Particle[]>(() =>
+    Array.from({ length: NUM_PARTICLES }, () => ({
+      x: Math.random() * CONTAINER_WIDTH,
+      y: Math.random() * CONTAINER_HEIGHT,
+      vx: 0,
+      vy: 0,
+    }))
+  );
+
+  const [isDragging, setIsDragging] = useState(false);
+
+  // --- Refs ---
+  const dragOffsetRef = useRef<Vector2D>({ x: 0, y: 0 });
+  const prevBallPositionRef = useRef<Vector2D>(ballPosition);
+  const animationFrameId = useRef<number | null>(null);
+
+  // --- Physics and Animation Loop ---
+  useEffect(() => {
+    const animate = () => {
+      const ballVelocity = {
+        x: ballPosition.x - prevBallPositionRef.current.x,
+        y: ballPosition.y - prevBallPositionRef.current.y,
+      };
+
+      setParticles((prevParticles) =>
+        prevParticles.map((p) => {
+          let forceX = 0;
+          let forceY = 0;
+
+          const dx = p.x - ballPosition.x;
+          const dy = p.y - ballPosition.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          const interactionRadius = BALL_SIZE / 2 + PARTICLE_SIZE / 2 + 10;
+
+          // 1. Repulsion from the ball
+          if (distance < interactionRadius) {
+            const force = REPULSION_STRENGTH / (distance * distance);
+            forceX += (dx / distance) * force;
+            forceY += (dy / distance) * force;
+          }
+
+          // --- THE FIX ---
+          // 2. Drag from the ball's movement (only for nearby particles)
+          // We'll use a slightly larger radius for the drag "wake" effect.
+          const dragRadius = interactionRadius * 1.5;
+          if (distance < dragRadius) {
+            forceX += ballVelocity.x * DRAG_FORCE;
+            forceY += ballVelocity.y * DRAG_FORCE;
+          }
+
+          let newVx = (p.vx + forceX) * DAMPING;
+          let newVy = (p.vy + forceY) * DAMPING;
+
+          let newX = p.x + newVx;
+          let newY = p.y + newVy;
+
+          // Boundary collision
+          if (newX < 0 || newX > CONTAINER_WIDTH - PARTICLE_SIZE) {
+            newVx *= -0.8;
+            newX = Math.max(0, Math.min(newX, CONTAINER_WIDTH - PARTICLE_SIZE));
+          }
+          if (newY < 0 || newY > CONTAINER_HEIGHT - PARTICLE_SIZE) {
+            newVy *= -0.8;
+            newY = Math.max(
+              0,
+              Math.min(newY, CONTAINER_HEIGHT - PARTICLE_SIZE)
+            );
+          }
+
+          return { x: newX, y: newY, vx: newVx, vy: newVy };
+        })
+      );
+
+      prevBallPositionRef.current = ballPosition;
+      animationFrameId.current = requestAnimationFrame(animate);
+    };
+
+    animationFrameId.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+    };
+  }, [ballPosition]);
+
+  // --- Mouse Event Handlers ---
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    const rect = e.currentTarget.getBoundingClientRect();
+    dragOffsetRef.current = {
+      x: e.clientX - rect.left - BALL_SIZE / 2,
+      y: e.clientY - rect.top - BALL_SIZE / 2,
+    };
+    e.preventDefault();
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+
+    const containerRect = e.currentTarget.getBoundingClientRect();
+    const newX = e.clientX - containerRect.left - dragOffsetRef.current.x;
+    const newY = e.clientY - containerRect.top - dragOffsetRef.current.y;
+
+    setBallPosition({
+      x: Math.max(0, Math.min(newX, CONTAINER_WIDTH)),
+      y: Math.max(0, Math.min(newY, CONTAINER_HEIGHT)),
+    });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  // --- Component Render ---
+  return (
+    <div
+      style={{
+        width: `${CONTAINER_WIDTH}px`,
+        height: `${CONTAINER_HEIGHT}px`,
+        border: "2px solid #444",
+        borderRadius: "8px",
+        position: "relative",
+        overflow: "hidden",
+        backgroundColor: "#1a1a1a",
+        cursor: isDragging ? "grabbing" : "default",
+        touchAction: "none",
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Render Particles */}
+      {particles.map((p, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            width: `${PARTICLE_SIZE}px`,
+            height: `${PARTICLE_SIZE}px`,
+            backgroundColor: "#00bfff",
+            borderRadius: "50%",
+            left: `${p.x}px`,
+            top: `${p.y}px`,
+            opacity: 0.7,
+            willChange: "transform",
+          }}
+        />
+      ))}
+
+      {/* Render Draggable Ball */}
+      <div
+        onMouseDown={handleMouseDown}
+        style={{
+          position: "absolute",
+          width: `${BALL_SIZE}px`,
+          height: `${BALL_SIZE}px`,
+          backgroundColor: "#ff4500",
+          borderRadius: "50%",
+          left: `${ballPosition.x - BALL_SIZE / 2}px`,
+          top: `${ballPosition.y - BALL_SIZE / 2}px`,
+          cursor: "grab",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "white",
+          fontWeight: "bold",
+          userSelect: "none",
+          boxShadow: isDragging
+            ? "0 0 25px rgba(255, 69, 0, 0.8)"
+            : "0 0 10px rgba(0,0,0,0.5)",
+          transition: "box-shadow 0.2s ease-in-out",
+          willChange: "transform, box-shadow",
+        }}
+      >
+        Drag Me
+      </div>
+    </div>
+  );
+};
 
 function AirflowAnimation() {
   // Define the smooth paths for the wind particles to follow.
@@ -82,14 +294,10 @@ function AirflowAnimation() {
         {/* Animated Wind Particles */}
         {windPaths.map(({ id }) =>
           Array.from({ length: particlesPerPath }).map((_, i) => (
-            <circle
-              key={`${id}-particle-${i}`}
-              r="1.5"
-              fill="#3b82f6" // This is Tailwind's `blue-500`
-            >
+            <circle key={`${id}-particle-${i}`} r="1.5" fill="#3b82f6">
               <animateMotion
-                dur={`${3 + Math.random() * 1.5}s`} // Slightly faster with less variation
-                begin={`-${i * (4.5 / particlesPerPath)}s`}
+                dur={`7s`}
+                begin={`-${i * (7 / particlesPerPath)}s`}
                 repeatCount="indefinite"
               >
                 <mpath href={`#${id}`} />
@@ -138,9 +346,8 @@ export default function DragLesson() {
         object, or both!
       </p>
       <p>
-        Here, you can see how air moves around an object when the air is moving
-        relative to the object. Since air can't go through this object, it's
-        path bends around the object.
+        Here, you can see how air moves around an object. Since air can't go
+        through this object, it's path bends around the object.
       </p>
       <AirflowAnimation />
     </Block>,
@@ -153,7 +360,7 @@ export default function DragLesson() {
         You can think of this like sticking your finger in a jar of honey or
         peanut butter and trying to move it.
       </p>
-      <ParticlePushDemo />
+      <FluidDragSimulator />
     </Block>,
   ];
   return <Lesson slides={slides} />;
