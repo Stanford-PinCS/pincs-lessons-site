@@ -113,7 +113,7 @@ export const AllLessons: Lesson[] = [
   },
   {
     title: "Drag",
-    link: "/",
+    link: "/physics/drag",
     tags: [
       { type: "subject", value: Subject.Physics },
       { type: "hidden", value: false },
