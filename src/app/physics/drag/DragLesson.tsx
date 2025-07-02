@@ -5,33 +5,37 @@ import Emphasize from "@/components/Emphasize";
 import KeyTerm from "@/components/KeyTerm";
 import Lesson from "@/components/Lesson";
 import QuizQuestion from "@/components/QuizQuestion";
-import { useState, useEffect, useRef, useCallback, Suspense } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  Suspense,
+  MouseEvent,
+} from "react";
 
 const FluidDragSimulator = () => {
-  // --- Constants for Simulation ---
-  const NUM_PARTICLES = 150;
+  const NUM_PARTICLES = 250;
   const CONTAINER_WIDTH = 600;
   const CONTAINER_HEIGHT = 400;
   const BALL_SIZE = 80;
   const PARTICLE_SIZE = 10;
 
-  // Physics parameters
-  const REPULSION_STRENGTH = 80;
-  const DRAG_FORCE = 0.2; // How much the ball's movement drags particles
-  const DAMPING = 0.96; // Friction/air resistance for particles
-
-  // --- Type Definitions ---
+  const BALL_REPULSION = 100;
+  const BALL_DRAG = 0.25;
+  const DAMPING = 0.95;
+  const PARTICLE_REPULSION = 0.5;
+  const PARTICLE_INTERACTION_RADIUS = 30;
   interface Vector2D {
     x: number;
     y: number;
   }
 
   interface Particle extends Vector2D {
-    vx: number; // velocity x
-    vy: number; // velocity y
+    vx: number;
+    vy: number;
   }
 
-  // --- State Management ---
   const [ballPosition, setBallPosition] = useState<Vector2D>({
     x: CONTAINER_WIDTH / 2,
     y: CONTAINER_HEIGHT / 2,
@@ -48,49 +52,71 @@ const FluidDragSimulator = () => {
 
   const [isDragging, setIsDragging] = useState(false);
 
-  // --- Refs ---
   const dragOffsetRef = useRef<Vector2D>({ x: 0, y: 0 });
   const prevBallPositionRef = useRef<Vector2D>(ballPosition);
+  const ballPositionRef = useRef<Vector2D>(ballPosition);
   const animationFrameId = useRef<number | null>(null);
 
-  // --- Physics and Animation Loop ---
+  useEffect(() => {
+    ballPositionRef.current = ballPosition;
+  }, [ballPosition]);
+
   useEffect(() => {
     const animate = () => {
+      const currentBallPos = ballPositionRef.current;
       const ballVelocity = {
-        x: ballPosition.x - prevBallPositionRef.current.x,
-        y: ballPosition.y - prevBallPositionRef.current.y,
+        x: currentBallPos.x - prevBallPositionRef.current.x,
+        y: currentBallPos.y - prevBallPositionRef.current.y,
       };
 
-      setParticles((prevParticles) =>
-        prevParticles.map((p) => {
-          let forceX = 0;
-          let forceY = 0;
+      setParticles((prevParticles: Particle[]) => {
+        const nextParticles = [...prevParticles];
+        const forces = nextParticles.map(() => ({ x: 0, y: 0 }));
 
-          const dx = p.x - ballPosition.x;
-          const dy = p.y - ballPosition.y;
+        for (let i = 0; i < nextParticles.length; i++) {
+          for (let j = i + 1; j < nextParticles.length; j++) {
+            const p1 = nextParticles[i];
+            const p2 = nextParticles[j];
+            const dx = p1.x - p2.x;
+            const dy = p1.y - p2.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < PARTICLE_INTERACTION_RADIUS && distance > 0) {
+              const force = PARTICLE_REPULSION / (distance * distance);
+              const forceX = (dx / distance) * force;
+              const forceY = (dy / distance) * force;
+              // Apply force to both particles in opposite directions
+              forces[i].x += forceX;
+              forces[i].y += forceY;
+              forces[j].x -= forceX;
+              forces[j].y -= forceY;
+            }
+          }
+        }
+
+        // B) Ball interaction (repulsion and drag)
+        for (let i = 0; i < nextParticles.length; i++) {
+          const p = nextParticles[i];
+          const dx = p.x - currentBallPos.x;
+          const dy = p.y - currentBallPos.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-
           const interactionRadius = BALL_SIZE / 2 + PARTICLE_SIZE / 2 + 10;
 
-          // 1. Repulsion from the ball
           if (distance < interactionRadius) {
-            const force = REPULSION_STRENGTH / (distance * distance);
-            forceX += (dx / distance) * force;
-            forceY += (dy / distance) * force;
+            const force = BALL_REPULSION / (distance * distance);
+            forces[i].x += (dx / distance) * force;
+            forces[i].y += (dy / distance) * force;
           }
-
-          // --- THE FIX ---
-          // 2. Drag from the ball's movement (only for nearby particles)
-          // We'll use a slightly larger radius for the drag "wake" effect.
-          const dragRadius = interactionRadius * 1.5;
-          if (distance < dragRadius) {
-            forceX += ballVelocity.x * DRAG_FORCE;
-            forceY += ballVelocity.y * DRAG_FORCE;
+          if (distance < interactionRadius * 1.5) {
+            forces[i].x += ballVelocity.x * BALL_DRAG;
+            forces[i].y += ballVelocity.y * BALL_DRAG;
           }
+        }
 
-          let newVx = (p.vx + forceX) * DAMPING;
-          let newVy = (p.vy + forceY) * DAMPING;
-
+        // --- Apply forces to update particle positions ---
+        return nextParticles.map((p, i) => {
+          let newVx = (p.vx + forces[i].x) * DAMPING;
+          let newVy = (p.vy + forces[i].y) * DAMPING;
           let newX = p.x + newVx;
           let newY = p.y + newVy;
 
@@ -108,10 +134,10 @@ const FluidDragSimulator = () => {
           }
 
           return { x: newX, y: newY, vx: newVx, vy: newVy };
-        })
-      );
+        });
+      });
 
-      prevBallPositionRef.current = ballPosition;
+      prevBallPositionRef.current = currentBallPos;
       animationFrameId.current = requestAnimationFrame(animate);
     };
 
@@ -122,10 +148,10 @@ const FluidDragSimulator = () => {
         cancelAnimationFrame(animationFrameId.current);
       }
     };
-  }, [ballPosition]);
+  }, []); // Run this effect only once on mount
 
-  // --- Mouse Event Handlers ---
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+  // --- Mouse Event Handlers (no changes) ---
+  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     const rect = e.currentTarget.getBoundingClientRect();
     dragOffsetRef.current = {
@@ -135,28 +161,21 @@ const FluidDragSimulator = () => {
     e.preventDefault();
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (!isDragging) return;
-
     const containerRect = e.currentTarget.getBoundingClientRect();
     const newX = e.clientX - containerRect.left - dragOffsetRef.current.x;
     const newY = e.clientY - containerRect.top - dragOffsetRef.current.y;
-
     setBallPosition({
       x: Math.max(0, Math.min(newX, CONTAINER_WIDTH)),
       y: Math.max(0, Math.min(newY, CONTAINER_HEIGHT)),
     });
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
+  const handleMouseUp = () => setIsDragging(false);
+  const handleMouseLeave = () => setIsDragging(false);
 
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
-
-  // --- Component Render ---
+  // --- Component Render (no changes) ---
   return (
     <div
       style={{
@@ -174,8 +193,7 @@ const FluidDragSimulator = () => {
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Render Particles */}
-      {particles.map((p, i) => (
+      {particles.map((p: Particle, i: number) => (
         <div
           key={i}
           style={{
@@ -191,8 +209,6 @@ const FluidDragSimulator = () => {
           }}
         />
       ))}
-
-      {/* Render Draggable Ball */}
       <div
         onMouseDown={handleMouseDown}
         style={{
@@ -361,6 +377,16 @@ export default function DragLesson() {
         peanut butter and trying to move it.
       </p>
       <FluidDragSimulator />
+    </Block>,
+    <Block color="blue" title="What are the equations?">
+      <p>
+        You've now seen why the drag force exists. It's because the motion of
+        the object displaces the fluid's particles.
+      </p>
+      <p>
+        Consequently, the big and scary <KeyTerm>drag equation</KeyTerm> looks
+        like this:
+      </p>
     </Block>,
   ];
   return <Lesson slides={slides} />;
