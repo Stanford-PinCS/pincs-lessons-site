@@ -976,7 +976,60 @@ export default function DragLesson() {
       </p>
       <FreeBodyDiagram isTerminalVelocity={true} />
     </Block>,
-    // Slide 6a: Different drag forces.
+    // Slide 6: Check-in.
+    <Block color="purple" title="Check-in">
+      <QuizQuestion
+        question="When you release a ball and it starts to fall (so it's velocity is 0, but its acceleration is downward), what are all the forces on that ball?"
+        choices={[
+          {
+            text: "There is a downward drag force causing the ball to start moving down.",
+            isCorrect: false,
+            explanation: "Not quite, the downward forcce is gravity.",
+          },
+          {
+            text: "There is a downward gravitational force and an upward drag force.",
+            isCorrect: false,
+            explanation:
+              "Not quite, since it's not moving yet, there wouldn't be a drag force. Drag is resistive against motion, so there should not be any drag until an object starts moving.",
+          },
+          {
+            text: "There is a downward gravitational force and no others.",
+            isCorrect: true,
+            explanation:
+              "Exactly! Gravity acts on the object, but since velocity is zero, there is no drag.",
+          },
+          {
+            text: "Velocity is 0, so there are no forces.",
+            isCorrect: false,
+            explanation:
+              "Not quite! If acceleration were 0, that would mean that there is no net force, but the ball is accelerating downward so there is force.",
+          },
+        ]}
+      />
+      <QuizQuestion
+        question="What is terminal velocity?"
+        choices={[
+          {
+            text: "Terminal velocity is the velocity at the end of the problem, often when t = 1s.",
+            isCorrect: false,
+            explanation: "Not quite.",
+          },
+          {
+            text: "Terminal velocity is the top speed.",
+            isCorrect: false,
+            explanation:
+              "Not quite, we can have an object that never reaches terminal velocity (and would thus have a lower top speed) and we can have objects that exceed their terminal velocity.",
+          },
+          {
+            text: "Terminal velocity is when drag and gravity cancel out.",
+            isCorrect: true,
+            explanation:
+              "Exactly! Terminal velocity is when the net acceleration is 0. If an object is below terminal velocity, gravity is stronger than drag, so it speeds up. And if an object is above terminal velocity, gravity is weaker than drag, so it slows down.",
+          },
+        ]}
+      />
+    </Block>,
+    // Slide 7: Different drag forces.
     <Block color="yellow" title="Where Does Drag Come From? The Two Components">
       <p>
         Drag isn't a single phenomenon. It's the sum of two distinct forces that
@@ -1059,7 +1112,8 @@ export default function DragLesson() {
         to air resistance.
       </p>
     </Block>,
-    // Slide 6: Reynolds number.
+
+    // Slide 8: Reynolds number.
     <Block color="blue" title="What Drag Model Should We Use?">
       <p>
         Since drag is the resulting phenomenon of tons of different forces (many
@@ -1101,6 +1155,8 @@ export default function DragLesson() {
         </li>
       </ul>
     </Block>,
+
+    // Slide 9: Stokes' Law.
     <Block color="blue" title="A Closer Look: Stokes' Law">
       <p>
         For the{" "}
@@ -1174,7 +1230,8 @@ export default function DragLesson() {
         to the quadratic model.
       </p>
     </Block>,
-    // Slide 7: Quadratic Drag Equation.
+
+    // Slide 10: Quadratic Drag Equation.
     <Block color="blue" title="High Velocity Drag">
       <p>
         You've now seen why the drag force exists. It's because the motion of
@@ -1249,7 +1306,23 @@ export default function DragLesson() {
         </li>
       </ul>
     </Block>,
-    // Slide 8: Explaining Modeling.
+
+    // Slide 11: Equational Check-in.
+    <Block color="purple" title="Check-in">
+      <QuizQuestion
+        question="What is Reynolds Number (Re)?"
+        choices={[
+          {
+            text: "Reynold's number is ~3.72641 and is a ratio of static metaphysical relevance and external bouyancy.",
+            isCorrect: false,
+            explanation:
+              "Reynolds number is not a constant, but depends on the specific context.",
+          },
+        ]}
+      />
+    </Block>,
+
+    // Slide 12: Explaining Modeling.
     <Block color="yellow" title="What does this look like in practice?">
       <p>
         When modeling drag, we often use a simple formula like a constant times
@@ -1272,12 +1345,11 @@ export default function DragLesson() {
       </div>
     </Block>,
 
-    // Slide 9: Solving by Separation of Variables.
+    // Slide 13: Solving by Separation of Variables.
     <Block color="yellow" title="Solving an Easier Case">
       <p>
         While the quadratic drag equation is common, solving it analytically is
-        hard. Let's look at a simpler model for{" "}
-        <Emphasize>very low speeds</Emphasize>, called linear drag, where{" "}
+        hard. Let's look at a simpler model, linear drag, where{" "}
       </p>
       <ColorBox color="yellow">
         <code>
@@ -1317,7 +1389,7 @@ export default function DragLesson() {
       </p>
     </Block>,
 
-    // Slide 10: Intro of Numerical Methods.
+    // Slide 14: Intro of Numerical Methods.
     <Block color="yellow" title="Approximating the Harder Case">
       <p>
         What if we can't solve the equation exactly? We can{" "}
@@ -1337,7 +1409,7 @@ export default function DragLesson() {
       </ColorBox>
     </Block>,
 
-    // Slide 11. Coding Forward Euler.
+    // Slide 15. Coding Forward Euler.
     <Block color="yellow" title="Challenge: Code the Forward Euler Method">
       <p>
         Now it's your turn. Use the logic from the previous slide to complete
@@ -1351,7 +1423,7 @@ export default function DragLesson() {
       {/* <CodingChallenge /> */}
     </Block>,
 
-    // Slide 12: Higher Order Methods.
+    // Slide 16: Higher Order Methods.
     <Block color="blue" title="Improving Accuracy">
       <p>
         The Forward Euler method is simple, but it can be inaccurate, especially
@@ -1376,7 +1448,7 @@ export default function DragLesson() {
       </ul>
     </Block>,
 
-    // Slide 13: Coding a 2nd-Order Numerical Method.
+    // Slide 17: Coding a 2nd-Order Numerical Method.
     <Block color="yellow" title="Challenge: A More Accurate Method">
       <p>Let's try implementing a 2nd-order method. The idea is to:</p>
       <ol className="list-decimal list-inside my-4 space-y-2">
@@ -1394,7 +1466,7 @@ export default function DragLesson() {
       {/* <CodingChallenge /> */}
     </Block>,
 
-    // Slide 14: Recap.
+    // Slide 18: Recap.
     <Block color="green" title="Lesson Recap">
       <p>Here's what we learned about modeling drag:</p>
       <ul className="list-disc list-inside">
