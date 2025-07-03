@@ -45,7 +45,7 @@ export default function Example() {
       </p>
       <ColorBox color="blue">
         But we can use a <KeyTerm>&lt;ColorBox&gt;</KeyTerm> to break it up with
-        a short sentence. (Yes that's an KeyTerm tag.)
+        a short sentence. (Yes that's a KeyTerm tag.)
       </ColorBox>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius ratione
@@ -89,16 +89,27 @@ export default function Example() {
       <h2 className="text-2xl font-bold mb-12">Color Coding Convention</h2>
       <br />
       <Block color="green" title="Green Blocks">
-        <p>Use green blocks for learning targets at the start of lessons and for lesson recaps at the end.</p>
+        <p>
+          Use green blocks for learning targets at the start of lessons and for
+          lesson recaps at the end.
+        </p>
       </Block>
       <Block color="blue" title="Blue Blocks">
-        <p>Use blue blocks for definitions and key concepts that students need to understand.</p>
+        <p>
+          Use blue blocks for definitions and key concepts that students need to
+          understand.
+        </p>
       </Block>
       <Block color="yellow" title="Yellow Blocks">
-        <p>Use yellow blocks for interactive content and hands-on exercises where students will be actively engaged.</p>
+        <p>
+          Use yellow blocks for interactive content and hands-on exercises where
+          students will be actively engaged.
+        </p>
       </Block>
       <Block color="purple" title="Purple Blocks">
-        <p>Use purple blocks for quiz questions and other forms of assessment.</p>
+        <p>
+          Use purple blocks for quiz questions and other forms of assessment.
+        </p>
       </Block>
     </div>,
     <Block color="blue" title="Component Showcase">
