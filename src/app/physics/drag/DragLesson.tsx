@@ -1223,11 +1223,14 @@ export default function DragLesson() {
         </p>
       </ColorBox>
 
-      <p className="mt-4 text-sm text-slate-700">
-        This formula is incredibly useful in fields like microbiology and
-        geology for modeling things like falling water droplets or sediment in
-        water, but for the faster tennis ball we're interested in, we must turn
-        to the quadratic model.
+      <p>
+        This formula is{" "}
+        <Emphasize>
+          incredibly useful in fields like microbiology and geology for modeling
+        </Emphasize>{" "}
+        motion like falling water droplets or sediment in water, but for the
+        faster tennis ball we're interested in, we must turn to the quadratic
+        model.
       </p>
     </Block>,
 
@@ -1310,13 +1313,63 @@ export default function DragLesson() {
     // Slide 11: Equational Check-in.
     <Block color="purple" title="Check-in">
       <QuizQuestion
-        question="What is Reynolds Number (Re)?"
+        question="What is Reynolds number (Re)?"
         choices={[
           {
-            text: "Reynold's number is ~3.72641 and is a ratio of static metaphysical relevance and external bouyancy.",
+            text: "Reynold's number is ~3.72641 and is a ratio of static metaphysical relevance and external bouyancy, coined by John Reynold.",
             isCorrect: false,
             explanation:
-              "Reynolds number is not a constant, but depends on the specific context.",
+              "Not quite, Reynolds number is not a constant, but depends on the specific context.",
+          },
+          {
+            text: "Reynolds Number depends on a few factors like viscosity and speed, representing how turbulent or laminar the liquid flow will be.",
+            isCorrect: true,
+            explanation:
+              "Exactly! Reynolds number is a ratio of inertial and viscous forces, and it is used to predict liquid flow.",
+          },
+          {
+            text: "Reynolds number is the coefficent of drag in the equation F_D = Re v",
+            isCorrect: false,
+            explanation:
+              "Not quite, Reynolds number is not used as a direct coefficient, although it may appear in certain equations.",
+          },
+        ]}
+      />
+      <QuizQuestion
+        question="True or false? Friction (or shear) drag is the drag caused by pushing air molecules."
+        choices={[
+          {
+            text: "True.",
+            isCorrect: false,
+            explanation: "Not quite, that would be form (or pressure) drag.",
+          },
+          {
+            text: "False.",
+            isCorrect: true,
+            explanation:
+              "Exactly! That would be form (or pressure) drag. Friction (or shear) drag is caused by the particles sticking to the surface.",
+          },
+        ]}
+      />
+      <QuizQuestion
+        question="To model drag force, we always use Stokes' law: F_D = 6π η r v?"
+        choices={[
+          {
+            text: "That's not Stoke's law. Stokes' law has the term 3π, not 6π.",
+            isCorrect: false,
+            explanation: "Nope, that is the equation of Stokes' law.",
+          },
+          {
+            text: "Nope, Stokes' law only applies to a perfect sphere when there's a really low Reynolds number.",
+            isCorrect: true,
+            explanation:
+              "Exactly! In other cases, we use a quadratic drag equation.",
+          },
+          {
+            text: "That's right! Stokes' law tells us exactly how we can model drag.",
+            isCorrect: false,
+            explanation:
+              "Nope. There are many cases when we would not use Stoke's law.",
           },
         ]}
       />
@@ -1325,24 +1378,33 @@ export default function DragLesson() {
     // Slide 12: Explaining Modeling.
     <Block color="yellow" title="What does this look like in practice?">
       <p>
-        When modeling drag, we often use a simple formula like a constant times
-        velocity ( 𝑘 𝑣 kv) or velocity squared ( 𝑘 𝑣 2 kv 2 ) instead of writing
-        out the full formula with fluid density, drag coefficient, and
-        cross-sectional area.
+        When modeling drag,{" "}
+        <Emphasize>
+          we often use a simple formula like a constant times velocity ( 𝑘 𝑣 kv)
+          or velocity squared ( 𝑘 𝑣 2 kv 2 )
+        </Emphasize>{" "}
+        instead of writing out the full formula with fluid density, drag
+        coefficient, and cross-sectional area.
       </p>
       <p>
-        This is because those extra details usually stay the same for a given
-        object moving through the same fluid, and they can be combined into one
-        constant.
+        This is because <Emphasize>sometimes those extra details</Emphasize>{" "}
+        usually stay the same for a given object moving through the same fluid,
+        and they <Emphasize>can be combined into one constant</Emphasize>.
       </p>
       <p>
         Using a simpler formula makes the math easier and still gives us a good
         idea of how drag works, especially when we're mostly interested in how
         drag changes with speed.
       </p>
-      <div className="p-4 my-5 text-2xl text-center rounded bg-slate-200 font-mono">
-        F<sub>D</sub> = k v<sup>2</sup>
-      </div>
+      <ColorBox color="yellow">
+        Practically, for the sake of learning, we can often deal with the
+        following simple linear equation!
+        <div className="flex flex-row justify-center font-semibold my-2">
+          <code>
+            F<sub>D</sub> = k v
+          </code>
+        </div>
+      </ColorBox>
     </Block>,
 
     // Slide 13: Solving by Separation of Variables.
@@ -1381,13 +1443,19 @@ export default function DragLesson() {
             <code>(1/v)dv = -(b/m)dt</code>
           </ColorBox>
         </li>
-        <li>Integrate both sides to find the velocity equation.</li>
+        <li>
+          <Emphasize>
+            Integrate both sides to find the velocity equation.
+          </Emphasize>
+        </li>
       </ol>
       <p>
         This shows how we can find an exact equation for motion in some simple
         cases.
       </p>
     </Block>,
+
+    // TODO: Add check in about velocity equation for linear drag.
 
     // Slide 14: Intro of Numerical Methods.
     <Block color="yellow" title="Approximating the Harder Case">
