@@ -78,7 +78,9 @@ First, make a git branch for your lesson
 
 `git checkout -b charlie-new-physics-lesson`
 
-You can check out all of the existing lessons we've added in `/src/app`. The "probability" example is a good one to use as an example.
+You can check out all of the existing lessons we've added in `/src/app`.
+
+You can check out the `example-lesson` to see how to use the components we've made.
 
 Let's say you want to add a lesson about phsyics. The pattern we follow is:
 
