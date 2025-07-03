@@ -75,7 +75,7 @@ export default function Example() {
           {
             text: "ColorBox",
             isCorrect: false,
-            explanation: "No, eventhough a question has boxes.",
+            explanation: "No, even though a question has boxes.",
           },
           {
             text: "QuizQuestion",
