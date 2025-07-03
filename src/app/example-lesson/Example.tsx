@@ -85,6 +85,18 @@ export default function Example() {
         ]}
       />
     </Block>,
+    <Block color="blue" title="Component Showcase">
+      <p>
+        Thanks for learning about the different components. Check out this link
+        to see them all in one place.
+      </p>
+      <a
+        className="text-blue-500"
+        href="/interactive-lessons/components-showcase"
+      >
+        Component Showcase
+      </a>
+    </Block>,
   ];
   return <Lesson slides={slides} />;
 }
