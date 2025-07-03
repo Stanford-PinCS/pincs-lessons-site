@@ -7,6 +7,7 @@ import Emphasize from "@/components/Emphasize";
 import KeyTerm from "@/components/KeyTerm";
 import Slide from "@/components/Slide";
 import TagFilterBox from "@/components/TagFilterBox";
+import QuizQuestion from "@/components/QuizQuestion";
 import { Subject, Tag } from "@/app/types";
 
 export default function ComponentShowcase() {
@@ -111,6 +112,67 @@ export default function ComponentShowcase() {
           <p>
             Selected tags: {selectedTags.map((tag) => tag.value).join(", ")}
           </p>
+        </div>
+      </section>
+
+      {/* QuizQuestion Component */}
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold">QuizQuestion Component</h2>
+        <p className="text-gray-600 mb-4">
+          Used for creating interactive quiz questions with feedback
+        </p>
+        <div className="space-y-8">
+          <QuizQuestion
+            question="What is the capital of France?"
+            choices={[
+              {
+                text: "Paris",
+                isCorrect: true,
+                explanation: "Correct! Paris is the capital of France.",
+              },
+              {
+                text: "London",
+                isCorrect: false,
+                explanation: "Incorrect. London is the capital of the United Kingdom.",
+              },
+              {
+                text: "Berlin",
+                isCorrect: false,
+                explanation: "Incorrect. Berlin is the capital of Germany.",
+              },
+              {
+                text: "Madrid",
+                isCorrect: false,
+                explanation: "Incorrect. Madrid is the capital of Spain.",
+              },
+            ]}
+          />
+
+          <QuizQuestion
+            question="Which programming language was created by Brendan Eich in 1995?"
+            choices={[
+              {
+                text: "Python",
+                isCorrect: false,
+                explanation: "Incorrect. Python was created by Guido van Rossum in 1991.",
+              },
+              {
+                text: "JavaScript",
+                isCorrect: true,
+                explanation: "Correct! JavaScript was created by Brendan Eich in 1995 while he was at Netscape.",
+              },
+              {
+                text: "Java",
+                isCorrect: false,
+                explanation: "Incorrect. Java was created by James Gosling at Sun Microsystems.",
+              },
+              {
+                text: "PHP",
+                isCorrect: false,
+                explanation: "Incorrect. PHP was created by Rasmus Lerdorf in 1994.",
+              },
+            ]}
+          />
         </div>
       </section>
     </div>

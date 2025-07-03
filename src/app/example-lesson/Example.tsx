@@ -85,6 +85,22 @@ export default function Example() {
         ]}
       />
     </Block>,
+    <div className="space-y-12">
+      <h2 className="text-2xl font-bold mb-12">Color Coding Convention</h2>
+      <br />
+      <Block color="green" title="Green Blocks">
+        <p>Use green blocks for learning targets at the start of lessons and for lesson recaps at the end.</p>
+      </Block>
+      <Block color="blue" title="Blue Blocks">
+        <p>Use blue blocks for definitions and key concepts that students need to understand.</p>
+      </Block>
+      <Block color="yellow" title="Yellow Blocks">
+        <p>Use yellow blocks for interactive content and hands-on exercises where students will be actively engaged.</p>
+      </Block>
+      <Block color="purple" title="Purple Blocks">
+        <p>Use purple blocks for quiz questions and other forms of assessment.</p>
+      </Block>
+    </div>,
     <Block color="blue" title="Component Showcase">
       <p>
         Thanks for learning about the different components. Check out this link
