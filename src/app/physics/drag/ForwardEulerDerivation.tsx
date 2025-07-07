@@ -114,10 +114,10 @@ const DropTarget: React.FC<{
 // --- Velocity Derivation Component ---
 const VelocityDerivation: React.FC = () => {
   const initialPieces: Piece[] = [
+    "delta_t",
     "v_next",
     "v_current",
     "a_current",
-    "delta_t",
   ];
   const [bankPieces, setBankPieces] = useState<Piece[]>(initialPieces);
   const [formula, setFormula] = useState<FormulaState>({
@@ -294,10 +294,10 @@ const VelocityDerivation: React.FC = () => {
 // --- Main Component ---
 export const ForwardEulerDerivation: React.FC = () => {
   const initialPieces: Piece[] = [
-    "x_next",
     "x_current",
-    "v_current",
     "delta_t",
+    "v_current",
+    "x_next",
   ];
   const [bankPieces, setBankPieces] = useState<Piece[]>(initialPieces);
   const [formula, setFormula] = useState<FormulaState>({
