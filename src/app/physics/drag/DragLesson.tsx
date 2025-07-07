@@ -14,6 +14,7 @@ import {
   MouseEvent,
   useMemo,
 } from "react";
+import { ForwardEulerDerivation } from "./ForwardEulerDerivation";
 import {
   ResponsiveContainer,
   LineChart,
@@ -1796,6 +1797,9 @@ export default function DragLesson() {
       </ColorBox>
       <EulerAnimator />
     </Block>,
+
+    // Slide 15.5: Derivation
+    <ForwardEulerDerivation />,
 
     // Slide 16. Coding Forward Euler.
     <Block color="yellow" title="Challenge: Code the Forward Euler Method">
