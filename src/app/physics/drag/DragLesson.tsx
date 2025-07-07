@@ -30,7 +30,7 @@ import type { CartesianViewBox } from "recharts/types/util/types";
 
 // --- Mathematical & Simulation Constants ---
 const trueFunction = (x: number): number =>
-  150 - 50 * Math.cos(x / 50) - 0.3 * x;
+  175 - 50 * Math.cos(x / 50) - 0.3 * x;
 const derivativeFunction = (x: number): number => Math.sin(x / 50) - 0.3;
 
 const START_X = 50;
@@ -58,10 +58,6 @@ export const EulerAnimator: React.FC = () => {
   const [animatedSteps, setAnimatedSteps] = useState<Step[]>([]);
   const [fullCalculatedPath, setFullCalculatedPath] = useState<Step[]>([]);
 
-  useEffect(() => {
-    console.log(animatedSteps);
-  }, [animatedSteps]);
-
   const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Cleanup effect to ensure timer is cleared if component unmounts
@@ -81,7 +77,7 @@ export const EulerAnimator: React.FC = () => {
     // 2. Validate and parse user input
     let steps = parseInt(numStepsInput, 10);
     if (isNaN(steps) || steps < 2) steps = 2;
-    if (steps > 200) steps = 200; // Cap for performance
+    if (steps > 200) steps = 200;
     setNumStepsInput(String(steps));
 
     const deltaTime = TOTAL_DISTANCE / steps;
@@ -112,11 +108,11 @@ export const EulerAnimator: React.FC = () => {
 
     // 4. Set initial state and begin animation
     setIsAnimating(true);
-
-    // *** FIX: Instantly set the starting point so the animation begins from there ***
     setAnimatedSteps([path[0]]);
 
-    // 5. Start the animation loop from the *second* point (index 1)
+    // Calculate time to delay such that it takes 2 seconds, plus a little for longer ones
+    const DELAY = 2000 / steps + steps / 20;
+
     let stepIndex = 0;
     const animateStep = () => {
       if (stepIndex >= path.length) {
@@ -125,11 +121,12 @@ export const EulerAnimator: React.FC = () => {
       }
       setAnimatedSteps((prev) => [...prev, path[stepIndex]]);
       stepIndex++;
-      animationTimerRef.current = setTimeout(animateStep, 50);
+
+      // Recurse with a delay.
+      animationTimerRef.current = setTimeout(animateStep, DELAY);
     };
 
-    // Start the recursive animation loop after a very short delay to ensure the initial state renders.
-    animationTimerRef.current = setTimeout(animateStep, 50);
+    animationTimerRef.current = setTimeout(animateStep, DELAY);
   };
 
   const totalError = useMemo(() => {
@@ -646,7 +643,7 @@ export const EulerMethodDiagram: React.FC = () => {
               value="Position"
               angle={-90}
               position="left"
-              offset={-80}
+              offset={-30}
               className="text-xl fill-slate-700"
             />
           </YAxis>
@@ -1755,13 +1752,15 @@ export default function DragLesson() {
       <p>
         This is the core idea of <KeyTerm>numerical methods</KeyTerm>, which are
         mathematical techniques of approximating hard or unsolvable equation.
-        The simplest is the <KeyTerm>Forward Euler method</KeyTerm>:
+        The simplest numerical method is the{" "}
+        <KeyTerm>Forward Euler method</KeyTerm>:
       </p>
       <EulerMethodDiagram />
       <ColorBox color="yellow">
-        To find the next position and velocity, we use the{" "}
-        <Emphasize>current</Emphasize> acceleration to step forward by a small
-        amount of time, Δt.
+        <Emphasize>
+          Try entering a few different numbers of steps (small and large) below
+        </Emphasize>{" "}
+        to see how accurately we can predict the blue path.
       </ColorBox>
       <EulerAnimator />
     </Block>,
