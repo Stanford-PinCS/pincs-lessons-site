@@ -421,7 +421,7 @@ export const DragComponentSimulator: React.FC = () => {
   const frictionPercentage = (frictionDrag / totalDrag) * 100;
 
   // --- SVG Shape Calculation ---
-  // The object's height changes based on the bluffness slider.
+  // The object's height and width changes based on the bluffness slider.
   const rectHeight = 4 + (bluffness / 100) * 50;
   const rectWidth = 20 - (bluffness / 100) * 10;
   const rectY = 30 - rectHeight / 2;
@@ -436,6 +436,33 @@ export const DragComponentSimulator: React.FC = () => {
             viewBox="0 0 100 60"
             aria-label="Flow around an object changing shape"
           >
+            {/* --- ADDED: Airflow Direction Arrow --- */}
+            <g className="text-slate-500">
+              <line
+                x1="35"
+                y1="5"
+                x2="55"
+                y2="5"
+                stroke="currentColor"
+                strokeWidth="1"
+              />
+              <path
+                d="M 52 2 L 55 5 L 52 8"
+                stroke="currentColor"
+                strokeWidth="1"
+                fill="none"
+              />
+              <text
+                x="60"
+                y="7"
+                fill="currentColor"
+                className="text-[5px] font-sans"
+              >
+                Airflow
+              </text>
+            </g>
+            {/* --- END ADDED SECTION --- */}
+
             {/* Inflow lines (always visible) */}
             <g stroke="#64748b" strokeWidth="1">
               <line x1="0" y1="10" x2="30" y2="10" />
@@ -478,7 +505,7 @@ export const DragComponentSimulator: React.FC = () => {
               height={rectHeight}
               rx="2"
               ry="2"
-              fill="#475569"
+              fill="#CD8900"
             />
           </svg>
         </div>
@@ -1226,10 +1253,18 @@ export default function DragLesson() {
         zero.
       </p>
       <p>
-        This constant, maximum velocity is called{" "}
+        This constant, stable velocity is called{" "}
         <KeyTerm>terminal velocity</KeyTerm>.
       </p>
       <FreeBodyDiagram isTerminalVelocity={true} />
+      <p>
+        Question to ponder:{" "}
+        <Emphasize>
+          What would happen if velocity were greater than terminal velocity?
+        </Emphasize>{" "}
+        Would it even be possible?
+      </p>
+      <p>Hint: Consider what forces are involved.</p>
     </Block>,
     // Slide 6: Check-in.
     <Block color="purple" title="Check-in">
@@ -1287,8 +1322,9 @@ export default function DragLesson() {
     // Slide 7: Different drag forces.
     <Block color="yellow" title="Where Does Drag Come From? The Two Components">
       <p>
-        Drag isn't a single phenomenon. It's the sum of two distinct forces that
-        arise from a fluid interacting with an object's surface and shape.
+        Drag isn't a single phenomenon. It's the{" "}
+        <Emphasize>sum of two distinct forces</Emphasize> that arise from a
+        fluid interacting with an object's surface and shape.
       </p>
 
       {/* A two-column layout to compare the drag components */}
@@ -1327,8 +1363,8 @@ export default function DragLesson() {
 
       <p>
         Use the interactive simulation below to see this in action.{" "}
-        <Emphasize>Try changing the object's shape</Emphasize> and see how the
-        two drag components change.
+        <Emphasize>Try changing the object's shape with the slider</Emphasize>{" "}
+        and see how the two drag components change.
       </p>
 
       {/* The interactive element */}
@@ -1372,9 +1408,9 @@ export default function DragLesson() {
     <Block color="blue" title="What Drag Model Should We Use?">
       <p>
         Since drag is the resulting phenomenon of tons of different forces (many
-        particle collisions), there are two models we commonly use. One
-        proportional to velocity (<KeyTerm>F ∝ v</KeyTerm>) and one proportional
-        to velocity squared (<KeyTerm>F ∝ v²</KeyTerm>).
+        particle collisions), there are two models we commonly use. One model is
+        proportional to velocity (<KeyTerm>F ∝ v</KeyTerm>) and one is
+        proportional to velocity squared (<KeyTerm>F ∝ v²</KeyTerm>).
       </p>
       <p className="mt-4">
         Which one is correct? The answer depends on the nature of the fluid
@@ -1483,9 +1519,7 @@ export default function DragLesson() {
         <Emphasize>
           incredibly useful in fields like microbiology and geology for modeling
         </Emphasize>{" "}
-        motion like falling water droplets or sediment in water, but for the
-        faster tennis ball we're interested in, we must turn to the quadratic
-        model.
+        motion like falling water droplets or sediment in water.
       </p>
     </Block>,
 
@@ -1504,9 +1538,7 @@ export default function DragLesson() {
         F<sub>D</sub> = ½ ρ v<sup>2</sup> C<sub>D</sub> A
       </div>
 
-      <p className="mb-5 text-slate-700">
-        Here's what each part means and how it relates to our simulation:
-      </p>
+      <p className="mb-5 text-slate-700">Here's what each part means:</p>
 
       {/* Definition List: A list without bullets, where each item has some space below it. */}
       <ul className="pl-0 list-none">
@@ -1602,7 +1634,7 @@ export default function DragLesson() {
             text: "False.",
             isCorrect: true,
             explanation:
-              "Exactly! That would be form (or pressure) drag. Friction (or shear) drag is caused by the particles sticking to the surface.",
+              "Exactly! That would be form (or pressure) drag. Friction (or shear) drag is caused by the particles sticking to and sliding along the surface.",
           },
         ]}
       />
@@ -1618,7 +1650,7 @@ export default function DragLesson() {
             text: "Nope, Stokes' law only applies to a perfect sphere when there's a really low Reynolds number.",
             isCorrect: true,
             explanation:
-              "Exactly! In other cases, we use a quadratic drag equation.",
+              "Exactly! In many other cases, when we have a higher Reynolds number, we'll use a quadratic drag equation.",
           },
           {
             text: "That's right! Stokes' law tells us exactly how we can model drag.",
@@ -1635,8 +1667,8 @@ export default function DragLesson() {
       <p>
         When modeling drag,{" "}
         <Emphasize>
-          we often use a simple formula like a constant times velocity ( 𝑘 𝑣 kv)
-          or velocity squared ( 𝑘 𝑣 2 kv 2 )
+          we often use a simple formula like a constant times velocity ( 𝑘 𝑣 )
+          or velocity squared ( 𝑘 𝑣 <sup>2</sup> )
         </Emphasize>{" "}
         instead of writing out the full formula with fluid density, drag
         coefficient, and cross-sectional area.
