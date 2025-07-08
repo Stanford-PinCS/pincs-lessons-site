@@ -52,20 +52,8 @@ export default function DragLesson() {
         wind hitting an object, or both!
       </p>
       <p>
-        Here, you can see how air moves around an object. Since air can't go
-        through this object, it's path bends around the object.
-      </p>
-      <AirflowAnimation />
-    </Block>,
-    // Slide 3: Feeling drag.
-    <Block color="yellow" title="Why is there a drag force?">
-      <p>
         Use the interactive demo below to see what happens when you click and
         drag to move an object through a fluid.
-      </p>
-      <p>
-        You can think of this like sticking your finger in a jar of honey or
-        peanut butter and trying to move it.
       </p>
       <FluidDragSimulator />
     </Block>,
@@ -301,91 +289,15 @@ export default function DragLesson() {
       </ul>
     </Block>,
 
-    // Slide 9: Stokes' Law.
-    <Block color="blue" title="A Closer Look: Stokes' Law">
-      <p>
-        For the{" "}
-        <Emphasize>
-          special case of a perfect sphere moving at a very low speed
-        </Emphasize>{" "}
-        (where flow is laminar), there's a precise formula for the linear drag
-        force. This is known as <KeyTerm>Stokes' Law</KeyTerm>.
-      </p>
-
-      <div className="p-4 my-5 text-2xl text-center rounded bg-slate-200 font-mono">
-        F<sub>D</sub> = 6π η r v
-      </div>
-
-      <p className="mt-5 mb-2">
-        This formula elegantly connects the drag force to the properties of the
-        fluid and the sphere:
-      </p>
-
-      {/* A definition list for the variables */}
-      <ul className="pl-0 list-none space-y-4 my-4">
-        <li>
-          <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
-            η
-          </code>
-          <Emphasize>Dynamic Viscosity (eta)</Emphasize>
-          <p className="mt-1 text-slate-600">
-            This is a measure of the fluid's internal friction or "thickness."
-            Honey has a very high viscosity; air has a very low one.
-          </p>
-        </li>
-        <li>
-          <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
-            r
-          </code>
-          <Emphasize>Radius of the sphere</Emphasize>
-          <p className="mt-1 text-slate-600">
-            A larger sphere interacts with more fluid, leading to more drag.
-          </p>
-        </li>
-        <li>
-          <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
-            v
-          </code>
-          <Emphasize>Velocity</Emphasize>
-          <p className="mt-1 text-slate-600">
-            The speed of the sphere relative to the fluid. As expected for
-            linear drag, the force is directly proportional to this value.
-          </p>
-        </li>
-      </ul>
-
-      <ColorBox color="blue">
-        <p>
-          Notice the connection to our general linear drag model,{" "}
-          <code className="font-mono">
-            F<sub>D</sub> = b v
-          </code>
-          ?
-          <br />
-          Stokes' Law tells us exactly what the drag coefficient{" "}
-          <code className="font-mono">b</code> is for a sphere:{" "}
-          <strong className="font-mono">b = 6π η r</strong>.
-        </p>
-      </ColorBox>
-
-      <p>
-        This formula is{" "}
-        <Emphasize>
-          incredibly useful in fields like microbiology and geology for modeling
-        </Emphasize>{" "}
-        motion like falling water droplets or sediment in water.
-      </p>
-    </Block>,
-
     // Slide 10: Quadratic Drag Equation.
     <Block color="blue" title="High Velocity Drag">
       <p>
         You've now seen why the drag force exists. It's because the motion of
-        the object displaces the fluid's particles.
+        the object displaces and drags along the fluid's particles.
       </p>
       <p>
-        Consequently, the big and scary <KeyTerm>drag equation</KeyTerm> looks
-        like this:
+        Since there are a few factors that affect drag, the big and scary{" "}
+        <KeyTerm>drag equation</KeyTerm> looks like this:
       </p>
       {/* Equation Box: Monospaced font for a "codey" feel, slightly different background. */}
       <div className="p-4 my-5 text-2xl text-center rounded bg-slate-200 font-mono">
@@ -492,28 +404,6 @@ export default function DragLesson() {
           },
         ]}
       />
-      <QuizQuestion
-        question="To model drag force, we always use Stokes' law: F_D = 6π η r v?"
-        choices={[
-          {
-            text: "That's not Stoke's law. Stokes' law has the term 3π, not 6π.",
-            isCorrect: false,
-            explanation: "Nope, that is the equation of Stokes' law.",
-          },
-          {
-            text: "Nope, Stokes' law only applies to a perfect sphere when there's a really low Reynolds number.",
-            isCorrect: true,
-            explanation:
-              "Exactly! In many other cases, when we have a higher Reynolds number, we'll use a quadratic drag equation.",
-          },
-          {
-            text: "That's right! Stokes' law tells us exactly how we can model drag.",
-            isCorrect: false,
-            explanation:
-              "Nope. There are many cases when we would not use Stoke's law.",
-          },
-        ]}
-      />
     </Block>,
 
     // Slide 12: Explaining Modeling.
@@ -566,27 +456,34 @@ export default function DragLesson() {
       </p>
       <ol className="list-decimal list-inside my-4 space-y-2">
         <li>
-          Start with Newton's Law:
+          <Emphasize>Start with Newton's Law, F = ma.</Emphasize> Then
+          substitute the forces we have (here, it's just drag, but we could have
+          more forces).
           <ColorBox color="blue">
             <code>ma = -bv</code>
           </ColorBox>
         </li>
         <li>
-          Replace acceleration (a) with <code>dv/dt</code>:
+          <Emphasize>
+            Replace acceleration (a) with <code>dv/dt</code>.
+          </Emphasize>{" "}
+          We can do this since acceleration is the derivative of velocity. This
+          leaves us with a differential equation in terms of just velocity and
+          time:
           <ColorBox color="blue">
             <code>m(dv/dt) = -bv</code>
           </ColorBox>
         </li>
         <li>
-          Separate variables: Get all 'v' terms on one side and 't' terms on the
-          other:
+          <Emphasize>Separate the variables.</Emphasize> Get all 'v' terms on
+          one side and 't' terms on the other:
           <ColorBox color="blue">
             <code>(1/v)dv = -(b/m)dt</code>
           </ColorBox>
         </li>
         <li>
           <Emphasize>
-            Integrate both sides to find the velocity equation.
+            Your turn! Integrate both sides to find the velocity equation.
           </Emphasize>
         </li>
       </ol>
