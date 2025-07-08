@@ -81,31 +81,68 @@ const FluidDragSimulator = () => {
           }
         }
 
-        // B) Ball interaction (repulsion and drag)
+        // B) Ball interaction (drag)
         for (let i = 0; i < nextParticles.length; i++) {
           const p = nextParticles[i];
           const dx = p.x - currentBallPos.x;
           const dy = p.y - currentBallPos.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          const interactionRadius = BALL_SIZE / 2 + PARTICLE_SIZE / 2 + 10;
+          const dragRadius = (BALL_SIZE / 2) * 2.5;
 
-          if (distance < interactionRadius) {
-            const force = BALL_REPULSION / (distance * distance);
-            forces[i].x += (dx / distance) * force;
-            forces[i].y += (dy / distance) * force;
-          }
-          if (distance < interactionRadius * 1.5) {
+          if (distance < dragRadius) {
             forces[i].x += ballVelocity.x * BALL_DRAG;
             forces[i].y += ballVelocity.y * BALL_DRAG;
           }
         }
 
-        // --- Apply forces to update particle positions ---
+        // --- Apply forces and handle collisions ---
         return nextParticles.map((p, i) => {
+          // Update velocity with forces
           let newVx = (p.vx + forces[i].x) * DAMPING;
           let newVy = (p.vy + forces[i].y) * DAMPING;
+
+          // --- Speed Limit ---
+          const MAX_SPEED = 15;
+          const speed = Math.sqrt(newVx * newVx + newVy * newVy);
+          if (speed > MAX_SPEED) {
+            newVx = (newVx / speed) * MAX_SPEED;
+            newVy = (newVy / speed) * MAX_SPEED;
+          }
+
+          // Update position
           let newX = p.x + newVx;
           let newY = p.y + newVy;
+
+          // --- Ball Collision and Response ---
+          const dxBall = newX - currentBallPos.x;
+          const dyBall = newY - currentBallPos.y;
+          const distanceToBall = Math.sqrt(dxBall * dxBall + dyBall * dyBall);
+          const minDistance = BALL_SIZE / 2 + PARTICLE_SIZE / 2;
+
+          if (distanceToBall < minDistance && distanceToBall > 0) {
+            // 1. Correct Position to prevent overlap
+            const overlap = minDistance - distanceToBall;
+            const normalX = dxBall / distanceToBall;
+            const normalY = dyBall / distanceToBall;
+            newX += normalX * overlap;
+            newY += normalY * overlap;
+
+            // 2. Respond to collision by adjusting velocity (bounce)
+            // Relative velocity
+            const rvx = newVx - ballVelocity.x;
+            const rvy = newVy - ballVelocity.y;
+
+            // Velocity component along the normal
+            const velAlongNormal = rvx * normalX + rvy * normalY;
+
+            // Do not resolve if velocities are separating
+            if (velAlongNormal < 0) {
+              const restitution = 0.5; // Bounciness
+              const j = -(1 + restitution) * velAlongNormal;
+              newVx += j * normalX;
+              newVy += j * normalY;
+            }
+          }
 
           // Boundary collision
           if (newX < 0 || newX > CONTAINER_WIDTH - PARTICLE_SIZE) {

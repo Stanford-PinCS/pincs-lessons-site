@@ -13,6 +13,7 @@ import { EulerMethodDiagram } from "./EulerMethodDiagram";
 import { FreeBodyDiagram } from "./FreeBodyDiagram";
 import FluidDragSimulator from "./FluidDragSimulator";
 import { AirflowAnimation } from "./AirflowAnimation";
+import { MotionGraphs } from "./MotionGraphs";
 
 export default function DragLesson() {
   const slides = [
@@ -153,7 +154,7 @@ export default function DragLesson() {
               "Not quite, we can have an object that never reaches terminal velocity (and would thus have a lower top speed) and we can have objects that exceed their terminal velocity.",
           },
           {
-            text: "Terminal velocity is when drag and gravity cancel out.",
+            text: "Terminal velocity is when the forces cancel out.",
             isCorrect: true,
             explanation:
               "Exactly! Terminal velocity is when the net acceleration is 0. If an object is below terminal velocity, gravity is stronger than drag, so it speeds up. And if an object is above terminal velocity, gravity is weaker than drag, so it slows down.",
@@ -407,7 +408,7 @@ export default function DragLesson() {
     </Block>,
 
     // Slide 12: Explaining Modeling.
-    <Block color="yellow" title="What does this look like in practice?">
+    <Block color="blue" title="What does this look like in practice?">
       <p>
         When modeling drag,{" "}
         <Emphasize>
@@ -436,6 +437,19 @@ export default function DragLesson() {
           </code>
         </div>
       </ColorBox>
+    </Block>,
+
+    <Block color="purple" title="Visualizing the Motion">
+      <p className="mb-4">
+        We've talked about the forces, but what does the actual motion of a
+        falling object with drag look like over time? Let's visualize the graphs
+        for velocity, position, and acceleration.
+      </p>
+      <ColorBox color="yellow">
+        Read the descriptions below and click on the graph that you think would
+        fit the scenario.
+      </ColorBox>
+      <MotionGraphs />
     </Block>,
 
     // Slide 13: Solving by Separation of Variables.
