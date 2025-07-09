@@ -44,7 +44,7 @@ const GraphGuessingGame: FC<GraphGuessingGameProps> = ({
                 selected === index
                   ? isCorrect
                     ? "border-green-500 bg-green-100"
-                    : "border-red-500 bg-red-100"
+                    : "border-dashed border-red-500 bg-red-100"
                   : "border-slate-300 hover:border-blue-500"
               }`}
           >

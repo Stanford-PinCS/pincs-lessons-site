@@ -14,6 +14,8 @@ import { FreeBodyDiagram } from "./FreeBodyDiagram";
 import FluidDragSimulator from "./FluidDragSimulator";
 import { AirflowAnimation } from "./AirflowAnimation";
 import { MotionGraphs } from "./MotionGraphs";
+import GraphBuilder from "./GraphBuilder";
+import DragProblemGraphic from "./drag-problem.jpg";
 
 export default function DragLesson() {
   const slides = [
@@ -467,12 +469,15 @@ export default function DragLesson() {
 
     // Slide 12: Learning how to make a chart.
     <Block color="yellow" title="Making a chart">
-      {/* TODO: Implement this slide to walk the student through picking an intercept,
-      picking an end behavior, and using that to make a whole chart for velocity over time.*/}
-      <></>
+      <p>
+        Suppose a person drops a tennis ball out of an airplane. Let's picture
+        the velocity over time and make a graph together. Note: Positive
+        velocity is downward.
+      </p>
+      <GraphBuilder />
     </Block>,
 
-    // Slide 13: Testing out the chart knowledge for Drag.
+    // Slide 13: Testing out the chart knowledge for drag's velocity, position, and acceleration.
     <Block color="yellow" title="Visualizing the Motion">
       <p className="mb-4">
         We've talked about the forces, but what does the actual motion of a
@@ -604,7 +609,7 @@ export default function DragLesson() {
         Based on the diagram from the previous slide, drag and drop the pieces
         to construct the formulas for the Forward Euler method.
       </p>
-      <ForwardEulerDerivation />,
+      <ForwardEulerDerivation />
     </Block>,
 
     // Slide 17: Practice Problem
@@ -621,6 +626,11 @@ export default function DragLesson() {
         take for the volleyball to hit the ocean if you drop the volleyball from{" "}
         <KeyTerm>45 meters above sea level</KeyTerm>.
       </p>
+      <img
+        src={DragProblemGraphic.src}
+        className="w-100 mx-auto"
+        alt="Graphic of the Problem"
+      ></img>
       <ColorBox color="yellow">
         <Emphasize>Question 1:</Emphasize> Based on the regular kinematics
         equations (assuming no air drag), how long would it take the volleyball
