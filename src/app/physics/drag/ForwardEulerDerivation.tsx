@@ -403,11 +403,7 @@ export const ForwardEulerDerivation: React.FC = () => {
   };
 
   return (
-    <Block color="yellow" title="Derive the Forward Euler Formula">
-      <p>
-        Based on the diagram from the previous slide, drag and drop the pieces
-        to construct the formula for the Forward Euler method.
-      </p>
+    <>
       <div className="my-6 p-4 bg-slate-200 rounded-lg flex flex-col items-center gap-y-4">
         {/* Equation display */}
         <div className="flex items-center justify-center flex-wrap gap-x-2 text-2xl font-mono">
@@ -478,11 +474,11 @@ export const ForwardEulerDerivation: React.FC = () => {
         </div>
       </div>
       <p>
-        We also have to figure out how to update our velocity value. Drag and
-        drop the pieces below to derive how we should update the velocity
-        formula.
+        In addition to the position, we also have to figure out how to update
+        our velocity value. Drag and drop the pieces below to derive how we
+        should update the velocity formula.
       </p>
       <VelocityDerivation />
-    </Block>
+    </>
   );
 };

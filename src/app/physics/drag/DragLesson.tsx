@@ -599,7 +599,13 @@ export default function DragLesson() {
     </Block>,
 
     // Slide 16: Derivation
-    <ForwardEulerDerivation />,
+    <Block color="yellow" title="Derive the Forward Euler Formula">
+      <p>
+        Based on the diagram from the previous slide, drag and drop the pieces
+        to construct the formulas for the Forward Euler method.
+      </p>
+      <ForwardEulerDerivation />,
+    </Block>,
 
     // Slide 17: Practice Problem
     <Block color="purple" title="Practice: A few ways to the ocean...">
