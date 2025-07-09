@@ -29,12 +29,9 @@ export function MotionGraphs() {
         title="1. Velocity vs. Time"
         explanation={
           <p>
-            The object starts from rest (zero velocity) and is pulled down by
-            gravity. As it speeds up, the upward drag force increases,
-            counteracting gravity. This causes the acceleration to decrease, so
-            the velocity increases at a{" "}
-            <Emphasize>slower and slower rate</Emphasize> until it approaches a
-            constant terminal velocity.
+            The object is dropped from rest, with gravity and drag acting on it.
+            The y-axis represents velocity (positive is downward) and the x-axis
+            represents time.
           </p>
         }
         graphChoices={commonGraphChoices.map((choice) => ({
@@ -42,7 +39,7 @@ export function MotionGraphs() {
           isCorrect: choice.id === "exponential-approach",
           feedback:
             choice.id === "exponential-approach"
-              ? "Excellent! The velocity graph is a curve that starts with a steep slope (high initial acceleration) and flattens out as it approaches terminal velocity."
+              ? "Excellent! The velocity graph is a curve that starts with a steep slope (high initial acceleration) and flattens out as it approaches terminal velocity. The object starts from rest (zero velocity) and is pulled down by gravity. As it speeds up, the upward drag force increases, counteracting gravity. This causes the acceleration to decrease, so the velocity increases at a slower and slower rate until it approaches a constant terminal velocity."
               : choice.id === "exponential-increase"
               ? "Not quite. This shows velocity increasing at an ever-faster rate, which isn't right. Drag should slow the acceleration down."
               : choice.id === "linear-increase"
@@ -55,12 +52,9 @@ export function MotionGraphs() {
         title="2. Position vs. Time"
         explanation={
           <p>
-            Position is the integral of velocity. Since the velocity starts at
-            zero and increases, the position graph (representing distance
-            fallen) should start flat and get{" "}
-            <Emphasize>progressively steeper</Emphasize>. However, as the
-            velocity levels off at terminal velocity, the position graph will
-            approach a <Emphasize>straight line</Emphasize> (constant slope).
+            The scenario is the same: The object is dropped from rest, with
+            gravity and drag acting on it. Here, the y-axis represents position
+            (positive is downward) and the x-axis represents time.
           </p>
         }
         graphChoices={commonGraphChoices.map((choice) => ({
@@ -68,7 +62,7 @@ export function MotionGraphs() {
           isCorrect: choice.id === "exponential-increase",
           feedback:
             choice.id === "exponential-increase"
-              ? "Perfect! The slope of the position graph starts at zero and increases, eventually approaching a straight line as the object reaches terminal velocity."
+              ? "Perfect! The slope of the position graph starts at zero and increases, eventually approaching a straight line as the object reaches terminal velocity. Position is the integral of velocity. Since the velocity starts at zero and increases, the position graph (representing distance fallen) should start flat and get progressively steeper. However, as the velocity levels off at terminal velocity, the position graph will approach a straight line (constant slope)."
               : choice.id === "exponential-approach"
               ? "This graph shows the object's position increasing, but its slope is decreasing, meaning it's slowing down. The opposite is true."
               : choice.id === "linear-increase"
@@ -81,12 +75,9 @@ export function MotionGraphs() {
         title="3. Acceleration vs. Time"
         explanation={
           <p>
-            The net force is <Emphasize>F_net = mg - kv²</Emphasize>. At the
-            start (v=0), the net force is just mg, so acceleration is at its
-            maximum (a = g). As velocity increases, the drag force grows,
-            reducing the net force and thus{" "}
-            <Emphasize>reducing the acceleration</Emphasize>. The acceleration
-            will approach zero as the object reaches terminal velocity.
+            The scenario is the same: The object is dropped from rest, with
+            gravity and drag acting on it. Here, the y-axis represents
+            acceleration (positive is downward) and the x-axis represents time.
           </p>
         }
         graphChoices={commonGraphChoices.map((choice) => ({
@@ -94,7 +85,7 @@ export function MotionGraphs() {
           isCorrect: choice.id === "exponential-decay",
           feedback:
             choice.id === "exponential-decay"
-              ? "Exactly! Acceleration starts at its maximum value (g) and decreases, approaching zero as the object reaches terminal velocity. The curve flattens out as it approaches zero."
+              ? "Exactly! Acceleration starts at its maximum value (g) and decreases, approaching zero as the object reaches terminal velocity. The curve flattens out as it approaches zero. The net force is F_net = mg - F_d. At the start (v=0), the net force is just mg, so acceleration is at its maximum (a = g). As velocity increases, the drag force grows, reducing the net force and thus reducing the acceleration. The acceleration will approach zero as the object reaches terminal velocity."
               : "This graph shows the value increasing, but acceleration must decrease from its maximum as drag builds up.",
         }))}
       />

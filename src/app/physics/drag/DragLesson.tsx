@@ -34,6 +34,7 @@ export default function DragLesson() {
         </Emphasize>
       </p>
     </Block>,
+
     // Slide 2: Defining Drag
     <Block color="blue" title="What is drag?">
       <p>
@@ -45,7 +46,7 @@ export default function DragLesson() {
       </p>
       <ColorBox color="blue">
         "Resistive" means opposing, so this force{" "}
-        <Emphasize>goes in the opposite direction of motion</Emphasize>.
+        <Emphasize>goes in the opposite direction as motion</Emphasize>.
       </ColorBox>
       <p>
         <KeyTerm>Air drag </KeyTerm>(or aerodynamic drag) is the drag caused by
@@ -53,12 +54,17 @@ export default function DragLesson() {
         wind hitting an object, or both!
       </p>
       <p>
-        Use the interactive demo below to see what happens when you click and
-        drag to move an object through a fluid.
+        Use the interactive demo below to{" "}
+        <Emphasize>
+          see what happens when you click and drag to move an object through a
+          fluid
+        </Emphasize>
+        .
       </p>
       <FluidDragSimulator />
     </Block>,
-    // Slide 4: Free Body Diagram.
+
+    // Slide 3: Free Body Diagram.
     <Block color="blue" title="Forces on a Falling Object">
       <p>
         Let's look at the forces acting on a tennis ball falling through the
@@ -83,7 +89,8 @@ export default function DragLesson() {
         the ball accelerates downward, as the above diagram shows.
       </p>
     </Block>,
-    // Slide 5: Terminal Velocity.
+
+    // Slide 4: Terminal Velocity.
     <Block color="blue" title="Terminal Velocity">
       <p>
         What happens when the upward drag force becomes exactly as strong as the
@@ -109,7 +116,8 @@ export default function DragLesson() {
       </p>
       <p>Hint: Consider what forces are involved.</p>
     </Block>,
-    // Slide 6: Check-in.
+
+    // Slide 5: Check-in.
     <Block color="purple" title="Check-in">
       <QuizQuestion
         question="When you release a ball and it starts to fall (so it's velocity is 0, but its acceleration is downward), what are all the forces on that ball?"
@@ -117,7 +125,7 @@ export default function DragLesson() {
           {
             text: "There is a downward drag force causing the ball to start moving down.",
             isCorrect: false,
-            explanation: "Not quite, the downward forcce is gravity.",
+            explanation: "Not quite, the downward force is gravity.",
           },
           {
             text: "There is a downward gravitational force and an upward drag force.",
@@ -154,7 +162,7 @@ export default function DragLesson() {
               "Not quite, we can have an object that never reaches terminal velocity (and would thus have a lower top speed) and we can have objects that exceed their terminal velocity.",
           },
           {
-            text: "Terminal velocity is when the forces cancel out.",
+            text: "Terminal velocity is the velocity when the forces cancel out.",
             isCorrect: true,
             explanation:
               "Exactly! Terminal velocity is when the net acceleration is 0. If an object is below terminal velocity, gravity is stronger than drag, so it speeds up. And if an object is above terminal velocity, gravity is weaker than drag, so it slows down.",
@@ -162,6 +170,24 @@ export default function DragLesson() {
         ]}
       />
     </Block>,
+
+    // Slide 6: Choice of Skipping Optional Section Slide
+    <Block color="green" title="Optional Section Choice">
+      <p>
+        There are a few slides that dive deep into the source of drag and where
+        the equations come from.{" "}
+        <Emphasize>
+          If you'd like to learn it all, click the arrow at the top right to
+          continue. Otherwise,{" "}
+          <a className="text-blue-500" href="?slide=11">
+            click here to skip the optional section
+          </a>
+          .
+        </Emphasize>
+        .
+      </p>
+    </Block>,
+
     // Slide 7: Different drag forces.
     <Block color="yellow" title="Where Does Drag Come From? The Two Components">
       <p>
@@ -290,7 +316,7 @@ export default function DragLesson() {
       </ul>
     </Block>,
 
-    // Slide 10: Quadratic Drag Equation.
+    // Slide 9: Quadratic Drag Equation.
     <Block color="blue" title="High Velocity Drag">
       <p>
         You've now seen why the drag force exists. It's because the motion of
@@ -364,7 +390,7 @@ export default function DragLesson() {
       </ul>
     </Block>,
 
-    // Slide 11: Equational Check-in.
+    // Slide 10: Equational Check-in.
     <Block color="purple" title="Check-in">
       <QuizQuestion
         question="What is Reynolds number (Re)?"
@@ -407,7 +433,7 @@ export default function DragLesson() {
       />
     </Block>,
 
-    // Slide 12: Explaining Modeling.
+    // Slide 11: Explaining Modeling.
     <Block color="blue" title="What does this look like in practice?">
       <p>
         When modeling drag,{" "}
@@ -439,21 +465,31 @@ export default function DragLesson() {
       </ColorBox>
     </Block>,
 
-    <Block color="purple" title="Visualizing the Motion">
+    // Slide 12: Learning how to make a chart.
+    <Block color="yellow" title="Making a chart">
+      {/* TODO: Implement this slide to walk the student through picking an intercept,
+      picking an end behavior, and using that to make a whole chart for velocity over time.*/}
+      <></>
+    </Block>,
+
+    // Slide 13: Testing out the chart knowledge for Drag.
+    <Block color="yellow" title="Visualizing the Motion">
       <p className="mb-4">
         We've talked about the forces, but what does the actual motion of a
         falling object with drag look like over time? Let's visualize the graphs
         for velocity, position, and acceleration.
       </p>
       <ColorBox color="yellow">
-        Read the descriptions below and click on the graph that you think would
-        fit the scenario.
+        Read the description below and{" "}
+        <Emphasize>
+          click on the graph that you think would fit the scenario.
+        </Emphasize>
       </ColorBox>
       <MotionGraphs />
     </Block>,
 
     // Slide 13: Solving by Separation of Variables.
-    <Block color="yellow" title="Solving an Easier Case">
+    <Block color="blue" title="Solving an Easier Case">
       <p>
         While the quadratic drag equation is common, solving it analytically is
         hard. Let's look at a simpler model, linear drag, where{" "}
@@ -562,8 +598,67 @@ export default function DragLesson() {
       <EulerAnimator />
     </Block>,
 
-    // Slide 15.5: Derivation
+    // Slide 16: Derivation
     <ForwardEulerDerivation />,
+
+    // Slide 17: Practice Problem
+    <Block color="purple" title="Practice: A few ways to the ocean...">
+      <p>Let's do a practice problem.</p>
+      <ColorBox color="gray">
+        <Emphasize>
+          Make note of your answers for your teacher to check.
+        </Emphasize>
+      </ColorBox>
+      <p>
+        Suppose you have a <KeyTerm>volleyball</KeyTerm> that weighs{" "}
+        <KeyTerm>0.25 kilograms</KeyTerm>. You want to know how long it would
+        take for the volleyball to hit the ocean if you drop the volleyball from{" "}
+        <KeyTerm>45 meters above sea level</KeyTerm>.
+      </p>
+      <ColorBox color="yellow">
+        <Emphasize>Question 1:</Emphasize> Based on the regular kinematics
+        equations (assuming no air drag), how long would it take the volleyball
+        to hit the ocean?
+      </ColorBox>
+      <p>
+        You realize that this estimate might not be accurate since you're not
+        accounting for drag. So let's try to use a numerical method to figure
+        that out.
+      </p>
+      <p>
+        Your best friend (who's very trustworthy when it comes to physics) says
+        that the force the ball will experience is{" "}
+        <KeyTerm>Drag Force = -0.1v</KeyTerm>.
+      </p>
+      <ColorBox color="yellow">
+        <Emphasize>Question 2:</Emphasize> Estimating with the{" "}
+        <KeyTerm>forward euler method</KeyTerm> and{" "}
+        <KeyTerm>1 second timesteps</KeyTerm>, when will the volleyball hit the
+        ocean?
+      </ColorBox>
+      <p>
+        Oh wait! Now that you've estimated with a numerical method, you remember
+        that you can solve the equation using calculus...
+      </p>
+      <ColorBox color="yellow">
+        <Emphasize>Question 3:</Emphasize> Using{" "}
+        <KeyTerm>seperation of variables</KeyTerm>, solve for the velocity over
+        time. Then take the integral of the velocity to find a function of
+        position over time. According to your position function, when will the
+        ball reach the ocean?
+      </ColorBox>
+      <p>
+        Great job solving this problem in 3 different ways. The third method
+        should be as exact as you can get according to this model of drag, but
+        perhaps certain methods were easier or don't always apply, so let's
+        reflect...
+      </p>
+      <ColorBox color="yellow">
+        <Emphasize>Question 4:</Emphasize> How do the answers to your previous
+        questions compare, how difficult each answer was to come buy, and which
+        method would you pick for a quick estimate?
+      </ColorBox>
+    </Block>,
 
     // Slide 16. Coding Forward Euler.
     <Block color="yellow" title="Challenge: Code the Forward Euler Method">
