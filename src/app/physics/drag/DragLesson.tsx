@@ -16,6 +16,8 @@ import { AirflowAnimation } from "./AirflowAnimation";
 import { MotionGraphs } from "./MotionGraphs";
 import GraphBuilder from "./GraphBuilder";
 import DragProblemGraphic from "./drag-problem.jpg";
+import ReactKatex from "@pkasila/react-katex";
+import "katex/dist/katex.min.css";
 
 export default function DragLesson() {
   const slides = [
@@ -298,7 +300,9 @@ export default function DragLesson() {
       <p>This leads us to two main drag regimes we can model:</p>
       <ul className="list-disc list-inside mt-4 space-y-4">
         <li>
-          <Emphasize>Linear Drag (F = -b v)</Emphasize>
+          <Emphasize>
+            Linear Drag (<ReactKatex>$F = -b v$</ReactKatex>)
+          </Emphasize>
           <br />
           This model applies at{" "}
           <strong className="text-blue-600">low Reynolds numbers</strong>. The
@@ -307,7 +311,9 @@ export default function DragLesson() {
           microscopic objects.
         </li>
         <li>
-          <Emphasize>Quadratic Drag (F = -k v²)</Emphasize>
+          <Emphasize>
+            Quadratic Drag (<ReactKatex>$F = -kv^2$</ReactKatex>)
+          </Emphasize>
           <br />
           This model applies at{" "}
           <strong className="text-red-600">high Reynolds numbers</strong>. The
@@ -328,10 +334,9 @@ export default function DragLesson() {
         Since there are a few factors that affect drag, the big and scary{" "}
         <KeyTerm>drag equation</KeyTerm> looks like this:
       </p>
-      {/* Equation Box: Monospaced font for a "codey" feel, slightly different background. */}
-      <div className="p-4 my-5 text-2xl text-center rounded bg-slate-200 font-mono">
-        F<sub>D</sub> = ½ ρ v<sup>2</sup> C<sub>D</sub> A
-      </div>
+      <ColorBox color="gray" mode="center">
+        <ReactKatex>{"$F_D = \\frac{1}{2} \\rho v^2 C_D A$"}</ReactKatex>
+      </ColorBox>
 
       <p className="mb-5 text-slate-700">Here's what each part means:</p>
 
@@ -339,7 +344,7 @@ export default function DragLesson() {
       <ul className="pl-0 list-none">
         <li className="mb-5">
           <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
-            F<sub>D</sub>
+            <ReactKatex>$F_D$</ReactKatex>
           </code>
           <Emphasize>Drag Force</Emphasize>
           <p className="mt-1 text-slate-600">
@@ -349,7 +354,7 @@ export default function DragLesson() {
         </li>
         <li className="mb-5">
           <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
-            ρ
+            <ReactKatex>$\rho$</ReactKatex>
           </code>
           <Emphasize>Fluid Density (rho)</Emphasize>
           <p className="mt-1 text-slate-600">
@@ -359,7 +364,7 @@ export default function DragLesson() {
         </li>
         <li className="mb-5">
           <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
-            v
+            <ReactKatex>$v$</ReactKatex>
           </code>
           <Emphasize>Velocity</Emphasize>
           <p className="mt-1 text-slate-600">
@@ -371,7 +376,7 @@ export default function DragLesson() {
         </li>
         <li className="mb-5">
           <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
-            C<sub>D</sub>
+            <ReactKatex>$C_D$</ReactKatex>
           </code>
           <Emphasize>Drag Coefficient</Emphasize>
           <p className="mt-1 text-slate-600">
@@ -381,7 +386,7 @@ export default function DragLesson() {
         </li>
         <li className="mb-5">
           <code className="p-1 mr-2 text-lg font-bold rounded bg-slate-200 text-orange-600">
-            A
+            <ReactKatex>$A$</ReactKatex>
           </code>
           <Emphasize>Cross-Sectional Area</Emphasize>
           <p className="mt-1 text-slate-600">
@@ -395,10 +400,20 @@ export default function DragLesson() {
     // Slide 10: Equational Check-in.
     <Block color="purple" title="Check-in">
       <QuizQuestion
-        question="What is Reynolds number (Re)?"
+        question={
+          <>
+            What is Reynolds number <ReactKatex>(Re)</ReactKatex>?
+          </>
+        }
         choices={[
           {
-            text: "Reynold's number is ~3.72641 and is a ratio of static metaphysical relevance and external bouyancy, coined by John Reynold.",
+            text: (
+              <>
+                Reynold's number is <ReactKatex>~3.72641</ReactKatex> and is a
+                ratio of static metaphysical relevance and external bouyancy,
+                coined by John Reynold.
+              </>
+            ),
             isCorrect: false,
             explanation:
               "Not quite, Reynolds number is not a constant, but depends on the specific context.",
@@ -410,7 +425,12 @@ export default function DragLesson() {
               "Exactly! Reynolds number is a ratio of inertial and viscous forces, and it is used to predict liquid flow.",
           },
           {
-            text: "Reynolds number is the coefficent of drag in the equation F_D = Re v",
+            text: (
+              <>
+                Reynolds number is the coefficent of drag in the equation{" "}
+                <ReactKatex>$F_D = Re * v$</ReactKatex>
+              </>
+            ),
             isCorrect: false,
             explanation:
               "Not quite, Reynolds number is not used as a direct coefficient, although it may appear in certain equations.",
@@ -440,8 +460,9 @@ export default function DragLesson() {
       <p>
         When modeling drag,{" "}
         <Emphasize>
-          we often use a simple formula like a constant times velocity ( 𝑘 𝑣 )
-          or velocity squared ( 𝑘 𝑣 <sup>2</sup> )
+          we often use a simple formula such as the inverse of a constant times
+          velocity (<ReactKatex>$-kv$</ReactKatex>) or velocity squared (
+          <ReactKatex>$-kv^2$</ReactKatex>)
         </Emphasize>{" "}
         instead of writing out the full formula with fluid density, drag
         coefficient, and cross-sectional area.
@@ -459,11 +480,7 @@ export default function DragLesson() {
       <ColorBox color="yellow">
         Practically, for the sake of learning, we can often deal with the
         following simple linear equation!
-        <div className="flex flex-row justify-center font-semibold my-2">
-          <code>
-            F<sub>D</sub> = k v
-          </code>
-        </div>
+        <ReactKatex>$$F_D = -kv$$</ReactKatex>
       </ColorBox>
     </Block>,
 
@@ -500,40 +517,44 @@ export default function DragLesson() {
         hard. Let's look at a simpler model, linear drag, where{" "}
       </p>
       <ColorBox color="yellow">
-        <code>
-          F<sub>D</sub> = -b v
-        </code>
+        <ReactKatex>$F_D = -bv$</ReactKatex>
       </ColorBox>
       <p>
-        We can solve this using Newton's second law (<KeyTerm>F=ma</KeyTerm>)
-        and a calculus technique called{" "}
+        We can solve this using Newton's second law (
+        <KeyTerm>
+          <ReactKatex>$F=ma$</ReactKatex>
+        </KeyTerm>
+        ) and a calculus technique called{" "}
         <KeyTerm>separation of variables</KeyTerm>.
       </p>
       <ol className="list-decimal list-inside my-4 space-y-2">
         <li>
-          <Emphasize>Start with Newton's Law, F = ma.</Emphasize> Then
-          substitute the forces we have (here, it's just drag, but we could have
-          more forces).
+          <Emphasize>
+            Start with Newton's Law, <ReactKatex>$F = ma$</ReactKatex>.
+          </Emphasize>{" "}
+          Then substitute the forces we have (here, it's just drag, but we could
+          have more forces in the future).
           <ColorBox color="blue">
-            <code>ma = -bv</code>
+            <ReactKatex>$ma = -bv$</ReactKatex>
           </ColorBox>
         </li>
         <li>
           <Emphasize>
-            Replace acceleration (a) with <code>dv/dt</code>.
+            Replace acceleration <ReactKatex>($a$)</ReactKatex> with{" "}
+            <ReactKatex>{"$\\frac{dv}{dt}$"}</ReactKatex>.
           </Emphasize>{" "}
           We can do this since acceleration is the derivative of velocity. This
           leaves us with a differential equation in terms of just velocity and
           time:
           <ColorBox color="blue">
-            <code>m(dv/dt) = -bv</code>
+            <ReactKatex>{"$m\\frac{dv}{dt} = -bv$"}</ReactKatex>
           </ColorBox>
         </li>
         <li>
           <Emphasize>Separate the variables.</Emphasize> Get all 'v' terms on
           one side and 't' terms on the other:
           <ColorBox color="blue">
-            <code>(1/v)dv = -(b/m)dt</code>
+            <ReactKatex>{"$\\frac{1}{v}dv = -\\frac{b}{m}dt$"}</ReactKatex>
           </ColorBox>
         </li>
         <li>
@@ -551,27 +572,33 @@ export default function DragLesson() {
     // Slide 14: Seeing if they can perform the math.
     <Block color="purple" title="Check in">
       <QuizQuestion
-        question="Assume that at time 0, velocity is v_0. What is the formula for velocity from the equation F_D = -b v (from the previous slide), given that there are no other forces?"
+        question={
+          <ReactKatex>
+            Assume that at time $t=0s$, velocity is $v_0$. What is the formula
+            for velocity from the equation $F_D = -b v$ (from the previous
+            slide), given that there are no other forces?
+          </ReactKatex>
+        }
         choices={[
           {
-            text: "v = v_0 e^(-bt/m)",
+            text: <ReactKatex>{"$v = v_0 e^\\frac{-bt}{m}$"}</ReactKatex>,
             isCorrect: true,
             explanation: "Correct!",
           },
           {
-            text: "v = v_0^2 + 4t",
+            text: <ReactKatex>$v = v_0^2 + 4t$</ReactKatex>,
             isCorrect: false,
             explanation:
               "Not quite, we wouldn't expect the object to get faster as the only force acting on it is a resistive force - drag.",
           },
           {
-            text: "v = (v_0 t / b)^m",
+            text: <ReactKatex>{"$v = (\\frac{v_0 t}{b})^m$"}</ReactKatex>,
             isCorrect: false,
             explanation:
               "Not quite. Try carefully integrating both sides and using some rules of logarithms to figure it out.",
           },
           {
-            text: "v = (v_0 b / m)^t",
+            text: <ReactKatex>{"$v = (\\frac{v_0 b}{m})^t$"}</ReactKatex>,
             isCorrect: false,
             explanation:
               "Not quite. Try carefully integrating both sides and using some rules of logarithms to figure it out.",
@@ -622,9 +649,15 @@ export default function DragLesson() {
       </ColorBox>
       <p>
         Suppose you have a <KeyTerm>volleyball</KeyTerm> that weighs{" "}
-        <KeyTerm>0.25 kilograms</KeyTerm>. You want to know how long it would
-        take for the volleyball to hit the ocean if you drop the volleyball from{" "}
-        <KeyTerm>45 meters above sea level</KeyTerm>.
+        <KeyTerm>
+          <ReactKatex>$0.25$ kilograms</ReactKatex>
+        </KeyTerm>
+        . You want to know how long it would take for the volleyball to hit the
+        ocean if you drop the volleyball from{" "}
+        <KeyTerm>
+          <ReactKatex>$45$ meters</ReactKatex> above sea level
+        </KeyTerm>
+        .
       </p>
       <img
         src={DragProblemGraphic.src}
@@ -644,7 +677,10 @@ export default function DragLesson() {
       <p>
         Your best friend (who's very trustworthy when it comes to physics) says
         that the force the ball will experience is{" "}
-        <KeyTerm>Drag Force = -0.1v</KeyTerm>.
+        <KeyTerm>
+          <ReactKatex>{"$F_D = -0.1v$"}</ReactKatex>
+        </KeyTerm>
+        .
       </p>
       <ColorBox color="yellow">
         <Emphasize>Question 2:</Emphasize> Estimating with the{" "}
@@ -742,23 +778,24 @@ export default function DragLesson() {
           through a fluid.
         </li>
         <li>
-          For high speeds, drag is proportional to velocity squared (
+          We often use a simple equation to model drag (e.g.
           <KeyTerm>
-            F<sub>D</sub> = kv<sup>2</sup>
+            <ReactKatex> $F_D = -kv$</ReactKatex>
           </KeyTerm>
           ).
         </li>
         <li>
-          <KeyTerm>Terminal velocity</KeyTerm> is reached when the drag force
-          equals the force of gravity.
+          <KeyTerm>Terminal velocity</KeyTerm> is reached when the forces cancel
+          out (e.g. drag force equals the force of gravity).
         </li>
         <li>
           Simple models can be solved exactly using techniques like{" "}
           <KeyTerm>separation of variables</KeyTerm>.
         </li>
         <li>
-          Complex models require approximation with{" "}
-          <KeyTerm>numerical methods</KeyTerm> like Forward Euler and RK4.
+          Complex models may require approximation with{" "}
+          <KeyTerm>numerical methods</KeyTerm> like{" "}
+          <KeyTerm>Forward Euler</KeyTerm> and RK4.
         </li>
         <li>
           Higher-order numerical methods provide better accuracy for a given
