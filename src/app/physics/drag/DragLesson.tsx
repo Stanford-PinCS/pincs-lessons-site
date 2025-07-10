@@ -713,17 +713,8 @@ export default function DragLesson() {
     </Block>,
 
     // Slide 16. Coding Forward Euler.
-    <Block color="yellow" title="Challenge: Code the Forward Euler Method">
-      <p>
-        Now it's your turn. Use the logic from the previous slide to complete
-        the code below.
-      </p>
-      <p>
-        You'll need to calculate the current acceleration based on gravity and
-        drag, then use it to update the ball's velocity and position over a
-        small timestep <code>dt</code>.
-      </p>
-      {/* <CodingChallenge /> */}
+    <Block color="yellow" title="Code the Forward Euler Method">
+      <iframe src="https://dev.pickcode.io/lesson/drag-lesson-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-07-09-05-55-53"></iframe>
     </Block>,
 
     // Slide 17: Higher Order Methods.
@@ -753,20 +744,7 @@ export default function DragLesson() {
 
     // Slide 18: Coding a 2nd-Order Numerical Method.
     <Block color="yellow" title="Challenge: A More Accurate Method">
-      <p>Let's try implementing a 2nd-order method. The idea is to:</p>
-      <ol className="list-decimal list-inside my-4 space-y-2">
-        <li>
-          Use Forward Euler to "predict" the velocity at the midpoint of the
-          timestep.
-        </li>
-        <li>Calculate acceleration at that midpoint.</li>
-        <li>
-          Use this improved acceleration to take the full step from the
-          beginning.
-        </li>
-      </ol>
-      <p>Try coding this "predict-correct" logic.</p>
-      {/* <CodingChallenge /> */}
+      <iframe src="https://dev.pickcode.io/lesson/drag-lesson-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-07-09-05-55-53-copy-2025-07-10-10-53-40"></iframe>
     </Block>,
 
     // Slide 19: Recap.
