@@ -103,8 +103,9 @@ export const AllLessons: Lesson[] = [
     link: "/econ/marginal-utility",
     tags: [
       { type: "subject", value: Subject.Economics },
-      { type: "hidden", value: false }
-    ] },
+      { type: "hidden", value: false },
+    ],
+  },
   {
     title: "Example Lesson",
     link: "/example-lesson",
