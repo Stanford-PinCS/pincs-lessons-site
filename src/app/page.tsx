@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { Lesson, Subject, Tag, tagsMatch } from "./types";
 import { useCallback, useState } from "react";
 import TagFilterBox from "@/components/TagFilterBox";
@@ -7,8 +6,12 @@ import { AllLessons } from "./lessons";
 import { ArrowLongLeftIcon, FunnelIcon } from "@heroicons/react/16/solid";
 import PincsHeader from "@/components/PincsHeader";
 import PincsButton from "@/components/PincsButton";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [filterDrawerOpen, setFilterDrawerOpen] = useState<boolean>(false);
   const [selectedSubjects, setSelectedSubjects] = useState<Tag[]>([]);
   const subjects = Object.values(Subject);
@@ -29,6 +32,17 @@ export default function Home() {
     },
     [selectedSubjects]
   );
+
+  const goToLesson = (link: string, tags: Tag[]) => {
+    const preview = tags.some(
+      (tag) => tag.type === "hasPreview" && tag.value === true
+    );
+    const params = new URLSearchParams(searchParams.toString());
+    if (preview) {
+      params.set("preview", "true");
+    }
+    router.push(`${pathname}/${link}?${params.toString()}`);
+  };
 
   return (
     <div className="flex flex-col h-screen">
@@ -81,13 +95,13 @@ export default function Home() {
             {AllLessons.filter((lesson) => {
               return filterLesson(lesson);
             }).map((l, i) => (
-              <Link
+              <button
                 key={i}
                 className="p-4 rounded-lg border border-slate-300 w-60 flex items-center justify-center hover:border-indigo-500 transition-colors"
-                href={l.link}
+                onClick={() => goToLesson(l.link, l.tags)}
               >
                 {l.title}
-              </Link>
+              </button>
             ))}
           </div>
         </main>

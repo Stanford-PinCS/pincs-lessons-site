@@ -17,8 +17,11 @@ export default function LandingPage({
 }: PropsWithChildren<LandingPageProps>) {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const goToLesson = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("preview");
     router.push(`${pathname}/lesson`, { scroll: false });
   };
 

@@ -30,8 +30,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
     }
 
     // Determine preview mode.
-    const pathTokens = pathname.split("/");
-    if (pathTokens.length && pathTokens.includes("lesson")) {
+    if (searchParams.get("preview") !== "true") {
       setIsPreview(false);
     }
 
@@ -73,13 +72,13 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
     "p-2 rounded-full bg-slate-100 text-slate-600 border border-slate-300 shadow-lg transition-all";
 
   return (
-    <div className="relative flex-grow flex flex-row overflow-auto">
+    <div className="relative flex-grow flex flex-row">
       {/* Main content area */}
       {isPreview && (
         <button
           onClick={goToPreviousSlide}
           disabled={currentSlide === 0}
-          className={`fixed z-1 left-[310px] top-[320px] ${navButtonStyle}
+          className={`fixed z-1 left-[310px] ${navButtonStyle}
           ${
             currentSlide === 0
               ? "opacity-50 cursor-not-allowed"
@@ -102,14 +101,14 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
           </svg>
         </button>
       )}
-      <div className="relative flex-grow flex flex-row overflow-scroll">
+      <div className="relative flex-grow flex flex-row">
         <Slide>{slides[currentSlide]}</Slide>
       </div>
       {isPreview && (
         <button
           onClick={goToNextSlide}
           disabled={currentSlide === slides.length - 1}
-          className={`fixed z-1 right-[310px] top-[320px] ${navButtonStyle}
+          className={`fixed z-1 right-[310px] ${navButtonStyle}
           ${
             currentSlide === slides.length - 1
               ? "opacity-50 cursor-not-allowed"

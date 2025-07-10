@@ -109,6 +109,9 @@ export const AllLessons: Lesson[] = [
   {
     title: "Example Lesson",
     link: "/example-lesson",
-    tags: [{ type: "hidden", value: true }],
+    tags: [
+      { type: "hidden", value: false },
+      { type: "hasPreview", value: true },
+    ],
   },
 ];
