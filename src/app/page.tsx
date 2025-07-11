@@ -1,10 +1,12 @@
 "use client";
-import Link from "next/link";
 import { Lesson, Subject, Tag, tagsMatch } from "./types";
 import { useCallback, useState } from "react";
 import TagFilterBox from "@/components/TagFilterBox";
 import { AllLessons } from "./lessons";
 import { ArrowLongLeftIcon, FunnelIcon } from "@heroicons/react/16/solid";
+import PincsHeader from "@/components/PincsHeader";
+import PincsButton from "@/components/PincsButton";
+import Link from "next/link";
 
 export default function Home() {
   const [filterDrawerOpen, setFilterDrawerOpen] = useState<boolean>(false);
@@ -30,14 +32,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen">
-      <header className="md:pt-2 lg:pt-4 md:pl-2 lg:pl-4 md:pb-3 lg:pb-6 bg-[#ff80cc] w-full">
-        <Link
-          href={"/"}
-          className="flex text-2xl font-extralight inline-block no-underline hover:text-white text-[#ff0]"
-        >
-          Stanford PinCS{" "}
-        </Link>
-      </header>
+      <PincsHeader />
       <div className="flex flex-row h-full">
         <div
           className={`flex relative transition-all duration-500 ${
@@ -45,13 +40,11 @@ export default function Home() {
           }`}
         >
           {!filterDrawerOpen && (
-            <button
-              className="flex self-start flex-row gap-2 m-4 p-2 bg-[#ff80cc] text-white rounded hover:bg-pink-400 cursor-pointer"
+            <PincsButton
+              text="Filter"
               onClick={() => setFilterDrawerOpen((o) => !o)}
-            >
-              {`Filter`}
-              <FunnelIcon width={16} />
-            </button>
+              iconRight={<FunnelIcon width={16} />}
+            />
           )}
           <aside
             className={`

@@ -1,5 +1,4 @@
 "use client";
-import LessonWrapper from "@/components/LessonWrapper";
 import Lesson from "@/components/Lesson";
 import QuizQuestion from "@/components/QuizQuestion";
 import React, { useState, useRef, useMemo, Children } from "react";
@@ -2018,8 +2017,7 @@ export default function MarginalUtility() {
         title="Code Up a Greedy Algorithm"
         width="100%"
         height="500"
-        // TODO: change into a permalink
-        src="http://localhost:5173/sandbox/marginal-utility"
+        src="https://dev.pickcode.io/lesson/marginal-utility-optimization-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-06-26-11-46-41"
       ></iframe>
     </Block>,
 
@@ -2066,9 +2064,5 @@ export default function MarginalUtility() {
     </Block>,
   ];
 
-  return (
-    <LessonWrapper>
-      <Lesson slides={slides}></Lesson>
-    </LessonWrapper>
-  );
+  return <Lesson slides={slides}></Lesson>;
 }
