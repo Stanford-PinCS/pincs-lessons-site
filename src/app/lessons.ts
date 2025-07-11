@@ -1,5 +1,8 @@
 import { Lesson, Subject, Tag } from "./types";
 
+const DEMO_LESSONS_HIDDEN = true;
+const ARCHIVED_LESSONS_HIDDEN = true;
+
 const Lessons: Lesson[] = [
   {
     title: "Ecosystems",
@@ -25,10 +28,21 @@ const Lessons: Lesson[] = [
       { type: "hidden", value: false },
     ],
   },
+];
+
+const DemoLessons: Lesson[] = [
   {
     title: "Example Lesson",
-    link: "/example-lesson",
-    tags: [{ type: "hidden", value: true }],
+    link: "/demo/example-lesson",
+    tags: [{ type: "hidden", value: DEMO_LESSONS_HIDDEN }],
+  },
+  {
+    title: "Code Editor Example",
+    link: "/demo/code-editor-example/lesson",
+    tags: [
+      { type: "subject", value: Subject.ComputerScience },
+      { type: "hidden", value: DEMO_LESSONS_HIDDEN },
+    ],
   },
 ];
 
@@ -38,7 +52,7 @@ const ArchivedLessons: Lesson[] = [
     link: "/archive/biology/cell-health/lesson",
     tags: [
       { type: "subject", value: Subject.Biology },
-      { type: "hidden", value: true },
+      { type: "hidden", value: ARCHIVED_LESSONS_HIDDEN },
     ],
   },
   {
@@ -46,7 +60,7 @@ const ArchivedLessons: Lesson[] = [
     link: "/archive/biology/disease-spread/lesson",
     tags: [
       { type: "subject", value: Subject.Biology },
-      { type: "hidden", value: true },
+      { type: "hidden", value: ARCHIVED_LESSONS_HIDDEN },
     ],
   },
   {
@@ -54,7 +68,7 @@ const ArchivedLessons: Lesson[] = [
     link: "/archive/biology/memory/lesson",
     tags: [
       { type: "subject", value: Subject.Biology },
-      { type: "hidden", value: true },
+      { type: "hidden", value: ARCHIVED_LESSONS_HIDDEN },
     ],
   },
   {
@@ -62,7 +76,7 @@ const ArchivedLessons: Lesson[] = [
     link: "/archive/geometry/lesson",
     tags: [
       { type: "subject", value: Subject.Mathematics },
-      { type: "hidden", value: true },
+      { type: "hidden", value: ARCHIVED_LESSONS_HIDDEN },
     ],
   },
   {
@@ -70,7 +84,7 @@ const ArchivedLessons: Lesson[] = [
     link: "/archive/history/arpanet/lesson",
     tags: [
       { type: "subject", value: Subject.History },
-      { type: "hidden", value: true },
+      { type: "hidden", value: ARCHIVED_LESSONS_HIDDEN },
     ],
   },
 
@@ -79,7 +93,7 @@ const ArchivedLessons: Lesson[] = [
     link: "/archive/music/lesson",
     tags: [
       { type: "subject", value: Subject.Music },
-      { type: "hidden", value: true },
+      { type: "hidden", value: ARCHIVED_LESSONS_HIDDEN },
     ],
   },
   {
@@ -87,7 +101,7 @@ const ArchivedLessons: Lesson[] = [
     link: "/archive/poetry/emoji-translator/lesson",
     tags: [
       { type: "subject", value: Subject.English },
-      { type: "hidden", value: true },
+      { type: "hidden", value: ARCHIVED_LESSONS_HIDDEN },
     ],
   },
   {
@@ -95,7 +109,7 @@ const ArchivedLessons: Lesson[] = [
     link: "/archive/poetry/next-word-prediction/lesson",
     tags: [
       { type: "subject", value: Subject.English },
-      { type: "hidden", value: true },
+      { type: "hidden", value: ARCHIVED_LESSONS_HIDDEN },
     ],
   },
   {
@@ -103,17 +117,13 @@ const ArchivedLessons: Lesson[] = [
     link: "/archive/probability/lesson",
     tags: [
       { type: "subject", value: Subject.Mathematics },
-      { type: "hidden", value: true },
-    ],
-  },
-  {
-    title: "Code Editor Example",
-    link: "/archive/code-editor-example/lesson",
-    tags: [
-      { type: "subject", value: Subject.ComputerScience },
-      { type: "hidden", value: true },
+      { type: "hidden", value: ARCHIVED_LESSONS_HIDDEN },
     ],
   },
 ];
 
-export const AllLessons: Lesson[] = [...Lessons, ...ArchivedLessons];
+export const AllLessons: Lesson[] = [
+  ...Lessons,
+  ...ArchivedLessons,
+  ...DemoLessons,
+];
