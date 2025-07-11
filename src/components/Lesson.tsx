@@ -72,7 +72,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
     "p-2 rounded-full bg-slate-100 text-slate-600 border border-slate-300 shadow-lg transition-all";
 
   return (
-    <div className="relative flex-grow flex flex-row">
+    <div className="relative flex-grow flex flex-row w-full">
       {/* Main content area */}
       {isPreview && (
         <button
