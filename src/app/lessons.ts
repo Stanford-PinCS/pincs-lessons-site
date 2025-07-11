@@ -30,7 +30,7 @@ const Lessons: Lesson[] = [
   },
   {
     title: "Drag",
-    link: "/physics/drag",
+    link: "/physics/drag/lesson",
     tags: [
       { type: "subject", value: Subject.Physics },
       { type: "hidden", value: false },
