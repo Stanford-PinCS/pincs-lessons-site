@@ -99,8 +99,8 @@ export const AllLessons: Lesson[] = [
     ],
   },
   {
-    title: "Marginal Utility",
-    link: "/econ/marginal-utility",
+    title: "Utility Optimization",
+    link: "/econ/utility-optimization",
     tags: [
       { type: "subject", value: Subject.Economics },
       { type: "hidden", value: false },
