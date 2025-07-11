@@ -3,14 +3,31 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import PincsButton from "./PincsButton";
 import PincsHeader from "./PincsHeader";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, Suspense, useEffect, useState } from "react";
 
 type LandingPageProps = {
   teacherResources: string | undefined;
   lessonDescription: string | undefined;
 };
 
-export default function LandingPage({
+export default function ({
+  teacherResources,
+  lessonDescription,
+  children,
+}: PropsWithChildren<LandingPageProps>) {
+  return (
+    <Suspense>
+      <LandingPage
+        teacherResources={teacherResources}
+        lessonDescription={lessonDescription}
+      >
+        {children}
+      </LandingPage>
+    </Suspense>
+  );
+}
+
+function LandingPage({
   teacherResources, // Future: Link to external doc
   lessonDescription,
   children,

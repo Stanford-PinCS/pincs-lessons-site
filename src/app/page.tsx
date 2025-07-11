@@ -1,6 +1,6 @@
 "use client";
 import { Lesson, Subject, Tag, tagsMatch } from "./types";
-import { useCallback, useState } from "react";
+import { Suspense, useCallback, useState } from "react";
 import TagFilterBox from "@/components/TagFilterBox";
 import { AllLessons } from "./lessons";
 import { ArrowLongLeftIcon, FunnelIcon } from "@heroicons/react/16/solid";
@@ -8,7 +8,16 @@ import PincsHeader from "@/components/PincsHeader";
 import PincsButton from "@/components/PincsButton";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-export default function Home() {
+// TODO: Get rid of SearchParams and unnecessary Suspense boundary once all lessons are in the right format
+export default function () {
+  return (
+    <Suspense>
+      <Home></Home>
+    </Suspense>
+  );
+}
+
+function Home() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
