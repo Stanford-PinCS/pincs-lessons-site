@@ -1,12 +1,17 @@
 "use client";
-import Link from "next/link";
 import { Lesson, Subject, Tag, tagsMatch } from "./types";
 import { useCallback, useState } from "react";
 import TagFilterBox from "@/components/TagFilterBox";
 import { AllLessons } from "./lessons";
 import { ArrowLongLeftIcon, FunnelIcon } from "@heroicons/react/16/solid";
+import PincsHeader from "@/components/PincsHeader";
+import PincsButton from "@/components/PincsButton";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [filterDrawerOpen, setFilterDrawerOpen] = useState<boolean>(false);
   const [selectedSubjects, setSelectedSubjects] = useState<Tag[]>([]);
   const subjects = Object.values(Subject);
@@ -28,16 +33,20 @@ export default function Home() {
     [selectedSubjects]
   );
 
+  const goToLesson = (link: string, tags: Tag[]) => {
+    const preview = tags.some(
+      (tag) => tag.type === "hasPreview" && tag.value === true
+    );
+    const params = new URLSearchParams(searchParams.toString());
+    if (preview) {
+      params.set("preview", "true");
+    }
+    router.push(`${pathname}/${link}?${params.toString()}`);
+  };
+
   return (
     <div className="flex flex-col h-screen">
-      <header className="md:pt-2 lg:pt-4 md:pl-2 lg:pl-4 md:pb-3 lg:pb-6 bg-[#ff80cc] w-full">
-        <Link
-          href={"/"}
-          className="flex text-2xl font-extralight inline-block no-underline hover:text-white text-[#ff0]"
-        >
-          Stanford PinCS{" "}
-        </Link>
-      </header>
+      <PincsHeader />
       <div className="flex flex-row h-full">
         <div
           className={`flex relative transition-all duration-500 ${
@@ -45,13 +54,11 @@ export default function Home() {
           }`}
         >
           {!filterDrawerOpen && (
-            <button
-              className="flex self-start flex-row gap-2 m-4 p-2 bg-[#ff80cc] text-white rounded hover:bg-pink-400 cursor-pointer"
+            <PincsButton
+              text="Filter"
               onClick={() => setFilterDrawerOpen((o) => !o)}
-            >
-              {`Filter`}
-              <FunnelIcon width={16} />
-            </button>
+              iconRight={<FunnelIcon width={16} />}
+            />
           )}
           <aside
             className={`
@@ -88,13 +95,13 @@ export default function Home() {
             {AllLessons.filter((lesson) => {
               return filterLesson(lesson);
             }).map((l, i) => (
-              <Link
+              <button
                 key={i}
                 className="p-4 rounded-lg border border-slate-300 w-60 flex items-center justify-center hover:border-indigo-500 transition-colors"
-                href={l.link}
+                onClick={() => goToLesson(l.link, l.tags)}
               >
                 {l.title}
-              </Link>
+              </button>
             ))}
           </div>
         </main>
