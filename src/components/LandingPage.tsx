@@ -1,9 +1,9 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import PincsButton from "./PincsButton";
 import PincsHeader from "./PincsHeader";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren } from "react";
 
 type LandingPageProps = {
   teacherResources: string | undefined;
@@ -11,17 +11,14 @@ type LandingPageProps = {
 };
 
 export default function LandingPage({
-  teacherResources, // Future: Link to external doc
+  teacherResources, // TODO: Future - Link to external doc
   lessonDescription,
   children,
 }: PropsWithChildren<LandingPageProps>) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const goToLesson = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("preview");
     router.push(`${pathname}/lesson`, { scroll: false });
   };
 

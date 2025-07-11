@@ -14,8 +14,7 @@ export enum Subject {
 export type Tag =
   | { type: "subject"; value: Subject }
   | { type: "grade"; value: number | undefined }
-  | { type: "hidden"; value: boolean }
-  | { type: "hasPreview"; value: boolean };
+  | { type: "hidden"; value: boolean };
 
 export function tagsMatch(tagA: Tag, tagB: Tag) {
   return tagA.type === tagB.type && tagA.value === tagB.value;
