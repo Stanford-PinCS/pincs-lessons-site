@@ -96,6 +96,7 @@ export const AllLessons: Lesson[] = [
     tags: [
       { type: "subject", value: Subject.EnvironmentalScience },
       { type: "hidden", value: false },
+      { type: "hasPreview", value: true },
     ],
   },
   {
@@ -104,6 +105,7 @@ export const AllLessons: Lesson[] = [
     tags: [
       { type: "subject", value: Subject.Economics },
       { type: "hidden", value: false },
+      { type: "hasPreview", value: true },
     ],
   },
   {

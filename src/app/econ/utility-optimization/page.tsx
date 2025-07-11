@@ -1,17 +1,14 @@
-import LessonWrapper from "@/components/LessonWrapper";
-import { Metadata } from "next";
-import UtilityOptimizationLesson from "./UtilityOptimizationLesson";
+import LandingPage from "@/components/LandingPage";
+import UtilityLesson from "./lesson/UtilityOptimizationLesson";
 
-export const metadata: Metadata = {
-  title: "Utility Optimization",
-  description:
-    "This is a lesson that teaches how to apply the greedy algorithm to optimize for utility for economics.",
-};
-
-export default function ExampleLesson() {
+export default function ExampleLessonLandingPage() {
   return (
-    <LessonWrapper>
-      <UtilityOptimizationLesson />
-    </LessonWrapper>
+    <LandingPage
+      teacherResources=""
+      lessonDescription="This lesson targets a topics 1.5 and 1.6 of AP Microeconomics, although it can be suitable for non-AP level economics students too. Specifically, it teaches students about Marginal Utility, Marginal Cost, and Marginal Benefit. It also builds intuition for the Law of Diminishing Maringal Utility and teaches students about how to optimize for utility using the MU/P ratio. In the end, student's will code up the logic for a greedy algorithm, solidifying their understanding of all of these topics."
+    >
+      {" "}
+      <UtilityLesson />{" "}
+    </LandingPage>
   );
 }
