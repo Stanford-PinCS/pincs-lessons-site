@@ -1,44 +1,24 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import PincsButton from "./PincsButton";
 import PincsHeader from "./PincsHeader";
-import { PropsWithChildren, Suspense, useEffect, useState } from "react";
+import { PropsWithChildren } from "react";
 
 type LandingPageProps = {
   teacherResources: string | undefined;
   lessonDescription: string | undefined;
 };
 
-export default function ({
-  teacherResources,
-  lessonDescription,
-  children,
-}: PropsWithChildren<LandingPageProps>) {
-  return (
-    <Suspense>
-      <LandingPage
-        teacherResources={teacherResources}
-        lessonDescription={lessonDescription}
-      >
-        {children}
-      </LandingPage>
-    </Suspense>
-  );
-}
-
-function LandingPage({
-  teacherResources, // Future: Link to external doc
+export default function LandingPage({
+  teacherResources, // TODO: Future - Link to external doc
   lessonDescription,
   children,
 }: PropsWithChildren<LandingPageProps>) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const goToLesson = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("preview");
     router.push(`${pathname}/lesson`, { scroll: false });
   };
 

@@ -1,102 +1,20 @@
 import { Lesson, Subject, Tag } from "./types";
 
-export const AllLessons: Lesson[] = [
-  {
-    title: "Cell health",
-    link: "/biology/cell-health",
-    tags: [
-      { type: "subject", value: Subject.Biology },
-      { type: "hidden", value: false },
-    ],
-  },
-  {
-    title: "Disease spread",
-    link: "/biology/disease-spread",
-    tags: [
-      { type: "subject", value: Subject.Biology },
-      { type: "hidden", value: false },
-    ],
-  },
-  {
-    title: "Memory model",
-    link: "/biology/memory",
-    tags: [
-      { type: "subject", value: Subject.Biology },
-      { type: "hidden", value: false },
-    ],
-  },
-  {
-    title: "Fractals+Recursion",
-    link: "/geometry",
-    tags: [
-      { type: "subject", value: Subject.Mathematics },
-      { type: "hidden", value: false },
-    ],
-  },
-  {
-    title: "Arpanet",
-    link: "/history/arpanet",
-    tags: [
-      { type: "subject", value: Subject.History },
-      { type: "hidden", value: false },
-    ],
-  },
-  {
-    title: "Cryptography",
-    link: "/history/cryptography",
-    tags: [
-      { type: "subject", value: Subject.History },
-      { type: "hidden", value: false },
-    ],
-  },
-  {
-    title: "Music Analysis",
-    link: "/music",
-    tags: [
-      { type: "subject", value: Subject.Music },
-      { type: "hidden", value: false },
-    ],
-  },
-  {
-    title: "Emoji Translator",
-    link: "/poetry/emoji-translator",
-    tags: [
-      { type: "subject", value: Subject.English },
-      { type: "hidden", value: false },
-    ],
-  },
-  {
-    title: "Next Word Prediction",
-    link: "/poetry/next-word-prediction",
-    tags: [
-      { type: "subject", value: Subject.English },
-      { type: "hidden", value: false },
-    ],
-  },
-  {
-    title: "Probability Intro",
-    link: "/probability",
-    tags: [
-      { type: "subject", value: Subject.Mathematics },
-      { type: "hidden", value: false },
-    ],
-  },
-  {
-    title: "Code Editor Example",
-    link: "/code-editor-example",
-    tags: [
-      { type: "subject", value: Subject.ComputerScience },
-      { type: "hidden", value: false },
-    ],
-  },
-
+const Lessons: Lesson[] = [
   {
     title: "Ecosystems",
     link: "/environmental-science/ecosystems",
     tags: [
       { type: "subject", value: Subject.EnvironmentalScience },
       { type: "hidden", value: false },
-      { type: "hasPreview", value: true },
+    ],
+  },
+  {
+    title: "Cryptography",
+    link: "/history/cryptography/lesson",
+    tags: [
+      { type: "subject", value: Subject.History },
+      { type: "hidden", value: false },
     ],
   },
   {
@@ -105,15 +23,97 @@ export const AllLessons: Lesson[] = [
     tags: [
       { type: "subject", value: Subject.Economics },
       { type: "hidden", value: false },
-      { type: "hasPreview", value: true },
     ],
   },
   {
     title: "Example Lesson",
     link: "/example-lesson",
+    tags: [{ type: "hidden", value: true }],
+  },
+];
+
+const ArchivedLessons: Lesson[] = [
+  {
+    title: "Cell health",
+    link: "/archive/biology/cell-health/lesson",
     tags: [
-      { type: "hidden", value: false },
-      { type: "hasPreview", value: true },
+      { type: "subject", value: Subject.Biology },
+      { type: "hidden", value: true },
+    ],
+  },
+  {
+    title: "Disease spread",
+    link: "/archive/biology/disease-spread/lesson",
+    tags: [
+      { type: "subject", value: Subject.Biology },
+      { type: "hidden", value: true },
+    ],
+  },
+  {
+    title: "Memory model",
+    link: "/archive/biology/memory/lesson",
+    tags: [
+      { type: "subject", value: Subject.Biology },
+      { type: "hidden", value: true },
+    ],
+  },
+  {
+    title: "Fractals+Recursion",
+    link: "/archive/geometry/lesson",
+    tags: [
+      { type: "subject", value: Subject.Mathematics },
+      { type: "hidden", value: true },
+    ],
+  },
+  {
+    title: "Arpanet",
+    link: "/archive/history/arpanet/lesson",
+    tags: [
+      { type: "subject", value: Subject.History },
+      { type: "hidden", value: true },
+    ],
+  },
+
+  {
+    title: "Music Analysis",
+    link: "/archive/music/lesson",
+    tags: [
+      { type: "subject", value: Subject.Music },
+      { type: "hidden", value: true },
+    ],
+  },
+  {
+    title: "Emoji Translator",
+    link: "/archive/poetry/emoji-translator/lesson",
+    tags: [
+      { type: "subject", value: Subject.English },
+      { type: "hidden", value: true },
+    ],
+  },
+  {
+    title: "Next Word Prediction",
+    link: "/archive/poetry/next-word-prediction/lesson",
+    tags: [
+      { type: "subject", value: Subject.English },
+      { type: "hidden", value: true },
+    ],
+  },
+  {
+    title: "Probability Intro",
+    link: "/archive/probability/lesson",
+    tags: [
+      { type: "subject", value: Subject.Mathematics },
+      { type: "hidden", value: true },
+    ],
+  },
+  {
+    title: "Code Editor Example",
+    link: "/archive/code-editor-example/lesson",
+    tags: [
+      { type: "subject", value: Subject.ComputerScience },
+      { type: "hidden", value: true },
     ],
   },
 ];
+
+export const AllLessons: Lesson[] = [...Lessons, ...ArchivedLessons];

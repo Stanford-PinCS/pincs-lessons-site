@@ -30,7 +30,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
     }
 
     // Determine preview mode.
-    if (searchParams.get("preview") !== "true") {
+    if (pathname.split("/").includes("lesson")) {
       setIsPreview(false);
     }
 

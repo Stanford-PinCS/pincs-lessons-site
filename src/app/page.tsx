@@ -1,26 +1,14 @@
 "use client";
 import { Lesson, Subject, Tag, tagsMatch } from "./types";
-import { Suspense, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import TagFilterBox from "@/components/TagFilterBox";
 import { AllLessons } from "./lessons";
 import { ArrowLongLeftIcon, FunnelIcon } from "@heroicons/react/16/solid";
 import PincsHeader from "@/components/PincsHeader";
 import PincsButton from "@/components/PincsButton";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
-// TODO: Get rid of SearchParams and unnecessary Suspense boundary once all lessons are in the right format
-export default function () {
-  return (
-    <Suspense>
-      <Home></Home>
-    </Suspense>
-  );
-}
-
-function Home() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+export default function Home() {
   const [filterDrawerOpen, setFilterDrawerOpen] = useState<boolean>(false);
   const [selectedSubjects, setSelectedSubjects] = useState<Tag[]>([]);
   const subjects = Object.values(Subject);
@@ -41,17 +29,6 @@ function Home() {
     },
     [selectedSubjects]
   );
-
-  const goToLesson = (link: string, tags: Tag[]) => {
-    const preview = tags.some(
-      (tag) => tag.type === "hasPreview" && tag.value === true
-    );
-    const params = new URLSearchParams(searchParams.toString());
-    if (preview) {
-      params.set("preview", "true");
-    }
-    router.push(`${pathname}/${link}?${params.toString()}`);
-  };
 
   return (
     <div className="flex flex-col h-screen">
@@ -104,13 +81,13 @@ function Home() {
             {AllLessons.filter((lesson) => {
               return filterLesson(lesson);
             }).map((l, i) => (
-              <button
+              <Link
                 key={i}
                 className="p-4 rounded-lg border border-slate-300 w-60 flex items-center justify-center hover:border-indigo-500 transition-colors"
-                onClick={() => goToLesson(l.link, l.tags)}
+                href={l.link}
               >
                 {l.title}
-              </button>
+              </Link>
             ))}
           </div>
         </main>
