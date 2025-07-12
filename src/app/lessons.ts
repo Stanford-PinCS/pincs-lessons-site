@@ -28,6 +28,14 @@ const Lessons: Lesson[] = [
       { type: "hidden", value: false },
     ],
   },
+  {
+    title: "Drag",
+    link: "/physics/drag",
+    tags: [
+      { type: "subject", value: Subject.Physics },
+      { type: "hidden", value: false },
+    ],
+  },
 ];
 
 const DemoLessons: Lesson[] = [

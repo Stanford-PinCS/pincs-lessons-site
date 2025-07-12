@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 interface AnswerChoice {
-  text: string;
+  text: string | ReactNode;
   isCorrect: boolean;
-  explanation: string;
+  explanation: string | ReactNode;
 }
 
 interface QuizQuestionProps {
-  question: string;
+  question: string | ReactNode;
   choices: AnswerChoice[];
 }
 
@@ -35,7 +35,7 @@ const QuizQuestion = ({ question, choices }: QuizQuestionProps) => {
                 selectedAnswer === index
                   ? choice.isCorrect
                     ? "bg-green-100 border-green-500"
-                    : "bg-red-100 border-red-500"
+                    : "border-dashed bg-red-100 border-red-700"
                   : "border-gray-300 hover:border-blue-500"
               }`}
           >
