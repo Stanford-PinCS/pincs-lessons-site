@@ -657,6 +657,10 @@ export default function DragLesson() {
         <KeyTerm>
           <ReactKatex>$45$ meters</ReactKatex> above sea level
         </KeyTerm>
+        . Also, to make our math easier, we'll assume that gravity has value{" "}
+        <KeyTerm>
+          <ReactKatex>{"$g=10\\frac{m}{s^2}$"}</ReactKatex>
+        </KeyTerm>
         .
       </p>
       <img
@@ -694,7 +698,7 @@ export default function DragLesson() {
       </p>
       <ColorBox color="yellow">
         <Emphasize>Question 3:</Emphasize> Using{" "}
-        <KeyTerm>seperation of variables</KeyTerm>, solve for the velocity over
+        <KeyTerm>separation of variables</KeyTerm>, solve for the velocity over
         time. Then take the integral of the velocity to find a function of
         position over time. According to your position function, when will the
         ball reach the ocean?
@@ -707,7 +711,7 @@ export default function DragLesson() {
       </p>
       <ColorBox color="yellow">
         <Emphasize>Question 4:</Emphasize> How do the answers to your previous
-        questions compare, how difficult each answer was to come buy, and which
+        questions compare, how difficult each answer was to come by, and which
         method would you pick for a quick estimate?
       </ColorBox>
     </Block>,
