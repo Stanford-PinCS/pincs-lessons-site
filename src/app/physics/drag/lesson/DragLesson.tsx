@@ -18,6 +18,7 @@ import GraphBuilder from "./GraphBuilder";
 import DragProblemGraphic from "./drag-problem.jpg";
 import ReactKatex from "@pkasila/react-katex";
 import "katex/dist/katex.min.css";
+import Link from "next/link";
 
 export default function DragLesson() {
   const slides = [
@@ -183,9 +184,9 @@ export default function DragLesson() {
         <Emphasize>
           If you'd like to learn it all, click the arrow at the top right to
           continue. Otherwise,{" "}
-          <a className="text-blue-500" href="?slide=11">
+          <Link className="text-blue-500" href="?slide=11" replace={true}>
             click here to skip the optional section
-          </a>
+          </Link>
           .
         </Emphasize>
         .
