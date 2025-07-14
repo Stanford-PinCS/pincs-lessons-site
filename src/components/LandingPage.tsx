@@ -11,7 +11,7 @@ type LandingPageProps = {
 };
 
 export default function LandingPage({
-  teacherResources, // TODO: Future - Link to external doc
+  teacherResources,
   lessonDescription,
   children,
 }: PropsWithChildren<LandingPageProps>) {
@@ -20,6 +20,12 @@ export default function LandingPage({
 
   const goToLesson = () => {
     router.push(`${pathname}/lesson`, { scroll: false });
+  };
+
+  const goToResources = () => {
+    if (teacherResources) {
+      window.open(teacherResources);
+    }
   };
 
   return (
@@ -33,7 +39,7 @@ export default function LandingPage({
         <p className="mt-4">{lessonDescription}</p>
         <div className="flex flex-row justify-between mt-4">
           <PincsButton text="Go to full lesson" onClick={goToLesson} />
-          <PincsButton text="Teacher resources" onClick={() => {}} />
+          <PincsButton text="Teacher resources " onClick={goToResources} />
         </div>
       </div>
     </div>
