@@ -21,8 +21,8 @@ const Lessons: Lesson[] = [
     ],
   },
   {
-    title: "Utility Optimization",
-    link: "/econ/utility-optimization",
+    title: "Utility Maximization",
+    link: "/econ/utility-maximization",
     tags: [
       { type: "subject", value: Subject.Economics },
       { type: "hidden", value: false },
