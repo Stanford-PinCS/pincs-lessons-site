@@ -1465,12 +1465,12 @@ export default function MarginalUtility() {
     // Slide 1: Introduction
     <div className="space-y-4">
       <h1 className="text-4xl font-bold text-gray-800 mb-8">
-        Utility Optimization
+        Utility Maximization
       </h1>
       <Block color="green" title="Learning Targets">
         <ul className="list-disc pl-6 space-y-2">
           <li>Learn about utility and marginal utility.</li>
-          <li>Apply optimization in economics.</li>
+          <li>Apply maximization in economics.</li>
           <li>Learn about greedy algorithms.</li>
         </ul>
         <p>
@@ -1507,8 +1507,8 @@ export default function MarginalUtility() {
         <KeyTerm> utils</KeyTerm>.
       </p>
       <p>
-        Utility <Emphasize>does not just measure the monetary value</Emphasize>{" "}
-        of goods or services, but more generally the
+        Utility <Emphasize>does not measure the monetary value</Emphasize> of
+        goods or services, but more generally the
         <KeyTerm> "satisfaction"</KeyTerm> from those goods or services. For
         example, if you like chocolate ice cream more than vanilla ice cream,
         then chocolate ice cream has more utility for you than vanilla ice
@@ -1529,10 +1529,10 @@ export default function MarginalUtility() {
     <Block color="blue" title="Marginal Utility (MU)">
       <p>
         <Emphasize>
-          Marginal utility is the utility of just the next item.
+          Marginal utility is the utility of adding one item.
         </Emphasize>{" "}
         For example, if you have 3 slices of pizza and you eat one more slice,
-        the marginal utility is the utility of that one slice.
+        the marginal utility is the utility of that one last slice.
       </p>
       <p>
         If you are <Emphasize>very hungry</Emphasize>, the marginal utility of
@@ -1574,6 +1574,10 @@ export default function MarginalUtility() {
             </Emphasize>{" "}
             and why Total Utility (TU) goes up and then goes down. Specifically,
             find the relationship between the two curves.
+          </p>
+          <p>
+            Note: Finding the maximum utility on the Total Utility curve is
+            called <KeyTerm>Utility Maximization</KeyTerm>.
           </p>
           <p>
             <Emphasize>Use the slider</Emphasize> to select a different number
@@ -1625,7 +1629,8 @@ export default function MarginalUtility() {
           {
             text: "The utility of a particular item, usually the last item you bought or the next item you'll buy.",
             isCorrect: true,
-            explanation: "Exactly! It is the utility given by just one item.",
+            explanation:
+              "Exactly! It is the utility from adding just one item.",
           },
         ]}
       />
@@ -1827,8 +1832,9 @@ export default function MarginalUtility() {
     <Block color="blue" title="Greedy Approach">
       <p>
         <Emphasize>The greedy approach</Emphasize> is a way of solving
-        optimization problems by making the immediately optimal choice at each
-        step. In the context of utility optimization, it means{" "}
+        optimization problems (like maximization) by making the immediately
+        optimal choice at each step. In the context of utility maximization, it
+        means{" "}
         <Emphasize>
           always choosing the item with the highest marginal utility per price
           (MU/P) ratio that you can afford
@@ -1838,7 +1844,7 @@ export default function MarginalUtility() {
       <p>
         This is a{" "}
         <Emphasize>
-          useful tool to solve optimization problems on tests
+          useful tool to solve utility maximization problems on tests
         </Emphasize>
         . Plus, this works well in many problem solving scenarios.
       </p>
@@ -1963,7 +1969,7 @@ export default function MarginalUtility() {
       <p>
         We've seen a few examples where the greedy approach works and one where
         it breaks down. Let's look at how we know if the greedy approach will
-        work in utility optimization.
+        work in utility maximization.
       </p>
       <p>
         <Emphasize>
@@ -1983,14 +1989,14 @@ export default function MarginalUtility() {
     // Slide 16: Check-in on greedy approach.
     <Block color="purple" title="Greedy Check In">
       <p>
-        Test your understanding of utility optimization and the greedy approach
+        Test your understanding of utility maximization and the greedy approach
         with this quiz. Answer the questions below to check your knowledge.
       </p>
       <QuizQuestion
-        question="How does the greedy approach apply to utility optimization?"
+        question="How does the greedy approach apply to utility maximization?"
         choices={[
           {
-            text: "The greedy approach is the solution to utility optimization problems.",
+            text: "The greedy approach is the solution to utility maximization problems.",
             isCorrect: false,
             explanation:
               "Not quite! The greedy approach is a more general problem solving technique and there are certain cases where it does not work in utility optimization.",
@@ -2001,10 +2007,10 @@ export default function MarginalUtility() {
             explanation: "Exactly!",
           },
           {
-            text: "The greedy approach means maximizing utility that's what utility optimization is, so they are the same thing.",
+            text: "The greedy approach means maximizing utility that's what utility maximization is, so they are the same thing.",
             isCorrect: false,
             explanation:
-              "Not quite! The greedy approach is a technique to solving maximization problems, but utility optimization is a specific type of problem in economics that the greedy approach applies to.",
+              "Not quite! The greedy approach is a technique to solving maximization problems, but utility maximization is a specific type of problem in economics that the greedy approach applies to.",
           },
         ]}
       />
@@ -2027,8 +2033,8 @@ export default function MarginalUtility() {
         First, we learned about the meaning of <KeyTerm>utility</KeyTerm> and{" "}
         <KeyTerm>marginal utility</KeyTerm>. Utility means the "value" or
         satisfaction you get from something. Marginal Utility (MU) is the
-        utility of one particular item (usually the next item, or the last
-        item). Utility is measured in <KeyTerm>utils</KeyTerm>.
+        utility from adding one particular item (usually the next item, or the
+        last item). Utility is measured in <KeyTerm>utils</KeyTerm>.
       </p>
       <p>
         Next, we learned about how utility would look in a{" "}
@@ -2051,7 +2057,7 @@ export default function MarginalUtility() {
       </p>
       <p>
         Then, we learned how to use a greedy algorithm to make decisions about{" "}
-        <KeyTerm>utility optimization</KeyTerm>. Using the greedy algorithm, we
+        <KeyTerm>utility maximization</KeyTerm>. Using the greedy algorithm, we
         pick the next best option at each step. The next best option is the
         option with the highest{" "}
         <KeyTerm>MU/P ratio of Marginal Utility (MU) to Price (P)</KeyTerm>
