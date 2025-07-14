@@ -1529,10 +1529,10 @@ export default function MarginalUtility() {
     <Block color="blue" title="Marginal Utility (MU)">
       <p>
         <Emphasize>
-          Marginal utility is the utility of just the next item.
+          Marginal utility is the utility of adding one item.
         </Emphasize>{" "}
         For example, if you have 3 slices of pizza and you eat one more slice,
-        the marginal utility is the utility of that one slice.
+        the marginal utility is the utility of that one last slice.
       </p>
       <p>
         If you are <Emphasize>very hungry</Emphasize>, the marginal utility of
@@ -1629,7 +1629,8 @@ export default function MarginalUtility() {
           {
             text: "The utility of a particular item, usually the last item you bought or the next item you'll buy.",
             isCorrect: true,
-            explanation: "Exactly! It is the utility given by just one item.",
+            explanation:
+              "Exactly! It is the utility from adding just one item.",
           },
         ]}
       />
@@ -2032,8 +2033,8 @@ export default function MarginalUtility() {
         First, we learned about the meaning of <KeyTerm>utility</KeyTerm> and{" "}
         <KeyTerm>marginal utility</KeyTerm>. Utility means the "value" or
         satisfaction you get from something. Marginal Utility (MU) is the
-        utility of one particular item (usually the next item, or the last
-        item). Utility is measured in <KeyTerm>utils</KeyTerm>.
+        utility from adding one particular item (usually the next item, or the
+        last item). Utility is measured in <KeyTerm>utils</KeyTerm>.
       </p>
       <p>
         Next, we learned about how utility would look in a{" "}
