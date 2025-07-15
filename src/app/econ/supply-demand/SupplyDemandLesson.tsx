@@ -659,27 +659,27 @@ const SupplyDemandLesson: React.FC = () => {
       ></iframe>
 
       <ColorBox color="blue">
-        <p>
+        <div>
           <Emphasize>👉 Check in: </Emphasize>
           <br />
           <TextQuizQuestion
             placeholder="e.g. (0.3, 1.5)"
             question="What is the equilibrium point?"
-            pattern={`^(1,1)`}
+            pattern={`^\\(1, 1\\)$`}
           />
           <br />
           <TextQuizQuestion
             placeholder="e.g. (0.5, 0.8), (0.3, 1.5)"
             question="What were the two points of the shortage? (to make things simple, make sure one of your values is 1.5)"
-            pattern="^(0.5, 1.5),(1.5, 1.5) $"
+            pattern="^\\(0\\.5, 1\\.5\\), \\(1\\.5, 1\\.5\\)$"
           />
           <br />
           <TextQuizQuestion
             placeholder="e.g. (0.5, 0.8), (0.3, 1.5)"
             question="What were the two points of the surplus? (to make things simple, make sure one of your values is 0.5)"
-            pattern={`^(0.5, 0.5),(1.5, 0.5) `}
+            pattern={`^\\(0\\.5, 0\\.5\\), \\(1\\.5, 0\\.5\\)$`}
           />
-        </p>
+        </div>
       </ColorBox>
     </Block>,
     <Block color="yellow" title="Review">
@@ -801,29 +801,25 @@ const SupplyDemandLesson: React.FC = () => {
       <p>
         In this lesson, we learned about the supply and demand model and how to
         use it to set the best price to make the most money.
+      </p>
+      <ColorBox color="green">
+        <Emphasize>
+          Here are some questions to ponder about as you continue your Econ
+          journey:
+        </Emphasize>
         <br />
+        - Can you create a situation where price stays the same but quantity
+        increases?
         <br />
-        <ColorBox color="green">
-          <Emphasize>
-            Here are some questions to ponder about as you continue your Econ
-            journey:
-          </Emphasize>
-          <br />
-          - Can you create a situation where price stays the same but quantity
-          increases?
-          <br />
-          - Is it possible to shift both curves and keep the equilibrium
-          unchanged?
-          <br />
-          - Can you create a situation where price goes up and quantity goes
-          down?
-          <br />
-        </ColorBox>
+        - Is it possible to shift both curves and keep the equilibrium
+        unchanged?
         <br />
-        <p>
-          Thinking about these questions will help you understand not only the
-          supply and demand model, but also the real world.
-        </p>
+        - Can you create a situation where price goes up and quantity goes down?
+        <br />
+      </ColorBox>
+      <p>
+        Thinking about these questions will help you understand not only the
+        supply and demand model, but also the real world.
       </p>
     </Block>,
   ];
