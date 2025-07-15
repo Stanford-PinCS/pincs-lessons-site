@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default function ForcesLesson() {
   const slides = [
+    // Slide 1: Learning targets.
     <Block color="green" title="Learning Targets">
       <p>
         <Emphasize>In this lesson, you'll...</Emphasize>
@@ -25,6 +26,70 @@ export default function ForcesLesson() {
           Click the arrow at the top right to continue with the lesson.
         </Emphasize>
       </p>
+    </Block>,
+    // Slide 2: Defining Force.
+    <Block color="blue" title="What is a force?">
+      <></>
+    </Block>,
+    // Slide 3: Explaining basics around forces.
+    <Block color="blue" title="Newton's Laws">
+      <></>
+    </Block>,
+    // Slide 4: Checking force understanding.
+    <Block color="purple" title="Force check in">
+      <></>
+    </Block>,
+
+    // Slide 5: Thinking about direction & magnitude.
+    <Block color="blue" title="Forces are vectors">
+      <></>
+    </Block>,
+    // Slide 6: Splitting up forces.
+    <Block color="yellow" title="Splitting a force into components">
+      <></>
+    </Block>,
+    // Slide 7: Coding up how to split a force.
+    <Block color="yellow" title="Making components in code">
+      <></>
+    </Block>,
+    // Slide 8: Check in.
+    <Block color="purple" title="Check in">
+      <></>
+    </Block>,
+
+    // Slide 9: Introducing different types of forces.
+    <Block color="blue" title="Forces come in many types">
+      <></>
+    </Block>,
+    // Slide 10: Free body diagrams.
+    <Block color="blue" title="Free body diagrams">
+      <></>
+    </Block>,
+    // Slide 11: Feeling the forces.
+    <Block color="yellow" title="Feeling the forcees">
+      <></>
+    </Block>,
+    // Slide 12: Checking in on different force types.
+    <Block color="purple" title="Check in">
+      <></>
+    </Block>,
+
+    // Slide 13: Solving problems with F=MA.
+    <Block color="yellow" title="Solving problems with forces">
+      <></>
+    </Block>,
+    // Slide 14: Check in problem.
+    <Block color="purple" title="Force problem">
+      <></>
+    </Block>,
+    // Slide 15: Coding up force addition.
+    <Block color="yellow" title="Coding up force addition">
+      <></>
+    </Block>,
+
+    // Slide 16: Checking in on different force types.
+    <Block color="green" title="Lesson Recap">
+      <></>
     </Block>,
   ];
 
