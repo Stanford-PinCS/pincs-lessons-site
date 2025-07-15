@@ -1,7 +1,10 @@
+"use client";
 import Block from "@/components/Block";
 import Emphasize from "@/components/Emphasize";
+import KeyTerm from "@/components/KeyTerm";
 import Lesson from "@/components/Lesson";
 import { Metadata } from "next";
+import ClimbingAnimation from "./ClimbingAnimation";
 
 export const metadata: Metadata = {
   title: "Forces",
@@ -29,7 +32,28 @@ export default function ForcesLesson() {
     </Block>,
     // Slide 2: Defining Force.
     <Block color="blue" title="What is a force?">
-      <></>
+      <p>
+        <Emphasize>
+          A <KeyTerm>force</KeyTerm> is an influence that causes an object ot
+          accelerate
+        </Emphasize>
+        . Essentially, a force is a <Emphasize>push or pull</Emphasize>.
+      </p>
+      <p>
+        When you play Tug of War, pulling on the rope is exerting a force.
+        Similarly, any time you carry objects, or even just walk, you are
+        exerting forces.
+      </p>
+      <p>
+        Every force has a{" "}
+        <Emphasize>magnitude (how strong the force is)</Emphasize> and a{" "}
+        <Emphasize>direction (where the force goes)</Emphasize>.
+      </p>
+      <p>
+        For example, if you are climbing up a ladder, you are pulling your
+        entire body weight (the magnitude) upward (the direction).
+      </p>
+      <ClimbingAnimation />
     </Block>,
     // Slide 3: Explaining basics around forces.
     <Block color="blue" title="Newton's Laws">
