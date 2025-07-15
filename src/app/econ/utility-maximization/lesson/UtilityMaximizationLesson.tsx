@@ -2017,12 +2017,12 @@ export default function MarginalUtility() {
     </Block>,
 
     // Section 15: Coding it up.
-    <Block color="yellow" title="Try Coding it up Yourself!">
+    <Block color="yellow" title="Try Coding it up Yourself!" mode="pickcode">
       <iframe
         id="inlinePickcodePlugin"
         title="Code Up a Greedy Algorithm"
         width="100%"
-        height="500"
+        style={{ height: "calc(100vh - 100px)" }}
         src="https://dev.pickcode.io/lesson/marginal-utility-optimization-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-06-26-11-46-41"
       ></iframe>
     </Block>,
