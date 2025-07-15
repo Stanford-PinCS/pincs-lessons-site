@@ -32,7 +32,7 @@ const TextQuizQuestion = ({
         value={userAnswer}
         onChange={(e) => setUserAnswer(e.target.value)}
         onKeyDown={handleKeyDown}
-        style={{ width: "50%" }}
+        style={{ width: "50%", border: "1px solid #ccc", padding: "10px" }}
       />
       {isCorrect === true && (
         <p style={{ color: "green", fontWeight: "bold" }}>Correct!</p>
