@@ -124,8 +124,8 @@ const SupplyDemandLesson: React.FC = () => {
           <br />
           <br />
           which shows the relationship between the price of a good and the
-          quantity, where the x-axis is the quantity of the good, and the y-axis
-          is the price of the good.
+          quantity. The x-axis is the quantity of the good, and the y-axis is
+          the price of the good.
           <br />
           <br />
           The <Emphasize>Demand curve</Emphasize> is the line where it is
@@ -151,72 +151,69 @@ const SupplyDemandLesson: React.FC = () => {
           <Emphasize>
             as price goes up, the amount that people want to buy
           </Emphasize>{" "}
-          (Quantity Demanded) <Emphasize> goes down</Emphasize>
-          , and vice versa.
-          <br />
-          <br />
-          <p>
-            <Emphasize>
-              <u>Reasons: </u>
-            </Emphasize>
-            <ul>
-              <li>
-                <Collapsible
-                  ExampleContent={
-                    <p style={{ fontSize: "16px" }}>
-                      <Emphasize>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                      </Emphasize>{" "}
-                      If ice cream is too expensive, they will buy a candy bar
-                      instead
-                    </p>
-                  }
-                >
-                  <Emphasize>- Substitution effect: </Emphasize> Consumers
-                  switch to alternatives.
-                </Collapsible>
-              </li>
-              <li>
-                <Collapsible
-                  ExampleContent={
-                    <p style={{ fontSize: "16px" }}>
-                      <Emphasize>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                      </Emphasize>{" "}
-                      If they have more money to spend, they will get fine
-                      dining instead of McDonald's.
-                    </p>
-                  }
-                >
-                  <Emphasize>- Income effect: </Emphasize> Budget constraints
-                  change purchasing power
-                </Collapsible>
-              </li>
-              <li>
-                <Collapsible
-                  ExampleContent={
-                    <p style={{ fontSize: "16px" }}>
-                      <Emphasize>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                      </Emphasize>{" "}
-                      If they have more and more ice cream, they will be less
-                      and less satisfied with each additional ice cream.
-                    </p>
-                  }
-                >
-                  <Emphasize>- Diminishing </Emphasize>
-                  <a
-                    href="https://pincs.stanford.edu/pickcode-dev/econ/marginal-utility/?slide=1"
-                    style={{ color: "blue", textDecoration: "underline" }}
-                  >
-                    marginal utility:
-                  </a>{" "}
-                  The satisfaction from buying more of the same thing decreases.{" "}
-                </Collapsible>
-              </li>
-            </ul>
-          </p>
+          (Quantity Demanded) <Emphasize> goes down</Emphasize>, and vice versa.
         </p>
+        <div>
+          <Emphasize>
+            <u>Reasons: </u>
+          </Emphasize>
+          <ul>
+            <li>
+              <Collapsible
+                ExampleContent={
+                  <p style={{ fontSize: "16px" }}>
+                    <Emphasize>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
+                    </Emphasize>{" "}
+                    If ice cream is too expensive, they will buy a candy bar
+                    instead
+                  </p>
+                }
+              >
+                <Emphasize>- Substitution effect: </Emphasize> Consumers switch
+                to alternatives.
+              </Collapsible>
+            </li>
+            <li>
+              <Collapsible
+                ExampleContent={
+                  <p style={{ fontSize: "16px" }}>
+                    <Emphasize>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
+                    </Emphasize>{" "}
+                    If they have more money to spend, they will get fine dining
+                    instead of McDonald's.
+                  </p>
+                }
+              >
+                <Emphasize>- Income effect: </Emphasize> Budget constraints
+                change purchasing power
+              </Collapsible>
+            </li>
+            <li>
+              <Collapsible
+                ExampleContent={
+                  <p style={{ fontSize: "16px" }}>
+                    <Emphasize>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
+                    </Emphasize>{" "}
+                    If they have more and more ice cream, they will be less and
+                    less satisfied with each additional ice cream.
+                  </p>
+                }
+              >
+                <Emphasize>- Diminishing </Emphasize>
+                <a
+                  href="https://pincs.stanford.edu/pickcode-dev/econ/marginal-utility/?slide=1"
+                  style={{ color: "blue", textDecoration: "underline" }}
+                >
+                  marginal utility:
+                </a>{" "}
+                The satisfaction from buying more of the same thing decreases.{" "}
+              </Collapsible>
+            </li>
+          </ul>
+        </div>
       </ColorBox>
       <ColorBox color="purple">
         <p>
@@ -406,9 +403,18 @@ const SupplyDemandLesson: React.FC = () => {
       <ColorBox color="purple">
         <Emphasize>👉 Check in: </Emphasize>
         <TextQuizQuestion
-          question="What happens to the price of Computers when the quantity of chips go down? (Hint: use the tool below and see if it adds or removes Demand)"
-          placeholder="e.g. up, down, no change"
-          pattern="^up$"
+          question={
+            <>
+              What happens to the price of Computers when the quantity of chips
+              go down? (Hint: use the tool below and see if it adds or removes
+              Demand)
+              <br />
+              <br />
+              Price will _____
+            </>
+          }
+          placeholder="e.g. increase, decrease, no change"
+          pattern="^increase$"
         />
       </ColorBox>
 
@@ -448,21 +454,21 @@ const SupplyDemandLesson: React.FC = () => {
         <Emphasize>as price goes up, sellers want to sell more of</Emphasize>{" "}
         the same thing, and vice versa. In other words, the Quantity Supplied
         goes up.
-        <ColorBox color="blue">
-          <Emphasize>To put it simply:</Emphasize>
-          <p>
-            If price is low, producers won't want to make more of it because
-            they won't make much money (try <Code>setPrice(0.5)</Code> and{" "}
-            <Code>setQuantity(0.5)</Code> ) in the tool below <br />
-            <br />
-            If price is high, producers want to make more of it to make more
-            money (try <Code>setPrice(1.5)</Code> and{" "}
-            <Code>setQuantity(1.5)</Code> ) in the tool below <br />
-          </p>
-        </ColorBox>
-        <br />
-        <br />
       </p>
+      <ColorBox color="blue">
+        <Emphasize>To put it simply:</Emphasize>
+        <p>
+          If price is low, producers won't want to make more of it because they
+          won't make much money (try <Code>setPrice(0.5)</Code> and{" "}
+          <Code>setQuantity(0.5)</Code> ) in the tool below <br />
+          <br />
+          If price is high, producers want to make more of it to make more money
+          (try <Code>setPrice(1.5)</Code> and <Code>setQuantity(1.5)</Code> ) in
+          the tool below <br />
+        </p>
+      </ColorBox>
+      <br />
+      <br />
       <iframe
         title="supply and demand interactive tool"
         src="https://dev.pickcode.io/lesson/tool-itself-lesson-cmce1y3ab02zmk3y1a39dulwh-2025-07-10-05-43-49"
@@ -473,7 +479,7 @@ const SupplyDemandLesson: React.FC = () => {
 
     <Block color="green" title="Supply Shifters">
       <ColorBox color="green">
-        <p>
+        <div>
           <ul>
             <li>
               <Emphasize>Supply Shifters</Emphasize>
@@ -580,7 +586,7 @@ const SupplyDemandLesson: React.FC = () => {
               </Collapsible>
             </li>
           </ul>
-        </p>
+        </div>
       </ColorBox>
       <ColorBox color="yellow">
         <p>
@@ -626,7 +632,7 @@ const SupplyDemandLesson: React.FC = () => {
       </ColorBox>
 
       <ColorBox color="purple">
-        <p>
+        <div>
           There are 2 types of disequilibrium:
           <ul>
             <li>
@@ -638,7 +644,7 @@ const SupplyDemandLesson: React.FC = () => {
               <u>less</u> than the quantity supplied.
             </li>
           </ul>
-        </p>
+        </div>
       </ColorBox>
       <p>
         Using the interactive tool below, try to code the equilibrium point,
@@ -657,21 +663,21 @@ const SupplyDemandLesson: React.FC = () => {
           <Emphasize>👉 Check in: </Emphasize>
           <br />
           <TextQuizQuestion
-            placeholder="e.g. (-0.5, 0.5), (0.5, 0.5)"
-            question="What were the two points of the equilibrium point?"
-            pattern={`^\\(-?0(?:\\.0+)?,-?0(?:\\.0+)?\\),\\(0(?:\\.0+)?,-?0(?:\\.0+)?\\)$`}
+            placeholder="e.g. (0.3, 1.5)"
+            question="What is the equilibrium point?"
+            pattern={`^(1,1)`}
           />
           <br />
           <TextQuizQuestion
-            placeholder="e.g. (-0.5, 0.5), (0.5, 0.5)"
-            question="What were the two points of the shortage?"
-            pattern="^\\(-0\\.[1-9], -0\\.[1-9]\\), \\(0\\.[1-9], -0\\.[1-9]\\)$"
+            placeholder="e.g. (0.5, 0.8), (0.3, 1.5)"
+            question="What were the two points of the shortage? (to make things simple, make sure one of your values is 1.5)"
+            pattern="^(0.5, 1.5),(1.5, 1.5) $"
           />
           <br />
           <TextQuizQuestion
-            placeholder="e.g. (-0.5, 0.5), (0.5, 0.5)"
-            question="What were the two points of the surplus?"
-            pattern={`^\\(-0\\.[1-9], 0\\.[1-9]\\), \\(0\\.[1-9], 0\\.[1-9]\\)$`}
+            placeholder="e.g. (0.5, 0.8), (0.3, 1.5)"
+            question="What were the two points of the surplus? (to make things simple, make sure one of your values is 0.5)"
+            pattern={`^(0.5, 0.5),(1.5, 0.5) `}
           />
         </p>
       </ColorBox>

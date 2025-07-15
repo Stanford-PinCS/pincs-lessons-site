@@ -90,8 +90,8 @@ export const AllLessons: Lesson[] = [
     ],
   },
   {
-    title: "Hoyoon's Lesson",
-    link: "/hoyoons-lesson",
+    title: "Supply and Demand",
+    link: "/econ/supply-demand",
     tags: [
       { type: "subject", value: Subject.Economics },
       { type: "hidden", value: false },
