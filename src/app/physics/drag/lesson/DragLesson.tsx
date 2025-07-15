@@ -724,7 +724,6 @@ export default function DragLesson() {
         title="Code Up a The Forward Euler Method"
         width="100%"
         style={{ height: "calc(100vh - 100px)" }}
-        height="500"
         src="https://dev.pickcode.io/lesson/drag-lesson-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-07-09-05-55-53"
       ></iframe>
     </Block>,
@@ -765,7 +764,6 @@ export default function DragLesson() {
         title="Code Up a The Midpoint Method"
         width="100%"
         style={{ height: "calc(100vh - 100px)" }}
-        height="500"
         src="https://dev.pickcode.io/lesson/drag-lesson-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-07-09-05-55-53-copy-2025-07-10-10-53-40"
       ></iframe>
     </Block>,
