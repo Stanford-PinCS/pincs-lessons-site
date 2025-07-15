@@ -1,16 +1,16 @@
-import { Metadata } from "next";
-import { HoyoonsFirstLesson } from "./HoyoonsLesson";
 import LessonWrapper from "@/components/LessonWrapper";
+import { Metadata } from "next";
+import SupplyDemandLesson from "./SupplyDemandLesson";
 
 export const metadata: Metadata = {
-  title: "Code Editor Example",
-  description: "",
+  title: "Supply and Demand",
+  description: "lorem ipsum dolor sit amet",
 };
 
-export default function () {
+export default function ExampleLesson() {
   return (
     <LessonWrapper>
-      <HoyoonsFirstLesson />
+      <SupplyDemandLesson />
     </LessonWrapper>
   );
 }
