@@ -36,6 +36,14 @@ const Lessons: Lesson[] = [
       { type: "hidden", value: false },
     ],
   },
+  {
+    title: "Forces",
+    link: "/physics/forces",
+    tags: [
+      { type: "subject", value: Subject.Physics },
+      { type: "hidden", value: false },
+    ],
+  },
 ];
 
 const DemoLessons: Lesson[] = [
