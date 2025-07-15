@@ -9,16 +9,17 @@ const MultiSelectQuizQuestion = ({
 }) => {
   const [selected, setSelected] = useState<boolean[]>(choices.map(() => false));
   const [submitted, setSubmitted] = useState(false);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   const handleChange = (idx: number) => {
     setSelected((prev) => prev.map((val, i) => (i === idx ? !val : val)));
   };
 
   const handleSubmit = () => {
-    setSubmitted(true);
+    const correct = selected.every((val, i) => val === choices[i].isCorrect);
+    setIsCorrect(correct);
+    if (correct) setSubmitted(true);
   };
-
-  const isAllCorrect = selected.every((val, i) => val === choices[i].isCorrect);
 
   return (
     <div>
@@ -39,7 +40,7 @@ const MultiSelectQuizQuestion = ({
                   type="checkbox"
                   checked={selected[idx]}
                   onChange={() => handleChange(idx)}
-                  disabled={submitted}
+                  disabled={submitted} // Only disable if correct
                 />
                 &nbsp;&nbsp;{" "}
                 <span className="mr-3 font-medium">
@@ -48,16 +49,19 @@ const MultiSelectQuizQuestion = ({
                 {choice.text}
               </label>
             </div>
-            {submitted && selected[idx] && choice.explanation && (
-              <div
-                style={{
-                  fontSize: "0.9em",
-                  color: choice.isCorrect ? "green" : "red",
-                }}
-              >
-                {choice.explanation}
-              </div>
-            )}
+            {isCorrect === true &&
+              submitted &&
+              selected[idx] &&
+              choice.explanation && (
+                <div
+                  style={{
+                    fontSize: "0.9em",
+                    color: choice.isCorrect ? "green" : "red",
+                  }}
+                >
+                  {choice.explanation}
+                </div>
+              )}
           </li>
         ))}
       </ul>
@@ -77,12 +81,13 @@ const MultiSelectQuizQuestion = ({
           Submit
         </button>
       )}
-      {submitted && (
-        <div
-          style={{ fontWeight: "bold", color: isAllCorrect ? "green" : "red" }}
-        >
-          {isAllCorrect ? "Correct!" : "Incorrect. Try again!"}
+      {isCorrect === false && (
+        <div style={{ fontWeight: "bold", color: "red" }}>
+          Incorrect. Try again!
         </div>
+      )}
+      {isCorrect === true && submitted && (
+        <div style={{ fontWeight: "bold", color: "green" }}>Correct!</div>
       )}
     </div>
   );
