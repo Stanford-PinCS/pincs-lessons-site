@@ -429,11 +429,11 @@ const FyDerivation: React.FC = () => {
 };
 
 // --- Main Component ---
-export const ForceComponentDerivation: React.FC = () => {
+export default function ForceComponentDerivation() {
   return (
     <>
       <FxDerivation />
       <FyDerivation />
     </>
   );
-};
+}

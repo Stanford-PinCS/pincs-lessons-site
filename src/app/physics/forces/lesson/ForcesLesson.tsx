@@ -11,7 +11,9 @@ import "katex/dist/katex.min.css";
 import QuizQuestion from "@/components/QuizQuestion";
 import FootballComponentsDiagram from "./FootballComponentsDiagram";
 import GravityComponentsDiagram from "./GravityComponentsDiagram";
-import { ForceComponentDerivation } from "./ForceComponentDerivation";
+import ForceComponentDerivation from "./ForceComponentDerivation";
+import SpringBoxFrictionDiagram from "./SpringBoxFrictionDiagram";
+import PersonFreeBodyDiagram from "./PersonFreeBodyDiagram";
 
 export const metadata: Metadata = {
   title: "Forces",
@@ -37,6 +39,7 @@ export default function ForcesLesson() {
         </Emphasize>
       </p>
     </Block>,
+
     // Slide 2: Defining Force.
     <Block color="blue" title="What is a force?">
       <p>
@@ -69,6 +72,7 @@ export default function ForcesLesson() {
       </p>
       <ClimbingAnimation />
     </Block>,
+
     // Slide 3: Explaining basics around forces.
     <Block color="blue" title="Newton's Laws">
       <p>
@@ -191,6 +195,7 @@ export default function ForcesLesson() {
         in the diagram below.
       </p>
       <FootballComponentsDiagram />
+      <p>Drag and drop below to derive the equations.</p>
       <ForceComponentDerivation />
     </Block>,
 
@@ -211,7 +216,7 @@ export default function ForcesLesson() {
           },
           {
             text: "0 N",
-            isCorrect: false,
+            isCorrect: true,
             explanation:
               "Exactly! Since the entire vector is to the right, it has zero going up.",
           },
@@ -222,23 +227,199 @@ export default function ForcesLesson() {
           },
         ]}
       />
+      <QuizQuestion
+        question="If you have a force of 20 N to the up and right at a 60 degree angle above horizontal, what is the horizontal component of that force?"
+        choices={[
+          {
+            text: <ReactKatex>{`$14 \\sqrt{3}$ N`}</ReactKatex>,
+            isCorrect: false,
+            explanation: "Nope, not quite.",
+          },
+          {
+            text: "10 N",
+            isCorrect: true,
+            explanation:
+              "Exactly! We take cosine of 60 degrees to get 0.5, which we multiply by 20 N to get 10 N.",
+          },
+          {
+            text: <ReactKatex>$20 \pi$ N</ReactKatex>,
+            isCorrect: false,
+            explanation: "Nope, not quite.",
+          },
+        ]}
+      />
     </Block>,
 
     // Slide 9: Introducing different types of forces.
-    <Block color="blue" title="Forces come in many types">
-      <></>
+    <Block color="yellow" title="Forces come in many types">
+      <p>
+        <Emphasize>
+          Several distinct forces occur in mechanical systems.
+        </Emphasize>{" "}
+        Understanding each allows us to model interactions accurately. Here are
+        a few examples you may see in this physics course:
+      </p>
+      <ul className="list-disc list-inside">
+        <li>
+          <KeyTerm>
+            Gravity <ReactKatex>($F_g$)</ReactKatex>
+          </KeyTerm>{" "}
+          — the universal attraction between masses, acting downward near
+          Earth's surface.
+        </li>
+        <li>
+          <KeyTerm>
+            Normal force <ReactKatex>($F_N$)</ReactKatex>
+          </KeyTerm>{" "}
+          — the force when two objects are touching each other, such as you
+          standing on the ground.
+        </li>
+        <li>
+          <KeyTerm>
+            Tension <ReactKatex>($F_T$)</ReactKatex>
+          </KeyTerm>{" "}
+          — a pulling force transmitted through a string, rope, or cable.
+        </li>
+        <li>
+          <KeyTerm>
+            Friction <ReactKatex>($F_f$)</ReactKatex>
+          </KeyTerm>{" "}
+          — a resistive force tangent to the interface between surfaces;
+          includes static and kinetic forms. An example is a car using its
+          breaks.
+        </li>
+        <li>
+          <KeyTerm>
+            Spring force <ReactKatex>($F_s$)</ReactKatex>
+          </KeyTerm>{" "}
+          — the restoring force that increases the farther it is from
+          equilibrium.
+        </li>
+        <li>
+          <KeyTerm>
+            Applied force <ReactKatex>($F_A$)</ReactKatex>
+          </KeyTerm>{" "}
+          — a generic external push or pull.
+        </li>
+      </ul>
+      <ColorBox color="blue">
+        Most introductory problems combine only two or three of these forces,
+        yet the underlying principles scale to complex systems.
+      </ColorBox>
+      <p>
+        Here's an example of a spring pushing a block along a rough surface.{" "}
+        <Emphasize>
+          See if you can identify the 4 forces above that are acting on the
+          box...
+        </Emphasize>
+      </p>
+      <SpringBoxFrictionDiagram></SpringBoxFrictionDiagram>
+      {/* TODO: Make an interactive multi-choice quiz question that asks which forces are acting on the box. */}
     </Block>,
+
     // Slide 10: Free body diagrams.
     <Block color="blue" title="Free body diagrams">
-      <></>
+      <p>
+        <Emphasize>
+          A <KeyTerm>free body diagram (FBD)</KeyTerm> isolates a single object
+          and displays every external force acting upon it.
+        </Emphasize>
+      </p>
+      <p>
+        These are super useful to solving any problem with forces. Here's how
+        you make a free body diagram:
+      </p>
+      <ol className="list-decimal list-inside">
+        <li>Represent the object as a simple dot or box.</li>
+        <li>
+          Draw arrows for <Emphasize>each</Emphasize> external force, with
+          length proportionate to magnitude and orientation indicating
+          direction.
+        </li>
+        <li>Label each arrow.</li>
+        <li>Indicate a coordinate system and positive directions.</li>
+      </ol>
+      <ColorBox color="blue">
+        Once complete, by Newton's second law of motion, the sum of all of the
+        forces{" "}
+        <KeyTerm>
+          <ReactKatex>$F$</ReactKatex>
+        </KeyTerm>{" "}
+        equals
+        <KeyTerm>
+          <ReactKatex> $ma$</ReactKatex>
+        </KeyTerm>
+        , allowing us to find the acceleration.
+      </ColorBox>
+      <p>Here's a free body diagram for a person standing:</p>
+      <PersonFreeBodyDiagram />
+      <p>
+        Notice how we didn't draw a person or the ground they are standing on,{" "}
+        <Emphasize>we just drew a dot</Emphasize>. Then, we drew each force as
+        an arrow, labeled with what that force is. You can see that since
+        gravity and the normal force have the{" "}
+        <Emphasize>same strengths, they have the same length</Emphasize>.
+      </p>
     </Block>,
-    // Slide 11: Feeling the forces.
-    <Block color="yellow" title="Feeling the forcees">
-      <></>
+
+    // Slide 11: Making their own free body diagram.
+    <Block color="yellow" title="Making your own Free Body Diagram">
+      <p>
+        Now let's think back to the spring example. See if you can make a free
+        body diagram for the block in the system below.
+      </p>
+      <SpringBoxFrictionDiagram></SpringBoxFrictionDiagram>
+      {/* TODO: Add an interactive free body diagram maker */}
     </Block>,
+
     // Slide 12: Checking in on different force types.
     <Block color="purple" title="Check in">
-      <></>
+      <QuizQuestion
+        question="Which of the following forces always acts perpendicular to the surface?"
+        choices={[
+          {
+            text: "Friction",
+            isCorrect: false,
+            explanation:
+              "Not quite. Friction acts parallel to the surface in the direction opposite motion.",
+          },
+          {
+            text: "Normal force",
+            isCorrect: true,
+            explanation:
+              "Correct. The normal force is always perpendicular to the surface that exerts it.",
+          },
+          {
+            text: "Tension",
+            isCorrect: false,
+            explanation:
+              "Not quite. Tension acts along the direction of the string or rope, not necessarily perpendicular to any surface.",
+          },
+        ]}
+      />
+      <QuizQuestion
+        question="A block slides down a rough ramp. Which forces act on it?"
+        choices={[
+          {
+            text: "Gravity, normal force, friction",
+            isCorrect: true,
+            explanation:
+              "Correct. Gravity pulls it down, the ramp provides a normal force, and friction resists the sliding motion.",
+          },
+          {
+            text: "Only gravity",
+            isCorrect: false,
+            explanation:
+              "Incorrect. The ramp also provides a normal force and friction, both essential in the force model.",
+          },
+          {
+            text: "Gravity and tension",
+            isCorrect: false,
+            explanation:
+              "Incorrect. Tension only appears if there's a rope or cable involved, which was not stated.",
+          },
+        ]}
+      />
     </Block>,
 
     // Slide 13: Solving problems with F=MA.
