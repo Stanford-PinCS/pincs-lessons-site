@@ -317,6 +317,47 @@ export default function ForcesLesson() {
       {/* TODO: Make an interactive multi-choice quiz question that asks which forces are acting on the box. */}
     </Block>,
 
+    // Slide 9b: A Note on Friction
+    <Block color="blue" title="How do these forces work?">
+      <h2 className="font-semibold text-center">Gravity</h2>
+      <p>
+        The gravitational force is given by <ReactKatex>$F_g = mg$</ReactKatex>,
+        where <KeyTerm>m</KeyTerm> is mass and <KeyTerm>g</KeyTerm> is the
+        acceleration due to gravity. This force acts downward toward the center
+        of the Earth and scales linearly with mass.
+      </p>
+
+      <h2 className="font-semibold text-center">Normal Force</h2>
+      <p>
+        The <KeyTerm>normal force</KeyTerm> is the contact force exerted
+        perpendicular to a surface. It is not fixed, but adjusts to prevent
+        objects from passing through the surface. For example, when standing
+        still, the normal force equals your weight.
+      </p>
+
+      <h2 className="font-semibold text-center">Friction</h2>
+      <p>
+        Friction resists motion between surfaces in contact. There are two
+        kinds:
+      </p>
+      <ul className="list-disc list-inside">
+        <li>
+          <KeyTerm>Static friction</KeyTerm> prevents motion from starting and
+          is governed by <ReactKatex>$F_s \leq \mu_s F_N$</ReactKatex>.
+        </li>
+        <li>
+          <KeyTerm>Kinetic friction</KeyTerm> resists motion already in progress
+          and is given by <ReactKatex>$F_k = \mu_k F_N$</ReactKatex>.
+        </li>
+      </ul>
+      <p>
+        Both friction forces depend on the <KeyTerm>normal force</KeyTerm>,
+        since that determines how tightly the surfaces are pressed together.
+        Think of pushing your hand lightly on sandpaper versus pressing hard—the
+        harder the contact, the greater the resistance.
+      </p>
+    </Block>,
+
     // Slide 10: Free body diagrams.
     <Block color="blue" title="Free body diagrams">
       <p>
@@ -424,7 +465,16 @@ export default function ForcesLesson() {
 
     // Slide 13: Solving problems with F=MA.
     <Block color="yellow" title="Solving problems with forces">
-      <></>
+      <p>
+        Now let's use a free body diagram to solve a physics problem together.
+      </p>
+      <p>
+        Suppose we have a <KeyTerm>10kg block</KeyTerm> sitting on a flat
+        surface.
+      </p>
+      <p>
+        If gravity acts at <KeyTerm>{`$g=10\\frac{m}{s^2}$`}</KeyTerm>...
+      </p>
     </Block>,
     // Slide 14: Check in problem.
     <Block color="purple" title="Force problem">
