@@ -1,28 +1,14 @@
 "use client";
-import React, { Children, useState } from "react";
-import { useEffect } from "react";
+import React from "react";
 import Block from "@/components/Block";
 import Emphasize from "@/components/Emphasize";
 import ColorBox from "@/components/ColorBox";
-import KeyTerm from "@/components/KeyTerm";
 import Lesson from "@/components/Lesson";
 import QuizQuestion from "@/components/QuizQuestion";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  ReferenceLine,
-  ReferenceDot,
-  Label,
-  Legend,
-} from "recharts";
 import rollinginmoney from "./rollinginmoney.jpg";
 import MultiSelectQuizQuestion from "@/components/MultiSelectQuizQuestion";
 import TextQuizQuestion from "@/components/TextQuizQuestion";
+import Collapsible from "@/components/Collapsible";
 
 const Code = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -37,33 +23,6 @@ const Code = ({ children }: { children: React.ReactNode }) => {
     >
       {children}
     </code>
-  );
-};
-
-const Collapsible = ({
-  children,
-  ExampleContent,
-}: {
-  children: React.ReactNode;
-  ExampleContent: React.ReactNode;
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const toggleSymbol = isOpen ? "🔼" : "🔽";
-  return (
-    <div>
-      <button onClick={toggle}>
-        {children} {toggleSymbol}
-      </button>
-      {isOpen && (
-        <div>
-          <p>{ExampleContent}</p>
-        </div>
-      )}
-    </div>
   );
 };
 
@@ -161,13 +120,13 @@ const SupplyDemandLesson: React.FC = () => {
             <li>
               <Collapsible
                 ExampleContent={
-                  <p style={{ fontSize: "16px" }}>
+                  <>
                     <Emphasize>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
                     </Emphasize>{" "}
                     If ice cream is too expensive, they will buy a candy bar
                     instead
-                  </p>
+                  </>
                 }
               >
                 <Emphasize>- Substitution effect: </Emphasize> Consumers switch
@@ -177,13 +136,13 @@ const SupplyDemandLesson: React.FC = () => {
             <li>
               <Collapsible
                 ExampleContent={
-                  <p style={{ fontSize: "16px" }}>
+                  <>
                     <Emphasize>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
                     </Emphasize>{" "}
                     If they have more money to spend, they will get fine dining
                     instead of McDonald's.
-                  </p>
+                  </>
                 }
               >
                 <Emphasize>- Income effect: </Emphasize> Budget constraints
@@ -193,13 +152,13 @@ const SupplyDemandLesson: React.FC = () => {
             <li>
               <Collapsible
                 ExampleContent={
-                  <p style={{ fontSize: "16px" }}>
+                  <>
                     <Emphasize>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
                     </Emphasize>{" "}
                     If they have more and more ice cream, they will be less and
                     less satisfied with each additional ice cream.
-                  </p>
+                  </>
                 }
               >
                 <Emphasize>- Diminishing </Emphasize>
@@ -297,7 +256,7 @@ const SupplyDemandLesson: React.FC = () => {
           <li>
             <Collapsible
               ExampleContent={
-                <p>
+                <>
                   <Emphasize>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
                   </Emphasize>{" "}
@@ -309,7 +268,7 @@ const SupplyDemandLesson: React.FC = () => {
                   The price of ice cream stays the same. Some other outside
                   factor is causing the shift <br />
                   <br />
-                </p>
+                </>
               }
             >
               - Consumer Preferences
@@ -318,7 +277,7 @@ const SupplyDemandLesson: React.FC = () => {
           <li>
             <Collapsible
               ExampleContent={
-                <p>
+                <>
                   <Emphasize>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
                   </Emphasize>{" "}
@@ -330,7 +289,7 @@ const SupplyDemandLesson: React.FC = () => {
                   The price of ice cream stays the same. Some other outside
                   factor is causing the shift <br />
                   <br />
-                </p>
+                </>
               }
             >
               - Number of Buyers
@@ -339,7 +298,7 @@ const SupplyDemandLesson: React.FC = () => {
           <li>
             <Collapsible
               ExampleContent={
-                <p>
+                <>
                   <Emphasize>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
                   </Emphasize>{" "}
@@ -353,7 +312,7 @@ const SupplyDemandLesson: React.FC = () => {
                   <Emphasize>substitutes</Emphasize>, so if less people buy
                   candy bars, more people will buy ice cream. <br />
                   <br />
-                </p>
+                </>
               }
             >
               - Prices of Related Goods (substitutes/complements)
@@ -362,7 +321,7 @@ const SupplyDemandLesson: React.FC = () => {
           <li>
             <Collapsible
               ExampleContent={
-                <p>
+                <>
                   <Emphasize>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Normal goods:{" "}
                   </Emphasize>{" "}
@@ -378,7 +337,7 @@ const SupplyDemandLesson: React.FC = () => {
                   goods (and vice versa)
                   <br />
                   <br />
-                </p>
+                </>
               }
             >
               - Income (normal vs. inferior goods)
@@ -387,7 +346,7 @@ const SupplyDemandLesson: React.FC = () => {
           <li>
             <Collapsible
               ExampleContent={
-                <p>
+                <>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
                   <Emphasize>Definition:</Emphasize> If people expect the price
                   of something to go up, they will buy more of it now. <br />
@@ -399,7 +358,7 @@ const SupplyDemandLesson: React.FC = () => {
                   stock up on it before it does. (This happened during the COVID
                   Pandemic)
                   <br /> <br />
-                </p>
+                </>
               }
             >
               - Expectations (future price anticipation)
@@ -500,7 +459,7 @@ const SupplyDemandLesson: React.FC = () => {
             <li>
               <Collapsible
                 ExampleContent={
-                  <p>
+                  <>
                     <Emphasize>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
                     </Emphasize>{" "}
@@ -512,7 +471,7 @@ const SupplyDemandLesson: React.FC = () => {
                     A decrease in supply will shift the supply curve to the
                     left.
                     <br /> <br />
-                  </p>
+                  </>
                 }
               >
                 Input Prices (cost of raw materials).
@@ -521,7 +480,7 @@ const SupplyDemandLesson: React.FC = () => {
             <li>
               <Collapsible
                 ExampleContent={
-                  <p>
+                  <>
                     <Emphasize>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
                     </Emphasize>{" "}
@@ -533,7 +492,7 @@ const SupplyDemandLesson: React.FC = () => {
                     </Emphasize>{" "}
                     An increase in supply will shift the supply curve to the
                     right. <br /> <br />
-                  </p>
+                  </>
                 }
               >
                 Technology (production efficiency)
@@ -542,7 +501,7 @@ const SupplyDemandLesson: React.FC = () => {
             <li>
               <Collapsible
                 ExampleContent={
-                  <p>
+                  <>
                     <Emphasize>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
                     </Emphasize>{" "}
@@ -553,7 +512,7 @@ const SupplyDemandLesson: React.FC = () => {
                     </Emphasize>{" "}
                     If there are less french fry sellers, it would cause the
                     supply of french fries to go down. <br /> <br />
-                  </p>
+                  </>
                 }
               >
                 Number of Sellers.
@@ -562,7 +521,7 @@ const SupplyDemandLesson: React.FC = () => {
             <li>
               <Collapsible
                 ExampleContent={
-                  <p>
+                  <>
                     <Emphasize>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
                     </Emphasize>{" "}
@@ -570,7 +529,7 @@ const SupplyDemandLesson: React.FC = () => {
                     will hold back on selling them now and wait for the price to
                     go up. <br />
                     <br />
-                  </p>
+                  </>
                 }
               >
                 Expectations (future price expectations).
@@ -579,7 +538,7 @@ const SupplyDemandLesson: React.FC = () => {
             <li>
               <Collapsible
                 ExampleContent={
-                  <p>
+                  <>
                     <Emphasize>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
                     </Emphasize>{" "}
@@ -592,7 +551,7 @@ const SupplyDemandLesson: React.FC = () => {
                     </Emphasize>{" "}
                     If the government taxes french fry producers, it would cause
                     the supply of french fries to go down. <br /> <br />
-                  </p>
+                  </>
                 }
               >
                 Government Policies (taxes, subsidies).
