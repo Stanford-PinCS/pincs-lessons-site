@@ -1,16 +1,14 @@
-import LessonWrapper from "@/components/LessonWrapper";
-import { Metadata } from "next";
-import SupplyDemandLesson from "./SupplyDemandLesson";
+import LandingPage from "@/components/LandingPage";
+import SupplyDemandLesson from "./lesson/SupplyDemandLesson";
 
-export const metadata: Metadata = {
-  title: "Supply and Demand",
-  description: "lorem ipsum dolor sit amet",
-};
-
-export default function ExampleLesson() {
+export default function ExampleLessonLandingPage() {
   return (
-    <LessonWrapper>
-      <SupplyDemandLesson />
-    </LessonWrapper>
+    <LandingPage
+      teacherResources="https://docs.google.com/document/d/1KfcO3M2svgW2Fj6TG2URu0a40tJXV5PH4zLJfmf6YAo/edit?usp=sharing"
+      lessonDescription="An interactive way to learn the basic economic concept of supply and demand, in addition to the basic computer science concept of for loops."
+    >
+      {" "}
+      <SupplyDemandLesson />{" "}
+    </LandingPage>
   );
 }
