@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "echo http://localhost:3000/interactive-lessons/ && next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.3",
     "@heroicons/react": "^2.2.0",
+    "@pkasila/react-katex": "^1.2.2",
     "lodash": "^4.17.21",
     "lucide-react": "^0.484.0",
     "motion": "^12.19.1",
