@@ -250,6 +250,7 @@ const SupplyDemandLesson: React.FC = () => {
         <p>
           <Emphasize>👉 Check in: </Emphasize>
         </p>
+
         <QuizQuestion
           question="As price falls, what happens to the quantity demanded?"
           choices={[
@@ -278,6 +279,12 @@ const SupplyDemandLesson: React.FC = () => {
             },
           ]}
         ></QuizQuestion>
+      </ColorBox>
+      <ColorBox color="purple">
+        <p>
+          Make sure you write down your code for the for loop that goes along
+          the supply curve!
+        </p>
       </ColorBox>
     </Block>,
 
@@ -424,6 +431,12 @@ const SupplyDemandLesson: React.FC = () => {
         width="100%"
         height="450px"
       ></iframe>
+      <ColorBox color="blue">
+        <p>
+          Make sure you write down your code for the "for loop" that shows what
+          adding demand does to the graph!
+        </p>
+      </ColorBox>
       <ColorBox color="purple">
         <p>
           <Emphasize>👉 Takeaway: </Emphasize>
@@ -619,6 +632,12 @@ const SupplyDemandLesson: React.FC = () => {
         width="100%"
         height="450px"
       ></iframe>
+      <ColorBox color="blue">
+        <p>
+          Make sure you write down your code for the "for loop" that shows what
+          adding supply does to the graph!
+        </p>
+      </ColorBox>
     </Block>,
 
     <Block color="purple" title="Equilibrium">
