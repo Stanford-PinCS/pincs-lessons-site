@@ -6,6 +6,7 @@ import ColorBox from "@/components/ColorBox";
 import Lesson from "@/components/Lesson";
 import QuizQuestion from "@/components/QuizQuestion";
 import rollinginmoney from "./rollinginmoney.jpg";
+import example from "./example.png";
 import MultiSelectQuizQuestion from "@/components/MultiSelectQuizQuestion";
 import TextQuizQuestion from "@/components/TextQuizQuestion";
 import Collapsible from "@/components/Collapsible";
@@ -395,6 +396,9 @@ const SupplyDemandLesson: React.FC = () => {
           Make sure you write down your code for the "for loop" that shows what
           adding demand does to the graph!
         </p>
+        <center>
+          <img src={example.src} alt="example" style={{ width: "45%" }} />
+        </center>
       </ColorBox>
       <ColorBox color="purple">
         <p>
