@@ -737,8 +737,8 @@ const SupplyDemandLesson: React.FC = () => {
         <br />
       </ColorBox>
       <p>
-        Thinking about these questions will help you understand not only the
-        supply and demand model, but also the real world.
+        Thinking about these questions will help you understand not only how the
+        supply and demand model works, but also how the real world operates.
       </p>
     </Block>,
   ];
