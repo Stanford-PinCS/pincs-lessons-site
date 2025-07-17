@@ -14,6 +14,9 @@ import GravityComponentsDiagram from "./GravityComponentsDiagram";
 import ForceComponentDerivation from "./ForceComponentDerivation";
 import SpringBoxFrictionDiagram from "./SpringBoxFrictionDiagram";
 import PersonFreeBodyDiagram from "./PersonFreeBodyDiagram";
+import FreeBodyDiagramStepper from "./FreeBodyDiagramStepper";
+import ForcesBulletsWalkThrough from "./ForcesBulletsWalkThrough";
+import pulleyProblem from "./Pulley Problem.png";
 
 export const metadata: Metadata = {
   title: "Forces",
@@ -467,18 +470,111 @@ export default function ForcesLesson() {
     <Block color="yellow" title="Solving problems with forces">
       <p>
         Now let's use a free body diagram to solve a physics problem together.
+        Here's the problem:
       </p>
+      <ColorBox color="blue">
+        <p>
+          Suppose we have a{" "}
+          <KeyTerm>
+            <ReactKatex>$10kg$ block</ReactKatex>
+          </KeyTerm>{" "}
+          sitting on a flat surface, with a static coefficient of friction at{" "}
+          <KeyTerm>
+            <ReactKatex>$\mu_s = 0.2$</ReactKatex>
+          </KeyTerm>
+          .
+        </p>
+        <p>
+          If gravity acts at{" "}
+          <KeyTerm>
+            <ReactKatex>{`$g=10\\frac{m}{s^2}$`}</ReactKatex>
+          </KeyTerm>
+          ,{" "}
+          <Emphasize>
+            how many Newtons of force to right is necessary to start sliding the
+            box?
+          </Emphasize>
+        </p>
+      </ColorBox>
       <p>
-        Suppose we have a <KeyTerm>10kg block</KeyTerm> sitting on a flat
-        surface.
+        <Emphasize>Step 1:</Emphasize> Draw a free body diagram.
       </p>
+      <ColorBox color="yellow">
+        <FreeBodyDiagramStepper></FreeBodyDiagramStepper>
+      </ColorBox>
       <p>
-        If gravity acts at <KeyTerm>{`$g=10\\frac{m}{s^2}$`}</KeyTerm>...
+        <Emphasize>Step 2:</Emphasize> Write out the equations you know.
       </p>
+      <ColorBox color="yellow">
+        <ForcesBulletsWalkThrough></ForcesBulletsWalkThrough>
+      </ColorBox>
+      <p>
+        <Emphasize>Step 3:</Emphasize> Start putting the equations together to
+        solve for the unknowns.
+      </p>
+      <ColorBox color="yellow">
+        <p>
+          By Newton's second law of motion, we know F=ma, which{" "}
+          <Emphasize>
+            we can split into horizontal and vertical components
+          </Emphasize>
+          . First, we'll look at the vertical forces.
+        </p>
+        <br />
+        <p>
+          <ReactKatex>
+            {`Our force sum is $F_y = normal - gravity = N - mg$. Since our
+            vertical acceleration is 0, our $ma$ term is $ma_y = m(0) = 0$.
+            Setting the two sides of $F=ma$ equal, we get $N-mg=0$.`}
+          </ReactKatex>
+          <Emphasize>
+            {" "}
+            <ReactKatex>
+              {`From our horizontal components, we can conclude that
+              $N=mg=(10kg)(10\\frac{m}{s^2})=100 \\text{ Newtons}$.`}
+            </ReactKatex>
+          </Emphasize>
+        </p>
+        <br />
+        <p>
+          Now, let's look at our horizontal forces to figure out how much we
+          need to push to get this block to slide.
+        </p>
+        <br />
+        <p>
+          <ReactKatex>
+            {`Our force sum is $F_x = push - friction = F - \\mu_s N$. Since we
+            want our block to accelerate to the right, we have $ma_x \\gt 0$.
+            Setting these equal, we get $F - \\mu_s N \\gt 0$. Substituting our
+            values for $\\mu_s$ and $N$,`}
+          </ReactKatex>
+          <Emphasize>
+            <ReactKatex>
+              {` we get that our force applied is $F \\gt \\mu_s N = (0.2) (\\text{100 Newtons}) = 20 \\text{ Newtons}$.`}
+            </ReactKatex>
+          </Emphasize>
+        </p>
+      </ColorBox>
     </Block>,
     // Slide 14: Check in problem.
     <Block color="purple" title="Force problem">
-      <></>
+      <p>
+        Now it's your turn to solve a problem on your own. Use the same steps as
+        the previous slide to solve the following problem.
+      </p>
+      <ColorBox color="purple">
+        <Emphasize>Blocks and a Pulley Problem: </Emphasize>
+        <ReactKatex>
+          {`Suppose we have two blocks, with masses $5kg$ and $10kg$, held
+          together by a (weightless) string that is strung over a pulley. If we
+          hold the blocks still and let go, how fast will they accelerate?
+          (Note: You can assume gravity acts at $g=10\\frac{m}{s^2}$.)`}
+        </ReactKatex>
+        <img
+          src={pulleyProblem.src}
+          alt="Two blocks held together by a string over a pulley."
+        ></img>
+      </ColorBox>
     </Block>,
     // Slide 15: Coding up force addition.
     <Block color="yellow" title="Coding up force addition">
@@ -487,7 +583,42 @@ export default function ForcesLesson() {
 
     // Slide 16: Checking in on different force types.
     <Block color="green" title="Lesson Recap">
-      <></>
+      <p>Here's what we learned about forces:</p>
+      <ul className="list-disc list-inside">
+        <li>
+          A <KeyTerm>force</KeyTerm> a push or a pull, that causes objects to
+          accelerate.
+        </li>
+        <li>
+          Often, we want to split a force into its{" "}
+          <KeyTerm>force components</KeyTerm>. To do so, we we use trigonometry
+          and get back two <Emphasize>perpendicular</Emphasize> parts of a force
+          as a result.
+        </li>
+        <li>
+          <KeyTerm>Newton's Laws of Motions</KeyTerm> describe how forces
+          interact with objects, such as how objects don't change their speed or
+          direction unless there's a force <KeyTerm>(1st law)</KeyTerm>, Force
+          is equal to Mass times Acceleration <KeyTerm>(2nd law)</KeyTerm>, and
+          that every force has an opposite force of equal strength{" "}
+          <KeyTerm>(3rd law)</KeyTerm>.
+        </li>
+        <li>
+          There are <Emphasize>many types of forces</Emphasize>, including{" "}
+          <KeyTerm>gravitational</KeyTerm>, <KeyTerm>frictional</KeyTerm>,{" "}
+          <KeyTerm>normal forces</KeyTerm>, <KeyTerm>tension forces</KeyTerm>,
+          and
+          <KeyTerm>springs forces</KeyTerm>.
+        </li>
+        <li>
+          <KeyTerm>Free Body Diagrams (FBDs)</KeyTerm> are a standard way to
+          represent all the forces in a problem, which is helpful for using
+          equations to solve the problem.
+        </li>
+        <li>
+          How to <KeyTerm>add together forces</KeyTerm> to solve problems.
+        </li>
+      </ul>
     </Block>,
   ];
 
