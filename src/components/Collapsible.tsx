@@ -15,7 +15,7 @@ const Collapsible = ({
   const toggleSymbol = isOpen ? "🔼" : "🔽";
   return (
     <div>
-      <button className="cursor-pointer" onClick={toggle}>
+      <button className="cursor-pointer text-left" onClick={toggle}>
         {children} {toggleSymbol}
       </button>
       {isOpen && (

@@ -307,7 +307,7 @@ const SupplyDemandLesson: React.FC = () => {
                   of something to go up, they will buy more of it now. <br />
                   <Emphasize>👉 Example:</Emphasize> If people expect the price
                   of toilet paper to go up, they will stock up on it before it
-                  does. (This happened during the COVID Pandemic)
+                  does. (This happened during the COVID Pandemic).
                 </>
               }
             >
@@ -323,7 +323,7 @@ const SupplyDemandLesson: React.FC = () => {
             <>
               What happens to the price of Computers when the quantity of chips
               go down? (Hint: use the tool below and see if it adds or removes
-              Demand)
+              Demand).
               <br />
               <br />
               Price will _____
@@ -389,11 +389,11 @@ const SupplyDemandLesson: React.FC = () => {
         <p>
           If price is low, producers won't want to make more of it because they
           won't make much money (try <Code>setPrice(0.5)</Code> and{" "}
-          <Code>setQuantity(0.5)</Code> ) in the tool below <br />
+          <Code>setQuantity(0.5)</Code> ) in the tool below. <br />
           <br />
           If price is high, producers want to make more of it to make more money
           (try <Code>setPrice(1.5)</Code> and <Code>setQuantity(1.5)</Code> ) in
-          the tool below <br />
+          the tool below. <br />
         </p>
       </ColorBox>
       <br />
@@ -589,13 +589,13 @@ const SupplyDemandLesson: React.FC = () => {
           <br />
           <TextQuizQuestion
             placeholder="e.g. (0.5, 0.8), (0.3, 1.5)"
-            question="What were the two points of the shortage? (to make things simple, make sure one of your values is 1.5)"
+            question="What were the two points of the shortage? (to make things simple, make sure one of your values is 1.5)."
             pattern="^\\(0\\.5, 1\\.5\\), \\(1\\.5, 1\\.5\\)$"
           />
           <br />
           <TextQuizQuestion
             placeholder="e.g. (0.5, 0.8), (0.3, 1.5)"
-            question="What were the two points of the surplus? (to make things simple, make sure one of your values is 0.5)"
+            question="What were the two points of the surplus? (to make things simple, make sure one of your values is 0.5)."
             pattern={`^\\(0\\.5, 0\\.5\\), \\(1\\.5, 0\\.5\\)$`}
           />
         </div>
