@@ -15,12 +15,14 @@ const Collapsible = ({
   const toggleSymbol = isOpen ? "🔼" : "🔽";
   return (
     <div>
-      <button onClick={toggle}>
+      <button className="cursor-pointer" onClick={toggle}>
         {children} {toggleSymbol}
       </button>
       {isOpen && (
         <div>
-          <p>{ExampleContent}</p>
+          <div style={{ paddingLeft: "1rem", marginBottom: "1rem" }}>
+            {ExampleContent}
+          </div>
         </div>
       )}
     </div>

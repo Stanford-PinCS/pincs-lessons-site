@@ -10,22 +10,9 @@ import example from "./example.png";
 import MultiSelectQuizQuestion from "@/components/MultiSelectQuizQuestion";
 import TextQuizQuestion from "@/components/TextQuizQuestion";
 import Collapsible from "@/components/Collapsible";
-
-const Code = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <code
-      style={{
-        backgroundColor: "black",
-        color: "white",
-        padding: "2px 6px",
-        borderRadius: "4px",
-        fontSize: "14px",
-      }}
-    >
-      {children}
-    </code>
-  );
-};
+import Code from "@/components/Code";
+import addDemand from "./addDemand.png";
+import addSupply from "./addSupply.png";
 
 const SupplyDemandLesson: React.FC = () => {
   const slides = [
@@ -122,11 +109,8 @@ const SupplyDemandLesson: React.FC = () => {
               <Collapsible
                 ExampleContent={
                   <>
-                    <Emphasize>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                    </Emphasize>{" "}
-                    If ice cream is too expensive, they will buy a candy bar
-                    instead
+                    <Emphasize>👉 Example: </Emphasize> If ice cream is too
+                    expensive, they will buy a candy bar instead
                   </>
                 }
               >
@@ -138,27 +122,24 @@ const SupplyDemandLesson: React.FC = () => {
               <Collapsible
                 ExampleContent={
                   <>
-                    <Emphasize>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                    </Emphasize>{" "}
-                    If they have more money to spend, they will get fine dining
-                    instead of McDonald's.
+                    <Emphasize>👉 Example: </Emphasize> If they have more money
+                    to spend, they will prefer to get something more expensive
+                    like steak instead of having something that is cheap and
+                    processed like ramen noodles.
                   </>
                 }
               >
                 <Emphasize>- Income effect: </Emphasize> Budget constraints
-                change purchasing power
+                change purchasing power.
               </Collapsible>
             </li>
             <li>
               <Collapsible
                 ExampleContent={
                   <>
-                    <Emphasize>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                    </Emphasize>{" "}
-                    If they have more and more ice cream, they will be less and
-                    less satisfied with each additional ice cream.
+                    <Emphasize>👉 Example: </Emphasize> If they have more and
+                    more ice cream, they will be less and less satisfied with
+                    each additional ice cream.
                   </>
                 }
               >
@@ -182,9 +163,10 @@ const SupplyDemandLesson: React.FC = () => {
           </Emphasize>
         </p>
         <p>
-          Demand is the entire relationship between prices and how much people
-          want at each price. Quantity demanded is how much people want at one
-          particular price.
+          <Emphasize>Demand</Emphasize> is the entire relationship between
+          prices and how much people want at each price.{" "}
+          <Emphasize>Quantity demanded</Emphasize> is how much people want at
+          one particular price.
           <br />
           <br />
           Therefore, the change in demand shifts the{" "}
@@ -258,17 +240,11 @@ const SupplyDemandLesson: React.FC = () => {
             <Collapsible
               ExampleContent={
                 <>
-                  <Emphasize>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                  </Emphasize>{" "}
-                  If the weather is hot, people will want to buy more ice cream.{" "}
-                  <br />{" "}
-                  <Emphasize>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Notice:{" "}
-                  </Emphasize>{" "}
-                  The price of ice cream stays the same. Some other outside
-                  factor is causing the shift <br />
-                  <br />
+                  <Emphasize>👉 Example: </Emphasize> If the weather is hot,
+                  people will want to buy more ice cream. <br />{" "}
+                  <Emphasize>👉 Notice: </Emphasize> The price of ice cream
+                  stays the same. Some other outside factor is causing the
+                  shift.
                 </>
               }
             >
@@ -279,17 +255,10 @@ const SupplyDemandLesson: React.FC = () => {
             <Collapsible
               ExampleContent={
                 <>
-                  <Emphasize>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                  </Emphasize>{" "}
-                  If there are more people buying something, the demand for that
-                  thing goes up. <br />{" "}
-                  <Emphasize>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Notice:{" "}
-                  </Emphasize>{" "}
-                  The price of ice cream stays the same. Some other outside
-                  factor is causing the shift <br />
-                  <br />
+                  <Emphasize>👉 Example: </Emphasize> If there are more people
+                  buying something, the demand for that thing goes up. <br />{" "}
+                  <Emphasize>👉 Notice: </Emphasize> The price of ice cream
+                  stays the same. Some other outside factor is causing the shift{" "}
                 </>
               }
             >
@@ -300,19 +269,13 @@ const SupplyDemandLesson: React.FC = () => {
             <Collapsible
               ExampleContent={
                 <>
-                  <Emphasize>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                  </Emphasize>{" "}
-                  Cones and Ice Cream are <Emphasize>compliments</Emphasize>, so
-                  if the price of ice cream cones go up, the cost of ice cream
-                  goes up, meaning less people will buy ice cream. <br />
-                  <Emphasize>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                  </Emphasize>{" "}
-                  Candy bars and ice cream are{" "}
-                  <Emphasize>substitutes</Emphasize>, so if less people buy
-                  candy bars, more people will buy ice cream. <br />
-                  <br />
+                  <Emphasize>👉 Example: </Emphasize> Cones and Ice Cream are{" "}
+                  <Emphasize>compliments</Emphasize>, so if the price of ice
+                  cream cones go up, the cost of ice cream goes up, meaning less
+                  people will buy ice cream. <br />
+                  <Emphasize>👉 Example: </Emphasize> Candy bars and ice cream
+                  are <Emphasize>substitutes</Emphasize>, so if less people buy
+                  candy bars, more people will buy ice cream.
                 </>
               }
             >
@@ -323,21 +286,13 @@ const SupplyDemandLesson: React.FC = () => {
             <Collapsible
               ExampleContent={
                 <>
-                  <Emphasize>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Normal goods:{" "}
-                  </Emphasize>{" "}
-                  things people buy more of when they have more money (e.g.
-                  Jewlery) <br />
-                  <Emphasize>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Inferior goods:{" "}
-                  </Emphasize>{" "}
-                  things people buy less of when they have more money (e.g.
-                  McDonald's) <br /> <br />
+                  <Emphasize>Normal goods: </Emphasize> things people buy more
+                  of when they have more money (e.g. Jewlery) <br />
+                  <Emphasize>Inferior goods: </Emphasize> things people buy less
+                  of when they have more money (e.g. ramen noodles) <br />{" "}
                   <Emphasize>👉 Therefore:</Emphasize> When people's income go
                   down, they will buy less of normal goods and more of inferior
                   goods (and vice versa)
-                  <br />
-                  <br />
                 </>
               }
             >
@@ -348,17 +303,11 @@ const SupplyDemandLesson: React.FC = () => {
             <Collapsible
               ExampleContent={
                 <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
                   <Emphasize>Definition:</Emphasize> If people expect the price
                   of something to go up, they will buy more of it now. <br />
-                  <br />
-                  <Emphasize>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:
-                  </Emphasize>{" "}
-                  If people expect the price of toilet paper to go up, they will
-                  stock up on it before it does. (This happened during the COVID
-                  Pandemic)
-                  <br /> <br />
+                  <Emphasize>👉 Example:</Emphasize> If people expect the price
+                  of toilet paper to go up, they will stock up on it before it
+                  does. (This happened during the COVID Pandemic)
                 </>
               }
             >
@@ -397,7 +346,11 @@ const SupplyDemandLesson: React.FC = () => {
           adding demand does to the graph!
         </p>
         <center>
-          <img src={example.src} alt="example" style={{ width: "45%" }} />
+          <img
+            src={addDemand.src}
+            alt="addDemandExample"
+            style={{ width: "45%" }}
+          />
         </center>
       </ColorBox>
       <ColorBox color="purple">
@@ -422,7 +375,7 @@ const SupplyDemandLesson: React.FC = () => {
     <Block color="green" title="Supply">
       <ColorBox color="green">
         Supply means the number of products that a producer/seller can provide
-        to buyers <br />
+        to buyers. <br />
       </ColorBox>
 
       <p>
@@ -464,17 +417,11 @@ const SupplyDemandLesson: React.FC = () => {
               <Collapsible
                 ExampleContent={
                   <>
-                    <Emphasize>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                    </Emphasize>{" "}
-                    If the cost of potatoes go up, that will cause the supply of
-                    french fries to go down. <br />
-                    <Emphasize>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Notice:
-                    </Emphasize>{" "}
-                    A decrease in supply will shift the supply curve to the
-                    left.
-                    <br /> <br />
+                    <Emphasize>👉 Example: </Emphasize> If the cost of potatoes
+                    go up, that will cause the supply of french fries to go
+                    down. <br />
+                    <Emphasize>👉 Notice:</Emphasize> A decrease in supply will
+                    shift the supply curve to the left.
                   </>
                 }
               >
@@ -485,37 +432,28 @@ const SupplyDemandLesson: React.FC = () => {
               <Collapsible
                 ExampleContent={
                   <>
-                    <Emphasize>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                    </Emphasize>{" "}
-                    If there are machines that make french fries faster and
-                    cheaper, it would cause the supply of french fries to go up.
+                    <Emphasize>👉 Example: </Emphasize> If there are machines
+                    that make french fries faster and cheaper, it would cause
+                    the supply of french fries to go up.
                     <br />
-                    <Emphasize>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Notice:
-                    </Emphasize>{" "}
-                    An increase in supply will shift the supply curve to the
-                    right. <br /> <br />
+                    <Emphasize>👉 Notice:</Emphasize> An increase in supply will
+                    shift the supply curve to the right.
                   </>
                 }
               >
-                Technology (production efficiency)
+                Technology (production efficiency).
               </Collapsible>
             </li>
             <li>
               <Collapsible
                 ExampleContent={
                   <>
-                    <Emphasize>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                    </Emphasize>{" "}
-                    If there are more french fry sellers, it would cause the
-                    supply of french fries to go up. <br />
-                    <Emphasize>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:
-                    </Emphasize>{" "}
-                    If there are less french fry sellers, it would cause the
-                    supply of french fries to go down. <br /> <br />
+                    <Emphasize>👉 Example: </Emphasize> If there are more french
+                    fry sellers, it would cause the supply of french fries to go
+                    up. <br />
+                    <Emphasize>👉 Example: </Emphasize> If there are less french
+                    fry sellers, it would cause the supply of french fries to go
+                    down.
                   </>
                 }
               >
@@ -526,13 +464,9 @@ const SupplyDemandLesson: React.FC = () => {
               <Collapsible
                 ExampleContent={
                   <>
-                    <Emphasize>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                    </Emphasize>{" "}
-                    If people expect the price of french fries to go up, they
-                    will hold back on selling them now and wait for the price to
-                    go up. <br />
-                    <br />
+                    <Emphasize>👉 Example: </Emphasize> If people expect the
+                    price of french fries to go up, they will hold back on
+                    selling them now and wait for the price to go up.
                   </>
                 }
               >
@@ -543,18 +477,14 @@ const SupplyDemandLesson: React.FC = () => {
               <Collapsible
                 ExampleContent={
                   <>
-                    <Emphasize>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:{" "}
-                    </Emphasize>{" "}
-                    If the government gives a subsidy (money to make things
-                    cheaper) to french fry producers, it would cause the supply
-                    of french fries to go up.
+                    <Emphasize>👉 Example: </Emphasize> If the government gives
+                    a subsidy (money to make things cheaper) to french fry
+                    producers, it would cause the supply of french fries to go
+                    up.
                     <br />
-                    <Emphasize>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉 Example:
-                    </Emphasize>{" "}
-                    If the government taxes french fry producers, it would cause
-                    the supply of french fries to go down. <br /> <br />
+                    <Emphasize>👉 Example:</Emphasize> If the government taxes
+                    french fry producers, it would cause the supply of french
+                    fries to go down.
                   </>
                 }
               >
@@ -600,6 +530,13 @@ const SupplyDemandLesson: React.FC = () => {
           Make sure you write down your code for the "for loop" that shows what
           adding supply does to the graph!
         </p>
+        <center>
+          <img
+            src={addSupply.src}
+            alt="addSupplyExample"
+            style={{ width: "45%" }}
+          />
+        </center>
       </ColorBox>
     </Block>,
 
