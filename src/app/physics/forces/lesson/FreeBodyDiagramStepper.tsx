@@ -23,7 +23,7 @@ const forceSteps = [
   },
   {
     label: "Draw frictional force and move on",
-    description: "Friction tries to stop sliding—let’s add it to the left.",
+    description: "Friction tries to stop sliding — let's add it to the left.",
   },
 ];
 

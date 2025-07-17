@@ -13,6 +13,7 @@ import FootballComponentsDiagram from "./FootballComponentsDiagram";
 import GravityComponentsDiagram from "./GravityComponentsDiagram";
 import ForceComponentDerivation from "./ForceComponentDerivation";
 import SpringBoxFrictionDiagram from "./SpringBoxFrictionDiagram";
+import FreeBodyDiagramBuilder from "./FreeBodyDiagramBuilder";
 import PersonFreeBodyDiagram from "./PersonFreeBodyDiagram";
 import FreeBodyDiagramStepper from "./FreeBodyDiagramStepper";
 import ForcesBulletsWalkThrough from "./ForcesBulletsWalkThrough";
@@ -413,7 +414,11 @@ export default function ForcesLesson() {
         body diagram for the block in the system below.
       </p>
       <SpringBoxFrictionDiagram></SpringBoxFrictionDiagram>
-      {/* TODO: Add an interactive free body diagram maker */}
+      <p>
+        Specifically, let's draw <Emphasize>Free Body Diagram</Emphasize> for
+        when the block is <Emphasize>accelerating to the left</Emphasize>.
+      </p>
+      <FreeBodyDiagramBuilder></FreeBodyDiagramBuilder>
     </Block>,
 
     // Slide 12: Checking in on different force types.
