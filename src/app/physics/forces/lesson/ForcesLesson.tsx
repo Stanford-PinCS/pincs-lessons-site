@@ -204,8 +204,14 @@ export default function ForcesLesson() {
     </Block>,
 
     // Slide 7: Coding up how to split a force.
-    <Block color="yellow" title="Making components in code">
-      <></>
+    <Block color="yellow" title="Making components in code" mode="pickcode">
+      <iframe
+        id="forceComponentsPlugin"
+        title="Code Up For Components"
+        width="100%"
+        style={{ height: "calc(100vh - 100px)" }}
+        src="https://dev.pickcode.io/lesson/force-components-logic-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-07-18-09-40-00"
+      ></iframe>
     </Block>,
 
     // Slide 8: Check in.
