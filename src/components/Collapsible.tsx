@@ -20,34 +20,26 @@ const Collapsible = ({
         isOpen ? "bg-gray-100 shadow-md rounded-xl" : ""
       }`}
     >
-      <style jsx>{`
-        @keyframes bounceOnce {
-          0%,
-          20%,
-          53%,
-          80%,
-          100% {
-            transform: translate3d(0, 0, 0);
-          }
-          40%,
-          43% {
-            transform: translate3d(0, -8px, 0);
-          }
-          70% {
-            transform: translate3d(0, -4px, 0);
-          }
-          90% {
-            transform: translate3d(0, -2px, 0);
-          }
-        }
-        .bounce-once:hover {
-          animation: bounceOnce 0.6s ease-in-out;
-        }
-      `}</style>
       <button
         onClick={toggle}
-        className="w-full text-left px-4 py-3 focus:outline-none active:scale-[0.98] transition-transform duration-150 bounce-once"
+        className="w-full text-left px-4 py-3 focus:outline-none active:scale-[0.98] transition-transform duration-150 hover:animate-[smoothBounce_0.6s_ease-out]"
+        style={{
+          animationFillMode: "forwards",
+        }}
       >
+        <style jsx>{`
+          @keyframes smoothBounce {
+            0% {
+              transform: translateY(0);
+            }
+            50% {
+              transform: translateY(-6px);
+            }
+            100% {
+              transform: translateY(0);
+            }
+          }
+        `}</style>
         <div className="flex justify-between items-center">
           <span className="font-medium">{children}</span>
           <span>{toggleSymbol}</span>
