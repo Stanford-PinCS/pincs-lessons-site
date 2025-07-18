@@ -718,12 +718,12 @@ export default function DragLesson() {
     </Block>,
 
     // Slide 16. Coding Forward Euler.
-    <Block color="yellow" title="Code the Forward Euler Method">
+    <Block color="yellow" title="Code the Forward Euler Method" mode="pickcode">
       <iframe
         id="forwardEulerPlugin"
         title="Code Up a The Forward Euler Method"
         width="100%"
-        height="500"
+        style={{ height: "calc(100vh - 100px)" }}
         src="https://dev.pickcode.io/lesson/drag-lesson-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-07-09-05-55-53"
       ></iframe>
     </Block>,
@@ -754,12 +754,16 @@ export default function DragLesson() {
     </Block>,
 
     // Slide 18: Coding a 2nd-Order Numerical Method.
-    <Block color="yellow" title="Challenge: A More Accurate Method">
+    <Block
+      color="yellow"
+      title="Challenge: A More Accurate Method"
+      mode="pickcode"
+    >
       <iframe
         id="midpointMethodPlugin"
         title="Code Up a The Midpoint Method"
         width="100%"
-        height="500"
+        style={{ height: "calc(100vh - 100px)" }}
         src="https://dev.pickcode.io/lesson/drag-lesson-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-07-09-05-55-53-copy-2025-07-10-10-53-40"
       ></iframe>
     </Block>,
