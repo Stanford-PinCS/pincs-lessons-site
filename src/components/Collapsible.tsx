@@ -13,27 +13,52 @@ const Collapsible = ({
   };
 
   const toggleSymbol = isOpen ? "🔼" : "🔽";
+
   return (
-    <div>
+    <div
+      className={`w-full transition-all duration-200 ${
+        isOpen ? "bg-gray-100 shadow-md rounded-xl" : ""
+      }`}
+    >
+      <style jsx>{`
+        @keyframes bounceOnce {
+          0%,
+          20%,
+          53%,
+          80%,
+          100% {
+            transform: translate3d(0, 0, 0);
+          }
+          40%,
+          43% {
+            transform: translate3d(0, -8px, 0);
+          }
+          70% {
+            transform: translate3d(0, -4px, 0);
+          }
+          90% {
+            transform: translate3d(0, -2px, 0);
+          }
+        }
+        .bounce-once:hover {
+          animation: bounceOnce 0.6s ease-in-out;
+        }
+      `}</style>
       <button
-        className="cursor-pointer text-left"
-        style={{
-          border: "1px solid #e0e0e0",
-          padding: "10px",
-          width: "100%",
-          textAlign: "left",
-        }}
         onClick={toggle}
+        className="w-full text-left px-4 py-3 focus:outline-none active:scale-[0.98] transition-transform duration-150 bounce-once"
       >
-        {children} {toggleSymbol}
-        {isOpen && (
-          <div>
-            <div style={{ paddingLeft: "1rem", marginBottom: "1rem" }}>
-              {ExampleContent}
-            </div>
-          </div>
-        )}
+        <div className="flex justify-between items-center">
+          <span className="font-medium">{children}</span>
+          <span>{toggleSymbol}</span>
+        </div>
       </button>
+
+      {isOpen && (
+        <div className="pl-6 pr-4 pb-4 border-l-4 border-blue-400">
+          {ExampleContent}
+        </div>
+      )}
     </div>
   );
 };
