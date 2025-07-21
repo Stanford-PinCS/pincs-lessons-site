@@ -204,10 +204,10 @@ export default function ForcesLesson() {
     </Block>,
 
     // Slide 7: Coding up how to split a force.
-    <Block color="yellow" title="Making components in code" mode="pickcode">
+    <Block color="yellow" title="Code Force Components" mode="pickcode">
       <iframe
         id="forceComponentsPlugin"
-        title="Code Up For Components"
+        title="Code Force Components"
         width="100%"
         style={{ height: "calc(100vh - 100px)" }}
         src="https://dev.pickcode.io/lesson/force-components-logic-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-07-18-09-40-00"
@@ -588,8 +588,14 @@ export default function ForcesLesson() {
       </ColorBox>
     </Block>,
     // Slide 15: Coding up force addition.
-    <Block color="yellow" title="Coding up force addition">
-      <></>
+    <Block color="yellow" title="Code force addition" mode="pickcode">
+      <iframe
+        id="forceAdditionPlugin"
+        title="Code Force Addition"
+        width="100%"
+        style={{ height: "calc(100vh - 100px)" }}
+        src="https://dev.pickcode.io/lesson/force-addition-logic-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-07-21-08-12-45"
+      ></iframe>
     </Block>,
 
     // Slide 16: Checking in on different force types.
