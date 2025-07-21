@@ -18,6 +18,7 @@ import PersonFreeBodyDiagram from "./PersonFreeBodyDiagram";
 import FreeBodyDiagramStepper from "./FreeBodyDiagramStepper";
 import ForcesBulletsWalkThrough from "./ForcesBulletsWalkThrough";
 import pulleyProblem from "./Pulley Problem.png";
+import MultiSelectQuizQuestion from "@/components/MultiSelectQuizQuestion";
 
 export const metadata: Metadata = {
   title: "Forces",
@@ -155,7 +156,7 @@ export default function ForcesLesson() {
             text: "Mass",
             isCorrect: true,
             explanation:
-              "Exactly! Newtons and pounds are units of force magnitude, whereas mass refers to the amount of particles, not a force strength. For example, the same mass weighs more pounds on earth than on the moon because gravity is stronger on earth.",
+              "Exactly! Newtons and pounds are units for force, whereas mass refers to the amount of particles, not a force strength. For example, the same mass weighs more pounds on earth than on the moon because gravity is stronger on earth. How much it weighs is the force.",
           },
           {
             text: "Pounds",
@@ -324,7 +325,51 @@ export default function ForcesLesson() {
         </Emphasize>
       </p>
       <SpringBoxFrictionDiagram></SpringBoxFrictionDiagram>
-      {/* TODO: Make an interactive multi-choice quiz question that asks which forces are acting on the box. */}
+      <MultiSelectQuizQuestion
+        question="What forces are acting on the box?"
+        choices={[
+          {
+            text: "Gravitational Force",
+            isCorrect: true,
+            explanation:
+              "Yes, we know there must be gravity since if there were no gravity, the object wouldn't be pushed into the rough surface, so there wouldn't be friction and it wouldn't slow down to a stop.",
+          },
+          {
+            text: "The Charleston Force",
+            isCorrect: false,
+            explanation: "Nope, that one's made up.",
+          },
+          {
+            text: "Normal Force",
+            isCorrect: true,
+            explanation:
+              "Yes, since gravity pulls the object into the surface, the normal force must exist to stop it from going straight through the surface.",
+          },
+          {
+            text: "Applied Force",
+            isCorrect: false,
+            explanation:
+              "Nope, all of the forces have a more descriptive name than that.",
+          },
+          {
+            text: "Friction Force",
+            isCorrect: true,
+            explanation:
+              "Yes, since the object slows down to a stop, we know it has friction. Also, since the object is on a rough surface with gravity pulling it into the surface, friction would form.",
+          },
+          {
+            text: "Spring Force",
+            isCorrect: true,
+            explanation:
+              "Yes, this is the force that pulls it back and forth. The spring force is what's causing the object to keep accelerating toward the equilibrium of the spring.",
+          },
+          {
+            text: "Negative Force",
+            isCorrect: false,
+            explanation: "Nope, that one's made up.",
+          },
+        ]}
+      />
     </Block>,
 
     // Slide 9b: A Note on Friction
@@ -334,7 +379,7 @@ export default function ForcesLesson() {
         The gravitational force is given by <ReactKatex>$F_g = mg$</ReactKatex>,
         where <KeyTerm>m</KeyTerm> is mass and <KeyTerm>g</KeyTerm> is the
         acceleration due to gravity. This force acts downward toward the center
-        of the Earth and scales linearly with mass.
+        of the Earth and grows proportional to mass.
       </p>
 
       <h2 className="font-semibold text-center">Normal Force</h2>
