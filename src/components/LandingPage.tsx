@@ -31,7 +31,7 @@ export default function LandingPage({
   return (
     <div className="flex flex-col h-screen items-center gap-6">
       <PincsHeader />
-      <div className="mx-[300px]">
+      <div className="px-5 sm:px-[20vw] w-full">
         <h2 className="text-xl font-semibold text-center text-gray-800">
           Lesson Preview
         </h2>

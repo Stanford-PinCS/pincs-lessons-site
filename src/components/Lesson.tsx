@@ -78,7 +78,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
         <button
           onClick={goToPreviousSlide}
           disabled={currentSlide === 0}
-          className={`fixed z-1 left-[310px] ${navButtonStyle}
+          className={`sticky left-0 h-25 top-1/2 -translate-y-1/2 ${navButtonStyle}
           ${
             currentSlide === 0
               ? "opacity-50 cursor-not-allowed"
@@ -108,7 +108,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
         <button
           onClick={goToNextSlide}
           disabled={currentSlide === slides.length - 1}
-          className={`fixed z-1 right-[310px] ${navButtonStyle}
+          className={`sticky right-0 h-25 top-1/2 -translate-y-1/2 ${navButtonStyle}
           ${
             currentSlide === slides.length - 1
               ? "opacity-50 cursor-not-allowed"
