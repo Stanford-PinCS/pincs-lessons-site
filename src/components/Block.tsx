@@ -36,7 +36,7 @@ const Block: React.FC<BlockProps> = ({
     mode == "pickcode" && !previewMode ? "w-screen mt-3 left-0 fixed" : "";
   const h1PickcodeClasses =
     mode == "pickcode" && !previewMode
-      ? "fixed top-7 left-1/2 -translate-x-1/2"
+      ? "fixed top-7 -translate-x-10 text-center w-full text-[min(4vw,2rem)]"
       : "";
 
   return (
