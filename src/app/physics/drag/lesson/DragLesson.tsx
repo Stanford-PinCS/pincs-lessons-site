@@ -676,8 +676,8 @@ export default function DragLesson() {
       </ColorBox>
       <p>
         You realize that this estimate might not be accurate since you're not
-        accounting for drag. So let's try to use a numerical method to figure
-        that out.
+        accounting for drag. So let's try to use a numerical method to get a
+        more accurate estimate.
       </p>
       <p>
         Your best friend (who's very trustworthy when it comes to physics) says
