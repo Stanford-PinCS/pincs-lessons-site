@@ -33,7 +33,7 @@ export default function ForcesLesson() {
       <p>
         <Emphasize>In this lesson, you'll...</Emphasize>
       </p>
-      <ul className="list-disc list-inside">
+      <ul className="list-disc list-outside pl-6">
         <li>Learn what forces are.</li>
         <li>Understand and practice using free body diagrams.</li>
         <li>Learn how to use force components.</li>
@@ -49,15 +49,15 @@ export default function ForcesLesson() {
     <Block color="blue" title="What is a force?">
       <p>
         <Emphasize>
-          A <KeyTerm>force</KeyTerm> is an influence that causes an object ot
+          A <KeyTerm>force</KeyTerm> is an influence that causes an object to
           accelerate
         </Emphasize>
         . Essentially, a force is a <Emphasize>push or pull</Emphasize>.
       </p>
       <p>
-        When you play Tug of War, pulling on the rope is exerting a force.
-        Similarly, any time you carry objects, or even just walk, you are
-        exerting forces.
+        When you play Tug of War, pulling the rope means applying a force.
+        Similarly, when you hold a pencil or walk around, you are also applying
+        forces.
       </p>
       <p>
         Every force has a{" "}
@@ -86,8 +86,7 @@ export default function ForcesLesson() {
         unless acted upon by a net external force.
       </p>
       <ColorBox color="blue">
-        Just like how a drop of rain keeps falling until it gets stopped by the
-        ground, every object won't change its velocity unless there's a force.
+        Objects won't change their velocity unless acted on by a force.
       </ColorBox>
       <p>
         <Emphasize>Newton's Second Law</Emphasize> tells us how to calculate the
@@ -96,11 +95,11 @@ export default function ForcesLesson() {
         acceleration.
       </p>
       <ColorBox color="blue">
-        Eventhough it gives us the formula as F = ma, since we're often given
-        the force and want to find the acceleration, it can be helpful to
-        rewrite it as: <ReactKatex>{`$a = \\frac{F}{m}$`}</ReactKatex>. This
-        also helps us understand that a large force can get cancelled out by a
-        large mass.
+        Even though the second law gives us the formula as F = ma, since we're
+        often given the force and want to find the acceleration, it can be
+        helpful to rewrite it as:{" "}
+        <ReactKatex>{`$a = \\frac{F}{m}$`}</ReactKatex>. This also helps us
+        understand that a large force can get cancelled out by a large mass.
       </ColorBox>
       <p>
         <Emphasize>Newton's Third Law</Emphasize> says that for every action,
@@ -109,7 +108,7 @@ export default function ForcesLesson() {
       <ColorBox color="blue">
         Imagine if you punched a wall. You're the one making the force against
         the wall, but your hand would still hurt. That's because however much
-        force you put into the wall, the wall exerts right back at you!
+        force you put into the wall, the wall applies right back at you!
       </ColorBox>
     </Block>,
 
@@ -191,9 +190,9 @@ export default function ForcesLesson() {
       </p>
       <p>This process uses trigonometry:</p>
       <p>
-        Since cosine gives us a number between -1 and 1 telling us what fraction
-        of the total force is in the x-direction, we can multiply it by the
-        magnitude to get x-component of our force.{" "}
+        Since <Emphasize>cosine</Emphasize> gives us a number between -1 and 1
+        telling us what fraction of the total force is in the x-direction, we
+        can multiply it by the magnitude to get x-component of our force.{" "}
       </p>
       <p>
         Sine does the same for our y-component. You can see them both in action
@@ -270,7 +269,7 @@ export default function ForcesLesson() {
         Understanding each allows us to model interactions accurately. Here are
         a few examples you may see in this physics course:
       </p>
-      <ul className="list-disc list-inside">
+      <ul className="list-disc list-outside pl-6">
         <li>
           <KeyTerm>
             Gravity <ReactKatex>($F_g$)</ReactKatex>
@@ -384,8 +383,8 @@ export default function ForcesLesson() {
 
       <h2 className="font-semibold text-center">Normal Force</h2>
       <p>
-        The <KeyTerm>normal force</KeyTerm> is the contact force exerted
-        perpendicular to a surface. It is not fixed, but adjusts to prevent
+        The <KeyTerm>normal force</KeyTerm> is the contact force applied
+        perpendicular to a surface. It is not fixed, but it adjusts to prevent
         objects from passing through the surface. For example, when standing
         still, the normal force equals your weight.
       </p>
@@ -395,7 +394,7 @@ export default function ForcesLesson() {
         Friction resists motion between surfaces in contact. There are two
         kinds:
       </p>
-      <ul className="list-disc list-inside">
+      <ul className="list-disc list-outside pl-6">
         <li>
           <KeyTerm>Static friction</KeyTerm> prevents motion from starting and
           is governed by <ReactKatex>$F_s \leq \mu_s F_N$</ReactKatex>.
@@ -425,7 +424,7 @@ export default function ForcesLesson() {
         These are super useful to solving any problem with forces. Here's how
         you make a free body diagram:
       </p>
-      <ol className="list-decimal list-inside">
+      <ol className="list-decimal list-outside pl-6">
         <li>Represent the object as a simple dot or box.</li>
         <li>
           Draw arrows for <Emphasize>each</Emphasize> external force, with
@@ -487,7 +486,7 @@ export default function ForcesLesson() {
             text: "Normal force",
             isCorrect: true,
             explanation:
-              "Correct. The normal force is always perpendicular to the surface that exerts it.",
+              "Correct. The normal force is always perpendicular to the surface that applies it.",
           },
           {
             text: "Tension",
@@ -646,7 +645,7 @@ export default function ForcesLesson() {
     // Slide 16: Checking in on different force types.
     <Block color="green" title="Lesson Recap">
       <p>Here's what we learned about forces:</p>
-      <ul className="list-disc list-inside">
+      <ul className="list-disc list-outside pl-6">
         <li>
           A <KeyTerm>force</KeyTerm> a push or a pull, that causes objects to
           accelerate.
