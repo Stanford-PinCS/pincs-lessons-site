@@ -9,6 +9,7 @@ import Slide from "@/components/Slide";
 import TagFilterBox from "@/components/TagFilterBox";
 import QuizQuestion from "@/components/QuizQuestion";
 import { Subject, Tag } from "@/app/types";
+import MultiSelectQuizQuestion from "@/components/MultiSelectQuizQuestion";
 
 export default function ComponentShowcase() {
   const [selectedTags, setSelectedTags] = React.useState<Tag[]>([]);
@@ -133,7 +134,8 @@ export default function ComponentShowcase() {
               {
                 text: "London",
                 isCorrect: false,
-                explanation: "Incorrect. London is the capital of the United Kingdom.",
+                explanation:
+                  "Incorrect. London is the capital of the United Kingdom.",
               },
               {
                 text: "Berlin",
@@ -154,26 +156,65 @@ export default function ComponentShowcase() {
               {
                 text: "Python",
                 isCorrect: false,
-                explanation: "Incorrect. Python was created by Guido van Rossum in 1991.",
+                explanation:
+                  "Incorrect. Python was created by Guido van Rossum in 1991.",
               },
               {
                 text: "JavaScript",
                 isCorrect: true,
-                explanation: "Correct! JavaScript was created by Brendan Eich in 1995 while he was at Netscape.",
+                explanation:
+                  "Correct! JavaScript was created by Brendan Eich in 1995 while he was at Netscape.",
               },
               {
                 text: "Java",
                 isCorrect: false,
-                explanation: "Incorrect. Java was created by James Gosling at Sun Microsystems.",
+                explanation:
+                  "Incorrect. Java was created by James Gosling at Sun Microsystems.",
               },
               {
                 text: "PHP",
                 isCorrect: false,
-                explanation: "Incorrect. PHP was created by Rasmus Lerdorf in 1994.",
+                explanation:
+                  "Incorrect. PHP was created by Rasmus Lerdorf in 1994.",
               },
             ]}
           />
         </div>
+      </section>
+
+      {/* QuizQuestion Component */}
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold">
+          MultiSelectQuizQuestion Component
+        </h2>
+        <p className="text-gray-600 mb-4">
+          Used for creating interactive quiz questions with feedback
+        </p>
+        <MultiSelectQuizQuestion
+          question="Which of the following are correct answers?"
+          choices={[
+            {
+              text: "Choice A",
+              isCorrect: false,
+              explanation: "Wrong!!! Obviously A is incorrect. Says so here.",
+            },
+            {
+              text: "Choice B",
+              isCorrect: true,
+              explanation: "Nailed it!",
+            },
+            {
+              text: "Choice C",
+              isCorrect: false,
+              explanation: "Wrong!!! Obviously C is incorrect. Says so here.",
+            },
+            {
+              text: "Choice D",
+              isCorrect: true,
+              explanation: "You know it!",
+            },
+          ]}
+        />
       </section>
     </div>
   );
