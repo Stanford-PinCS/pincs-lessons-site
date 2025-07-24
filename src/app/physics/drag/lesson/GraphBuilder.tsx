@@ -91,7 +91,7 @@ const GraphBuilder: React.FC = () => {
               What is the velocity of the object at time t=0, just as it's
               dropped?
             </p>
-            <div className="flex space-x-2 mt-2">
+            <div className="flex flex-col gap-2 mt-2">
               <Button onClick={() => handleInterceptChoice(10)}>10 m/s</Button>
               <Button onClick={() => handleInterceptChoice(0)}>0 m/s</Button>
               <Button onClick={() => handleInterceptChoice(-10)}>

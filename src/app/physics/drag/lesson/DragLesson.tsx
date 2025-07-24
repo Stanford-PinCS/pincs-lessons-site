@@ -50,8 +50,9 @@ export default function DragLesson() {
         .
       </p>
       <ColorBox color="blue">
-        "Resistive" means opposing, so this force{" "}
-        <Emphasize>goes in the opposite direction as motion</Emphasize>.
+        “Resistive” refers to a force that <Emphasize>opposes motion</Emphasize>
+        , meaning it acts in the{" "}
+        <Emphasize>direction opposite to the movement</Emphasize>.
       </ColorBox>
       <p>
         <KeyTerm>Air drag </KeyTerm>(or aerodynamic drag) is the drag caused by
@@ -115,7 +116,8 @@ export default function DragLesson() {
       <p>
         Question to ponder:{" "}
         <Emphasize>
-          What would happen if velocity were greater than terminal velocity?
+          What would happen if the ball's velocity were greater than the
+          terminal velocity?
         </Emphasize>{" "}
         Would it even be possible?
       </p>
@@ -125,7 +127,7 @@ export default function DragLesson() {
     // Slide 5: Check-in.
     <Block color="purple" title="Check-in">
       <QuizQuestion
-        question="When you release a ball and it starts to fall (so it's velocity is 0, but its acceleration is downward), what are all the forces on that ball?"
+        question="When you release a ball and it starts to fall (so its velocity is 0, but its acceleration is downward), what are all the forces on that ball?"
         choices={[
           {
             text: "There is a downward drag force causing the ball to start moving down.",
@@ -189,7 +191,6 @@ export default function DragLesson() {
           </Link>
           .
         </Emphasize>
-        .
       </p>
     </Block>,
 
@@ -282,9 +283,10 @@ export default function DragLesson() {
     <Block color="blue" title="What Drag Model Should We Use?">
       <p>
         Since drag is the resulting phenomenon of tons of different forces (many
-        particle collisions), there are two models we commonly use. One model is
-        proportional to velocity (<KeyTerm>F ∝ v</KeyTerm>) and one is
-        proportional to velocity squared (<KeyTerm>F ∝ v²</KeyTerm>).
+        particle collisions), there are two models for force that we commonly
+        use. One force model is proportional to velocity (
+        <KeyTerm>F ∝ v</KeyTerm>) and one is proportional to velocity squared (
+        <KeyTerm>F ∝ v²</KeyTerm>).
       </p>
       <p className="mt-4">
         Which one is correct? The answer depends on the nature of the fluid
@@ -370,9 +372,10 @@ export default function DragLesson() {
           <Emphasize>Velocity</Emphasize>
           <p className="mt-1 text-slate-600">
             The speed and direction of the object relative to the fluid. Notice
-            how moving the ball faster creates a much stronger reaction. This is
-            because the force increases with the <Emphasize>square</Emphasize>{" "}
-            of the velocity (v<sup>2</sup>), making speed a huge factor!
+            how moving the object faster creates a much stronger reaction. This
+            is because the force increases with the{" "}
+            <Emphasize>square</Emphasize> of the velocity (v<sup>2</sup>),
+            making speed a huge factor!
           </p>
         </li>
         <li className="mb-5">
@@ -391,7 +394,7 @@ export default function DragLesson() {
           </code>
           <Emphasize>Cross-Sectional Area</Emphasize>
           <p className="mt-1 text-slate-600">
-            The area of the object facing the fluid. A larger ball displaces
+            The area of the object facing the fluid. A larger object displaces
             more particles and experiences more drag.
           </p>
         </li>
@@ -410,7 +413,7 @@ export default function DragLesson() {
           {
             text: (
               <>
-                Reynold's number is <ReactKatex>~3.72641</ReactKatex> and is a
+                Reynolds number is <ReactKatex>~3.72641</ReactKatex> and is a
                 ratio of static metaphysical relevance and external bouyancy,
                 coined by John Reynold.
               </>
@@ -488,8 +491,8 @@ export default function DragLesson() {
     // Slide 12: Learning how to make a chart.
     <Block color="yellow" title="Making a chart">
       <p>
-        Suppose a person drops a tennis ball out of an airplane. Let's picture
-        the velocity over time and make a graph together. Note: Positive
+        Suppose a person drops a penny from the top of a skyscraper. Let's
+        picture the velocity over time and make a graph together. Note: Positive
         velocity is downward.
       </p>
       <GraphBuilder />
@@ -712,7 +715,7 @@ export default function DragLesson() {
       </p>
       <ColorBox color="yellow">
         <Emphasize>Question 4:</Emphasize> How do the answers to your previous
-        questions compare, how difficult each answer was to come by, and which
+        questions compare, how difficult was each answer to come by, and which
         method would you pick for a quick estimate?
       </ColorBox>
     </Block>,
@@ -741,9 +744,9 @@ export default function DragLesson() {
       </p>
       <ul className="list-disc list-inside">
         <li>
-          <KeyTerm>2nd-Order Methods</KeyTerm> (like the Midpoint Method) "look
-          ahead" to the middle of the timestep to get a better average
-          acceleration.
+          <KeyTerm>2nd-Order Methods</KeyTerm> "look ahead" to the middle of the
+          timestep to get a better average acceleration. One example is the
+          Midpoint Method, which you'll explore on the next slide.
         </li>
         <li>
           <KeyTerm>Runge-Kutta 4th Order (RK4)</KeyTerm> is a popular and highly
