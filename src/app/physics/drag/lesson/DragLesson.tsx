@@ -423,7 +423,7 @@ export default function DragLesson() {
               "Not quite, Reynolds number is not a constant, but depends on the specific context.",
           },
           {
-            text: "Reynolds Number depends on a few factors like viscosity and speed, representing how turbulent or laminar the liquid flow will be.",
+            text: "Reynolds Number represents how turbulent or laminar liquid flow will be, depending on a few factors like viscosity and speed.",
             isCorrect: true,
             explanation:
               "Exactly! Reynolds number is a ratio of inertial and viscous forces, and it is used to predict liquid flow.",
@@ -462,7 +462,7 @@ export default function DragLesson() {
     // Slide 11: Explaining Modeling.
     <Block color="blue" title="What does this look like in practice?">
       <p>
-        When modeling drag,{" "}
+        When modeling drag force,{" "}
         <Emphasize>
           we often use a simple formula such as the inverse of a constant times
           velocity (<ReactKatex>$-kv$</ReactKatex>) or velocity squared (
