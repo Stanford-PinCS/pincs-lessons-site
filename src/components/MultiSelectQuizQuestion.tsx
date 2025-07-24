@@ -39,7 +39,9 @@ const MultiSelectQuizQuestion = ({
                   className={`w-full p-4 text-left rounded-lg border transition-all
                   ${
                     selected[idx]
-                      ? "bg-blue-100 border-blue-500"
+                      ? isCorrect
+                        ? "bg-green-100 border-green-500"
+                        : "bg-blue-100 border-blue-500"
                       : "border-gray-300 hover:border-blue-500"
                   }`}
                 >
