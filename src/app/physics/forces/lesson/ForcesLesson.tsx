@@ -99,7 +99,7 @@ export default function ForcesLesson() {
         often given the force and want to find the acceleration, it can be
         helpful to rewrite it as:{" "}
         <ReactKatex>{`$a = \\frac{F}{m}$`}</ReactKatex>. This also helps us
-        understand that a large force can get cancelled out by a large mass.
+        understand that a large mass can resist a large force.
       </ColorBox>
       <p>
         <Emphasize>Newton's Third Law</Emphasize> says that for every action,
@@ -386,7 +386,8 @@ export default function ForcesLesson() {
         The <KeyTerm>normal force</KeyTerm> is the contact force applied
         perpendicular to a surface. It is not fixed, but it adjusts to prevent
         objects from passing through the surface. For example, when standing
-        still, the normal force equals your weight.
+        still, the normal force equals your weight so you don't fall through the
+        ground.
       </p>
 
       <h2 className="font-semibold text-center">Friction</h2>
@@ -444,7 +445,8 @@ export default function ForcesLesson() {
         <KeyTerm>
           <ReactKatex> $ma$</ReactKatex>
         </KeyTerm>
-        , allowing us to find the acceleration.
+        , allowing us to find the acceleration (if we're given the mass, or vice
+        versa).
       </ColorBox>
       <p>Here's a free body diagram for a person standing:</p>
       <PersonFreeBodyDiagram />
@@ -605,7 +607,7 @@ export default function ForcesLesson() {
           </ReactKatex>
           <Emphasize>
             <ReactKatex>
-              {` we get that our force applied is $F \\gt \\mu_s N = (0.2) (\\text{100 Newtons}) = 20 \\text{ Newtons}$.`}
+              {` we get that our force applied must be $F \\gt \\mu_s N = (0.2) (\\text{100 Newtons}) = 20 \\text{ Newtons}$.`}
             </ReactKatex>
           </Emphasize>
         </p>
@@ -669,7 +671,7 @@ export default function ForcesLesson() {
           <KeyTerm>gravitational</KeyTerm>, <KeyTerm>frictional</KeyTerm>,{" "}
           <KeyTerm>normal forces</KeyTerm>, <KeyTerm>tension forces</KeyTerm>,
           and
-          <KeyTerm>springs forces</KeyTerm>.
+          <KeyTerm> springs forces</KeyTerm>.
         </li>
         <li>
           <KeyTerm>Free Body Diagrams (FBDs)</KeyTerm> are a standard way to
