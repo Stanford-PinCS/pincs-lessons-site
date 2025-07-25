@@ -20,7 +20,7 @@ export default function PincsHeader({ hideLogin }: PincsHeaderProps) {
       >
         Stanford PinCS{" "}
       </Link>
-      {hideLogin ? (
+      {hideLogin || session.status === "loading" ? (
         <></>
       ) : session.status === "authenticated" ? (
         <button

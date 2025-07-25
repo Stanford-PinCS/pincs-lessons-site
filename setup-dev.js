@@ -18,12 +18,12 @@ const { execSync } = require("child_process");
 console.log("Installing dependencies...");
 execSync("npm install", { stdio: "inherit" });
 
-// 2. Copy .env.example to .env.development if not present
-if (!fs.existsSync(".env.development")) {
-  console.log("Creating .env.development from .env.example...");
-  fs.copyFileSync(".env.example", ".env.development");
+// 2. Copy .env.example to .env.local if not present
+if (!fs.existsSync(".env")) {
+  console.log("Creating .env from .env.example...");
+  fs.copyFileSync(".env.example", ".env");
 } else {
-  console.log(".env.development already exists. Skipping.");
+  console.log(".env already exists. Skipping.");
 }
 
 // 3. Generate auth secret
