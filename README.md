@@ -48,53 +48,15 @@ This command should run without errors. If by now node isn't working, consult Ch
 
 ## Running the dev server
 
-Before we run the server, we need to install a bunch of dependencies. We do this using `npm`
-
-Run
+Before we run the server, we need to install a bunch of dependencies and set up the server. The easiest way to do this is by running a script we made. Simply run
 
 ```
-npm i
+npm run setup-dev
 ```
 
-(`i` is short for "install")
+And hopefully everything should go smoothly. \*\*If you start getting weird errors on the website after `git pull`-ing, re-running this script is a great way to start debugging.
 
-This will take a couple of seconds.
-
-Next you'll need to set up the backend (if you haven't). To make sure your configuration
-will work, copy the example env file and update values if needed:
-
-Run
-
-```
-cp .env.example .env.development
-```
-
-This command creates a _development_ environment file, which will tell
-the runtime how to set up a local database (and a few other things).
-You'll probably need to run the following commands as well
-(although they're mentioned in the env.example file too)
-
-Run
-
-```
-npx auth secret
-```
-
-Which creates a super-secret key in your environment to enable
-secure networking.
-
-```
-npx prisma db push
-```
-
-Which sets up the local database. When you `git pull` to update your branch,
-you _maaaay_ need to delete your local `prisma/dev.db` file and re-run the
-aforementioned command. In general, any time you need to "redo" the database,
-you can just delete + rerun (don't worry, this isn't the prod data :p)
-
----
-
-When this is complete, you can run
+Assuming this script ran to completion, you can now run
 
 ```
 npm run dev
