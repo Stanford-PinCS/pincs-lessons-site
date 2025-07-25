@@ -45,6 +45,7 @@ export default function Home() {
         >
           {!filterDrawerOpen && (
             <PincsButton
+              className="self-start"
               text="Filter"
               onClick={() => setFilterDrawerOpen((o) => !o)}
               iconRight={<FunnelIcon width={16} />}

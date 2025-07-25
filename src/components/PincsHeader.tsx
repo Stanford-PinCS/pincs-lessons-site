@@ -1,9 +1,14 @@
 import Link from "next/link";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-export default function PincsHeader() {
+type PincsHeaderProps = {
+  hideLogin?: boolean;
+};
+
+export default function PincsHeader({ hideLogin }: PincsHeaderProps) {
   const session = useSession();
   const router = useRouter();
 
@@ -15,23 +20,28 @@ export default function PincsHeader() {
       >
         Stanford PinCS{" "}
       </Link>
-      {session.status === "authenticated" && (
+      {hideLogin ? (
+        <></>
+      ) : session.status === "authenticated" ? (
         <button
+          className={"flex text-sm gap-1 font-extralight hover:underline"}
           onClick={() => {
             signOut();
             router.refresh();
           }}
         >
           Logout
+          <ArrowLeftStartOnRectangleIcon width={16} />
         </button>
+      ) : (
+        <Link
+          href={"/login"}
+          className={"flex text-sm gap-1 font-extralight hover:underline"}
+        >
+          Teacher login
+          <LockClosedIcon width={16} />
+        </Link>
       )}
-      <Link
-        href={"/login"}
-        className={"flex text-sm gap-1 font-extralight hover:underline"}
-      >
-        Teacher login
-        <LockClosedIcon width={16} />
-      </Link>
     </div>
   );
 }
