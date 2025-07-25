@@ -101,6 +101,7 @@ const SupplyDemandLesson: React.FC = () => {
           (Quantity Demanded) <Emphasize> goes down</Emphasize>, and vice versa.
         </p>
         <div>
+          <br />
           <Emphasize>
             <u>Reasons: </u>
           </Emphasize>
@@ -227,6 +228,9 @@ const SupplyDemandLesson: React.FC = () => {
           Make sure you write down your code for the for loop that goes along
           the supply curve!
         </p>
+        <center>
+          <img src={example.src} alt="example" style={{ width: "45%" }} />
+        </center>
       </ColorBox>
     </Block>,
 
