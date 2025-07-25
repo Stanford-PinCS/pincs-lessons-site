@@ -48,25 +48,22 @@ This command should run without errors. If by now node isn't working, consult Ch
 
 ## Running the dev server
 
-Before we run the server, we need to install a bunch of dependencies. We do this using `npm`
-
-Run
+Before we run the server, we need to install a bunch of dependencies and set up the server. The easiest way to do this is by running a script we made. Simply run
 
 ```
-npm i
+npm run setup-dev
 ```
 
-(`i` is short for "install")
+And hopefully everything should go smoothly. \*\*If you start getting weird errors on the website after `git pull`-ing, re-running this script is a great way to start debugging.
 
-This will take a couple of seconds.
-
-When this is complete, you can run
+Assuming this script ran to completion, you can now run
 
 ```
 npm run dev
 ```
 
-This will get you a dev server running at `http://localhost:3000`!
+This will get you a dev server running at `http://localhost:3000`! **Be warned**
+that this **not** the home page for the lessons site, it's just the root of the server.
 
 To access the site, navigate to `http://localhost:3000/interactive-lessons`
 

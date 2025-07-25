@@ -7,11 +7,15 @@ import { ArrowLongLeftIcon, FunnelIcon } from "@heroicons/react/16/solid";
 import PincsHeader from "@/components/PincsHeader";
 import PincsButton from "@/components/PincsButton";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const session = useSession();
   const [filterDrawerOpen, setFilterDrawerOpen] = useState<boolean>(false);
   const [selectedSubjects, setSelectedSubjects] = useState<Tag[]>([]);
   const subjects = Object.values(Subject);
+
+  console.log("session: ", session);
 
   /* TRUE iff the lesson has at least one tag in selectedSubjects AND it's not hidden*/
   const filterLesson = useCallback(
@@ -41,6 +45,7 @@ export default function Home() {
         >
           {!filterDrawerOpen && (
             <PincsButton
+              className="self-start"
               text="Filter"
               onClick={() => setFilterDrawerOpen((o) => !o)}
               iconRight={<FunnelIcon width={16} />}
