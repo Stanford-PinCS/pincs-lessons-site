@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "setup-dev": "node setup-dev.js",
     "dev": "echo http://localhost:3000/interactive-lessons/ && next dev --turbopack",
     "build": "next build",
     "start": "next start",
