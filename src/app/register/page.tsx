@@ -36,7 +36,7 @@ export default function Register() {
         <form onSubmit={handleSubmit}>
           <div className="flex items-center flex-col gap-2">
             <input
-              className="border p-1 rounded-md border-gray-200"
+              className="w-2xs border p-1 rounded-md border-gray-200"
               placeholder="First name"
               value={form.first_name}
               onChange={(e) =>
@@ -44,7 +44,7 @@ export default function Register() {
               }
             />
             <input
-              className="border p-1 rounded-md border-gray-200"
+              className="w-2xs border p-1 rounded-md border-gray-200"
               placeholder="Last name"
               value={form.last_name}
               onChange={(e) =>
@@ -52,7 +52,7 @@ export default function Register() {
               }
             />
             <input
-              className="border p-1 rounded-md border-gray-200"
+              className="w-2xs border p-1 rounded-md border-gray-200"
               placeholder="Email"
               value={form.email}
               onChange={(e) =>
@@ -60,7 +60,7 @@ export default function Register() {
               }
             />
             <input
-              className="border p-1 rounded-md border-gray-200"
+              className="w-2xs border p-1 rounded-md border-gray-200"
               type="password"
               placeholder="Password"
               value={form.password}
@@ -69,7 +69,7 @@ export default function Register() {
               }
             />
             <input
-              className="border p-1 rounded-md border-gray-200"
+              className="w-2xs border p-1 rounded-md border-gray-200"
               placeholder="Website"
               value={form.website}
               onChange={(e) =>

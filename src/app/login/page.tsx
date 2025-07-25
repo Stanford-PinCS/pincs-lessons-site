@@ -36,14 +36,14 @@ export default function Login() {
         <form onSubmit={handleLogin}>
           <div className="flex items-center flex-col gap-2">
             <input
-              className="border p-1 rounded-md border-gray-200"
+              className="w-2xs border p-1 rounded-md border-gray-200"
               id="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
-              className="border p-1 rounded-md border-gray-200"
+              className="w-2xs border p-1 rounded-md border-gray-200"
               id="password"
               type="password"
               placeholder="Password"
