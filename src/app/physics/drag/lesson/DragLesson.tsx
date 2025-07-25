@@ -514,7 +514,7 @@ export default function DragLesson() {
       <MotionGraphs />
     </Block>,
 
-    // Slide 13: Solving by Separation of Variables.
+    // Slide 14: Solving by Separation of Variables.
     <Block color="blue" title="Solving an Easier Case">
       <p>
         While the quadratic drag equation is common, solving it analytically is
@@ -573,7 +573,7 @@ export default function DragLesson() {
       </p>
     </Block>,
 
-    // Slide 14: Seeing if they can perform the math.
+    // Slide 15: Seeing if they can perform the math.
     <Block color="purple" title="Check in">
       <QuizQuestion
         question={
@@ -611,7 +611,7 @@ export default function DragLesson() {
       />
     </Block>,
 
-    // Slide 15: Intro of Numerical Methods.
+    // Slide 16: Intro of Numerical Methods.
     <Block color="yellow" title="Approximating the Harder Case">
       <p>
         What if we can't solve the equation exactly? We can{" "}
@@ -634,7 +634,7 @@ export default function DragLesson() {
       <EulerAnimator />
     </Block>,
 
-    // Slide 16: Derivation
+    // Slide 17: Derivation
     <Block color="yellow" title="Derive the Forward Euler Formula">
       <p>
         Based on the diagram from the previous slide, drag and drop the pieces
@@ -643,7 +643,7 @@ export default function DragLesson() {
       <ForwardEulerDerivation />
     </Block>,
 
-    // Slide 17: Practice Problem
+    // Slide 18: Practice Problem
     <Block color="purple" title="Practice: A few ways to the ocean...">
       <p>Let's do a practice problem.</p>
       <ColorBox color="gray">
@@ -720,7 +720,7 @@ export default function DragLesson() {
       </ColorBox>
     </Block>,
 
-    // Slide 16. Coding Forward Euler.
+    // Slide 19. Coding Forward Euler.
     <Block color="yellow" title="Code the Forward Euler Method" mode="pickcode">
       <iframe
         id="forwardEulerPlugin"
@@ -731,7 +731,7 @@ export default function DragLesson() {
       ></iframe>
     </Block>,
 
-    // Slide 17: Higher Order Methods.
+    // Slide 20: Higher Order Methods.
     <Block color="blue" title="Improving Accuracy">
       <p>
         The Forward Euler method is simple, but it can be inaccurate, especially
@@ -756,7 +756,7 @@ export default function DragLesson() {
       </ul>
     </Block>,
 
-    // Slide 18: Coding a 2nd-Order Numerical Method.
+    // Slide 21: Coding a 2nd-Order Numerical Method.
     <Block
       color="yellow"
       title="Challenge: A More Accurate Method"
@@ -771,7 +771,7 @@ export default function DragLesson() {
       ></iframe>
     </Block>,
 
-    // Slide 19: Recap.
+    // Slide 22: Recap.
     <Block color="green" title="Lesson Recap">
       <p>Here's what we learned about modeling drag:</p>
       <ul className="list-disc list-inside">
