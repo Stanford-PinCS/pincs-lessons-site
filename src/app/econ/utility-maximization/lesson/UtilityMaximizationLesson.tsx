@@ -2022,7 +2022,7 @@ export default function MarginalUtility() {
         id="inlinePickcodePlugin"
         title="Code Up a Greedy Algorithm"
         width="100%"
-        style={{ height: "calc(100vh - 100px)" }}
+        style={{ height: "calc(100svh - 100px)" }}
         src="https://dev.pickcode.io/lesson/marginal-utility-optimization-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-06-26-11-46-41"
       ></iframe>
     </Block>,

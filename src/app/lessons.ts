@@ -36,6 +36,22 @@ const Lessons: Lesson[] = [
       { type: "hidden", value: false },
     ],
   },
+  {
+    title: "Forces",
+    link: "/physics/forces",
+    tags: [
+      { type: "subject", value: Subject.Physics },
+      { type: "hidden", value: false },
+    ],
+  },
+  {
+    title: "Supply and Demand",
+    link: "/econ/supply-demand",
+    tags: [
+      { type: "subject", value: Subject.Economics },
+      { type: "hidden", value: false },
+    ],
+  },
 ];
 
 const DemoLessons: Lesson[] = [

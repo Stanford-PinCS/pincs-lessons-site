@@ -69,7 +69,10 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
   const progress = ((currentSlide + 1) / slides.length) * 100;
 
   const navButtonStyle =
-    "p-2 rounded-full bg-slate-100 text-slate-600 border border-slate-300 shadow-lg transition-all";
+    "p-2 rounded-full text-slate-600 border border-slate-300 shadow-lg transition-all";
+
+  const previewGlass =
+    "bg-[rgba(200,230,240,0.3)] backdrop-saturate-130 backdrop-blur-xs";
 
   return (
     <div className="relative flex-grow flex flex-row w-full">
@@ -78,7 +81,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
         <button
           onClick={goToPreviousSlide}
           disabled={currentSlide === 0}
-          className={`fixed z-1 left-[310px] ${navButtonStyle}
+          className={`sticky left-0 h-25 top-1/2 -translate-y-1/2 ${navButtonStyle} ${previewGlass}
           ${
             currentSlide === 0
               ? "opacity-50 cursor-not-allowed"
@@ -108,7 +111,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
         <button
           onClick={goToNextSlide}
           disabled={currentSlide === slides.length - 1}
-          className={`fixed z-1 right-[310px] ${navButtonStyle}
+          className={`sticky right-0 h-25 top-1/2 -translate-y-1/2 ${navButtonStyle} ${previewGlass}
           ${
             currentSlide === slides.length - 1
               ? "opacity-50 cursor-not-allowed"
@@ -137,7 +140,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
           <button
             onClick={goToPreviousSlide}
             disabled={currentSlide === 0}
-            className={`fixed left-4 top-6 ${navButtonStyle}
+            className={`fixed left-4 top-6 bg-slate-100 ${navButtonStyle}
           ${
             currentSlide === 0
               ? "opacity-50 cursor-not-allowed"
@@ -163,7 +166,7 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
           <button
             onClick={goToNextSlide}
             disabled={currentSlide === slides.length - 1}
-            className={`fixed right-4 top-6 ${navButtonStyle}
+            className={`fixed right-4 top-6 bg-slate-100 ${navButtonStyle}
           ${
             currentSlide === slides.length - 1
               ? "opacity-50 cursor-not-allowed"
