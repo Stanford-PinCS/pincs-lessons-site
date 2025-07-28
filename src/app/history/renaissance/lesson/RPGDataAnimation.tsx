@@ -85,12 +85,12 @@ const Step1: React.FC<StepProps> = ({ isVisible }) => (
         id="s1_choice1"
         className="w-1/5 rotate-12 translate-y-[-2rem]"
       >
-        I'm looking for the magic sword
+        I'm looking for the magic sword.
       </ChoiceBox>
     </div>
     <div className="flex justify-center items-center">
       <ChoiceBox id="s1_choice2" className="w-1/6 -rotate-6">
-        Just passing through
+        Just passing through.
       </ChoiceBox>
     </div>
     <div className="flex justify-around items-center">
@@ -115,10 +115,10 @@ const Step2: React.FC<StepProps> = ({ isVisible }) => (
     </MessageBox>
     <div className="flex w-full justify-around">
       <ChoiceBox id="s2_choice1" className="w-1/4">
-        I'm looking for the magic sword
+        I'm looking for the magic sword.
       </ChoiceBox>
       <ChoiceBox id="s2_choice2" className="w-1/5">
-        Just passing through
+        Just passing through.
       </ChoiceBox>
     </div>
     <div className="flex w-full justify-around">
@@ -126,7 +126,7 @@ const Step2: React.FC<StepProps> = ({ isVisible }) => (
         Ah, the legendary blade!
       </MessageBox>
       <MessageBox id="s2_msg3" className="w-1/5">
-        Safe travels then
+        Safe travels, adventurer!
       </MessageBox>
     </div>
     {isVisible && (
@@ -212,7 +212,7 @@ const Step3: React.FC<StepProps> = ({ isVisible }) => (
           className="w-1/3 border-4 border-green-600 border-dashed rounded-xl p-4 flex flex-col items-center gap-2"
         >
           <p className="text-center font-sans text-base text-green-600 font-bold">
-            florence_data_scene
+            florenceDateScene
           </p>
           <MessageBox id="s3_solution_msg" className="w-full mb-10">
             Florence was founded in 59 BC
@@ -277,7 +277,7 @@ const Step4: React.FC<StepProps> = ({ isVisible }) => (
             Looking for sword
           </p>
           <p className="font-sans text-sm italic text-gray-600">
-            → nextScene: "sword_scene"
+            → nextScene: "swordScene"
           </p>
         </div>
         <div
@@ -291,7 +291,7 @@ const Step4: React.FC<StepProps> = ({ isVisible }) => (
             Just passing through
           </p>
           <p className="font-sans text-sm italic text-gray-600">
-            → nextScene: "farewell_scene"
+            → nextScene: "farewellScene"
           </p>
         </div>
       </div>
@@ -301,9 +301,7 @@ const Step4: React.FC<StepProps> = ({ isVisible }) => (
         id="s4_sword_scene"
         className="w-1/3 border-4 border-green-500 border-dashed rounded-xl p-4 flex flex-col justify-center items-center gap-2"
       >
-        <p className="font-sans text-lg text-green-500 font-bold">
-          sword_scene
-        </p>
+        <p className="font-sans text-lg text-green-500 font-bold">swordScene</p>
         <p className="text-center font-sans text-base text-blue-900">
           Ah, the legendary blade!
         </p>
@@ -313,7 +311,7 @@ const Step4: React.FC<StepProps> = ({ isVisible }) => (
         className="w-1/3 border-4 border-green-500 border-dashed rounded-xl p-4 flex flex-col justify-center items-center gap-2"
       >
         <p className="font-sans text-lg text-green-500 font-bold">
-          farewell_scene
+          farewellScene
         </p>
         <p className="text-center font-sans text-base text-blue-900">
           Safe travels, adventurer!
@@ -379,7 +377,7 @@ const Step5: React.FC<StepProps> = ({ isVisible }) => (
           <span className="text-cyan-400">response</span>
           <span className="text-white">: </span>
           <span className="text-green-400">
-            "I'm looking for the magic sword"
+            "I'm looking for the magic sword."
           </span>
           <span className="text-white">,</span>
           <br />
@@ -398,7 +396,7 @@ const Step5: React.FC<StepProps> = ({ isVisible }) => (
           {"        "}
           <span className="text-cyan-400">response</span>
           <span className="text-white">: </span>
-          <span className="text-green-400">"Just passing through"</span>
+          <span className="text-green-400">"Just passing through."</span>
           <span className="text-white">,</span>
           <br />
           {"        "}
