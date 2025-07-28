@@ -14,7 +14,8 @@ export default function RenaissanceLesson() {
       Say hi to DaVinci
     </Block>,
     <Block color="blue" title="Behind The Scenes">
-      How does it work?
+      Let's consider how we can store the data for a dialogue, with many
+      messages and possible responses.
       <RPGDataAnimation></RPGDataAnimation>
     </Block>,
     <Block color="blue" title="Make Your Own Story" mode="pickcode">

@@ -1,854 +1,458 @@
 "use client";
 import ColorBox from "@/components/ColorBox";
 import React, { useState } from "react";
+import Xarrow, { Xwrapper } from "react-xarrows";
 
-// Interface to define the shape of our step data
 interface StepData {
   title: string;
   explanation: string;
 }
 
-// Typed data for each step of the animation
 const stepsData: StepData[] = [
   {
     title: "Step 1 of 5: Our Data",
     explanation:
-      "Here's the problem: RPG dialogue is scattered randomly with no clear structure. It's impossible to follow the conversation flow or manage relationships between elements.",
+      "Suppose we have the data below. We have some words that a character says to you and some words that you say in response, but right now our data are disorganized. We want to find a way we can structure these data so we can easily create a dialogue and the computer can easily read it.",
   },
   {
     title: "Step 2 of 5: Adding Flow Structure",
     explanation:
-      "Much better! Now we can see the logical flow: messages connect to choices with arrows, and choices lead to subsequent scenes. This visual structure helps, but a core problem remains...",
+      "If we add arrows, we suddenly start to see how we organize our data. This is a great approach for representing our paths! Each message points to the responses that can follow and each response points to the message that follows.",
   },
   {
-    title: "Step 3 of 5: 'Infinite Copy' Problem",
-    explanation:
-      "If a choice leads back to the same scene (e.g., asking for the same info again), a nested structure would create infinite duplicates (top). The solution is to store scenes separately and use a reference (a simple ID) to point back to the original, creating a clean, efficient loop (bottom).",
+    title: "Step 3 of 5: 'Infinite Copy' Problem & Solution",
+    explanation: `However, how would we handle a repeating scene? If the player wants to keep going back in a menu or asks a question over and over, how could we store that data without wasting space (or needing to have an infinitely long path)? We're going to want to name each scene with a "key," which we can use to access it. Then, when we want to go to the scene, we can use the "key" to get back to that scene. This method of using "keys" allows us to have a singular scene that multiple choices can access with the key. Now we have the tools to store very complicated scenes and dialogues!`,
   },
   {
-    title: "Step 4 of 5: Object-Based Structure",
-    explanation:
-      "The solution is to 'box' everything into objects. A 'Scene' object holds the main message and an array of 'Choice' objects. Each choice contains its text and, crucially, a reference (key) to the next scene. Dashed lines show these are references, not nested data.",
+    title: "Step 4 of 5: The Object-Based Structure",
+    explanation: `But how exactly do we store in in a computer? We're going to want to break it up into simple "objects" (meaning data that we group together) and combine those objects to make our overall data structure. See how we can use a "Scene Object" (green) and a "Choice Object" (orange) to represent the diagram from Step 2.`,
   },
   {
     title: "Step 5 of 5: Final Data Structure",
-    explanation:
-      "The final result: a clean dictionary (or map) where each scene has a unique key. Choices reference other scenes by their key, preventing duplication and handling loops naturally. This data is now clean, reusable, and easy for the game engine to read.",
+    explanation: `This is how it would look typed out. We define an "Object" that holds all of our scenes. We put the "key" of each scene to the left of a colon and its value (the "Scene Object") to the right of the colon. Then, each "Scene Object" is made of a message and a list of choices, so we put those as key-value pairs with the key names of "message" and "choices." Finally, to define our "Choice Objects," we define a "response" and "nextScene" where the nextScene has the key to the next scene. That's it! Move onto the next slide to have fun modifying the data.`,
   },
 ];
 
-// Type definition for the props of each Step component
+const MessageBox = ({
+  id,
+  children,
+  className = "",
+}: {
+  id: string;
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <div
+    id={id}
+    className={`flex items-center justify-center p-4 rounded-lg bg-blue-100 border-2 border-blue-500 text-blue-900 text-center shadow-md ${className}`}
+  >
+    <p className="font-sans font-medium">{children}</p>
+  </div>
+);
+
+const ChoiceBox = ({
+  id,
+  children,
+  className = "",
+}: {
+  id: string;
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <div
+    id={id}
+    className={`flex items-center justify-center p-3 rounded-md bg-orange-100 border-2 border-orange-500 text-orange-800 text-center shadow ${className}`}
+  >
+    <p className="font-sans text-sm">{children}</p>
+  </div>
+);
+
 type StepProps = {
   isVisible: boolean;
 };
 
-// SVG components are typed with React.FC<StepProps>
 const Step1: React.FC<StepProps> = ({ isVisible }) => (
-  <g
-    className={`transition-all duration-700 ease-in-out ${
-      isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+  <div
+    className={`w-full h-full p-12 flex flex-col justify-around ${
+      isVisible ? "flex" : "hidden"
     }`}
   >
-    <rect
-      x="200"
-      y="150"
-      width="320"
-      height="50"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2 scale-90"
-      transform="rotate(-15 360 175)"
-    />
-    <text
-      x="360"
-      y="180"
-      textAnchor="middle"
-      className="font-sans text-base fill-blue-900 font-medium scale-90"
-      transform="rotate(-15 360 175)"
-    >
-      Hello traveler, what brings you here?
-    </text>
-    <rect
-      x="650"
-      y="100"
-      width="280"
-      height="40"
-      rx="6"
-      className="fill-orange-100 stroke-orange-500 stroke-2 scale-90"
-      transform="rotate(20 790 120)"
-    />
-    <text
-      x="790"
-      y="125"
-      textAnchor="middle"
-      className="font-sans text-sm fill-orange-800 scale-90"
-      transform="rotate(20 790 120)"
-    >
-      I'm looking for the magic sword
-    </text>
-    <rect
-      x="350"
-      y="350"
-      width="220"
-      height="40"
-      rx="6"
-      className="fill-orange-100 stroke-orange-500 stroke-2 scale-90"
-      transform="rotate(-25 460 370)"
-    />
-    <text
-      x="460"
-      y="375"
-      textAnchor="middle"
-      className="font-sans text-sm fill-orange-800 scale-90"
-      transform="rotate(-25 460 370)"
-    >
-      Just passing through
-    </text>
-    <rect
-      x="950"
-      y="250"
-      width="280"
-      height="50"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2 scale-90"
-      transform="rotate(10 1090 275)"
-    />
-    <text
-      x="1090"
-      y="280"
-      textAnchor="middle"
-      className="font-sans text-base fill-blue-900 font-medium scale-90"
-      transform="rotate(10 1090 275)"
-    >
-      Ah, the legendary blade!
-    </text>
-    <rect
-      x="250"
-      y="450"
-      width="220"
-      height="50"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2 scale-90"
-      transform="rotate(-5 360 475)"
-    />
-    <text
-      x="360"
-      y="480"
-      textAnchor="middle"
-      className="font-sans text-base fill-blue-900 font-medium scale-90"
-      transform="rotate(-5 360 475)"
-    >
-      Safe travels then
-    </text>
-  </g>
+    <div className="flex justify-around items-center">
+      <MessageBox id="s1_msg1" className="w-1/4 -rotate-12">
+        Hello traveler, what brings you here?
+      </MessageBox>
+      <ChoiceBox
+        id="s1_choice1"
+        className="w-1/5 rotate-12 translate-y-[-2rem]"
+      >
+        I'm looking for the magic sword
+      </ChoiceBox>
+    </div>
+    <div className="flex justify-center items-center">
+      <ChoiceBox id="s1_choice2" className="w-1/6 -rotate-6">
+        Just passing through
+      </ChoiceBox>
+    </div>
+    <div className="flex justify-around items-center">
+      <MessageBox id="s1_msg3" className="w-1/5 rotate-3">
+        Safe travels, adventurer!
+      </MessageBox>
+      <MessageBox id="s1_msg2" className="w-1/4 rotate-6 -translate-y-4">
+        Ah, the legendary blade!
+      </MessageBox>
+    </div>
+  </div>
 );
 
 const Step2: React.FC<StepProps> = ({ isVisible }) => (
-  <g
-    className={`transition-all duration-700 ease-in-out ${
-      isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+  <div
+    className={`w-full h-full p-8 flex flex-col items-center justify-center gap-16 ${
+      isVisible ? "flex" : "hidden"
     }`}
   >
-    <rect
-      x="600"
-      y="80"
-      width="400"
-      height="60"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2"
-    />
-    <text
-      x="800"
-      y="115"
-      textAnchor="middle"
-      className="font-sans text-lg fill-blue-900 font-medium"
-    >
+    <MessageBox id="s2_msg1" className="w-1/3">
       Hello traveler, what brings you here?
-    </text>
-    <rect
-      x="350"
-      y="220"
-      width="300"
-      height="50"
-      rx="6"
-      className="fill-orange-100 stroke-orange-500 stroke-2"
-    />
-    <text
-      x="500"
-      y="250"
-      textAnchor="middle"
-      className="font-sans text-base fill-orange-800"
-    >
-      I'm looking for the magic sword
-    </text>
-    <rect
-      x="950"
-      y="220"
-      width="250"
-      height="50"
-      rx="6"
-      className="fill-orange-100 stroke-orange-500 stroke-2"
-    />
-    <text
-      x="1075"
-      y="250"
-      textAnchor="middle"
-      className="font-sans text-base fill-orange-800"
-    >
-      Just passing through
-    </text>
-    <rect
-      x="300"
-      y="370"
-      width="300"
-      height="60"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2"
-    />
-    <text
-      x="450"
-      y="405"
-      textAnchor="middle"
-      className="font-sans text-lg fill-blue-900 font-medium"
-    >
-      Ah, the legendary blade!
-    </text>
-    <rect
-      x="1000"
-      y="370"
-      width="250"
-      height="60"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2"
-    />
-    <text
-      x="1125"
-      y="405"
-      textAnchor="middle"
-      className="font-sans text-lg fill-blue-900 font-medium"
-    >
-      Safe travels then
-    </text>
-    <line
-      x1="700"
-      y1="140"
-      x2="550"
-      y2="220"
-      className="stroke-gray-500 stroke-2"
-      markerEnd="url(#arrowhead)"
-    />
-    <line
-      x1="900"
-      y1="140"
-      x2="1050"
-      y2="220"
-      className="stroke-gray-500 stroke-2"
-      markerEnd="url(#arrowhead)"
-    />
-    <line
-      x1="500"
-      y1="270"
-      x2="450"
-      y2="370"
-      className="stroke-gray-500 stroke-2"
-      markerEnd="url(#arrowhead)"
-    />
-    <line
-      x1="1075"
-      y1="270"
-      x2="1125"
-      y2="370"
-      className="stroke-gray-500 stroke-2"
-      markerEnd="url(#arrowhead)"
-    />
-  </g>
+    </MessageBox>
+    <div className="flex w-full justify-around">
+      <ChoiceBox id="s2_choice1" className="w-1/4">
+        I'm looking for the magic sword
+      </ChoiceBox>
+      <ChoiceBox id="s2_choice2" className="w-1/5">
+        Just passing through
+      </ChoiceBox>
+    </div>
+    <div className="flex w-full justify-around">
+      <MessageBox id="s2_msg2" className="w-1/4">
+        Ah, the legendary blade!
+      </MessageBox>
+      <MessageBox id="s2_msg3" className="w-1/5">
+        Safe travels then
+      </MessageBox>
+    </div>
+    {isVisible && (
+      <>
+        <Xarrow
+          start="s2_msg1"
+          end="s2_choice1"
+          path="grid"
+          endAnchor="top"
+          startAnchor="bottom"
+          color="#6b7280"
+          strokeWidth={2}
+          headSize={5}
+        />
+        <Xarrow
+          start="s2_msg1"
+          end="s2_choice2"
+          path="grid"
+          endAnchor="top"
+          startAnchor="bottom"
+          color="#6b7280"
+          strokeWidth={2}
+          headSize={5}
+        />
+        <Xarrow
+          start="s2_choice1"
+          end="s2_msg2"
+          path="grid"
+          endAnchor="top"
+          startAnchor="bottom"
+          color="#6b7280"
+          strokeWidth={2}
+          headSize={5}
+        />
+        <Xarrow
+          start="s2_choice2"
+          end="s2_msg3"
+          path="grid"
+          endAnchor="top"
+          startAnchor="bottom"
+          color="#6b7280"
+          strokeWidth={2}
+          headSize={5}
+        />
+      </>
+    )}
+  </div>
+);
+
+const InfiniteCopyItem = ({ id }: { id: number }) => (
+  <div className="flex flex-col items-center gap-2">
+    <MessageBox id={`s3_msg_copy${id}`} className="text-sm">
+      Florence was founded in 59 BC
+    </MessageBox>
+    <ChoiceBox id={`s3_choice_copy${id}`}>What date did you say?</ChoiceBox>
+  </div>
 );
 
 const Step3: React.FC<StepProps> = ({ isVisible }) => (
-  <g
-    className={`transition-all duration-700 ease-in-out ${
-      isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+  <div
+    className={`w-full h-full p-6 flex flex-col gap-6 justify-center ${
+      isVisible ? "flex" : "hidden"
     }`}
   >
-    <rect
-      x="100"
-      y="50"
-      width="1400"
-      height="220"
-      rx="8"
-      className="fill-red-50 stroke-red-400 stroke-2"
-    />
-    <text
-      x="800"
-      y="80"
-      textAnchor="middle"
-      className="font-sans text-xl fill-red-600 font-bold"
-    >
-      PROBLEM: Infinite Nested Copies
-    </text>
-    <rect
-      x="150"
-      y="120"
-      width="280"
-      height="50"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500"
-    />
-    <text
-      x="290"
-      y="150"
-      textAnchor="middle"
-      className="font-sans text-base fill-blue-900"
-    >
-      Florence was founded in 59 BC by Julius Caesar
-    </text>
-    <rect
-      x="180"
-      y="180"
-      width="220"
-      height="40"
-      rx="6"
-      className="fill-orange-100 stroke-orange-500"
-    />
-    <text
-      x="290"
-      y="205"
-      textAnchor="middle"
-      className="font-sans text-sm fill-orange-800"
-    >
-      What date did you say?
-    </text>
-    <line
-      x1="290"
-      y1="220"
-      x2="520"
-      y2="120"
-      className="stroke-gray-500 stroke-2"
-      markerEnd="url(#arrowhead)"
-    />
-    <rect
-      x="480"
-      y="120"
-      width="280"
-      height="50"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500"
-    />
-    <text
-      x="620"
-      y="150"
-      textAnchor="middle"
-      className="font-sans text-base fill-blue-900"
-    >
-      Florence was founded in 59 BC by Julius Caesar
-    </text>
-    <rect
-      x="510"
-      y="180"
-      width="220"
-      height="40"
-      rx="6"
-      className="fill-orange-100 stroke-orange-500"
-    />
-    <text
-      x="620"
-      y="205"
-      textAnchor="middle"
-      className="font-sans text-sm fill-orange-800"
-    >
-      What date did you say?
-    </text>
-    <line
-      x1="620"
-      y1="220"
-      x2="850"
-      y2="120"
-      className="stroke-gray-500 stroke-2"
-      markerEnd="url(#arrowhead)"
-    />
-    <rect
-      x="810"
-      y="120"
-      width="280"
-      height="50"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500"
-    />
-    <text
-      x="950"
-      y="150"
-      textAnchor="middle"
-      className="font-sans text-base fill-blue-900"
-    >
-      Florence was founded in 59 BC by Julius Caesar
-    </text>
-    <rect
-      x="840"
-      y="180"
-      width="220"
-      height="40"
-      rx="6"
-      className="fill-orange-100 stroke-orange-500"
-    />
-    <text
-      x="950"
-      y="205"
-      textAnchor="middle"
-      className="font-sans text-sm fill-orange-800"
-    >
-      What date did you say?
-    </text>
-    <line
-      x1="950"
-      y1="220"
-      x2="1180"
-      y2="120"
-      className="stroke-gray-500 stroke-2"
-      markerEnd="url(#arrowhead)"
-    />
-    <text
-      x="1250"
-      y="160"
-      className="font-sans text-5xl fill-red-500 font-bold"
-    >
-      ...∞
-    </text>
-    <rect
-      x="100"
-      y="300"
-      width="1400"
-      height="250"
-      rx="8"
-      className="fill-green-50 stroke-green-500 stroke-2"
-    />
-    <text
-      x="800"
-      y="330"
-      textAnchor="middle"
-      className="font-sans text-xl fill-green-700 font-bold"
-    >
-      SOLUTION: A Single Scene with a Reference
-    </text>
-    <g transform="translate(450, 0)">
-      <rect
-        x="200"
-        y="380"
-        width="300"
-        height="100"
-        rx="12"
-        className="fill-none stroke-green-600 stroke-[3]"
-        style={{ strokeDasharray: "8,6" }}
-      />
-      <text
-        x="350"
-        y="370"
-        textAnchor="middle"
-        className="font-sans text-base fill-green-600 font-bold"
-      >
-        town_square_scene
-      </text>
-      <rect
-        x="220"
-        y="400"
-        width="260"
-        height="40"
-        rx="8"
-        className="fill-blue-100 stroke-blue-500"
-      />
-      <text
-        x="350"
-        y="425"
-        textAnchor="middle"
-        className="font-sans text-base fill-blue-900"
-      >
-        This is the town square.
-      </text>
-      <rect
-        x="250"
-        y="450"
-        width="200"
-        height="30"
-        rx="6"
-        className="fill-orange-100 stroke-orange-500"
-      />
-      <text
-        x="350"
-        y="470"
-        textAnchor="middle"
-        className="font-sans text-sm fill-orange-800"
-      >
-        What date did you say?
-      </text>
-      <path
-        d="M 250 465 C 120 520, 120 360, 250 400"
-        className="stroke-red-500 stroke-[3] fill-none"
-        markerEnd="url(#arrowhead-red)"
-      />
-      <text
-        x="40"
-        y="440"
-        className="font-sans text-base fill-red-500 font-bold"
-        transform="rotate(-15 40 440)"
-      >
-        Loop!
-      </text>
-    </g>
-  </g>
+    <div className="w-full rounded-lg bg-red-50 border-2 border-red-400 p-4">
+      <p className="text-center font-sans text-xl text-red-600 font-bold mb-4">
+        Problem: Infinite Nested Copies
+      </p>
+      <div className="flex items-center justify-center gap-8">
+        {[1, 2, 3].map((id) => (
+          <InfiniteCopyItem key={id} id={id} />
+        ))}
+        <p className="font-sans text-5xl text-red-500 font-bold">...</p>
+      </div>
+    </div>
+    <div className="w-full rounded-lg bg-green-50 border-2 border-green-500 p-4">
+      <p className="text-center font-sans text-xl text-green-700 font-bold mb-4">
+        Solution: A Single Scene with a Reference
+      </p>
+      <div className="flex items-center justify-center">
+        <div
+          id="s3_solution_scene"
+          className="w-1/3 border-4 border-green-600 border-dashed rounded-xl p-4 flex flex-col items-center gap-2"
+        >
+          <p className="text-center font-sans text-base text-green-600 font-bold">
+            florence_data_scene
+          </p>
+          <MessageBox id="s3_solution_msg" className="w-full mb-10">
+            Florence was founded in 59 BC
+          </MessageBox>
+          <ChoiceBox id="s3_solution_choice" className="w-3/4">
+            What date did you say?
+          </ChoiceBox>
+        </div>
+      </div>
+    </div>
+    {isVisible && (
+      <>
+        <Xarrow
+          start="s3_choice_copy1"
+          end="s3_msg_copy2"
+          color="#6b7280"
+          strokeWidth={2}
+          headSize={5}
+        />
+        <Xarrow
+          start="s3_choice_copy2"
+          end="s3_msg_copy3"
+          color="#6b7280"
+          strokeWidth={2}
+          headSize={5}
+        />
+        <Xarrow
+          start="s3_solution_choice"
+          end="s3_solution_msg"
+          path="smooth"
+          startAnchor="top"
+          endAnchor="bottom"
+          showTail={true}
+          color="#ef4444"
+          strokeWidth={3}
+        />
+      </>
+    )}
+  </div>
 );
 
 const Step4: React.FC<StepProps> = ({ isVisible }) => (
-  <g
-    className={`transition-all duration-700 ease-in-out ${
-      isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+  <div
+    className={`w-full h-full p-8 flex flex-col items-center justify-center gap-12 ${
+      isVisible ? "flex" : "hidden"
     }`}
   >
-    <rect
-      x="500"
-      y="80"
-      width="600"
-      height="220"
-      rx="12"
-      className="fill-none stroke-green-500 stroke-[3]"
-      style={{ strokeDasharray: "5,5" }}
-    />
-    <text
-      x="800"
-      y="70"
-      textAnchor="middle"
-      className="font-sans text-lg fill-green-500 font-bold"
-    >
-      Scene Object
-    </text>
-    <rect
-      x="600"
-      y="110"
-      width="400"
-      height="50"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2"
-    />
-    <text
-      x="800"
-      y="140"
-      textAnchor="middle"
-      className="font-sans text-lg fill-blue-900 font-medium"
-    >
-      Hello traveler, what brings you here?
-    </text>
-    <rect
-      x="550"
-      y="200"
-      width="220"
-      height="80"
-      rx="8"
-      className="fill-none stroke-orange-500 stroke-[3]"
-      style={{ strokeDasharray: "5,5" }}
-    />
-    <text
-      x="660"
-      y="195"
-      textAnchor="middle"
-      className="font-sans text-base fill-orange-500 font-bold"
-    >
-      Choice Object
-    </text>
-    <rect
-      x="830"
-      y="200"
-      width="220"
-      height="80"
-      rx="8"
-      className="fill-none stroke-orange-500 stroke-[3]"
-      style={{ strokeDasharray: "5,5" }}
-    />
-    <text
-      x="940"
-      y="195"
-      textAnchor="middle"
-      className="font-sans text-base fill-orange-500 font-bold"
-    >
-      Choice Object
-    </text>
-    <text
-      x="660"
-      y="230"
-      textAnchor="middle"
-      className="font-sans text-base fill-orange-800"
-    >
-      Looking for sword
-    </text>
-    <text
-      x="660"
-      y="255"
-      textAnchor="middle"
-      className="font-sans text-sm italic fill-gray-600"
-    >
-      → nextScene: "sword_scene"
-    </text>
-    <text
-      x="940"
-      y="230"
-      textAnchor="middle"
-      className="font-sans text-base fill-orange-800"
-    >
-      Just passing through
-    </text>
-    <text
-      x="940"
-      y="255"
-      textAnchor="middle"
-      className="font-sans text-sm italic fill-gray-600"
-    >
-      → nextScene: "farewell_scene"
-    </text>
-    <rect
-      x="300"
-      y="400"
-      width="300"
-      height="120"
-      rx="12"
-      className="fill-none stroke-green-500 stroke-[3]"
-      style={{ strokeDasharray: "5,5" }}
-    />
-    <text
-      x="450"
-      y="390"
-      textAnchor="middle"
-      className="font-sans text-lg fill-green-500 font-bold"
-    >
-      sword_scene
-    </text>
-    <rect
-      x="320"
-      y="430"
-      width="260"
-      height="40"
-      rx="6"
-      className="fill-blue-100 stroke-blue-500 stroke-2"
-    />
-    <text
-      x="450"
-      y="455"
-      textAnchor="middle"
-      className="font-sans text-base fill-blue-900 font-medium"
-    >
-      Ah, the legendary blade!
-    </text>
-    <rect
-      x="1000"
-      y="400"
-      width="300"
-      height="120"
-      rx="12"
-      className="fill-none stroke-green-500 stroke-[3]"
-      style={{ strokeDasharray: "5,5" }}
-    />
-    <text
-      x="1150"
-      y="390"
-      textAnchor="middle"
-      className="font-sans text-lg fill-green-500 font-bold"
-    >
-      farewell_scene
-    </text>
-    <rect
-      x="1020"
-      y="430"
-      width="260"
-      height="40"
-      rx="6"
-      className="fill-blue-100 stroke-blue-500 stroke-2"
-    />
-    <text
-      x="1150"
-      y="455"
-      textAnchor="middle"
-      className="font-sans text-base fill-blue-900 font-medium"
-    >
-      Safe travels then
-    </text>
-    <line
-      x1="660"
-      y1="280"
-      x2="450"
-      y2="400"
-      className="stroke-gray-500 stroke-2"
-      style={{ strokeDasharray: "5,5" }}
-      markerEnd="url(#arrowhead)"
-    />
-    <line
-      x1="940"
-      y1="280"
-      x2="1150"
-      y2="400"
-      className="stroke-gray-500 stroke-2"
-      style={{ strokeDasharray: "5,5" }}
-      markerEnd="url(#arrowhead)"
-    />
-  </g>
+    <div className="w-2/3 border-4 border-green-500 border-dashed rounded-xl p-4 flex flex-col items-center gap-6">
+      <p className="font-sans text-lg text-green-500 font-bold">Scene Object</p>
+      <MessageBox id="s4_msg" className="w-3/4">
+        Hello traveler, what brings you here?
+      </MessageBox>
+      <div className="w-full flex justify-around">
+        <div
+          id="s4_choice_obj1"
+          className="w-2/5 border-4 border-orange-500 border-dashed rounded-xl p-2 flex flex-col justify-center items-center gap-1"
+        >
+          <p className="font-sans text-base text-orange-500 font-bold">
+            Choice Object
+          </p>
+          <p className="font-sans text-base text-orange-800 mt-1">
+            Looking for sword
+          </p>
+          <p className="font-sans text-sm italic text-gray-600">
+            → nextScene: "sword_scene"
+          </p>
+        </div>
+        <div
+          id="s4_choice_obj2"
+          className="w-2/5 border-4 border-orange-500 border-dashed rounded-xl p-2 flex flex-col justify-center items-center gap-1"
+        >
+          <p className="font-sans text-base text-orange-500 font-bold">
+            Choice Object
+          </p>
+          <p className="font-sans text-base text-orange-800 mt-1">
+            Just passing through
+          </p>
+          <p className="font-sans text-sm italic text-gray-600">
+            → nextScene: "farewell_scene"
+          </p>
+        </div>
+      </div>
+    </div>
+    <div className="w-full flex justify-around">
+      <div
+        id="s4_sword_scene"
+        className="w-1/3 border-4 border-green-500 border-dashed rounded-xl p-4 flex flex-col justify-center items-center gap-2"
+      >
+        <p className="font-sans text-lg text-green-500 font-bold">
+          sword_scene
+        </p>
+        <p className="text-center font-sans text-base text-blue-900">
+          Ah, the legendary blade!
+        </p>
+      </div>
+      <div
+        id="s4_farewell_scene"
+        className="w-1/3 border-4 border-green-500 border-dashed rounded-xl p-4 flex flex-col justify-center items-center gap-2"
+      >
+        <p className="font-sans text-lg text-green-500 font-bold">
+          farewell_scene
+        </p>
+        <p className="text-center font-sans text-base text-blue-900">
+          Safe travels, adventurer!
+        </p>
+      </div>
+    </div>
+    {isVisible && (
+      <>
+        <Xarrow
+          start="s4_choice_obj1"
+          end="s4_sword_scene"
+          dashness={true}
+          color="#6b7280"
+          strokeWidth={2}
+          headSize={5}
+        />
+        <Xarrow
+          start="s4_choice_obj2"
+          end="s4_farewell_scene"
+          dashness={true}
+          color="#6b7280"
+          strokeWidth={2}
+          headSize={5}
+        />
+      </>
+    )}
+  </div>
 );
 
 const Step5: React.FC<StepProps> = ({ isVisible }) => (
-  <g
-    className={`transition-all duration-700 ease-in-out font-mono text-base ${
-      isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+  <div
+    className={`w-full h-full p-6 flex items-center justify-center ${
+      isVisible ? "flex" : "hidden"
     }`}
   >
-    <rect
-      x="50"
-      y="50"
-      width="1500"
-      height="500"
-      rx="10"
-      className="fill-slate-800 stroke-green-500 stroke-2"
-    />
-
-    <text x="100" y="100" className="fill-orange-400">
-      const
-    </text>
-    <text x="170" y="100" className="fill-cyan-400">
-      scenes
-    </text>
-    <text x="250" y="100" className="fill-white">
-      {" "}
-      = {"{"}
-    </text>
-
-    <text x="120" y="140" className="fill-yellow-300">
-      town_square
-    </text>
-    <text x="260" y="140" className="fill-white">
-      : {"{"}
-    </text>
-    <text x="140" y="170" className="fill-cyan-400">
-      message
-    </text>
-    <text x="230" y="170" className="fill-white">
-      :{" "}
-    </text>
-    <text x="250" y="170" className="fill-green-400">
-      "This is the town square. What next?"
-    </text>
-    <text x="650" y="170" className="fill-white">
-      ,
-    </text>
-    <text x="140" y="200" className="fill-cyan-400">
-      choices
-    </text>
-    <text x="220" y="200" className="fill-white">
-      : [
-    </text>
-    <text x="160" y="230" className="fill-white">
-      {"{"}{" "}
-    </text>
-    <text x="190" y="230" className="fill-cyan-400">
-      response
-    </text>
-    <text x="240" y="230" className="fill-white">
-      :{" "}
-    </text>
-    <text x="260" y="230" className="fill-green-400">
-      "Ask about the town square again"
-    </text>
-    <text x="590" y="230" className="fill-white">
-      ,{" "}
-    </text>
-    <text x="610" y="230" className="fill-cyan-400">
-      nextScene
-    </text>
-    <text x="710" y="230" className="fill-white">
-      :{" "}
-    </text>
-    <text x="730" y="230" className="fill-yellow-300">
-      "town_square"
-    </text>
-    <text x="870" y="230" className="fill-white">
-      {" "}
-      {"}"},
-    </text>
-    <text x="160" y="260" className="fill-white">
-      {"{"}{" "}
-    </text>
-    <text x="190" y="260" className="fill-cyan-400">
-      response
-    </text>
-    <text x="240" y="260" className="fill-white">
-      :{" "}
-    </text>
-    <text x="260" y="260" className="fill-green-400">
-      "Look for the magic sword"
-    </text>
-    <text x="540" y="260" className="fill-white">
-      ,{" "}
-    </text>
-    <text x="560" y="260" className="fill-cyan-400">
-      nextScene
-    </text>
-    <text x="660" y="260" className="fill-white">
-      :{" "}
-    </text>
-    <text x="680" y="260" className="fill-yellow-300">
-      "sword_info"
-    </text>
-    <text x="810" y="260" className="fill-white">
-      {" "}
-      {"}"},
-    </text>
-    <text x="140" y="290" className="fill-white">
-      ]
-    </text>
-    <text x="120" y="320" className="fill-white">
-      {"}"},
-    </text>
-
-    <text x="120" y="360" className="fill-yellow-300">
-      sword_info
-    </text>
-    <text x="250" y="360" className="fill-white">
-      : {"{"} ... {"}"},
-    </text>
-    <text x="120" y="390" className="fill-yellow-300">
-      farewell
-    </text>
-    <text x="220" y="390" className="fill-white">
-      : {"{"} ... {"}"}
-    </text>
-    <text x="100" y="420" className="fill-white">
-      {"}"};
-    </text>
-
-    <rect
-      x="1000"
-      y="120"
-      width="450"
-      height="200"
-      rx="8"
-      className="fill-slate-900/70 stroke-green-400"
-    />
-    <text
-      x="1225"
-      y="150"
-      textAnchor="middle"
-      className="font-sans text-xl fill-green-400 font-bold"
-    >
-      Key Benefits
-    </text>
-    <text x="1050" y="190" className="font-sans text-lg fill-white">
-      ✓ <tspan dy="-0.1em">No data duplication</tspan>
-    </text>
-    <text x="1050" y="220" className="font-sans text-lg fill-white">
-      ✓ <tspan dy="-0.1em">Handles loops naturally</tspan>
-    </text>
-    <text x="1050" y="250" className="font-sans text-lg fill-white">
-      ✓ <tspan dy="-0.1em">Easy to read, write, and debug</tspan>
-    </text>
-    <text x="1050" y="280" className="font-sans text-lg fill-white">
-      ✓ <tspan dy="-0.1em">Reusable scenes (e.g., a generic "goodbye")</tspan>
-    </text>
-  </g>
+    <div className="w-full h-full rounded-lg bg-slate-800 border-2 border-green-500 p-6 flex justify-around items-center gap-6">
+      <pre className="text-white text-base leading-relaxed flex-grow h-full overflow-auto">
+        <code>
+          <span className="text-orange-400">const </span>
+          <span className="text-cyan-400">scenes</span>
+          <span className="text-white"> = {"{"}</span>
+          <br />
+          {"  "}
+          <span className="text-yellow-300">start</span>
+          <span className="text-white">: {"{"}</span>
+          <br />
+          {"    "}
+          <span className="text-cyan-400">message</span>
+          <span className="text-white">: </span>
+          <span className="text-green-400">
+            "Hello traveler, what brings you here?"
+          </span>
+          <span className="text-white">,</span>
+          <br />
+          {"    "}
+          <span className="text-cyan-400">choices</span>
+          <span className="text-white">: [</span>
+          <br />
+          {"      "}
+          <span className="text-white">{"{"}</span>
+          <br />
+          {"        "}
+          <span className="text-cyan-400">response</span>
+          <span className="text-white">: </span>
+          <span className="text-green-400">
+            "I'm looking for the magic sword"
+          </span>
+          <span className="text-white">,</span>
+          <br />
+          {"        "}
+          <span className="text-cyan-400">nextScene</span>
+          <span className="text-white">: </span>
+          <span className="text-yellow-300">"swordInfo"</span>
+          <span className="text-white">,</span>
+          <br />
+          {"      "}
+          <span className="text-white">{"}"},</span>
+          <br />
+          {"      "}
+          <span className="text-white">{"{"}</span>
+          <br />
+          {"        "}
+          <span className="text-cyan-400">response</span>
+          <span className="text-white">: </span>
+          <span className="text-green-400">"Just passing through"</span>
+          <span className="text-white">,</span>
+          <br />
+          {"        "}
+          <span className="text-cyan-400">nextScene</span>
+          <span className="text-white">: </span>
+          <span className="text-yellow-300">"farewell"</span>
+          <span className="text-white">,</span>
+          <br />
+          {"      "}
+          <span className="text-white">{"}"},</span>
+          <br />
+          {"    "}
+          <span className="text-white">]</span>
+          <br />
+          {"  "}
+          <span className="text-white">{"}"},</span>
+          <br />
+          <br />
+          {"  "}
+          <span className="text-yellow-300">swordInfo</span>
+          <span className="text-white">
+            : {"{"} ... {"}"},
+          </span>
+          <br />
+          {"  "}
+          <span className="text-yellow-300">farewell</span>
+          <span className="text-white">
+            : {"{"} ... {"}"},
+          </span>
+          <br />
+          <span className="text-white">{"}"};</span>
+        </code>
+      </pre>
+      <div className="w-7/20 h-2/3 bg-slate-900/70 border border-green-400 rounded-lg p-6 flex flex-col justify-center gap-4">
+        <p className="text-center font-sans text-xl text-green-400 font-bold">
+          Syntax Notes
+        </p>
+        <p className="font-sans text-lg text-white">
+          Every Object is defined inside curley brackets {`{ key: value }`}.
+        </p>
+        <p className="font-sans text-lg text-white">
+          The list of objects is defined inside square brackets{" "}
+          {`[item1, item2]`}.
+        </p>
+        <p className="font-sans text-lg text-white">
+          The keys do not have spaces and values are put in quotes (e.g.
+          "message").
+        </p>
+      </div>
+    </div>
+  </div>
 );
 
-// Main component is also typed with React.FC
-const RpgSceneAnimation: React.FC = () => {
+const RPGDataAnimation: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleNext = () => {
@@ -893,41 +497,19 @@ const RpgSceneAnimation: React.FC = () => {
 
       <ColorBox color="blue">{stepsData[currentStep].explanation}</ColorBox>
 
-      <svg
-        className="w-full h-auto border border-gray-200 rounded-xl bg-gray-50"
-        viewBox="0 0 1600 600"
-      >
-        <defs>
-          <marker
-            id="arrowhead"
-            markerWidth="10"
-            markerHeight="7"
-            refX="9"
-            refY="3.5"
-            orient="auto"
-          >
-            <polygon points="0 0, 10 3.5, 0 7" className="fill-gray-500" />
-          </marker>
-          <marker
-            id="arrowhead-red"
-            markerWidth="10"
-            markerHeight="7"
-            refX="9"
-            refY="3.5"
-            orient="auto"
-          >
-            <polygon points="0 0, 10 3.5, 0 7" className="fill-red-500" />
-          </marker>
-        </defs>
-
-        <Step1 isVisible={currentStep === 0} />
-        <Step2 isVisible={currentStep === 1} />
-        <Step3 isVisible={currentStep === 2} />
-        <Step4 isVisible={currentStep === 3} />
-        <Step5 isVisible={currentStep === 4} />
-      </svg>
+      {/* The main container now lets its content define its height */}
+      <div className="relative w-full border border-gray-200 rounded-xl bg-gray-50 overflow-hidden">
+        <Xwrapper>
+          {/* Each Step component now controls its own layout and visibility */}
+          <Step1 isVisible={currentStep === 0} />
+          <Step2 isVisible={currentStep === 1} />
+          <Step3 isVisible={currentStep === 2} />
+          <Step4 isVisible={currentStep === 3} />
+          <Step5 isVisible={currentStep === 4} />
+        </Xwrapper>
+      </div>
     </main>
   );
 };
 
-export default RpgSceneAnimation;
+export default RPGDataAnimation;
