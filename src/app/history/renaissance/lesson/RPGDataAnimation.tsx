@@ -1,257 +1,269 @@
 "use client";
+import ColorBox from "@/components/ColorBox";
 import React, { useState } from "react";
 
-// Data for each step of the animation, moved from the original script
-const stepsData = [
+// Interface to define the shape of our step data
+interface StepData {
+  title: string;
+  explanation: string;
+}
+
+// Typed data for each step of the animation
+const stepsData: StepData[] = [
   {
-    title: "Step 1 of 5: The Messy Beginning",
+    title: "Step 1 of 5: Our Data",
     explanation:
-      "Here's the problem: RPG dialogue scattered randomly with no clear structure. Text is rotated and dispersed, making it impossible to follow the conversation flow or understand relationships between elements.",
+      "Here's the problem: RPG dialogue is scattered randomly with no clear structure. It's impossible to follow the conversation flow or manage relationships between elements.",
   },
   {
     title: "Step 2 of 5: Adding Flow Structure",
     explanation:
-      "Much better! Now we can see the logical flow: messages connect to choices with arrows, and choices lead to next scenes. This visual structure helps us understand the conversation path, but we still have a problem...",
+      "Much better! Now we can see the logical flow: messages connect to choices with arrows, and choices lead to subsequent scenes. This visual structure helps, but a core problem remains...",
   },
   {
-    title: "Step 3 of 5: The Infinite Replication Problem",
+    title: "Step 3 of 5: 'Infinite Copy' Problem",
     explanation:
-      "Here's the real issue with nesting: if a scene can reference itself (like 'Can you tell me that again?'), we'd need infinite nested copies! Each choice would create a new duplicate scene, consuming infinite memory. The solution shows a single scene with a reference arrow back to itself.",
+      "If a choice leads back to the same scene (e.g., asking for the same info again), a nested structure would create infinite duplicates (top). The solution is to store scenes separately and use a reference (a simple ID) to point back to the original, creating a clean, efficient loop (bottom).",
   },
   {
-    title: "Step 4 of 5: Object Boxing Solution",
+    title: "Step 4 of 5: Object-Based Structure",
     explanation:
-      "The solution: Box each element as separate objects! Scene objects contain messages and choice objects. Choice objects contain response text and references (keys) to other scenes. The dashed arrows show references, not direct containment.",
+      "The solution is to 'box' everything into objects. A 'Scene' object holds the main message and an array of 'Choice' objects. Each choice contains its text and, crucially, a reference (key) to the next scene. Dashed lines show these are references, not nested data.",
   },
   {
-    title: "Step 5 of 5: Final Dictionary Structure",
+    title: "Step 5 of 5: Final Data Structure",
     explanation:
-      "The final result: a clean dictionary where each scene has a unique key. Choices reference other scenes by key, not by nesting objects. This prevents duplication, handles loops naturally, and makes scenes easily accessible and reusable!",
+      "The final result: a clean dictionary (or map) where each scene has a unique key. Choices reference other scenes by their key, preventing duplication and handling loops naturally. This data is now clean, reusable, and easy for the game engine to read.",
   },
 ];
 
-// Helper components for each SVG step to keep the main component clean
-const Step1 = ({ isVisible }: { isVisible: boolean }) => (
-  <g
-    className={`transition-all duration-700 ease-in-out ${
-      isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-    }`}
-  >
-    <rect
-      x="80"
-      y="100"
-      width="280"
-      height="40"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2 scale-90"
-      transform="rotate(-15 220 120)"
-    />
-    <text
-      x="220"
-      y="125"
-      textAnchor="middle"
-      className="font-sans text-sm fill-blue-900 font-medium scale-90"
-      transform="rotate(-15 220 120)"
-    >
-      Hello traveler, what brings you here?
-    </text>
-    <rect
-      x="400"
-      y="80"
-      width="200"
-      height="30"
-      rx="6"
-      className="fill-orange-100 stroke-orange-500 stroke-2 scale-90"
-      transform="rotate(20 500 95)"
-    />
-    <text
-      x="500"
-      y="100"
-      textAnchor="middle"
-      className="font-sans text-xs fill-orange-800 scale-90"
-      transform="rotate(20 500 95)"
-    >
-      I'm looking for the magic sword
-    </text>
-    <rect
-      x="150"
-      y="250"
-      width="150"
-      height="30"
-      rx="6"
-      className="fill-orange-100 stroke-orange-500 stroke-2 scale-90"
-      transform="rotate(-25 225 265)"
-    />
-    <text
-      x="225"
-      y="270"
-      textAnchor="middle"
-      className="font-sans text-xs fill-orange-800 scale-90"
-      transform="rotate(-25 225 265)"
-    >
-      Just passing through
-    </text>
-    <rect
-      x="600"
-      y="200"
-      width="220"
-      height="40"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2 scale-90"
-      transform="rotate(10 710 220)"
-    />
-    <text
-      x="710"
-      y="225"
-      textAnchor="middle"
-      className="font-sans text-sm fill-blue-900 font-medium scale-90"
-      transform="rotate(10 710 220)"
-    >
-      Ah, the legendary blade!
-    </text>
-    <rect
-      x="50"
-      y="400"
-      width="180"
-      height="40"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2 scale-90"
-      transform="rotate(-5 140 420)"
-    />
-    <text
-      x="140"
-      y="425"
-      textAnchor="middle"
-      className="font-sans text-sm fill-blue-900 font-medium scale-90"
-      transform="rotate(-5 140 420)"
-    >
-      Safe travels then
-    </text>
-  </g>
-);
+// Type definition for the props of each Step component
+type StepProps = {
+  isVisible: boolean;
+};
 
-const Step2 = ({ isVisible }: { isVisible: boolean }) => (
+// SVG components are typed with React.FC<StepProps>
+const Step1: React.FC<StepProps> = ({ isVisible }) => (
   <g
     className={`transition-all duration-700 ease-in-out ${
       isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
     }`}
   >
-    <rect
-      x="400"
-      y="50"
-      width="300"
-      height="50"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2"
-    />
-    <text
-      x="550"
-      y="80"
-      textAnchor="middle"
-      className="font-sans text-sm fill-blue-900 font-medium"
-    >
-      Hello traveler, what brings you here?
-    </text>
     <rect
       x="200"
       y="150"
-      width="200"
-      height="40"
-      rx="6"
-      className="fill-orange-100 stroke-orange-500 stroke-2"
+      width="320"
+      height="50"
+      rx="8"
+      className="fill-blue-100 stroke-blue-500 stroke-2 scale-90"
+      transform="rotate(-15 360 175)"
     />
     <text
-      x="300"
-      y="175"
+      x="360"
+      y="180"
       textAnchor="middle"
-      className="font-sans text-xs fill-orange-800"
+      className="font-sans text-base fill-blue-900 font-medium scale-90"
+      transform="rotate(-15 360 175)"
+    >
+      Hello traveler, what brings you here?
+    </text>
+    <rect
+      x="650"
+      y="100"
+      width="280"
+      height="40"
+      rx="6"
+      className="fill-orange-100 stroke-orange-500 stroke-2 scale-90"
+      transform="rotate(20 790 120)"
+    />
+    <text
+      x="790"
+      y="125"
+      textAnchor="middle"
+      className="font-sans text-sm fill-orange-800 scale-90"
+      transform="rotate(20 790 120)"
     >
       I'm looking for the magic sword
     </text>
     <rect
-      x="600"
-      y="150"
-      width="150"
+      x="350"
+      y="350"
+      width="220"
       height="40"
       rx="6"
-      className="fill-orange-100 stroke-orange-500 stroke-2"
+      className="fill-orange-100 stroke-orange-500 stroke-2 scale-90"
+      transform="rotate(-25 460 370)"
     />
     <text
-      x="675"
-      y="175"
+      x="460"
+      y="375"
       textAnchor="middle"
-      className="font-sans text-xs fill-orange-800"
+      className="font-sans text-sm fill-orange-800 scale-90"
+      transform="rotate(-25 460 370)"
     >
       Just passing through
     </text>
     <rect
-      x="150"
+      x="950"
       y="250"
-      width="220"
+      width="280"
       height="50"
       rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2"
+      className="fill-blue-100 stroke-blue-500 stroke-2 scale-90"
+      transform="rotate(10 1090 275)"
     />
     <text
-      x="260"
+      x="1090"
       y="280"
       textAnchor="middle"
-      className="font-sans text-sm fill-blue-900 font-medium"
+      className="font-sans text-base fill-blue-900 font-medium scale-90"
+      transform="rotate(10 1090 275)"
     >
       Ah, the legendary blade!
     </text>
     <rect
-      x="600"
-      y="250"
-      width="180"
+      x="250"
+      y="450"
+      width="220"
       height="50"
+      rx="8"
+      className="fill-blue-100 stroke-blue-500 stroke-2 scale-90"
+      transform="rotate(-5 360 475)"
+    />
+    <text
+      x="360"
+      y="480"
+      textAnchor="middle"
+      className="font-sans text-base fill-blue-900 font-medium scale-90"
+      transform="rotate(-5 360 475)"
+    >
+      Safe travels then
+    </text>
+  </g>
+);
+
+const Step2: React.FC<StepProps> = ({ isVisible }) => (
+  <g
+    className={`transition-all duration-700 ease-in-out ${
+      isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+    }`}
+  >
+    <rect
+      x="600"
+      y="80"
+      width="400"
+      height="60"
       rx="8"
       className="fill-blue-100 stroke-blue-500 stroke-2"
     />
     <text
-      x="690"
-      y="280"
+      x="800"
+      y="115"
       textAnchor="middle"
-      className="font-sans text-sm fill-blue-900 font-medium"
+      className="font-sans text-lg fill-blue-900 font-medium"
+    >
+      Hello traveler, what brings you here?
+    </text>
+    <rect
+      x="350"
+      y="220"
+      width="300"
+      height="50"
+      rx="6"
+      className="fill-orange-100 stroke-orange-500 stroke-2"
+    />
+    <text
+      x="500"
+      y="250"
+      textAnchor="middle"
+      className="font-sans text-base fill-orange-800"
+    >
+      I'm looking for the magic sword
+    </text>
+    <rect
+      x="950"
+      y="220"
+      width="250"
+      height="50"
+      rx="6"
+      className="fill-orange-100 stroke-orange-500 stroke-2"
+    />
+    <text
+      x="1075"
+      y="250"
+      textAnchor="middle"
+      className="font-sans text-base fill-orange-800"
+    >
+      Just passing through
+    </text>
+    <rect
+      x="300"
+      y="370"
+      width="300"
+      height="60"
+      rx="8"
+      className="fill-blue-100 stroke-blue-500 stroke-2"
+    />
+    <text
+      x="450"
+      y="405"
+      textAnchor="middle"
+      className="font-sans text-lg fill-blue-900 font-medium"
+    >
+      Ah, the legendary blade!
+    </text>
+    <rect
+      x="1000"
+      y="370"
+      width="250"
+      height="60"
+      rx="8"
+      className="fill-blue-100 stroke-blue-500 stroke-2"
+    />
+    <text
+      x="1125"
+      y="405"
+      textAnchor="middle"
+      className="font-sans text-lg fill-blue-900 font-medium"
     >
       Safe travels then
     </text>
     <line
+      x1="700"
+      y1="140"
+      x2="550"
+      y2="220"
+      className="stroke-gray-500 stroke-2"
+      markerEnd="url(#arrowhead)"
+    />
+    <line
+      x1="900"
+      y1="140"
+      x2="1050"
+      y2="220"
+      className="stroke-gray-500 stroke-2"
+      markerEnd="url(#arrowhead)"
+    />
+    <line
       x1="500"
-      y1="100"
-      x2="350"
-      y2="150"
+      y1="270"
+      x2="450"
+      y2="370"
       className="stroke-gray-500 stroke-2"
       markerEnd="url(#arrowhead)"
     />
     <line
-      x1="600"
-      y1="100"
-      x2="650"
-      y2="150"
-      className="stroke-gray-500 stroke-2"
-      markerEnd="url(#arrowhead)"
-    />
-    <line
-      x1="300"
-      y1="190"
-      x2="260"
-      y2="250"
-      className="stroke-gray-500 stroke-2"
-      markerEnd="url(#arrowhead)"
-    />
-    <line
-      x1="675"
-      y1="190"
-      x2="690"
-      y2="250"
+      x1="1075"
+      y1="270"
+      x2="1125"
+      y2="370"
       className="stroke-gray-500 stroke-2"
       markerEnd="url(#arrowhead)"
     />
   </g>
 );
 
-const Step3 = ({ isVisible }: { isVisible: boolean }) => (
+const Step3: React.FC<StepProps> = ({ isVisible }) => (
   <g
     className={`transition-all duration-700 ease-in-out ${
       isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -259,403 +271,415 @@ const Step3 = ({ isVisible }: { isVisible: boolean }) => (
   >
     <rect
       x="100"
-      y="80"
-      width="250"
-      height="50"
+      y="50"
+      width="1400"
+      height="220"
       rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2"
+      className="fill-red-50 stroke-red-400 stroke-2"
     />
     <text
-      x="225"
-      y="110"
+      x="800"
+      y="80"
       textAnchor="middle"
-      className="font-sans text-sm fill-blue-900 font-medium"
+      className="font-sans text-xl fill-red-600 font-bold"
     >
-      Can you tell me that again?
+      PROBLEM: Infinite Nested Copies
     </text>
     <rect
       x="150"
-      y="160"
-      width="150"
-      height="40"
-      rx="6"
-      className="fill-orange-100 stroke-orange-500 stroke-2"
-    />
-    <text
-      x="225"
-      y="185"
-      textAnchor="middle"
-      className="font-sans text-xs fill-orange-800"
-    >
-      Tell me that again
-    </text>
-    <line
-      x1="225"
-      y1="200"
-      x2="450"
-      y2="80"
-      className="stroke-gray-500 stroke-2"
-      markerEnd="url(#arrowhead)"
-    />
-    <rect
-      x="400"
-      y="80"
-      width="250"
+      y="120"
+      width="280"
       height="50"
       rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2"
+      className="fill-blue-100 stroke-blue-500"
     />
     <text
-      x="525"
-      y="110"
+      x="290"
+      y="150"
       textAnchor="middle"
-      className="font-sans text-sm fill-blue-900 font-medium"
+      className="font-sans text-base fill-blue-900"
     >
-      Can you tell me that again?
+      Florence was founded in 59 BC by Julius Caesar
     </text>
     <rect
-      x="450"
-      y="160"
-      width="150"
+      x="180"
+      y="180"
+      width="220"
       height="40"
       rx="6"
-      className="fill-orange-100 stroke-orange-500 stroke-2"
+      className="fill-orange-100 stroke-orange-500"
     />
     <text
-      x="525"
-      y="185"
+      x="290"
+      y="205"
       textAnchor="middle"
-      className="font-sans text-xs fill-orange-800"
+      className="font-sans text-sm fill-orange-800"
     >
-      Tell me that again
+      What date did you say?
     </text>
     <line
-      x1="525"
-      y1="200"
-      x2="750"
-      y2="80"
-      className="stroke-gray-500 stroke-2"
-      markerEnd="url(#arrowhead)"
-    />
-    <rect
-      x="700"
-      y="80"
-      width="250"
-      height="50"
-      rx="8"
-      className="fill-blue-100 stroke-blue-500 stroke-2"
-    />
-    <text
-      x="825"
-      y="110"
-      textAnchor="middle"
-      className="font-sans text-sm fill-blue-900 font-medium"
-    >
-      Can you tell me that again?
-    </text>
-    <rect
-      x="750"
-      y="160"
-      width="150"
-      height="40"
-      rx="6"
-      className="fill-orange-100 stroke-orange-500 stroke-2"
-    />
-    <text
-      x="825"
-      y="185"
-      textAnchor="middle"
-      className="font-sans text-xs fill-orange-800"
-    >
-      Tell me that again
-    </text>
-    <line
-      x1="825"
-      y1="200"
-      x2="975"
+      x1="290"
+      y1="220"
+      x2="520"
       y2="120"
       className="stroke-gray-500 stroke-2"
       markerEnd="url(#arrowhead)"
     />
-    <text x="980" y="125" className="font-sans text-3xl fill-red-500 font-bold">
-      ...
-    </text>
-    <text x="1020" y="125" className="font-sans text-xl fill-red-500 font-bold">
-      ∞
-    </text>
     <rect
-      x="50"
-      y="250"
-      width="350"
-      height="80"
+      x="480"
+      y="120"
+      width="280"
+      height="50"
       rx="8"
-      className="fill-red-50 stroke-red-500 stroke-2"
+      className="fill-blue-100 stroke-blue-500"
     />
     <text
-      x="225"
-      y="275"
+      x="620"
+      y="150"
       textAnchor="middle"
-      className="font-sans fill-red-500 font-bold"
+      className="font-sans text-base fill-blue-900"
     >
-      PROBLEM: Infinite nested copies!
-    </text>
-    <text x="60" y="295" className="font-sans fill-red-500 text-xs">
-      • Each choice creates a new copy of the same scene
-    </text>
-    <text x="60" y="310" className="font-sans fill-red-500 text-xs">
-      • Takes up infinite memory and code space
-    </text>
-    <text x="60" y="325" className="font-sans fill-red-500 text-xs">
-      • Impossible to implement with nested objects
+      Florence was founded in 59 BC by Julius Caesar
     </text>
     <rect
-      x="500"
-      y="250"
-      width="400"
-      height="120"
+      x="510"
+      y="180"
+      width="220"
+      height="40"
+      rx="6"
+      className="fill-orange-100 stroke-orange-500"
+    />
+    <text
+      x="620"
+      y="205"
+      textAnchor="middle"
+      className="font-sans text-sm fill-orange-800"
+    >
+      What date did you say?
+    </text>
+    <line
+      x1="620"
+      y1="220"
+      x2="850"
+      y2="120"
+      className="stroke-gray-500 stroke-2"
+      markerEnd="url(#arrowhead)"
+    />
+    <rect
+      x="810"
+      y="120"
+      width="280"
+      height="50"
+      rx="8"
+      className="fill-blue-100 stroke-blue-500"
+    />
+    <text
+      x="950"
+      y="150"
+      textAnchor="middle"
+      className="font-sans text-base fill-blue-900"
+    >
+      Florence was founded in 59 BC by Julius Caesar
+    </text>
+    <rect
+      x="840"
+      y="180"
+      width="220"
+      height="40"
+      rx="6"
+      className="fill-orange-100 stroke-orange-500"
+    />
+    <text
+      x="950"
+      y="205"
+      textAnchor="middle"
+      className="font-sans text-sm fill-orange-800"
+    >
+      What date did you say?
+    </text>
+    <line
+      x1="950"
+      y1="220"
+      x2="1180"
+      y2="120"
+      className="stroke-gray-500 stroke-2"
+      markerEnd="url(#arrowhead)"
+    />
+    <text
+      x="1250"
+      y="160"
+      className="font-sans text-5xl fill-red-500 font-bold"
+    >
+      ...∞
+    </text>
+    <rect
+      x="100"
+      y="300"
+      width="1400"
+      height="250"
       rx="8"
       className="fill-green-50 stroke-green-500 stroke-2"
     />
     <text
-      x="700"
-      y="275"
+      x="800"
+      y="330"
       textAnchor="middle"
-      className="font-sans fill-green-500 font-bold"
+      className="font-sans text-xl fill-green-700 font-bold"
     >
-      SOLUTION: Reference the same scene
+      SOLUTION: A Single Scene with a Reference
     </text>
-    <rect
-      x="550"
-      y="290"
-      width="200"
-      height="40"
-      rx="8"
-      className="fill-blue-100 stroke-green-500 stroke-2"
-    />
-    <text
-      x="650"
-      y="315"
-      textAnchor="middle"
-      className="font-sans text-xs fill-blue-900 font-medium"
-    >
-      Can you tell me that again?
-    </text>
-    <rect
-      x="580"
-      y="340"
-      width="140"
-      height="25"
-      rx="6"
-      className="fill-orange-100 stroke-green-500 stroke-2"
-    />
-    <text
-      x="650"
-      y="357"
-      textAnchor="middle"
-      className="font-sans text-[10px] fill-orange-800"
-    >
-      Tell me that again
-    </text>
-    <path
-      d="M 580 350 Q 500 380 500 310 Q 500 290 550 310"
-      className="stroke-green-500 stroke-2 fill-none"
-      markerEnd="url(#arrowhead)"
-    />
-    <text
-      x="480"
-      y="400"
-      className="font-sans text-[11px] fill-green-500 font-bold"
-    >
-      One scene, referenced!
-    </text>
+    <g transform="translate(450, 0)">
+      <rect
+        x="200"
+        y="380"
+        width="300"
+        height="100"
+        rx="12"
+        className="fill-none stroke-green-600 stroke-[3]"
+        style={{ strokeDasharray: "8,6" }}
+      />
+      <text
+        x="350"
+        y="370"
+        textAnchor="middle"
+        className="font-sans text-base fill-green-600 font-bold"
+      >
+        town_square_scene
+      </text>
+      <rect
+        x="220"
+        y="400"
+        width="260"
+        height="40"
+        rx="8"
+        className="fill-blue-100 stroke-blue-500"
+      />
+      <text
+        x="350"
+        y="425"
+        textAnchor="middle"
+        className="font-sans text-base fill-blue-900"
+      >
+        This is the town square.
+      </text>
+      <rect
+        x="250"
+        y="450"
+        width="200"
+        height="30"
+        rx="6"
+        className="fill-orange-100 stroke-orange-500"
+      />
+      <text
+        x="350"
+        y="470"
+        textAnchor="middle"
+        className="font-sans text-sm fill-orange-800"
+      >
+        What date did you say?
+      </text>
+      <path
+        d="M 250 465 C 120 520, 120 360, 250 400"
+        className="stroke-red-500 stroke-[3] fill-none"
+        markerEnd="url(#arrowhead-red)"
+      />
+      <text
+        x="40"
+        y="440"
+        className="font-sans text-base fill-red-500 font-bold"
+        transform="rotate(-15 40 440)"
+      >
+        Loop!
+      </text>
+    </g>
   </g>
 );
 
-const Step4 = ({ isVisible }: { isVisible: boolean }) => (
+const Step4: React.FC<StepProps> = ({ isVisible }) => (
   <g
     className={`transition-all duration-700 ease-in-out ${
       isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
     }`}
   >
     <rect
-      x="200"
+      x="500"
       y="80"
-      width="400"
-      height="180"
+      width="600"
+      height="220"
       rx="12"
       className="fill-none stroke-green-500 stroke-[3]"
       style={{ strokeDasharray: "5,5" }}
     />
     <text
-      x="400"
+      x="800"
       y="70"
       textAnchor="middle"
-      className="font-sans fill-green-500 font-bold"
+      className="font-sans text-lg fill-green-500 font-bold"
     >
       Scene Object
     </text>
     <rect
-      x="250"
-      y="100"
-      width="300"
-      height="40"
+      x="600"
+      y="110"
+      width="400"
+      height="50"
       rx="8"
       className="fill-blue-100 stroke-blue-500 stroke-2"
     />
     <text
-      x="400"
-      y="125"
+      x="800"
+      y="140"
       textAnchor="middle"
-      className="font-sans text-sm fill-blue-900 font-medium"
+      className="font-sans text-lg fill-blue-900 font-medium"
     >
       Hello traveler, what brings you here?
     </text>
     <rect
-      x="220"
-      y="170"
-      width="150"
-      height="70"
+      x="550"
+      y="200"
+      width="220"
+      height="80"
       rx="8"
       className="fill-none stroke-orange-500 stroke-[3]"
       style={{ strokeDasharray: "5,5" }}
     />
     <text
-      x="295"
-      y="165"
+      x="660"
+      y="195"
       textAnchor="middle"
-      className="font-sans text-xs fill-orange-500 font-bold"
+      className="font-sans text-base fill-orange-500 font-bold"
     >
       Choice Object
     </text>
     <rect
-      x="430"
-      y="170"
-      width="150"
-      height="70"
+      x="830"
+      y="200"
+      width="220"
+      height="80"
       rx="8"
       className="fill-none stroke-orange-500 stroke-[3]"
       style={{ strokeDasharray: "5,5" }}
     />
     <text
-      x="505"
-      y="165"
+      x="940"
+      y="195"
       textAnchor="middle"
-      className="font-sans text-xs fill-orange-500 font-bold"
+      className="font-sans text-base fill-orange-500 font-bold"
     >
       Choice Object
     </text>
     <text
-      x="295"
-      y="190"
+      x="660"
+      y="230"
       textAnchor="middle"
-      className="font-sans text-xs fill-orange-800"
+      className="font-sans text-base fill-orange-800"
     >
       Looking for sword
     </text>
     <text
-      x="295"
-      y="210"
+      x="660"
+      y="255"
       textAnchor="middle"
-      className="font-sans text-[11px] italic fill-gray-500"
+      className="font-sans text-sm italic fill-gray-600"
     >
-      → sword_scene
+      → nextScene: "sword_scene"
     </text>
     <text
-      x="505"
-      y="190"
+      x="940"
+      y="230"
       textAnchor="middle"
-      className="font-sans text-xs fill-orange-800"
+      className="font-sans text-base fill-orange-800"
     >
       Just passing through
     </text>
     <text
-      x="505"
-      y="210"
+      x="940"
+      y="255"
       textAnchor="middle"
-      className="font-sans text-[11px] italic fill-gray-500"
+      className="font-sans text-sm italic fill-gray-600"
     >
-      → farewell_scene
+      → nextScene: "farewell_scene"
     </text>
     <rect
-      x="100"
-      y="350"
-      width="200"
-      height="100"
+      x="300"
+      y="400"
+      width="300"
+      height="120"
       rx="12"
       className="fill-none stroke-green-500 stroke-[3]"
       style={{ strokeDasharray: "5,5" }}
     />
     <text
-      x="200"
-      y="340"
+      x="450"
+      y="390"
       textAnchor="middle"
-      className="font-sans fill-green-500 font-bold"
+      className="font-sans text-lg fill-green-500 font-bold"
     >
       sword_scene
     </text>
     <rect
-      x="120"
-      y="370"
-      width="160"
-      height="30"
+      x="320"
+      y="430"
+      width="260"
+      height="40"
       rx="6"
       className="fill-blue-100 stroke-blue-500 stroke-2"
     />
     <text
-      x="200"
-      y="390"
+      x="450"
+      y="455"
       textAnchor="middle"
-      className="font-sans text-xs fill-blue-900 font-medium"
+      className="font-sans text-base fill-blue-900 font-medium"
     >
       Ah, the legendary blade!
     </text>
     <rect
-      x="500"
-      y="350"
-      width="200"
-      height="100"
+      x="1000"
+      y="400"
+      width="300"
+      height="120"
       rx="12"
       className="fill-none stroke-green-500 stroke-[3]"
       style={{ strokeDasharray: "5,5" }}
     />
     <text
-      x="600"
-      y="340"
+      x="1150"
+      y="390"
       textAnchor="middle"
-      className="font-sans fill-green-500 font-bold"
+      className="font-sans text-lg fill-green-500 font-bold"
     >
       farewell_scene
     </text>
     <rect
-      x="520"
-      y="370"
-      width="160"
-      height="30"
+      x="1020"
+      y="430"
+      width="260"
+      height="40"
       rx="6"
       className="fill-blue-100 stroke-blue-500 stroke-2"
     />
     <text
-      x="600"
-      y="390"
+      x="1150"
+      y="455"
       textAnchor="middle"
-      className="font-sans text-xs fill-blue-900 font-medium"
+      className="font-sans text-base fill-blue-900 font-medium"
     >
       Safe travels then
     </text>
     <line
-      x1="295"
-      y1="240"
-      x2="200"
-      y2="350"
+      x1="660"
+      y1="280"
+      x2="450"
+      y2="400"
       className="stroke-gray-500 stroke-2"
       style={{ strokeDasharray: "5,5" }}
       markerEnd="url(#arrowhead)"
     />
     <line
-      x1="505"
-      y1="240"
-      x2="600"
-      y2="350"
+      x1="940"
+      y1="280"
+      x2="1150"
+      y2="400"
       className="stroke-gray-500 stroke-2"
       style={{ strokeDasharray: "5,5" }}
       markerEnd="url(#arrowhead)"
@@ -663,168 +687,168 @@ const Step4 = ({ isVisible }: { isVisible: boolean }) => (
   </g>
 );
 
-const Step5 = ({ isVisible }: { isVisible: boolean }) => (
+const Step5: React.FC<StepProps> = ({ isVisible }) => (
   <g
-    className={`transition-all duration-700 ease-in-out ${
+    className={`transition-all duration-700 ease-in-out font-mono text-base ${
       isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
     }`}
   >
     <rect
       x="50"
       y="50"
-      width="1100"
+      width="1500"
       height="500"
       rx="10"
       className="fill-slate-800 stroke-green-500 stroke-2"
     />
-    <text x="70" y="80" className="font-mono text-[11px] fill-orange-400">
+
+    <text x="100" y="100" className="fill-orange-400">
+      const
+    </text>
+    <text x="170" y="100" className="fill-cyan-400">
       scenes
     </text>
-    <text x="130" y="80" className="font-mono text-[11px] fill-white">
+    <text x="250" y="100" className="fill-white">
       {" "}
-      = {`{`}
+      = {"{"}
     </text>
-    <text x="90" y="110" className="font-mono text-[11px] fill-orange-400">
-      greeting
+
+    <text x="120" y="140" className="fill-yellow-300">
+      town_square
     </text>
-    <text x="160" y="110" className="font-mono text-[11px] fill-white">
-      : {`{`}
+    <text x="260" y="140" className="fill-white">
+      : {"{"}
     </text>
-    <text x="110" y="135" className="font-mono text-[11px] fill-orange-400">
+    <text x="140" y="170" className="fill-cyan-400">
       message
     </text>
-    <text x="180" y="135" className="font-mono text-[11px] fill-white">
+    <text x="230" y="170" className="fill-white">
       :{" "}
     </text>
-    <text x="200" y="135" className="font-mono text-[11px] fill-green-400">
-      "Hello traveler, what brings you here?"
+    <text x="250" y="170" className="fill-green-400">
+      "This is the town square. What next?"
     </text>
-    <text x="500" y="135" className="font-mono text-[11px] fill-white">
+    <text x="650" y="170" className="fill-white">
       ,
     </text>
-    <text x="110" y="160" className="font-mono text-[11px] fill-orange-400">
+    <text x="140" y="200" className="fill-cyan-400">
       choices
     </text>
-    <text x="170" y="160" className="font-mono text-[11px] fill-white">
+    <text x="220" y="200" className="fill-white">
       : [
     </text>
-    <text
-      x="130"
-      y="185"
-      className="font-mono text-[11px] fill-white"
-    >{`{`}</text>
-    <text x="150" y="210" className="font-mono text-[11px] fill-orange-400">
+    <text x="160" y="230" className="fill-white">
+      {"{"}{" "}
+    </text>
+    <text x="190" y="230" className="fill-cyan-400">
       response
     </text>
-    <text x="220" y="210" className="font-mono text-[11px] fill-white">
+    <text x="240" y="230" className="fill-white">
       :{" "}
     </text>
-    <text x="235" y="210" className="font-mono text-[11px] fill-green-400">
-      "I'm looking for the magic sword"
+    <text x="260" y="230" className="fill-green-400">
+      "Ask about the town square again"
     </text>
-    <text x="480" y="210" className="font-mono text-[11px] fill-white">
-      ,
+    <text x="590" y="230" className="fill-white">
+      ,{" "}
     </text>
-    <text x="150" y="235" className="font-mono text-[11px] fill-orange-400">
+    <text x="610" y="230" className="fill-cyan-400">
       nextScene
     </text>
-    <text x="220" y="235" className="font-mono text-[11px] fill-white">
+    <text x="710" y="230" className="fill-white">
       :{" "}
     </text>
-    <text x="235" y="235" className="font-mono text-[11px] fill-green-400">
+    <text x="730" y="230" className="fill-yellow-300">
+      "town_square"
+    </text>
+    <text x="870" y="230" className="fill-white">
+      {" "}
+      {"}"},
+    </text>
+    <text x="160" y="260" className="fill-white">
+      {"{"}{" "}
+    </text>
+    <text x="190" y="260" className="fill-cyan-400">
+      response
+    </text>
+    <text x="240" y="260" className="fill-white">
+      :{" "}
+    </text>
+    <text x="260" y="260" className="fill-green-400">
+      "Look for the magic sword"
+    </text>
+    <text x="540" y="260" className="fill-white">
+      ,{" "}
+    </text>
+    <text x="560" y="260" className="fill-cyan-400">
+      nextScene
+    </text>
+    <text x="660" y="260" className="fill-white">
+      :{" "}
+    </text>
+    <text x="680" y="260" className="fill-yellow-300">
       "sword_info"
     </text>
-    <text x="130" y="260" className="font-mono text-[11px] fill-white">
-      {`}`},
+    <text x="810" y="260" className="fill-white">
+      {" "}
+      {"}"},
     </text>
-    <text
-      x="130"
-      y="285"
-      className="font-mono text-[11px] fill-white"
-    >{`{`}</text>
-    <text x="150" y="310" className="font-mono text-[11px] fill-orange-400">
-      response
-    </text>
-    <text x="220" y="310" className="font-mono text-[11px] fill-white">
-      :{" "}
-    </text>
-    <text x="235" y="310" className="font-mono text-[11px] fill-green-400">
-      "Just passing through"
-    </text>
-    <text x="400" y="310" className="font-mono text-[11px] fill-white">
-      ,
-    </text>
-    <text x="150" y="335" className="font-mono text-[11px] fill-orange-400">
-      nextScene
-    </text>
-    <text x="220" y="335" className="font-mono text-[11px] fill-white">
-      :{" "}
-    </text>
-    <text x="235" y="335" className="font-mono text-[11px] fill-green-400">
-      "farewell"
-    </text>
-    <text
-      x="130"
-      y="360"
-      className="font-mono text-[11px] fill-white"
-    >{`}`}</text>
-    <text x="110" y="385" className="font-mono text-[11px] fill-white">
+    <text x="140" y="290" className="fill-white">
       ]
     </text>
-    <text x="90" y="410" className="font-mono text-[11px] fill-white">
-      {`}`},
+    <text x="120" y="320" className="fill-white">
+      {"}"},
     </text>
-    <text x="90" y="440" className="font-mono text-[11px] fill-orange-400">
+
+    <text x="120" y="360" className="fill-yellow-300">
       sword_info
     </text>
-    <text x="180" y="440" className="font-mono text-[11px] fill-white">
-      : {`{`} ... {`}`},
+    <text x="250" y="360" className="fill-white">
+      : {"{"} ... {"}"},
     </text>
-    <text x="90" y="465" className="font-mono text-[11px] fill-orange-400">
+    <text x="120" y="390" className="fill-yellow-300">
       farewell
     </text>
-    <text x="160" y="465" className="font-mono text-[11px] fill-white">
-      : {`{`} ... {`}`}
+    <text x="220" y="390" className="fill-white">
+      : {"{"} ... {"}"}
     </text>
-    <text x="70" y="490" className="font-mono text-[11px] fill-white">
-      {`}`};
+    <text x="100" y="420" className="fill-white">
+      {"}"};
     </text>
+
     <rect
-      x="600"
-      y="100"
-      width="280"
-      height="150"
+      x="1000"
+      y="120"
+      width="450"
+      height="200"
       rx="8"
-      className="fill-slate-900 stroke-green-500"
+      className="fill-slate-900/70 stroke-green-400"
     />
     <text
-      x="740"
-      y="125"
+      x="1225"
+      y="150"
       textAnchor="middle"
-      className="font-sans fill-green-400 font-bold"
+      className="font-sans text-xl fill-green-400 font-bold"
     >
-      Benefits:
+      Key Benefits
     </text>
-    <text x="620" y="150" className="font-sans text-xs fill-white">
-      ✓ No duplication
+    <text x="1050" y="190" className="font-sans text-lg fill-white">
+      ✓ <tspan dy="-0.1em">No data duplication</tspan>
     </text>
-    <text x="620" y="170" className="font-sans text-xs fill-white">
-      ✓ Handles loops naturally
+    <text x="1050" y="220" className="font-sans text-lg fill-white">
+      ✓ <tspan dy="-0.1em">Handles loops naturally</tspan>
     </text>
-    <text x="620" y="190" className="font-sans text-xs fill-white">
-      ✓ Easy scene access by key
+    <text x="1050" y="250" className="font-sans text-lg fill-white">
+      ✓ <tspan dy="-0.1em">Easy to read, write, and debug</tspan>
     </text>
-    <text x="620" y="210" className="font-sans text-xs fill-white">
-      ✓ Reusable scenes
-    </text>
-    <text x="620" y="230" className="font-sans text-xs fill-white">
-      ✓ Clean separation of data
+    <text x="1050" y="280" className="font-sans text-lg fill-white">
+      ✓ <tspan dy="-0.1em">Reusable scenes (e.g., a generic "goodbye")</tspan>
     </text>
   </g>
 );
 
-// Main component
-function RPGDataAnimation() {
+// Main component is also typed with React.FC
+const RpgSceneAnimation: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleNext = () => {
@@ -839,99 +863,71 @@ function RPGDataAnimation() {
     }
   };
 
-  const handleRestart = () => {
-    setCurrentStep(0);
-  };
-
   const buttonBaseClasses =
-    "bg-gradient-to-br from-indigo-500 to-purple-600 text-white border-none py-3 px-6 mx-2 rounded-full cursor-pointer text-base font-semibold transition-all duration-300 ease-in-out shadow-lg";
+    "bg-blue-500 text-white border-none py-3 px-6 mx-2 rounded-full cursor-pointer text-base font-semibold transition-all duration-300 ease-in-out shadow-lg";
   const buttonHoverClasses = "hover:-translate-y-0.5 hover:shadow-xl";
   const buttonDisabledClasses =
     "disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-lg";
 
   return (
-    <div className="bg-gradient-to-br from-[#667eea] to-[#764ba2] min-h-screen font-sans text-gray-800 overflow-x-hidden p-4 sm:p-5">
-      <div className="max-w-7xl mx-auto">
-        <header className="text-center mb-8 text-white">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2 drop-shadow-lg">
-            Building RPG Scene Data Structures
-          </h1>
-          <p className="text-lg opacity-90">
-            Watch how we organize complex game dialogue into clean, reusable
-            data
-          </p>
-        </header>
-
-        <main className="bg-white rounded-2xl p-5 shadow-2xl relative">
-          <div className="text-center mb-5 flex flex-wrap justify-center gap-2">
-            <button
-              onClick={handlePrev}
-              disabled={currentStep === 0}
-              className={`${buttonBaseClasses} ${buttonHoverClasses} ${buttonDisabledClasses}`}
-            >
-              ← Previous
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={currentStep === stepsData.length - 1}
-              className={`${buttonBaseClasses} ${buttonHoverClasses} ${buttonDisabledClasses}`}
-            >
-              Next →
-            </button>
-            <button
-              onClick={handleRestart}
-              className={`${buttonBaseClasses} ${buttonHoverClasses}`}
-            >
-              Restart
-            </button>
-          </div>
-
-          <div className="text-center mb-4 text-lg font-semibold text-indigo-600">
-            {stepsData[currentStep].title}
-          </div>
-
-          <div className="bg-indigo-50 border-l-4 border-indigo-500 p-5 mb-5 rounded-r-lg text-base leading-relaxed min-h-[110px]">
-            {stepsData[currentStep].explanation}
-          </div>
-
-          <svg
-            className="w-full h-[600px] border border-gray-200 rounded-xl bg-gray-50"
-            viewBox="0 0 1200 600"
-          >
-            <defs>
-              <marker
-                id="arrowhead"
-                markerWidth="10"
-                markerHeight="7"
-                refX="9"
-                refY="3.5"
-                orient="auto"
-              >
-                <polygon points="0 0, 10 3.5, 0 7" className="fill-gray-500" />
-              </marker>
-              <marker
-                id="arrowhead-red"
-                markerWidth="10"
-                markerHeight="7"
-                refX="9"
-                refY="3.5"
-                orient="auto"
-              >
-                <polygon points="0 0, 10 3.5, 0 7" className="fill-red-500" />
-              </marker>
-            </defs>
-
-            {/* Render each step component conditionally */}
-            <Step1 isVisible={currentStep === 0} />
-            <Step2 isVisible={currentStep === 1} />
-            <Step3 isVisible={currentStep === 2} />
-            <Step4 isVisible={currentStep === 3} />
-            <Step5 isVisible={currentStep === 4} />
-          </svg>
-        </main>
+    <main className="space-y-4">
+      <div className="text-center my-5 flex flex-col sm:flex-row flex-wrap justify-between gap-2">
+        <button
+          onClick={handlePrev}
+          disabled={currentStep === 0}
+          className={`${buttonBaseClasses} ${buttonHoverClasses} ${buttonDisabledClasses}`}
+        >
+          ← Previous
+        </button>
+        <div className="self-center text-center text-xl font-semibold text-blue-500">
+          {stepsData[currentStep].title}
+        </div>
+        <button
+          onClick={handleNext}
+          disabled={currentStep === stepsData.length - 1}
+          className={`${buttonBaseClasses} ${buttonHoverClasses} ${buttonDisabledClasses}`}
+        >
+          Next →
+        </button>
       </div>
-    </div>
-  );
-}
 
-export default RPGDataAnimation;
+      <ColorBox color="blue">{stepsData[currentStep].explanation}</ColorBox>
+
+      <svg
+        className="w-full h-auto border border-gray-200 rounded-xl bg-gray-50"
+        viewBox="0 0 1600 600"
+      >
+        <defs>
+          <marker
+            id="arrowhead"
+            markerWidth="10"
+            markerHeight="7"
+            refX="9"
+            refY="3.5"
+            orient="auto"
+          >
+            <polygon points="0 0, 10 3.5, 0 7" className="fill-gray-500" />
+          </marker>
+          <marker
+            id="arrowhead-red"
+            markerWidth="10"
+            markerHeight="7"
+            refX="9"
+            refY="3.5"
+            orient="auto"
+          >
+            <polygon points="0 0, 10 3.5, 0 7" className="fill-red-500" />
+          </marker>
+        </defs>
+
+        <Step1 isVisible={currentStep === 0} />
+        <Step2 isVisible={currentStep === 1} />
+        <Step3 isVisible={currentStep === 2} />
+        <Step4 isVisible={currentStep === 3} />
+        <Step5 isVisible={currentStep === 4} />
+      </svg>
+    </main>
+  );
+};
+
+export default RpgSceneAnimation;
