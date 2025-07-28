@@ -1,5 +1,6 @@
 import Block from "@/components/Block";
 import Lesson from "@/components/Lesson";
+import RPGDataAnimation from "./RPGDataAnimation";
 
 export default function RenaissanceLesson() {
   const slides = [
@@ -14,6 +15,7 @@ export default function RenaissanceLesson() {
     </Block>,
     <Block color="blue" title="Behind The Scenes">
       How does it work?
+      <RPGDataAnimation></RPGDataAnimation>
     </Block>,
     <Block color="blue" title="Make Your Own Story" mode="pickcode">
       Pickcode goes here
