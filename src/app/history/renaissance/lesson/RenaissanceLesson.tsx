@@ -1,6 +1,7 @@
 import Block from "@/components/Block";
 import Lesson from "@/components/Lesson";
 import RPGDataAnimation from "./RPGDataAnimation";
+import UnityWrapper from "@/components/UnityWrapper";
 
 export default function RenaissanceLesson() {
   const slides = [
@@ -10,15 +11,19 @@ export default function RenaissanceLesson() {
     <Block color="blue" title="Background">
       What you need to know...
     </Block>,
-    <Block color="yellow" title="Walk the Streets of Florence">
-      Say hi to DaVinci
+    <Block
+      color="yellow"
+      title="Walk the Streets of Florence"
+      mode="fullscreen"
+    >
+      <UnityWrapper projectName="florence"></UnityWrapper>
     </Block>,
     <Block color="blue" title="Behind The Scenes">
       Let's consider how we can store the data for a dialogue, with many
       messages and possible responses.
       <RPGDataAnimation></RPGDataAnimation>
     </Block>,
-    <Block color="yellow" title="Make Your Own Story" mode="pickcode">
+    <Block color="yellow" title="Make Your Own Story" mode="fullscreen">
       <iframe
         id="storyDataPlugin"
         title="Making Story Data"

@@ -52,6 +52,14 @@ const Lessons: Lesson[] = [
       { type: "hidden", value: false },
     ],
   },
+  {
+    title: "Renaissance",
+    link: "/history/renaissance",
+    tags: [
+      { type: "subject", value: Subject.History },
+      { type: "hidden", value: false },
+    ],
+  },
 ];
 
 const DemoLessons: Lesson[] = [

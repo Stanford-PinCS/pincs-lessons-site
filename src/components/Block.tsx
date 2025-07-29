@@ -6,7 +6,7 @@ interface BlockProps {
   children: React.ReactNode;
   color: "green" | "blue" | "yellow" | "purple";
   title: string;
-  mode?: "regular" | "pickcode";
+  mode?: "regular" | "fullscreen";
 }
 
 const Block: React.FC<BlockProps> = ({
@@ -32,19 +32,19 @@ const Block: React.FC<BlockProps> = ({
   const path = usePathname();
   const previewMode = !path.split("/").includes("lesson");
 
-  const sectionPickcodeClasses =
-    mode == "pickcode" && !previewMode ? "w-screen mt-3 left-0 fixed" : "";
-  const h1PickcodeClasses =
-    mode == "pickcode" && !previewMode
+  const sectionFullscreenClasses =
+    mode == "fullscreen" && !previewMode ? "w-screen mt-3 left-0 fixed" : "";
+  const h1FullscreenClasses =
+    mode == "fullscreen" && !previewMode
       ? "fixed top-7 -translate-x-10 text-center w-full text-[min(4vw,2rem)]"
       : "";
 
   return (
     <section
-      className={`border-l-4 pl-6 space-y-6 text-lg ${borderClasses[color]} ${sectionPickcodeClasses}`}
+      className={`border-l-4 pl-6 space-y-6 text-lg ${borderClasses[color]} ${sectionFullscreenClasses}`}
     >
       <h1
-        className={`text-3xl font-bold mb-4 ${textClasses[color]} ${h1PickcodeClasses}`}
+        className={`text-3xl font-bold mb-4 ${textClasses[color]} ${h1FullscreenClasses}`}
       >
         {title}
       </h1>
