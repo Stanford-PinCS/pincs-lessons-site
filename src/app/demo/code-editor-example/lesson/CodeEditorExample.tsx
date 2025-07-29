@@ -1,4 +1,5 @@
 "use client";
+import { CodeEditor } from "@/components/CodeEditor/CodeEditor";
 import React from "react";
 
 export const CodeEditorExample: React.FC = () => {
@@ -7,10 +8,10 @@ export const CodeEditorExample: React.FC = () => {
       <h2 className="text-lg font-bold px-2 text-center">
         Try the coding lesson below!
       </h2>
-      <iframe
-        src="https://dev.pickcode.io/lesson/cm9774muw002ecfpmc816v627"
-        className="h-full w-full rounded-lg"
-      ></iframe>
+      <CodeEditor
+        instructionsMarkdown="Hello world"
+        lessonId="test-code-editor"
+      />
     </div>
   );
 };
