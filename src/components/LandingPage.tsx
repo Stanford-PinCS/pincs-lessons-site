@@ -19,7 +19,8 @@ export default function LandingPage({
   const pathname = usePathname();
 
   const goToLesson = () => {
-    router.push(`${pathname}/lesson`, { scroll: false });
+    const pathWithSlash = pathname + (pathname.endsWith("/") ? "" : "/");
+    router.push(`${pathWithSlash}lesson`, { scroll: false });
   };
 
   const goToResources = () => {
