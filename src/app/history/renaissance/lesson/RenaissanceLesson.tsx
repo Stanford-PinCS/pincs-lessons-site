@@ -18,8 +18,14 @@ export default function RenaissanceLesson() {
       messages and possible responses.
       <RPGDataAnimation></RPGDataAnimation>
     </Block>,
-    <Block color="blue" title="Make Your Own Story" mode="pickcode">
-      Pickcode goes here
+    <Block color="yellow" title="Make Your Own Story" mode="pickcode">
+      <iframe
+        id="storyDataPlugin"
+        title="Making Story Data"
+        width="100%"
+        style={{ height: "calc(100svh - 100px)" }}
+        src="https://dev.pickcode.io/lesson/create-your-own-story-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-07-29-09-38-49"
+      ></iframe>
     </Block>,
   ];
 
