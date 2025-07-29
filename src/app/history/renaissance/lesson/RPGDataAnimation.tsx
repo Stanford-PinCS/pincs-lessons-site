@@ -25,7 +25,7 @@ const stepsData: StepData[] = [
   },
   {
     title: "Step 4 of 5: The Object-Based Structure",
-    explanation: `But how exactly do we store in in a computer? We're going to want to break it up into simple "objects" (meaning data that we group together) and combine those objects to make our overall data structure. See how we can use a "Scene Object" (green) and a "Choice Object" (orange) to represent the diagram from Step 2.`,
+    explanation: `But how exactly do we store it in a computer? We're going to want to break it up into simple "objects" (meaning data that we group together) and combine those objects to make our overall data structure. See how we can use a "Scene Object" (green) and a "Choice Object" (orange) to represent the diagram from Step 2.`,
   },
   {
     title: "Step 5 of 5: Final Data Structure",
@@ -179,7 +179,7 @@ const Step2: React.FC<StepProps> = ({ isVisible }) => (
 const InfiniteCopyItem = ({ id }: { id: number }) => (
   <div className="flex flex-col items-center gap-2">
     <MessageBox id={`s3_msg_copy${id}`} className="text-sm">
-      Florence was founded in 59 BC
+      Florence was founded in 59 BC.
     </MessageBox>
     <ChoiceBox id={`s3_choice_copy${id}`}>What date did you say?</ChoiceBox>
   </div>
@@ -215,7 +215,7 @@ const Step3: React.FC<StepProps> = ({ isVisible }) => (
             florenceDateScene
           </p>
           <MessageBox id="s3_solution_msg" className="w-full mb-10">
-            Florence was founded in 59 BC
+            Florence was founded in 59 BC.
           </MessageBox>
           <ChoiceBox id="s3_solution_choice" className="w-3/4">
             What date did you say?
@@ -274,9 +274,9 @@ const Step4: React.FC<StepProps> = ({ isVisible }) => (
             Choice Object
           </p>
           <p className="font-sans text-base text-orange-800 mt-1">
-            Looking for sword
+            Looking for sword.
           </p>
-          <p className="font-sans text-sm italic text-gray-600">
+          <p className="ml-9 font-sans text-sm italic text-gray-600">
             → nextScene: "swordScene"
           </p>
         </div>
@@ -288,9 +288,9 @@ const Step4: React.FC<StepProps> = ({ isVisible }) => (
             Choice Object
           </p>
           <p className="font-sans text-base text-orange-800 mt-1">
-            Just passing through
+            Just passing through.
           </p>
-          <p className="font-sans text-sm italic text-gray-600">
+          <p className="ml-9 font-sans text-sm italic text-gray-600">
             → nextScene: "farewellScene"
           </p>
         </div>
@@ -435,15 +435,14 @@ const Step5: React.FC<StepProps> = ({ isVisible }) => (
           Syntax Notes
         </p>
         <p className="font-sans text-lg text-white">
-          Every Object is defined inside curley brackets {`{ key: value }`}.
+          Every Object is defined inside curly brackets: {`{ key: value }`}.
         </p>
         <p className="font-sans text-lg text-white">
-          The list of objects is defined inside square brackets{" "}
+          The list of objects is defined inside square brackets:{" "}
           {`[item1, item2]`}.
         </p>
         <p className="font-sans text-lg text-white">
-          The keys do not have spaces and values are put in quotes (e.g.
-          "message").
+          The keys do not have spaces and values are put in quotes: "message".
         </p>
       </div>
     </div>
