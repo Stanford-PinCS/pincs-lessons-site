@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import List from "@/components/List";
 
 interface Species {
   id: string;
@@ -169,18 +170,20 @@ const FoodWebBuilder = () => {
         </svg>
       </div>
 
-      <div className="text-sm text-gray-600">
+      <div className="text-lg text-gray-600">
         <p className="mb-2">How to use:</p>
-        <ul className="list-disc list-inside space-y-1">
-          <li>Click the buttons above to add species to the food web</li>
-          <li>Drag species to position them</li>
-          <li>
-            Click one species, then another to create a feeding relationship
-          </li>
-          <li>Green = Producers (plants)</li>
-          <li>Yellow = Herbivores (plant-eaters)</li>
-          <li>Red = Carnivores (meat-eaters)</li>
-        </ul>
+        <List
+          items={[
+            <>Click the buttons above to add species to the food web</>,
+            <>Drag species to position them</>,
+            <>
+              Click one species, then another to create a feeding relationship
+            </>,
+            <>Green = Producers (plants)</>,
+            <>Yellow = Herbivores (plant-eaters)</>,
+            <>Red = Carnivores (meat-eaters)</>,
+          ]}
+        />
       </div>
     </div>
   );

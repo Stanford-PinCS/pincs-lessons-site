@@ -65,7 +65,7 @@ export default function RenaissanceLesson() {
     <Block color="green" title="Renaissance Recap">
       <p>
         Today, you've learned about the Renaissance through the lens of a
-        Florence citizen. Specifically, you've learned:
+        Florence citizen. Specifically:
       </p>
       <List
         items={[

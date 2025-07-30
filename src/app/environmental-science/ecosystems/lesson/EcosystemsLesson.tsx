@@ -4,6 +4,7 @@ import EcosystemExplorer from "./EcosystemExplorer";
 import Lesson from "@/components/Lesson";
 import FoodWebBuilder from "./FoodWebBuilder";
 import QuizQuestion from "@/components/QuizQuestion";
+import List from "@/components/List";
 
 export default function EcosystemsLesson() {
   const slides = [
@@ -69,11 +70,13 @@ export default function EcosystemsLesson() {
         Now it's your turn to create a food web! Add different species and
         connect them to show who eats what. Remember:
       </p>
-      <ul className="list-disc list-inside mb-6">
-        <li>Producers (plants) are at the bottom of the food web</li>
-        <li>Herbivores eat plants</li>
-        <li>Carnivores eat other animals</li>
-      </ul>
+      <List
+        items={[
+          <>Producers (plants) are at the bottom of the food web</>,
+          <>Herbivores eat plants</>,
+          <>Carnivores eat other animals</>,
+        ]}
+      />
       <FoodWebBuilder />
     </div>,
 
@@ -87,12 +90,14 @@ export default function EcosystemsLesson() {
         (DFS) help scientists understand how species are connected in an
         ecosystem. These algorithms can show us:
       </p>
-      <ul className="list-disc list-inside space-y-2 mb-6">
-        <li>How energy flows through the food web</li>
-        <li>Which species are most connected to others</li>
-        <li>How changes in one species might affect the entire ecosystem</li>
-        <li>The shortest paths between different species</li>
-      </ul>
+      <List
+        items={[
+          <>How energy flows through the food web</>,
+          <>Which species are most connected to others</>,
+          <>How changes in one species might affect the entire ecosystem</>,
+          <>The shortest paths between different species</>,
+        ]}
+      />
       <p className="mb-4">
         Try building your own ecosystem below! Click to add species, connect
         them to show feeding relationships, and watch how BFS and DFS explore
@@ -150,15 +155,17 @@ export default function EcosystemsLesson() {
     // Slide 7: Key Concepts
     <div className="space-y-6 bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold">Key Concepts</h2>
-      <ul className="list-disc list-inside space-y-4">
-        <li>Producers (like plants) convert sunlight into energy</li>
-        <li>Herbivores eat producers</li>
-        <li>Carnivores eat other animals</li>
-        <li>Changes in one species can affect the entire ecosystem</li>
-        <li>Graph algorithms help scientists understand these relationships</li>
-        <li>BFS explores connections level by level</li>
-        <li>DFS explores one path completely before moving to another</li>
-      </ul>
+      <List
+        items={[
+          <>Producers (like plants) convert sunlight into energy</>,
+          <>Herbivores eat producers</>,
+          <>Carnivores eat other animals</>,
+          <>Changes in one species can affect the entire ecosystem</>,
+          <>Graph algorithms help scientists understand these relationships</>,
+          <>BFS explores connections level by level</>,
+          <>DFS explores one path completely before moving to another</>,
+        ]}
+      />
     </div>,
   ];
 

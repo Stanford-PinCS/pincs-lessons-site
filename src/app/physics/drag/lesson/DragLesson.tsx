@@ -19,6 +19,7 @@ import DragProblemGraphic from "./drag-problem.jpg";
 import ReactKatex from "@pkasila/react-katex";
 import "katex/dist/katex.min.css";
 import Link from "next/link";
+import List from "@/components/List";
 
 export default function DragLesson() {
   const slides = [
@@ -27,11 +28,13 @@ export default function DragLesson() {
       <p>
         <Emphasize>In this lesson, you'll...</Emphasize>
       </p>
-      <ul className="list-disc list-inside">
-        <li>Learn what drag is.</li>
-        <li>Understand and apply the equations surrounding drag.</li>
-        <li>Use numerical methods to predict motion.</li>
-      </ul>
+      <List
+        items={[
+          <>Learn what drag is.</>,
+          <>Understand and apply the equations surrounding drag.</>,
+          <>Use numerical methods to predict motion.</>,
+        ]}
+      />
       <AirflowAnimation />
       <p>
         <Emphasize>
@@ -258,16 +261,18 @@ export default function DragLesson() {
         The Reynolds Number is a ratio of <KeyTerm>inertial forces</KeyTerm>{" "}
         (which cause form drag) to <KeyTerm>viscous forces</KeyTerm> (which
         cause friction drag).
-        <ul className="list-disc list-inside space-y-2 mt-2">
-          <li>
-            <Emphasize>Low Re:</Emphasize> Viscous forces win.{" "}
-            <Emphasize>Friction Drag</Emphasize> is the main component.
-          </li>
-          <li>
-            <Emphasize>High Re:</Emphasize> Inertial forces win.{" "}
-            <Emphasize>Form Drag</Emphasize> is the main component.
-          </li>
-        </ul>
+        <List
+          items={[
+            <>
+              <Emphasize>Low Re:</Emphasize> Viscous forces win.{" "}
+              <Emphasize>Friction Drag</Emphasize> is the main component.
+            </>,
+            <>
+              <Emphasize>High Re:</Emphasize> Inertial forces win.{" "}
+              <Emphasize>Form Drag</Emphasize> is the main component.
+            </>,
+          ]}
+        />
       </ColorBox>
 
       <p className="mt-4">
@@ -299,30 +304,32 @@ export default function DragLesson() {
       <ReynoldsDiagram />
 
       <p>This leads us to two main drag regimes we can model:</p>
-      <ul className="list-disc list-inside mt-4 space-y-4">
-        <li>
-          <Emphasize>
-            Linear Drag (<ReactKatex>$F = -b v$</ReactKatex>)
-          </Emphasize>
-          <br />
-          This model applies at{" "}
-          <strong className="text-blue-600">low Reynolds numbers</strong>. The
-          drag force comes mainly from the fluid's viscosity. It's
-          mathematically simpler to solve, but only applies to very slow or
-          microscopic objects.
-        </li>
-        <li>
-          <Emphasize>
-            Quadratic Drag (<ReactKatex>$F = -kv^2$</ReactKatex>)
-          </Emphasize>
-          <br />
-          This model applies at{" "}
-          <strong className="text-red-600">high Reynolds numbers</strong>. The
-          drag force is dominated by the inertia of the fluid being pushed out
-          of the way. This is the correct model for most everyday objects like
-          cars, airplanes, and thrown balls.
-        </li>
-      </ul>
+      <List
+        items={[
+          <>
+            <Emphasize>
+              Linear Drag (<ReactKatex>$F = -b v$</ReactKatex>)
+            </Emphasize>
+            <br />
+            This model applies at{" "}
+            <strong className="text-blue-600">low Reynolds numbers</strong>. The
+            drag force comes mainly from the fluid's viscosity. It's
+            mathematically simpler to solve, but only applies to very slow or
+            microscopic objects.
+          </>,
+          <>
+            <Emphasize>
+              Quadratic Drag (<ReactKatex>$F = -kv^2$</ReactKatex>)
+            </Emphasize>
+            <br />
+            This model applies at{" "}
+            <strong className="text-red-600">high Reynolds numbers</strong>. The
+            drag force is dominated by the inertia of the fluid being pushed out
+            of the way. This is the correct model for most everyday objects like
+            cars, airplanes, and thrown balls.
+          </>,
+        ]}
+      />
     </Block>,
 
     // Slide 9: Quadratic Drag Equation.
@@ -743,18 +750,20 @@ export default function DragLesson() {
         More advanced methods improve accuracy by sampling the acceleration at
         multiple points within the timestep.
       </p>
-      <ul className="list-disc list-inside">
-        <li>
-          <KeyTerm>2nd-Order Methods</KeyTerm> (like the Midpoint Method) "look
-          ahead" to the middle of the timestep to get a better average
-          acceleration.
-        </li>
-        <li>
-          <KeyTerm>Runge-Kutta 4th Order (RK4)</KeyTerm> is a popular and highly
-          accurate method that uses a weighted average of four different
-          estimates.
-        </li>
-      </ul>
+      <List
+        items={[
+          <>
+            <KeyTerm>2nd-Order Methods</KeyTerm> (like the Midpoint Method)
+            "look ahead" to the middle of the timestep to get a better average
+            acceleration.
+          </>,
+          <>
+            <KeyTerm>Runge-Kutta 4th Order (RK4)</KeyTerm> is a popular and
+            highly accurate method that uses a weighted average of four
+            different estimates.
+          </>,
+        ]}
+      />
     </Block>,
 
     // Slide 18: Coding a 2nd-Order Numerical Method.
@@ -775,36 +784,38 @@ export default function DragLesson() {
     // Slide 19: Recap.
     <Block color="green" title="Lesson Recap">
       <p>Here's what we learned about modeling drag:</p>
-      <ul className="list-disc list-inside">
-        <li>
-          <KeyTerm>Drag</KeyTerm> is a resistive force that opposes motion
-          through a fluid.
-        </li>
-        <li>
-          We often use a simple equation to model drag (e.g.
-          <KeyTerm>
-            <ReactKatex> $F_D = -kv$</ReactKatex>
-          </KeyTerm>
-          ).
-        </li>
-        <li>
-          <KeyTerm>Terminal velocity</KeyTerm> is reached when the forces cancel
-          out (e.g. drag force equals the force of gravity).
-        </li>
-        <li>
-          Simple models can be solved exactly using techniques like{" "}
-          <KeyTerm>separation of variables</KeyTerm>.
-        </li>
-        <li>
-          Complex models may require approximation with{" "}
-          <KeyTerm>numerical methods</KeyTerm> like{" "}
-          <KeyTerm>Forward Euler</KeyTerm> and RK4.
-        </li>
-        <li>
-          Higher-order numerical methods provide better accuracy for a given
-          timestep.
-        </li>
-      </ul>
+      <List
+        items={[
+          <>
+            <KeyTerm>Drag</KeyTerm> is a resistive force that opposes motion
+            through a fluid.
+          </>,
+          <>
+            We often use a simple equation to model drag (e.g.
+            <KeyTerm>
+              <ReactKatex> $F_D = -kv$</ReactKatex>
+            </KeyTerm>
+            ).
+          </>,
+          <>
+            <KeyTerm>Terminal velocity</KeyTerm> is reached when the forces
+            cancel out (e.g. drag force equals the force of gravity).
+          </>,
+          <>
+            Simple models can be solved exactly using techniques like{" "}
+            <KeyTerm>separation of variables</KeyTerm>.
+          </>,
+          <>
+            Complex models may require approximation with{" "}
+            <KeyTerm>numerical methods</KeyTerm> like{" "}
+            <KeyTerm>Forward Euler</KeyTerm> and RK4.
+          </>,
+          <>
+            Higher-order numerical methods provide better accuracy for a given
+            timestep.
+          </>,
+        ]}
+      />
     </Block>,
   ];
   return <Lesson slides={slides} />;

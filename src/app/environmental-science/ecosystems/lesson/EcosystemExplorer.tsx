@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import PopulationSimulator from "./PopulationSimulator";
+import List from "@/components/List";
 
 interface Node {
   id: string;
@@ -298,12 +299,14 @@ const EcosystemExplorer: React.FC = () => {
           <h3 className="font-semibold mb-2 text-green-700">
             📚 Learning Points
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-sm">
-            <li>Click to place species in the ecosystem</li>
-            <li>Click one species then another to create a connection</li>
-            <li>Watch how BFS and DFS explore the ecosystem differently</li>
-            <li>Notice how energy flows through the food web</li>
-          </ul>
+          <List
+            items={[
+              <>Click to place species in the ecosystem</>,
+              <>Click one species then another to create a connection</>,
+              <>Watch how BFS and DFS explore the ecosystem differently</>,
+              <>Notice how energy flows through the food web</>,
+            ]}
+          />
         </div>
       </div>
 

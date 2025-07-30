@@ -19,6 +19,7 @@ import Block from "@/components/Block";
 import Emphasize from "@/components/Emphasize";
 import ColorBox from "@/components/ColorBox";
 import KeyTerm from "@/components/KeyTerm";
+import List from "@/components/List";
 
 const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
 
@@ -1460,7 +1461,7 @@ const UtilityGraph = () => {
   );
 };
 
-export default function MarginalUtility() {
+export default function UtilityMaximization() {
   const slides = [
     // Slide 1: Introduction
     <div className="space-y-4">
@@ -1468,11 +1469,13 @@ export default function MarginalUtility() {
         Utility Maximization
       </h1>
       <Block color="green" title="Learning Targets">
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Learn about utility and marginal utility.</li>
-          <li>Apply maximization in economics.</li>
-          <li>Learn about greedy algorithms.</li>
-        </ul>
+        <List
+          items={[
+            <>Learn about utiliy and marginal utility.</>,
+            <>Apply maximization in economics.</>,
+            <>Learn about greedy algorithms.</>,
+          ]}
+        />
         <p>
           In this lesson, we're going to start with the basics of what utility
           is and how it looks in economics. Then, we'll look into an important
@@ -1889,12 +1892,14 @@ export default function MarginalUtility() {
             . For example, if you need to make 63 cents using coins of 1, 5, 10,
             and 25 cents, the optimal solution would use:
           </p>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>2 quarters (50 cents)</li>
-            <li>1 dime (10 cents)</li>
-            <li>1 nickel (5 cents)</li>
-            <li>3 pennies (3 cents)</li>
-          </ul>
+          <List
+            items={[
+              <>2 quarters (50 cents)</>,
+              <>1 dime (10 cents)</>,
+              <>1 nickel (5 cents)</>,
+              <>3 pennies (3 cents)</>,
+            ]}
+          />
           <p>
             This gives you a total of 7 coins, which is the fewest possible in
             this case.
@@ -1976,14 +1981,16 @@ export default function MarginalUtility() {
           Constraints: you know the greedy approach works if...
         </Emphasize>
       </p>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>There are two items to choose from.</li>
-        <li>You spend your whole budget.</li>
-        <li>
-          When you're done, the MU/P ratios for the last purchased items had the
-          same values.
-        </li>
-      </ul>
+      <List
+        items={[
+          <>There are two items to choose from.</>,
+          <>You spend your whole budget.</>,
+          <>
+            When you're done, the MU/P ratios for the last purchased items had
+            the same values.
+          </>,
+        ]}
+      />
     </Block>,
 
     // Slide 16: Check-in on greedy approach.
