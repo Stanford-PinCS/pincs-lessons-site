@@ -3,19 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "setup-dev": "node setup-dev.js",
     "dev": "echo http://localhost:3000/interactive-lessons/ && next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/core": "^0.34.2",
+    "@auth/prisma-adapter": "^2.10.0",
     "@headlessui/react": "^2.2.3",
     "@heroicons/react": "^2.2.0",
     "@pkasila/react-katex": "^1.2.2",
+    "@prisma/client": "^6.12.0",
+    "bcryptjs": "^3.0.2",
     "lodash": "^4.17.21",
     "lucide-react": "^0.484.0",
     "motion": "^12.19.1",
     "next": "15.2.4",
+    "next-auth": "^4.24.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-unity-webgl": "^10.1.4",
@@ -32,6 +38,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.3",
+    "prisma": "^6.12.0",
     "sass": "^1.88.0",
     "tailwindcss": "^4",
     "typescript": "^5"
