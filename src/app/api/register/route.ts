@@ -25,17 +25,25 @@ export async function POST(req: Request) {
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
         console.error("Error: A user with this email already exists.");
-        throw new Error("Email already in use.");
+        return NextResponse.json(
+          { error: "Email already in use." },
+          { status: 409 }
+        );
       } else {
         console.error("Prisma Client Known Request Error:", error.message);
-        throw new Error(`Database error: ${error.message}`);
+        return NextResponse.json({ error: "Database error" }, { status: 400 });
       }
     } else if (error instanceof PrismaClientValidationError) {
       console.error("Prisma Client Validation Error:", error.message);
-      throw new Error(`Validation error: ${error.message}`);
+      return NextResponse.json({ error: "Validation error" }, { status: 422 });
     } else {
       console.error("An unexpected error occurred:", error);
-      throw new Error("An unexpected error occurred during user creation.");
+      return NextResponse.json(
+        {
+          error: "An unexpected error occurred during user creation",
+        },
+        { status: 400 }
+      );
     }
   }
 }

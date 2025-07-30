@@ -18,7 +18,7 @@ const { execSync } = require("child_process");
 console.log("Installing dependencies...");
 execSync("npm install", { stdio: "inherit" });
 
-// 2. Copy .env.example to .env.local if not present
+// 2. Copy .env.example to .env if not present
 if (!fs.existsSync(".env")) {
   console.log("Creating .env from .env.example...");
   fs.copyFileSync(".env.example", ".env");
