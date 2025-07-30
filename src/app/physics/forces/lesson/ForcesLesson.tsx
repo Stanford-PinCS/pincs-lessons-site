@@ -204,7 +204,7 @@ export default function ForcesLesson() {
     </Block>,
 
     // Slide 7: Coding up how to split a force.
-    <Block color="yellow" title="Code Force Components" mode="pickcode">
+    <Block color="yellow" title="Code Force Components" mode="fullscreen">
       <iframe
         id="forceComponentsPlugin"
         title="Code Force Components"
@@ -632,7 +632,7 @@ export default function ForcesLesson() {
       </ColorBox>
     </Block>,
     // Slide 15: Coding up force addition.
-    <Block color="yellow" title="Code force addition" mode="pickcode">
+    <Block color="yellow" title="Code force addition" mode="fullscreen">
       <iframe
         id="forceAdditionPlugin"
         title="Code Force Addition"

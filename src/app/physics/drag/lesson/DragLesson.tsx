@@ -718,7 +718,11 @@ export default function DragLesson() {
     </Block>,
 
     // Slide 16. Coding Forward Euler.
-    <Block color="yellow" title="Code the Forward Euler Method" mode="pickcode">
+    <Block
+      color="yellow"
+      title="Code the Forward Euler Method"
+      mode="fullscreen"
+    >
       <iframe
         id="forwardEulerPlugin"
         title="Code Up a The Forward Euler Method"
@@ -757,7 +761,7 @@ export default function DragLesson() {
     <Block
       color="yellow"
       title="Challenge: A More Accurate Method"
-      mode="pickcode"
+      mode="fullscreen"
     >
       <iframe
         id="midpointMethodPlugin"

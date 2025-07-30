@@ -2017,7 +2017,7 @@ export default function MarginalUtility() {
     </Block>,
 
     // Section 15: Coding it up.
-    <Block color="yellow" title="Try Coding it up Yourself!" mode="pickcode">
+    <Block color="yellow" title="Try Coding it up Yourself!" mode="fullscreen">
       <iframe
         id="inlinePickcodePlugin"
         title="Code Up a Greedy Algorithm"
