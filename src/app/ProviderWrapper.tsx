@@ -4,7 +4,9 @@ import type { ReactNode } from "react";
 
 export default function ({ children }: { children: ReactNode }) {
   return (
-    <SessionProvider basePath="/interactive-lessons/api/auth">
+    <SessionProvider
+      basePath={process.env.NEXT_PUBLIC_APP_BASE_PATH + "/api/auth"}
+    >
       {children}
     </SessionProvider>
   );
