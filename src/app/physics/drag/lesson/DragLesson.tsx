@@ -535,42 +535,45 @@ export default function DragLesson() {
         ) and a calculus technique called{" "}
         <KeyTerm>separation of variables</KeyTerm>.
       </p>
-      <ol className="list-decimal list-inside my-4 space-y-2">
-        <li>
-          <Emphasize>
-            Start with Newton's Law, <ReactKatex>$F = ma$</ReactKatex>.
-          </Emphasize>{" "}
-          Then substitute the forces we have (here, it's just drag, but we could
-          have more forces in the future).
-          <ColorBox color="blue">
-            <ReactKatex>$ma = -bv$</ReactKatex>
-          </ColorBox>
-        </li>
-        <li>
-          <Emphasize>
-            Replace acceleration <ReactKatex>($a$)</ReactKatex> with{" "}
-            <ReactKatex>{"$\\frac{dv}{dt}$"}</ReactKatex>.
-          </Emphasize>{" "}
-          We can do this since acceleration is the derivative of velocity. This
-          leaves us with a differential equation in terms of just velocity and
-          time:
-          <ColorBox color="blue">
-            <ReactKatex>{"$m\\frac{dv}{dt} = -bv$"}</ReactKatex>
-          </ColorBox>
-        </li>
-        <li>
-          <Emphasize>Separate the variables.</Emphasize> Get all 'v' terms on
-          one side and 't' terms on the other:
-          <ColorBox color="blue">
-            <ReactKatex>{"$\\frac{1}{v}dv = -\\frac{b}{m}dt$"}</ReactKatex>
-          </ColorBox>
-        </li>
-        <li>
-          <Emphasize>
-            Your turn! Integrate both sides to find the velocity equation.
-          </Emphasize>
-        </li>
-      </ol>
+      <List
+        type="numbered"
+        items={[
+          <>
+            <Emphasize>
+              Start with Newton's Law, <ReactKatex>$F = ma$</ReactKatex>.
+            </Emphasize>{" "}
+            Then substitute the forces we have (here, it's just drag, but we
+            could have more forces in the future).
+            <ColorBox color="blue">
+              <ReactKatex>$ma = -bv$</ReactKatex>
+            </ColorBox>
+          </>,
+          <>
+            <Emphasize>
+              Replace acceleration <ReactKatex>($a$)</ReactKatex> with{" "}
+              <ReactKatex>{"$\\frac{dv}{dt}$"}</ReactKatex>.
+            </Emphasize>{" "}
+            We can do this since acceleration is the derivative of velocity.
+            This leaves us with a differential equation in terms of just
+            velocity and time:
+            <ColorBox color="blue">
+              <ReactKatex>{"$m\\frac{dv}{dt} = -bv$"}</ReactKatex>
+            </ColorBox>
+          </>,
+          <>
+            <Emphasize>Separate the variables.</Emphasize> Get all 'v' terms on
+            one side and 't' terms on the other:
+            <ColorBox color="blue">
+              <ReactKatex>{"$\\frac{1}{v}dv = -\\frac{b}{m}dt$"}</ReactKatex>
+            </ColorBox>
+          </>,
+          <>
+            <Emphasize>
+              Your turn! Integrate both sides to find the velocity equation.
+            </Emphasize>
+          </>,
+        ]}
+      />
       <p>
         This shows how we can find an exact equation for motion in some simple
         cases.

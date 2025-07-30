@@ -1819,14 +1819,17 @@ export default function UtilityMaximization() {
       </p>
       <ColorBox color="gray">
         <Emphasize>Instructions:</Emphasize>
-        <ol className="list-decimal list-inside mt-2 space-y-1">
-          <li>Calculate MU/P for each item (Marginal Utility ÷ Price)</li>
-          <li>Click "Check Calculations & Start Shopping" when done</li>
-          <li>
-            Always choose the item with the highest MU/P ratio you can afford
-          </li>
-          <li>Watch your budget decrease and get feedback on your choices!</li>
-        </ol>
+        <List
+          type="numbered"
+          items={[
+            <>Calculate MU/P for each item (Marginal Utility ÷ Price)</>,
+            <>Click "Check Calculations & Start Shopping" when done</>,
+            <>
+              Always choose the item with the highest MU/P ratio you can afford
+            </>,
+            <>Watch your budget decrease and get feedback on your choices!</>,
+          ]}
+        />
       </ColorBox>
       <CupcakesCookiesUtilityTable />
     </Block>,
@@ -1867,15 +1870,18 @@ export default function UtilityMaximization() {
         <Emphasize>
           (Bonus) More Applications of The Greedy Algorithm:
         </Emphasize>
-        <ol className="list-decimal list-inside mt-2 space-y-1">
-          <li>
-            Finding nearly-optimal solutions to extremely difficult problems.
-          </li>
-          <li>Map routing algorithms, data compression, and more!</li>
-          <li>
-            Making change with the fewest number of coins (we'll see next).
-          </li>
-        </ol>
+        <List
+          type="numbered"
+          items={[
+            <>
+              Finding nearly-optimal solutions to extremely difficult problems.
+            </>,
+            <>Map routing algorithms, data compression, and more!</>,
+            <>
+              Making change with the fewest number of coins (we'll see next).
+            </>,
+          ]}
+        />
       </div>
     </Block>,
 
