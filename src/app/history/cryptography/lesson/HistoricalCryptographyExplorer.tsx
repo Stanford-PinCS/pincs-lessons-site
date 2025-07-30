@@ -1,4 +1,5 @@
 "use client";
+import List from "@/components/List";
 import React, { useState, useEffect } from "react";
 
 export const HistoricalCryptographyExplorer = () => {
@@ -499,19 +500,24 @@ export const HistoricalCryptographyExplorer = () => {
                 <h3 className="font-bold text-indigo-800 mb-2">
                   How to use this simulator:
                 </h3>
-                <ol className="list-decimal pl-5 space-y-2 text-sm">
-                  <li>Type a message in the "Your Message" field</li>
-                  <li>Select a cipher from the timeline above</li>
-                  <li>
-                    Configure the encryption key/settings for your chosen cipher
-                  </li>
-                  <li>
-                    See your encrypted message in the "Encrypted Message" field
-                  </li>
-                  <li>
-                    Toggle "Show Decrypted Message" to verify decryption works
-                  </li>
-                </ol>
+                <List
+                  type="numbered"
+                  items={[
+                    <>Type a message in the "Your Message" field</>,
+                    <>Select a cipher from the timeline above</>,
+                    <>
+                      Configure the encryption key/settings for your chosen
+                      cipher
+                    </>,
+                    <>
+                      See your encrypted message in the "Encrypted Message"
+                      field
+                    </>,
+                    <>
+                      Toggle "Show Decrypted Message" to verify decryption works
+                    </>,
+                  ]}
+                />
               </div>
             )}
 

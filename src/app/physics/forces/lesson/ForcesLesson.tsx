@@ -424,16 +424,19 @@ export default function ForcesLesson() {
         These are super useful to solving any problem with forces. Here's how
         you make a free body diagram:
       </p>
-      <ol className="list-decimal list-outside pl-6">
-        <li>Represent the object as a simple dot or box.</li>
-        <li>
-          Draw arrows for <Emphasize>each</Emphasize> external force, with
-          length proportionate to magnitude and orientation indicating
-          direction.
-        </li>
-        <li>Label each arrow.</li>
-        <li>Indicate a coordinate system and positive directions.</li>
-      </ol>
+      <List
+        type="numbered"
+        items={[
+          <>Represent the object as a simple dot or box.</>,
+          <>
+            Draw arrows for <Emphasize>each</Emphasize> external force, with
+            length proportionate to magnitude and orientation indicating
+            direction.
+          </>,
+          <>Label each arrow.</>,
+          <>Indicate a coordinate system and positive directions.</>,
+        ]}
+      />
       <ColorBox color="blue">
         Once complete, by Newton's second law of motion, the sum of all of the
         forces{" "}
