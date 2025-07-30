@@ -37,7 +37,13 @@ export default function RenaissanceLesson() {
       title="Walk the Streets of Florence"
       mode="fullscreen"
     >
-      <UnityWrapper projectName="florence"></UnityWrapper>
+      <iframe
+        id="florencePlugin"
+        title="Exploring Florence"
+        width="100%"
+        style={{ height: "calc(100svh - 100px)" }}
+        src="./florence"
+      ></iframe>
     </Block>,
     // Slide 4: How we might store data.
     <Block color="blue" title="Behind The Scenes">

@@ -73,7 +73,7 @@ export default function UnityGame({ projectName }: { projectName: string }) {
       <Loading></Loading>
       <Unity
         unityProvider={unityProvider}
-        style={{ width: "100%", height: "calc(100svh - 100px)" }}
+        style={{ width: "100%", height: "calc(100svh)" }}
       />
     </ErrorBoundary>
   );
