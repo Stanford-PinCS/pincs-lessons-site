@@ -115,7 +115,7 @@ const GraphBuilder: React.FC = () => {
               What happens to the velocity after a long time? (Terminal
               Velocity)
             </p>
-            <div className="flex space-x-2 mt-2">
+            <div className="flex flex-col gap-2 mt-2">
               <Button onClick={() => handleEndBehaviorChoice("low")}>
                 Goes to zero
               </Button>
@@ -141,7 +141,7 @@ const GraphBuilder: React.FC = () => {
               Step 3: Choose the behavior in the middle
             </h3>
             <p>How does the velocity change between the start and the end?</p>
-            <div className="flex space-x-2 mt-2">
+            <div className="flex flex-col gap-2 mt-2">
               <Button onClick={() => handleMiddleBehaviorChoice("increase")}>
                 It increases, but the rate of increase slows down
               </Button>
