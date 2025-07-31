@@ -247,21 +247,13 @@ export default function Editor() {
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-bold">PinCS Lesson Maker</h1>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <button
             onClick={insertSlideBefore}
             className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium"
           >
             Insert Before
           </button>
-          <button
-            onClick={insertSlideAfter}
-            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium"
-          >
-            Insert After
-          </button>
-        </div>
-        <div className="flex items-center gap-4">
           <button
             onClick={prevSlide}
             disabled={currentSlideIndex === 0}
@@ -270,7 +262,7 @@ export default function Editor() {
             &larr;
           </button>
           <span className="text-lg">
-            {currentSlideIndex + 1} / {slides.length}
+            Slide {currentSlideIndex + 1} / {slides.length}
           </span>
           <button
             onClick={nextSlide}
@@ -279,26 +271,30 @@ export default function Editor() {
           >
             &rarr;
           </button>
-        </div>
-        <div className="flex items-center gap-2">
+          <button
+            onClick={insertSlideAfter}
+            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium"
+          >
+            Insert After
+          </button>
           <button
             onClick={deleteSlide}
             disabled={slides.length <= 1}
             className="px-3 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm font-medium disabled:opacity-50"
           >
-            Delete Slide
+            Delete
           </button>
         </div>
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsSaveModalOpen(true)}
-            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md font-medium"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium"
           >
             Save
           </button>
           <label
             htmlFor="load-lesson"
-            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md font-medium cursor-pointer"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium cursor-pointer"
           >
             Load
           </label>
