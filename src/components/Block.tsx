@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import React from "react";
 
-interface BlockProps {
+export interface BlockProps {
   children: React.ReactNode;
   color: "green" | "blue" | "yellow" | "purple";
   title: string;

@@ -6,16 +6,23 @@ import Slide from "./Slide";
 
 interface LessonProps {
   slides: React.ReactNode[];
+  slideIndex?: number;
 }
 
-const Lesson: React.FC<LessonProps> = ({ slides }) => {
+const Lesson: React.FC<LessonProps> = ({ slides, slideIndex = 0 }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(slideIndex || 0);
   // Set preview to TRUE by default (less jarring to remove the preview state).
   const [isPreview, setIsPreview] = useState(true);
+
+  useEffect(() => {
+    if (slideIndex) {
+      setCurrentSlide(slideIndex);
+    }
+  }, [slideIndex]);
 
   useEffect(() => {
     // On mount, set the slide # to what's in the URL, or 0 if not present.
@@ -31,6 +38,9 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
 
     // Determine preview mode.
     if (pathname.split("/").includes("lesson")) {
+      setIsPreview(false);
+    }
+    if (pathname.split("/").includes("lesson-maker")) {
       setIsPreview(false);
     }
 
