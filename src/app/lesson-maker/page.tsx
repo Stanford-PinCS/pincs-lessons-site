@@ -107,9 +107,25 @@ const config: Config = {
 const initialData = {};
 
 // Save the data to your database
-const save = (data: any) => {};
+const saveSlide = (data: any) => {
+  console.log({ data });
+};
 
 // Render Puck editor
 export default function Editor() {
-  return <Puck config={config} data={initialData} onPublish={save} />;
+  return (
+    <Puck config={config} data={initialData} onChange={saveSlide}>
+      <div className="w-full h-[90svh] p-6 grid grid-cols-6 gap-4">
+        <div className="">
+          <Puck.Components></Puck.Components>
+        </div>
+        <div className="col-span-4 border-1 border-gray-500 rounded-md shadow-lg">
+          <Puck.Preview></Puck.Preview>
+        </div>
+        <div className="">
+          <Puck.Fields></Puck.Fields>
+        </div>
+      </div>
+    </Puck>
+  );
 }
