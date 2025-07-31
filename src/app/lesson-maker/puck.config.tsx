@@ -85,9 +85,11 @@ export const config: Config = {
       },
       render: ({ children: Children, color, title }) => {
         return (
-          <Block color={color} title={title}>
-            <Children />
-          </Block>
+          <div className="my-2">
+            <Block color={color} title={title}>
+              <Children />
+            </Block>
+          </div>
         );
       },
     },
@@ -118,9 +120,11 @@ export const config: Config = {
       },
       render: ({ children: Children, color }) => {
         return (
-          <ColorBox color={color}>
-            <Children />
-          </ColorBox>
+          <div className="my-2">
+            <ColorBox color={color}>
+              <Children />
+            </ColorBox>
+          </div>
         );
       },
     },
@@ -169,6 +173,7 @@ export const config: Config = {
     },
   },
   root: {
+    fields: {},
     render: ({ children }) => {
       return <LessonWrapper>{children}</LessonWrapper>;
     },

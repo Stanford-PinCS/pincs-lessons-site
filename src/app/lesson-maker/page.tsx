@@ -317,17 +317,17 @@ export default function Editor() {
           data={slides[currentSlideIndex].data}
           onChange={handlePuckChange}
         >
-          <div className="w-full h-[calc(100svh-80px)] px-4 grid grid-cols-6 gap-4 bg-gray-100 pt-4">
-            <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow">
+          <div className="w-full h-[calc(100svh-4.5rem)] p-4 flex gap-4 bg-gray-100">
+            <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px]">
               <h2 className="text-lg font-semibold">Components</h2>
               <Puck.Components />
               <h2 className="text-lg font-semibold mt-4">Outline</h2>
               <Puck.Outline />
             </div>
-            <div className="col-span-4 border-2 border-gray-300 rounded-lg shadow-inner bg-white">
+            <div className="flex-grow border-2 border-white rounded-lg shadow-inner bg-white">
               <Puck.Preview />
             </div>
-            <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow">
+            <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px]">
               <h2 className="text-lg font-semibold">Component Fields</h2>
               <Puck.Fields />
             </div>
