@@ -6,20 +6,20 @@ import { config } from "./puck.config";
 
 // Render Puck editor
 export default function Editor() {
-  const [slides, setSlides] = useState<Data[]>([
-    { content: [], root: {} }, // Initial slide
+  type Slide = { id: number; data: Data };
+  const [slides, setSlides] = useState<Slide[]>(() => [
+    { id: Date.now(), data: { content: [], root: {} } as Data },
   ]);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   const handlePuckChange = (data: Data) => {
     const newSlides = [...slides];
-    newSlides[currentSlideIndex] = data;
+    newSlides[currentSlideIndex] = { ...newSlides[currentSlideIndex], data };
     setSlides(newSlides);
-    console.log("Saved slide:", currentSlideIndex, data);
   };
 
   const addSlide = () => {
-    setSlides([...slides, { content: [], root: {} }]);
+    setSlides([...slides, { id: Date.now(), data: { content: [], root: {} } }]);
     setCurrentSlideIndex(slides.length);
   };
 
@@ -30,8 +30,6 @@ export default function Editor() {
       );
       setSlides(newSlides);
       setCurrentSlideIndex((prev) => (prev > 0 ? prev - 1 : 0));
-    } else {
-      console.log("Cannot delete the last slide.");
     }
   };
 
@@ -80,19 +78,23 @@ export default function Editor() {
         </button>
       </div>
       <Puck
-        key={currentSlideIndex}
+        key={slides[currentSlideIndex].id}
         config={config}
-        data={slides[currentSlideIndex]}
+        data={slides[currentSlideIndex].data}
         onChange={handlePuckChange}
       >
         <div className="w-full h-[calc(100svh-80px)] px-4 grid grid-cols-6 gap-4">
-          <div className="">
+          <div className="flex flex-col gap-4">
+            <h1>Components</h1>
             <Puck.Components></Puck.Components>
+            <h1>Outline</h1>
+            <Puck.Outline></Puck.Outline>
           </div>
           <div className="col-span-4 border-1 border-gray-500 rounded-md shadow-lg">
             <Puck.Preview></Puck.Preview>
           </div>
-          <div className="">
+          <div className="flex flex-col gap-4">
+            <h1>Component Fields</h1>
             <Puck.Fields></Puck.Fields>
           </div>
         </div>
