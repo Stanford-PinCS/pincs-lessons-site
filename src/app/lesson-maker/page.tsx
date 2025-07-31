@@ -4,7 +4,6 @@ import "@measured/puck/puck.css";
 import { useState, useEffect } from "react";
 import { config } from "./puck.config";
 
-// Render Puck editor
 export default function Editor() {
   type Slide = { id: number; data: Data };
 
@@ -13,11 +12,18 @@ export default function Editor() {
   ]);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [lessonTitle, setLessonTitle] = useState("");
+  const [lessonDescription, setLessonDescription] = useState("");
+  const [teacherResources, setTeacherResources] = useState("");
 
   useEffect(() => {
     setIsMounted(true);
     const savedSlides = sessionStorage.getItem("slides");
     const savedIndex = sessionStorage.getItem("currentSlideIndex");
+    const savedTitle = sessionStorage.getItem("lessonTitle");
+    const savedDescription = sessionStorage.getItem("lessonDescription");
+    const savedResources = sessionStorage.getItem("teacherResources");
 
     if (savedSlides) {
       const parsedSlides = JSON.parse(savedSlides);
@@ -29,6 +35,15 @@ export default function Editor() {
     if (savedIndex) {
       setCurrentSlideIndex(parseInt(savedIndex, 10));
     }
+    if (savedTitle) {
+      setLessonTitle(savedTitle);
+    }
+    if (savedDescription) {
+      setLessonDescription(savedDescription);
+    }
+    if (savedResources) {
+      setTeacherResources(savedResources);
+    }
   }, []);
 
   useEffect(() => {
@@ -38,8 +53,18 @@ export default function Editor() {
         JSON.stringify(slides.map((slide) => slide.data))
       );
       sessionStorage.setItem("currentSlideIndex", String(currentSlideIndex));
+      sessionStorage.setItem("lessonTitle", lessonTitle);
+      sessionStorage.setItem("lessonDescription", lessonDescription);
+      sessionStorage.setItem("teacherResources", teacherResources);
     }
-  }, [slides, currentSlideIndex, isMounted]);
+  }, [
+    slides,
+    currentSlideIndex,
+    isMounted,
+    lessonTitle,
+    lessonDescription,
+    teacherResources,
+  ]);
 
   const handlePuckChange = (data: Data) => {
     const newSlides = [...slides];
@@ -88,9 +113,9 @@ export default function Editor() {
     );
   };
 
-  const saveLesson = async () => {
+  const handleSave = async () => {
     const options = {
-      suggestedName: "lesson.json",
+      suggestedName: `${lessonTitle.replace(/\s+/g, "_") || "lesson"}.json`,
       types: [
         {
           description: "JSON Files",
@@ -105,9 +130,15 @@ export default function Editor() {
       // @ts-ignore
       const handle = await window.showSaveFilePicker(options);
       const writable = await handle.createWritable();
-      const json = JSON.stringify(slides.map((slide) => slide.data));
+      const json = JSON.stringify({
+        title: lessonTitle,
+        description: lessonDescription,
+        teacherResources: teacherResources,
+        slides: slides.map((slide) => slide.data),
+      });
       await writable.write(json);
       await writable.close();
+      setIsSaveModalOpen(false);
     } catch (error) {
       console.error("Error saving file:", error);
     }
@@ -121,11 +152,13 @@ export default function Editor() {
         const contents = e.target?.result as string;
         try {
           const data = JSON.parse(contents);
-          if (
-            Array.isArray(data) &&
-            data.every((item) => "content" in item && "root" in item)
-          ) {
-            setSlides(data.map((d) => ({ id: Date.now(), data: d })));
+          if (data.slides && Array.isArray(data.slides)) {
+            setSlides(
+              data.slides.map((d: Data) => ({ id: Date.now(), data: d }))
+            );
+            setLessonTitle(data.title || "");
+            setLessonDescription(data.description || "");
+            setTeacherResources(data.teacherResources || "");
             setCurrentSlideIndex(0);
           } else {
             alert("Invalid lesson file format.");
@@ -140,6 +173,76 @@ export default function Editor() {
 
   return (
     <div className="w-full h-screen flex flex-col">
+      {isSaveModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">
+              Save Lesson
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <label
+                  htmlFor="lessonTitle"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Lesson Title
+                </label>
+                <input
+                  type="text"
+                  id="lessonTitle"
+                  value={lessonTitle}
+                  onChange={(e) => setLessonTitle(e.target.value)}
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="lessonDescription"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Lesson Description
+                </label>
+                <textarea
+                  id="lessonDescription"
+                  value={lessonDescription}
+                  onChange={(e) => setLessonDescription(e.target.value)}
+                  rows={3}
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="teacherResources"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Teacher Resources (Optional Google Doc Link)
+                </label>
+                <input
+                  type="url"
+                  id="teacherResources"
+                  value={teacherResources}
+                  onChange={(e) => setTeacherResources(e.target.value)}
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+            <div className="mt-8 flex justify-end space-x-4">
+              <button
+                onClick={() => setIsSaveModalOpen(false)}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="bg-gray-800 text-white p-4 flex items-center justify-between shadow-md">
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-bold">PinCS Lesson Maker</h1>
@@ -188,7 +291,7 @@ export default function Editor() {
         </div>
         <div className="flex items-center gap-4">
           <button
-            onClick={saveLesson}
+            onClick={() => setIsSaveModalOpen(true)}
             className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md font-medium"
           >
             Save

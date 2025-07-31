@@ -55,44 +55,6 @@ export const config: Config = {
         );
       },
     },
-    Lesson: {
-      fields: {
-        slideIndex: {
-          type: "number",
-        },
-        slides: {
-          type: "array",
-          arrayFields: {
-            title: TextArea,
-            color: BlockColor,
-            children: Slot,
-          },
-        },
-      },
-      defaultProps: {
-        blocks: [],
-        slideIndex: 0,
-      },
-      render: ({ blocks, slideIndex }) => {
-        if (!blocks || typeof blocks !== "object") {
-          return <>Error: Lesson component must have slides.</>;
-        }
-        const blockArray = [
-          { color: "green" as const, title: "Title", children: undefined },
-          { color: "blue" as const, title: "Title2", children: undefined },
-        ];
-        const slides = blockArray.map(
-          ({ children, color, title }: BlockProps) => {
-            children = children || <p>This is a paragraph</p>;
-            return (
-              <Block children={children} color={color} title={title}></Block>
-            );
-          }
-        );
-
-        return <Lesson slideIndex={slideIndex - 1} slides={slides} />;
-      },
-    },
   },
   root: {
     render: ({ children }) => {
