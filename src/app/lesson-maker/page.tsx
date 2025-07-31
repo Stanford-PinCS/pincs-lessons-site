@@ -154,7 +154,10 @@ export default function Editor() {
           const data = JSON.parse(contents);
           if (data.slides && Array.isArray(data.slides)) {
             setSlides(
-              data.slides.map((d: Data) => ({ id: Date.now(), data: d }))
+              data.slides.map((d: Data, index: number) => ({
+                id: index,
+                data: d,
+              }))
             );
             setLessonTitle(data.title || "");
             setLessonDescription(data.description || "");
