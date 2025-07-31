@@ -1,0 +1,37 @@
+{
+  "title": "Visual Lesson",
+  "description": "This lesson teaches how to use the visual lesson mode.",
+  "teacherResources": "https://www.google.com",
+  "slides": [
+    {
+      "root": { "props": {} },
+      "content": [
+        {
+          "type": "Block",
+          "props": {
+            "children": [],
+            "color": "green",
+            "title": "Slide 1",
+            "id": "Block-679fd282-497a-4e21-98c8-2cd2255202f1"
+          }
+        }
+      ],
+      "zones": {}
+    },
+    {
+      "root": { "props": {} },
+      "content": [
+        {
+          "type": "Block",
+          "props": {
+            "children": [],
+            "color": "green",
+            "title": "Slide 2",
+            "id": "Block-a1e6ad08-1a4e-46e6-a711-8a1cf9d098a7"
+          }
+        }
+      ],
+      "zones": {}
+    }
+  ]
+}
