@@ -16,6 +16,7 @@ export default function Editor() {
   const [lessonTitle, setLessonTitle] = useState("");
   const [lessonDescription, setLessonDescription] = useState("");
   const [teacherResources, setTeacherResources] = useState("");
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -95,22 +96,29 @@ export default function Editor() {
 
   const deleteSlide = () => {
     if (slides.length > 1) {
-      const newSlides = slides.filter(
-        (_, index) => index !== currentSlideIndex
-      );
-      setSlides(newSlides);
-      setCurrentSlideIndex((prev) => (prev > 0 ? prev - 1 : 0));
+      if (confirmingDelete) {
+        const newSlides = slides.filter(
+          (_, index) => index !== currentSlideIndex
+        );
+        setSlides(newSlides);
+        setCurrentSlideIndex((prev) => (prev > 0 ? prev - 1 : 0));
+        setConfirmingDelete(false);
+      } else {
+        setConfirmingDelete(true);
+      }
     }
   };
 
   const prevSlide = () => {
     setCurrentSlideIndex((prev) => (prev > 0 ? prev - 1 : prev));
+    setConfirmingDelete(false);
   };
 
   const nextSlide = () => {
     setCurrentSlideIndex((prev) =>
       prev < slides.length - 1 ? prev + 1 : prev
     );
+    setConfirmingDelete(false);
   };
 
   const handleSave = async () => {
@@ -176,6 +184,7 @@ export default function Editor() {
 
   return (
     <div className="w-full h-screen flex flex-col">
+      {/* Save Modal */}
       {isSaveModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
@@ -246,6 +255,7 @@ export default function Editor() {
           </div>
         </div>
       )}
+      {/* Tool Bar */}
       <div className="bg-gray-800 text-white p-4 flex items-center justify-between shadow-md">
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-bold">PinCS Lesson Maker</h1>
@@ -280,13 +290,6 @@ export default function Editor() {
           >
             Insert After
           </button>
-          <button
-            onClick={deleteSlide}
-            disabled={slides.length <= 1}
-            className="px-3 py-2 bg-red-600 hover:bg-red-700 rounded-md text-sm font-medium disabled:opacity-50"
-          >
-            Delete
-          </button>
         </div>
         <div className="flex items-center gap-4">
           <button
@@ -310,6 +313,7 @@ export default function Editor() {
           />
         </div>
       </div>
+      {/* Main Page */}
       {isMounted && (
         <Puck
           key={slides[currentSlideIndex].id}
@@ -318,15 +322,30 @@ export default function Editor() {
           onChange={handlePuckChange}
         >
           <div className="w-full h-[calc(100svh-4.5rem)] p-4 flex gap-4 bg-gray-100">
+            {/* Left Sidebar */}
             <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px]">
               <h2 className="text-lg font-semibold">Components</h2>
               <Puck.Components />
               <h2 className="text-lg font-semibold mt-4">Outline</h2>
               <Puck.Outline />
+              <button
+                onClick={deleteSlide}
+                onMouseLeave={() => setConfirmingDelete(false)}
+                disabled={slides.length <= 1}
+                className={`px-3 py-2 border-2 rounded-md text-sm shadow-lg font-medium disabled:opacity-50 ${
+                  confirmingDelete
+                    ? "bg-red-500 text-white border-red-700"
+                    : "hover:enabled:bg-red-500 border-red-500 text-red-500 hover:enabled:text-white"
+                }`}
+              >
+                {confirmingDelete ? "Click again to delete" : "Delete Slide"}
+              </button>
             </div>
+            {/* Center Preview */}
             <div className="flex-grow border-2 border-white rounded-lg shadow-inner bg-white">
               <Puck.Preview />
             </div>
+            {/* Right Sidebar */}
             <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px]">
               <h2 className="text-lg font-semibold">Component Fields</h2>
               <Puck.Fields />
