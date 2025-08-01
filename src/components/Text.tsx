@@ -8,7 +8,13 @@ import ReactKatex from "@pkasila/react-katex";
 import "katex/dist/katex.min.css";
 import katex from "katex";
 import React from "react";
+import KeyTerm from "./KeyTerm";
 
+/**
+ * This Text component will take in string(s) children representing markdown and display it properly.
+ * For example, it uses *, **, `, $, and == to display italicized, bolded, code, LaTeX, and KeyTerm text.
+ * Usage: <Text>==Wow==! **This is bold**, `this is code;` and $\pi \approx 3.14$.</Text>
+ */
 export default function Text({ children }: { children: string | string[] }) {
   const [html, setHtml] = useState<string>("");
   const text = typeof children === "string" ? children : children.join("");
@@ -26,7 +32,8 @@ export default function Text({ children }: { children: string | string[] }) {
         );
       },
       text({ text }: { text: string }) {
-        const replaced = text.replace(/\$(.+?)\$/g, (latex, insides) => {
+        // Replace $____$ with LaTeX.
+        const latexed = text.replace(/\$(.+?)\$/g, (latex, insides) => {
           try {
             katex.renderToString(insides, { throwOnError: true }); // Tries to parse it, throwing error if invalid.
 
@@ -38,7 +45,13 @@ export default function Text({ children }: { children: string | string[] }) {
             return "Error with your LaTeX";
           }
         });
-        return replaced;
+        // Replace $____$ with LaTeX.
+        const keytermed = latexed.replace(/==(.+?)==/g, (_, keyterm) => {
+          return ReactDOMServer.renderToStaticMarkup(
+            <KeyTerm>{keyterm}</KeyTerm>
+          );
+        });
+        return keytermed;
       },
     };
 
