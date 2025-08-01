@@ -143,6 +143,7 @@ export default function Editor() {
         description: lessonDescription,
         teacherResources: teacherResources,
         slides: slides.map((slide) => slide.data),
+        version: "1.0",
       });
       await writable.write(json);
       await writable.close();
