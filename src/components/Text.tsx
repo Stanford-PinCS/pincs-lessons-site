@@ -32,26 +32,29 @@ export default function Text({ children }: { children: string | string[] }) {
         );
       },
       text({ text }: { text: string }) {
-        // Replace $____$ with LaTeX.
-        const latexed = text.replace(/\$(.+?)\$/g, (latex, insides) => {
-          try {
-            katex.renderToString(insides, { throwOnError: true }); // Tries to parse it, throwing error if invalid.
-
-            // The following will also parse it, but won't give us the error:
+        const transformed = text.replace(/(\$[^$]+\$|==[^=]+==)/g, (match) => {
+          if (match.startsWith("$")) {
+            // Replace $____$ with LaTeX.
+            const content = match.slice(1, -1);
+            try {
+              katex.renderToString(content, { throwOnError: true });
+              return ReactDOMServer.renderToStaticMarkup(
+                <ReactKatex>{match}</ReactKatex>
+              );
+            } catch {
+              return "Error with your LaTeX";
+            }
+          } else if (match.startsWith("==")) {
+            // Replace ==____== with a KeyTerm.
+            const content = match.slice(2, -2);
             return ReactDOMServer.renderToStaticMarkup(
-              <ReactKatex>{latex}</ReactKatex>
+              <KeyTerm>{content}</KeyTerm>
             );
-          } catch (e) {
-            return "Error with your LaTeX";
           }
+          return match;
         });
-        // Replace $____$ with LaTeX.
-        const keytermed = latexed.replace(/==(.+?)==/g, (_, keyterm) => {
-          return ReactDOMServer.renderToStaticMarkup(
-            <KeyTerm>{keyterm}</KeyTerm>
-          );
-        });
-        return keytermed;
+
+        return transformed;
       },
     };
 
