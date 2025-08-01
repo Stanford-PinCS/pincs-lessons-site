@@ -9,6 +9,7 @@ import "katex/dist/katex.min.css";
 import katex from "katex";
 import React from "react";
 import KeyTerm from "./KeyTerm";
+import Emphasize from "./Emphasize";
 
 /**
  * This Text component will take in string(s) children representing markdown and display it properly.
@@ -25,10 +26,11 @@ export default function Text({ children }: { children: string | string[] }) {
         return ReactDOMServer.renderToStaticMarkup(<Code>{text}</Code>);
       },
       code({ text }: { text: string }) {
+        return ReactDOMServer.renderToStaticMarkup(<Code>{text}</Code>);
+      },
+      strong({ text }: { text: string }) {
         return ReactDOMServer.renderToStaticMarkup(
-          <pre>
-            <Code>{text}</Code>
-          </pre>
+          <Emphasize>{text}</Emphasize>
         );
       },
       text({ text }: { text: string }) {

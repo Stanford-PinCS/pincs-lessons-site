@@ -8,5 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default function () {
+  console.log("reload", lessonData);
   return <AutomaticLesson data={lessonData.slides}></AutomaticLesson>;
 }
