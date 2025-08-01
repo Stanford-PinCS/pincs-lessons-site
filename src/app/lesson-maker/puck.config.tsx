@@ -174,6 +174,19 @@ export const config: Config = {
     },
     List: {
       fields: {
+        type: {
+          type: "radio",
+          options: [
+            {
+              label: "Bulleted",
+              value: "bulleted",
+            },
+            {
+              label: "Numbered",
+              value: "numbered",
+            },
+          ],
+        },
         items: {
           type: "array",
           arrayFields: {
@@ -182,11 +195,12 @@ export const config: Config = {
         },
       },
       defaultProps: {
+        type: "bulleted",
         items: [{ text: "This is a list item" }],
       },
-      render: ({ items }) => {
+      render: ({ items, type }) => {
         items = items.map((item: { text: string }) => item.text);
-        return <List items={items} />;
+        return <List type={type} items={items} />;
       },
     },
   },
