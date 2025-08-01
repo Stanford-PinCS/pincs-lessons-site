@@ -11,6 +11,7 @@ import { Checkbox } from "@headlessui/react";
 import ColorBox from "@/components/ColorBox";
 import QuizQuestion from "@/components/QuizQuestion";
 import List from "@/components/List";
+import Text from "@/components/Text";
 
 const BlockColor = {
   type: "radio" as const,
@@ -52,7 +53,7 @@ const ColorBoxColor = {
     },
   ],
 };
-const Text = { type: "text" as const };
+const TextType = { type: "text" as const };
 const TextArea = { type: "textarea" as const };
 const Slot = { type: "slot" as const };
 
@@ -70,8 +71,11 @@ export const config: Config = {
         text: "This is a paragraph.",
       },
       render: ({ text }) => {
-        // TODO: Give hypertext superpowers: (e.g. ReactKatex, Emphasize, KeyTerm, Code, etc.)
-        return <p className="my-2">{text}</p>;
+        return (
+          <div className="my-2">
+            <Text>{text}</Text>
+          </div>
+        );
       },
     },
     Block: {
@@ -91,22 +95,6 @@ export const config: Config = {
               <Children />
             </Block>
           </div>
-        );
-      },
-    },
-    LaTeXParagraph: {
-      fields: {
-        text: TextArea,
-      },
-      defaultProps: {
-        text: "We can write stuff like this: $f=ma$.",
-      },
-      render: ({ text }) => {
-        // TODO: Check that text is valid.
-        return (
-          <p className="my-2">
-            <ReactKatex>{text}</ReactKatex>
-          </p>
         );
       },
     },
@@ -131,11 +119,11 @@ export const config: Config = {
     },
     MultipleChoiceQuiz: {
       fields: {
-        question: Text,
+        question: TextType,
         choices: {
           type: "array",
           arrayFields: {
-            text: Text,
+            text: TextType,
             isCorrect: {
               type: "radio",
               options: [
@@ -149,7 +137,7 @@ export const config: Config = {
                 },
               ],
             },
-            explanation: Text,
+            explanation: TextType,
           },
         },
       },
@@ -190,7 +178,7 @@ export const config: Config = {
         items: {
           type: "array",
           arrayFields: {
-            text: Text,
+            text: TextType,
           },
         },
       },
