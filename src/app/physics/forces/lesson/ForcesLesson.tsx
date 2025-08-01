@@ -670,8 +670,7 @@ export default function ForcesLesson() {
           There are <Emphasize>many types of forces</Emphasize>, including{" "}
           <KeyTerm>gravitational</KeyTerm>, <KeyTerm>frictional</KeyTerm>,{" "}
           <KeyTerm>normal forces</KeyTerm>, <KeyTerm>tension forces</KeyTerm>,
-          and
-          <KeyTerm> springs forces</KeyTerm>.
+          and <KeyTerm>spring forces</KeyTerm>.
         </li>
         <li>
           <KeyTerm>Free Body Diagrams (FBDs)</KeyTerm> are a standard way to

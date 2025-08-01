@@ -282,9 +282,9 @@ export default function DragLesson() {
     // Slide 8: Reynolds number.
     <Block color="blue" title="What Drag Model Should We Use?">
       <p>
-        Since drag is the resulting phenomenon of tons of different forces (many
-        particle collisions), there are two models for force that we commonly
-        use. One force model is proportional to velocity (
+        Since drag is the resulting phenomenon of the collisions with every
+        adjacent particle, there are two models for force that we commonly use
+        to simplify our work. One force model is proportional to velocity (
         <KeyTerm>F ∝ v</KeyTerm>) and one is proportional to velocity squared (
         <KeyTerm>F ∝ v²</KeyTerm>).
       </p>
