@@ -10,6 +10,7 @@ import katex from "katex";
 import { Checkbox } from "@headlessui/react";
 import ColorBox from "@/components/ColorBox";
 import QuizQuestion from "@/components/QuizQuestion";
+import List from "@/components/List";
 
 const BlockColor = {
   type: "radio" as const,
@@ -169,6 +170,23 @@ export const config: Config = {
       },
       render: ({ question, choices }) => {
         return <QuizQuestion question={question} choices={choices} />;
+      },
+    },
+    List: {
+      fields: {
+        items: {
+          type: "array",
+          arrayFields: {
+            text: Text,
+          },
+        },
+      },
+      defaultProps: {
+        items: [{ text: "This is a list item" }],
+      },
+      render: ({ items }) => {
+        items = items.map((item: { text: string }) => item.text);
+        return <List items={items} />;
       },
     },
   },
