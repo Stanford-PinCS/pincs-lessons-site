@@ -17,11 +17,14 @@ export default function Register() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const res = await fetch("/interactive-lessons/api/register", {
-      method: "POST",
-      body: JSON.stringify(form),
-      headers: { "Content-Type": "application/json" },
-    });
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_APP_BASE_PATH + "/api/register",
+      {
+        method: "POST",
+        body: JSON.stringify(form),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
     if (res.ok) router.push("/login");
     else alert("Registration failed");
   }

@@ -16,11 +16,11 @@ export default function Login() {
       email,
       password,
       redirect: false,
-      callbackUrl: "/interactive-lessons",
+      callbackUrl: process.env.NEXT_PUBLIC_APP_BASE_PATH ?? "",
     });
 
     if (res?.ok) {
-      router.push(res.url ?? "/interactive-lessons");
+      router.push(res.url ?? process.env.NEXT_PUBLIC_APP_BASE_PATH ?? "");
     } else {
       alert("Login failed");
     }

@@ -166,11 +166,11 @@ const CoinPickingExample: React.FC<CoinPickingExampleProps> = ({
                 onClick={() => useCoin(coin)}
                 disabled={changeLeft < coin}
                 className={`
-                  w-16 h-16 rounded-full flex items-center justify-center text-xl font-medium text-slate-700
-                  bg-slate-200 transition-colors duration-200
-                  hover:enabled:bg-slate-300
-                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400
-                  disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed
+                  w-16 h-16 rounded-full flex items-center justify-center text-xl font-medium text-black
+                  bg-yellow-200 transition-colors duration-200
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400
+                  disabled:bg-yellow-100 disabled:text-slate-400 disabled:cursor-not-allowed
+                  border-2 border-dashed border-yellow-800
                 `}
               >
                 {coin}
@@ -754,10 +754,14 @@ const IceCreamUtilityTable = () => {
 
   const getHighlightClass = (flavor: Flavor, scoopIndex: number) => {
     if (scoopCounts[flavor] > scoopIndex) {
+      // We've selected this scoop, so show highlight it in that color.
       if (flavor === "vanilla") {
         return `${flavorColors[flavor]} text-black font-bold`;
       }
       return `${flavorColors[flavor]} text-white font-bold`;
+    } else if (scoopCounts[flavor] == scoopIndex) {
+      // This scoop is next, so highlight it in a fun way.
+      return "bg-blue-50 text-black font-bold rounded-sm inset-ring-2 inset-ring-blue-200/50";
     }
     return "";
   };
@@ -1478,8 +1482,8 @@ export default function UtilityMaximization() {
         />
         <p>
           In this lesson, we're going to start with the basics of what utility
-          is and how it looks in economics. Then, we'll look into an important
-          application in economics. We'll then learn about how this ties in with
+          is and how it looks in economics. Then, we'll look into how utility is
+          used in economics. We'll then learn about how this is an example of
           the greedy approach to problem solving. We'll end by piecing it all
           together in an interactive logic puzzle.
         </p>
@@ -1811,7 +1815,7 @@ export default function UtilityMaximization() {
     </Block>,
 
     // Slide 11: Defining MU/P.
-    <Block color="yellow" title="Practice: Marginal Utility per Price">
+    <Block color="yellow" title="Practice: Marginal Utility over Price">
       <p>
         If ice cream wasn't enough, let's try some different desserts! Below is
         practice problem showing the marginal utility (MU) and price of each
@@ -1842,7 +1846,7 @@ export default function UtilityMaximization() {
         optimal choice at each step. In the context of utility maximization, it
         means{" "}
         <Emphasize>
-          always choosing the item with the highest marginal utility per price
+          always choosing the item with the highest marginal utility over price
           (MU/P) ratio that you can afford
         </Emphasize>
         .

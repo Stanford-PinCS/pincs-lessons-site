@@ -42,7 +42,7 @@ export default function RenaissanceLesson() {
         title="Exploring Florence"
         width="100%"
         style={{ height: "calc(100svh - 100px)" }}
-        src="./florence"
+        src="./lesson/florence"
       ></iframe>
     </Block>,
     // Slide 4: How we might store data.
