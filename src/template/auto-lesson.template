@@ -1,5 +1,5 @@
 import AutomaticLesson from "@/components/AutomaticLesson";
-import lessonData from "./lesson.json";
+import lessonData from "./content.json";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

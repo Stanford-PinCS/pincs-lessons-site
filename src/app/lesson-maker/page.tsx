@@ -3,6 +3,10 @@ import { Puck, Data } from "@measured/puck";
 import "@measured/puck/puck.css";
 import { useState, useEffect } from "react";
 import { config } from "./puck.config";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+import landingPageTemplate from "@/template/auto-landing-page.template";
+import lessonPageTemplate from "@/template/auto-lesson.template";
 
 export default function Editor() {
   type Slide = { id: number; data: Data };
@@ -49,6 +53,7 @@ export default function Editor() {
 
   useEffect(() => {
     if (isMounted) {
+      // TODO: Make this less often...
       sessionStorage.setItem(
         "slides",
         JSON.stringify(slides.map((slide) => slide.data))
@@ -121,35 +126,33 @@ export default function Editor() {
     setConfirmingDelete(false);
   };
 
-  const handleSave = async () => {
-    const options = {
-      suggestedName: `${lessonTitle.replace(/\s+/g, "_") || "lesson"}.json`,
-      types: [
-        {
-          description: "JSON Files",
-          accept: {
-            "application/json": [".json"],
-          },
-        },
-      ],
-    };
+  const toKebabCase = (str: string) =>
+    str.trim().toLowerCase().replace(/\s+/g, "-");
 
+  const handleSave = async () => {
     try {
-      // @ts-ignore
-      const handle = await window.showSaveFilePicker(options);
-      const writable = await handle.createWritable();
-      const json = JSON.stringify({
+      const zip = new JSZip();
+      const folderName = toKebabCase(lessonTitle) || "lesson";
+      const folder = zip.folder(folderName);
+      if (!folder) throw new Error("Failed to create ZIP folder");
+
+      const lessonJson = JSON.stringify({
         title: lessonTitle,
         description: lessonDescription,
         teacherResources: teacherResources,
         slides: slides.map((slide) => slide.data),
         version: "1.0",
       });
-      await writable.write(json);
-      await writable.close();
+
+      folder.file("lesson/content.json", lessonJson);
+      folder.file("page.tsx", landingPageTemplate);
+      folder.file("lesson/page.tsx", lessonPageTemplate);
+
+      const blob = await zip.generateAsync({ type: "blob" });
+      saveAs(blob, `${folderName}.zip`);
       setIsSaveModalOpen(false);
     } catch (error) {
-      console.error("Error saving file:", error);
+      console.error("Error generating ZIP:", error);
     }
   };
 
