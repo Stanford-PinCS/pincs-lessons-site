@@ -156,33 +156,84 @@ export default function Editor() {
     }
   };
 
+  const parseAndLoadLesson = (contents: string) => {
+    try {
+      const data = JSON.parse(contents);
+      if (data.slides && Array.isArray(data.slides)) {
+        setSlides(
+          data.slides.map((data: Data, index: number) => ({
+            id: index + Math.random(),
+            data,
+          }))
+        );
+        setLessonTitle(data.title || "");
+        setLessonDescription(data.description || "");
+        setTeacherResources(data.teacherResources || "");
+        setCurrentSlideIndex(0);
+      } else {
+        alert("Invalid lesson file format.");
+      }
+    } catch (error) {
+      alert("Error parsing lesson file.");
+    }
+  };
+
   const loadLesson = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const contents = e.target?.result as string;
-        try {
-          const data = JSON.parse(contents);
-          if (data.slides && Array.isArray(data.slides)) {
-            setSlides(
-              data.slides.map((d: Data, index: number) => ({
-                id: index,
-                data: d,
-              }))
-            );
-            setLessonTitle(data.title || "");
-            setLessonDescription(data.description || "");
-            setTeacherResources(data.teacherResources || "");
-            setCurrentSlideIndex(0);
-          } else {
-            alert("Invalid lesson file format.");
+      if (file.name.endsWith(".zip")) {
+        // Load in .zip file.
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const contents = e.target?.result;
+          if (contents) {
+            try {
+              const zip = await JSZip.loadAsync(contents);
+              // Consider all possible paths.
+              const lessonFilePaths = Object.keys(zip.files).filter(
+                (path) =>
+                  !zip.files[path].dir && path.endsWith("/lesson/content.json")
+              );
+              if (lessonFilePaths.length === 1) {
+                // If there's one good path, use it.
+                const lessonFile = zip.file(lessonFilePaths[0]);
+                if (lessonFile) {
+                  const lessonContents = await lessonFile.async("string");
+                  parseAndLoadLesson(lessonContents);
+                } else {
+                  alert("Error reading lesson content from zip file.");
+                }
+              } else if (lessonFilePaths.length === 0) {
+                // Invalid zip, missing the right stuff.
+                alert(
+                  "Could not find '*/lesson/content.json' in the zip file."
+                );
+              } else {
+                // Invalid zip, having too many files.
+                alert(
+                  "Multiple '*/lesson/content.json' files found. Please provide a valid lesson zip file."
+                );
+              }
+            } catch (error) {
+              console.error("Error reading zip file:", error);
+              alert("Error reading zip file.");
+            }
           }
-        } catch (error) {
-          alert("Error parsing lesson file.");
-        }
-      };
-      reader.readAsText(file);
+        };
+        reader.readAsArrayBuffer(file);
+      } else if (file.name.endsWith(".json")) {
+        // Load in .json file.
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const contents = e.target?.result as string;
+          if (contents) {
+            parseAndLoadLesson(contents);
+          }
+        };
+        reader.readAsText(file);
+      } else {
+        alert("Unsupported file type. Please select a .json or .zip file.");
+      }
     }
   };
 
@@ -311,7 +362,7 @@ export default function Editor() {
           <input
             id="load-lesson"
             type="file"
-            accept=".json"
+            accept=".json,.zip"
             className="hidden"
             onChange={loadLesson}
           />
