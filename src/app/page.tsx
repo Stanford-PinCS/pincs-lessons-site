@@ -15,8 +15,6 @@ export default function Home() {
   const [selectedSubjects, setSelectedSubjects] = useState<Tag[]>([]);
   const subjects = Object.values(Subject);
 
-  console.log("session: ", session);
-
   /* TRUE iff the lesson has at least one tag in selectedSubjects AND it's not hidden*/
   const filterLesson = useCallback(
     (lesson: Lesson) => {
