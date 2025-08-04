@@ -129,7 +129,7 @@ export default function Editor() {
   const toKebabCase = (str: string) =>
     str.trim().toLowerCase().replace(/\s+/g, "-");
 
-  const handleSave = async () => {
+  const handleSaveZip = async () => {
     try {
       const zip = new JSZip();
       const folderName = toKebabCase(lessonTitle) || "lesson";
@@ -153,6 +153,53 @@ export default function Editor() {
       setIsSaveModalOpen(false);
     } catch (error) {
       console.error("Error generating ZIP:", error);
+    }
+  };
+
+  const handleSaveContent = async () => {
+    const lessonJson = JSON.stringify({
+      title: lessonTitle,
+      description: lessonDescription,
+      teacherResources: teacherResources,
+      slides: slides.map((slide) => slide.data),
+      version: "1.0",
+    });
+    const blob = new Blob([lessonJson], { type: "application/json" });
+
+    if (window && "showSaveFilePicker" in window) {
+      // Try to use the file location picker.
+      try {
+        const showSaveFilePicker = window.showSaveFilePicker as (
+          options: any
+        ) => Promise<any>;
+        const handle = await showSaveFilePicker({
+          suggestedName: `content.json`,
+          types: [
+            {
+              description: "JSON Files",
+              accept: { "application/json": [".json"] },
+            },
+          ],
+        });
+        const writable = await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        setIsSaveModalOpen(false);
+      } catch (err) {
+        // Handle errors, such as the user canceling the save dialog
+        console.error("Error saving file:", err);
+      }
+    } else {
+      // Fallback for browsers that do not support the API
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `content.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setIsSaveModalOpen(false);
     }
   };
 
@@ -242,7 +289,7 @@ export default function Editor() {
       {/* Save Modal */}
       {isSaveModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
+          <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-lg flex-col items-center justify-center">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">
               Save Lesson
             </h2>
@@ -293,7 +340,7 @@ export default function Editor() {
                 />
               </div>
             </div>
-            <div className="mt-8 flex justify-end space-x-4">
+            <div className="mt-8 flex justify-center space-x-4">
               <button
                 onClick={() => setIsSaveModalOpen(false)}
                 className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
@@ -301,10 +348,16 @@ export default function Editor() {
                 Cancel
               </button>
               <button
-                onClick={handleSave}
+                onClick={handleSaveContent}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Update content
+              </button>
+              <button
+                onClick={handleSaveZip}
                 className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               >
-                Save
+                Compile lesson
               </button>
             </div>
           </div>
