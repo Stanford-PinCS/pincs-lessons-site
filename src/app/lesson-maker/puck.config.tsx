@@ -12,6 +12,7 @@ import ColorBox from "@/components/ColorBox";
 import QuizQuestion from "@/components/QuizQuestion";
 import List from "@/components/List";
 import Text from "@/components/Text";
+import TextQuizQuestion from "@/components/TextQuizQuestion";
 
 const BlockColor = {
   type: "radio" as const,
@@ -63,21 +64,6 @@ const Slot = { type: "slot" as const };
 // to the bottom.
 export const config: Config = {
   components: {
-    Paragraph: {
-      fields: {
-        text: TextArea,
-      },
-      defaultProps: {
-        text: "This is a paragraph.",
-      },
-      render: ({ text }) => {
-        return (
-          <div className="my-2">
-            <Text>{text}</Text>
-          </div>
-        );
-      },
-    },
     Block: {
       fields: {
         title: TextArea,
@@ -115,6 +101,52 @@ export const config: Config = {
             </ColorBox>
           </div>
         );
+      },
+    },
+    Paragraph: {
+      fields: {
+        text: TextArea,
+      },
+      defaultProps: {
+        text: "This is a paragraph.",
+      },
+      render: ({ text }) => {
+        return (
+          <div className="my-2">
+            <Text>{text}</Text>
+          </div>
+        );
+      },
+    },
+    List: {
+      fields: {
+        type: {
+          type: "radio",
+          options: [
+            {
+              label: "Bulleted",
+              value: "bulleted",
+            },
+            {
+              label: "Numbered",
+              value: "numbered",
+            },
+          ],
+        },
+        items: {
+          type: "array",
+          arrayFields: {
+            text: TextType,
+          },
+        },
+      },
+      defaultProps: {
+        type: "bulleted",
+        items: [{ text: "This is a list item" }],
+      },
+      render: ({ items, type }) => {
+        items = items.map((item: { text: string }) => item.text);
+        return <List type={type} items={items} />;
       },
     },
     "Multiple Choice Quiz": {
@@ -160,37 +192,44 @@ export const config: Config = {
         return <QuizQuestion question={question} choices={choices} />;
       },
     },
-    List: {
+    "Text Response": {
       fields: {
-        type: {
-          type: "radio",
-          options: [
-            {
-              label: "Bulleted",
-              value: "bulleted",
-            },
-            {
-              label: "Numbered",
-              value: "numbered",
-            },
-          ],
-        },
-        items: {
-          type: "array",
-          arrayFields: {
-            text: TextType,
-          },
-        },
+        question: TextArea,
+        answer: TextType,
+        placeHolder: TextType,
       },
       defaultProps: {
-        type: "bulleted",
-        items: [{ text: "This is a list item" }],
+        question: "What's 1 + 2?",
+        answer: "3",
+        placeholder: "",
       },
-      render: ({ items, type }) => {
-        items = items.map((item: { text: string }) => item.text);
-        return <List type={type} items={items} />;
+      render: ({ question, answer, placeholder }) => {
+        //TODO: expore more of the regex to teachers.
+        //@ts-ignore
+        let pattern = RegExp.escape(answer.replace(/\s+/g, ""));
+        return (
+          <TextQuizQuestion
+            question={<Text>{question}</Text>}
+            pattern={pattern}
+            placeholder={placeholder}
+          />
+        );
       },
     },
+  },
+  categories: {
+    containers: {
+      components: ["Block", "Color Box"],
+    },
+    text: {
+      components: ["Paragraph", "List"],
+    },
+    quizzes: {
+      components: ["Multiple Choice Quiz", "Text Response"],
+    },
+    // interactives: {
+    //   components: ["Unity", "Animation"],
+    // }
   },
   root: {
     fields: {},

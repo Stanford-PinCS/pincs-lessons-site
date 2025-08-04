@@ -443,7 +443,7 @@ export default function Editor() {
         >
           <div className="w-full h-[calc(100svh-4.5rem)] p-4 flex gap-4 bg-gray-100">
             {/* Left Sidebar */}
-            <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px]">
+            <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px] overflow-y-scroll">
               <h2 className="text-lg font-semibold">Components</h2>
               <Puck.Components />
               <h2 className="text-lg font-semibold mt-4">Outline</h2>
