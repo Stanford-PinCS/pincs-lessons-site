@@ -1,5 +1,6 @@
 "use client";
 
+import List from "@/components/List";
 import React, { useState, useEffect, useRef } from "react";
 
 interface Species {
@@ -265,12 +266,14 @@ const PopulationSimulator: React.FC<PopulationSimulatorProps> = ({
         <h3 className="font-semibold mb-2 text-purple-700">
           📚 Learning Points
         </h3>
-        <ul className="list-disc list-inside space-y-2 text-sm">
-          <li>Watch how producer populations affect herbivores</li>
-          <li>See how carnivore populations depend on their prey</li>
-          <li>Notice the time delay in population changes</li>
-          <li>Observe how the ecosystem reaches balance</li>
-        </ul>
+        <List
+          items={[
+            <>Watch how producer populations affect herbivores</>,
+            <>See how carnivore populations depend on their prey</>,
+            <>Notice the time delay in population changes</>,
+            <>Observe how the ecosystem reaches balance</>,
+          ]}
+        />
       </div>
     </div>
   );
