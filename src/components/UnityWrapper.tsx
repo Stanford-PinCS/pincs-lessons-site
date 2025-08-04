@@ -1,5 +1,4 @@
 "use client";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import { useEffect, useMemo, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 
@@ -49,6 +48,15 @@ export default function UnityGame({ projectName }: { projectName: string }) {
       return <></>;
     }
 
+    if (messageIndex > 0 && loadingProgression == 0) {
+      // It should have loaded more than nothing by the time it gets to the second message...
+      return (
+        <div className="absolute top-[10svh] left-1/2 translate-x-[calc(-50%-40px)] bg-red-500 m-4 p-4 rounded-md text-white">
+          ERROR: Failed to load Unity plugin.
+        </div>
+      );
+    }
+
     return (
       <div className="top-[30svh] m-20 bg-gray-200 rounded-full h-8 dark:bg-gray-700 relative overflow-hidden">
         <div
@@ -69,12 +77,12 @@ export default function UnityGame({ projectName }: { projectName: string }) {
   }
 
   return (
-    <ErrorBoundary errorComponent={undefined}>
+    <>
       <Loading></Loading>
       <Unity
         unityProvider={unityProvider}
         style={{ width: "100%", height: "calc(100svh)" }}
       />
-    </ErrorBoundary>
+    </>
   );
 }

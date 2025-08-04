@@ -1,13 +1,8 @@
 "use client";
 import Block from "@/components/Block";
-import Lesson from "@/components/Lesson";
 import LessonWrapper from "@/components/LessonWrapper";
-import { Config } from "@measured/puck";
-import { BlockProps } from "../../components/Block";
-import ReactKatex from "@pkasila/react-katex";
+import { Config, WithId, WithPuckProps } from "@measured/puck";
 import "katex/dist/katex.min.css";
-import katex from "katex";
-import { Checkbox } from "@headlessui/react";
 import ColorBox from "@/components/ColorBox";
 import QuizQuestion from "@/components/QuizQuestion";
 import List from "@/components/List";
@@ -15,6 +10,9 @@ import Text from "@/components/Text";
 import TextQuizQuestion from "@/components/TextQuizQuestion";
 import MultiSelectQuizQuestion from "@/components/MultiSelectQuizQuestion";
 import Pickcode from "@/components/Pickcode";
+import { JSX } from "react";
+import UnityFrame from "@/components/UnityFrame";
+import { Fullscreen } from "lucide-react";
 
 const BlockColor = {
   type: "radio" as const,
@@ -259,6 +257,31 @@ export const config: Config = {
         return <Pickcode name={name} src={src}></Pickcode>;
       },
     },
+    Unity: {
+      fields: {
+        projectName: TextType,
+        fullscreen: {
+          type: "radio",
+          options: [
+            {
+              label: "fullscreen",
+              value: true,
+            },
+            {
+              label: "inline",
+              value: false,
+            },
+          ],
+        },
+      },
+      defaultProps: {
+        projectName: "name",
+        fullscreen: true,
+      },
+      render: ({ projectName, fullscreen }) => {
+        return <UnityFrame projectName={projectName} fullscreen={fullscreen} />;
+      },
+    },
   },
   categories: {
     containers: {
@@ -271,7 +294,7 @@ export const config: Config = {
       components: ["Multiple Choice Quiz", "Text Response"],
     },
     interactives: {
-      components: ["Pickcode"], // ..."Unity", "Animation"],
+      components: ["Pickcode", "Unity"], // ..."Animation"],
     },
   },
   root: {

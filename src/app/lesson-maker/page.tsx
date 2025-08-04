@@ -1,5 +1,5 @@
 "use client";
-import { Puck, Data } from "@measured/puck";
+import { Puck, Data, Content } from "@measured/puck";
 import "@measured/puck/puck.css";
 import { useState, useEffect, useRef } from "react";
 import { config } from "./puck.config";
@@ -7,6 +7,7 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import landingPageTemplate from "@/template/auto-landing-page.template";
 import lessonPageTemplate from "@/template/auto-lesson.template";
+import unityPageTemplate from "@/template/unity-page.template";
 
 export default function Editor() {
   type Slide = { id: number; data: Data };
@@ -143,11 +144,13 @@ export default function Editor() {
 
   const handleSaveZip = async () => {
     try {
+      // Generate Zip object.
       const zip = new JSZip();
       const folderName = toKebabCase(lessonTitle) || "lesson";
       const folder = zip.folder(folderName);
       if (!folder) throw new Error("Failed to create ZIP folder");
 
+      // Generate lesson json.
       const lessonJson = JSON.stringify({
         title: lessonTitle,
         description: lessonDescription,
@@ -156,10 +159,51 @@ export default function Editor() {
         version: "1.0",
       });
 
+      // Create main files.
       folder.file("lesson/content.json", lessonJson);
       folder.file("page.tsx", landingPageTemplate);
       folder.file("lesson/page.tsx", lessonPageTemplate);
 
+      // Create unity files.
+      function getAllUnityProjectNames(content: Content<any>): Set<string> {
+        let names = new Set<string>();
+        for (let component of content) {
+          if (!("type" in component)) continue; // It should have a type.
+          let type = component.type;
+          if (type == "Unity") {
+            // Bingo!
+            if ("projectName" in component.props) {
+              names.add(component.props.projectName);
+            }
+          } else {
+            // Recurse on children.
+            if ("children" in component?.props) {
+              names = names.union(
+                getAllUnityProjectNames(component.props.children)
+              );
+            }
+          }
+        }
+        return names;
+      }
+      const projectNames: string[] = [
+        ...new Set(
+          slides.flatMap((slide) => [
+            ...getAllUnityProjectNames(slide.data.content),
+          ])
+        ),
+      ];
+      for (const projectName of projectNames) {
+        const cleanProjectName = projectName.replace(/\s+/g, "").toLowerCase();
+        folder.file(
+          `lesson/${cleanProjectName}/page.tsx`,
+          unityPageTemplate.replace("{PROJECT_NAME}", cleanProjectName)
+        );
+      }
+
+      // TODO: Create custom placeholder files.
+
+      // Save the Zip object to a file.
       const blob = await zip.generateAsync({ type: "blob" });
       saveAs(blob, `${folderName}.zip`);
       setIsSaveModalOpen(false);
