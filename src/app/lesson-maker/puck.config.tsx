@@ -68,26 +68,26 @@ export const config: Config = {
   components: {
     Block: {
       fields: {
-        title: TextArea,
-        color: BlockColor,
-        fullscreen: {
+        mode: {
           type: "radio",
           options: [
             { label: "Regular", value: "regular" },
             { label: "Full Screen", value: "fullscreen" },
           ],
         },
+        title: TextArea,
+        color: BlockColor,
         children: Slot,
       },
       defaultProps: {
         color: "green",
         title: "Title",
-        fullscreen: "fullscreen",
+        mode: "regular",
       },
-      render: ({ children: Children, color, title }) => {
+      render: ({ children: Children, color, title, mode }) => {
         return (
           <div className="my-2">
-            <Block color={color} title={title}>
+            <Block color={color} title={title} mode={mode}>
               <Children />
             </Block>
           </div>
