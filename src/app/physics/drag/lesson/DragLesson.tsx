@@ -19,6 +19,7 @@ import DragProblemGraphic from "./drag-problem.jpg";
 import ReactKatex from "@pkasila/react-katex";
 import "katex/dist/katex.min.css";
 import Link from "next/link";
+import List from "@/components/List";
 
 export default function DragLesson() {
   const slides = [

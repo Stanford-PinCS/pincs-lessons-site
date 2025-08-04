@@ -14,6 +14,7 @@ import List from "@/components/List";
 import Text from "@/components/Text";
 import TextQuizQuestion from "@/components/TextQuizQuestion";
 import MultiSelectQuizQuestion from "@/components/MultiSelectQuizQuestion";
+import Pickcode from "@/components/Pickcode";
 
 const BlockColor = {
   type: "radio" as const,
@@ -69,11 +70,19 @@ export const config: Config = {
       fields: {
         title: TextArea,
         color: BlockColor,
+        fullscreen: {
+          type: "radio",
+          options: [
+            { label: "Regular", value: "regular" },
+            { label: "Full Screen", value: "fullscreen" },
+          ],
+        },
         children: Slot,
       },
       defaultProps: {
         color: "green",
         title: "Title",
+        fullscreen: "fullscreen",
       },
       render: ({ children: Children, color, title }) => {
         return (
@@ -237,6 +246,19 @@ export const config: Config = {
         );
       },
     },
+    Pickcode: {
+      fields: {
+        name: TextType,
+        src: TextType,
+      },
+      defaultProps: {
+        name: "Example Pickcode Plugin",
+        src: "https://dev.pickcode.io/lesson/create-your-own-story-lesson-cmcdpn8cs000ek3y1wegxmemi-2025-07-29-09-38-49",
+      },
+      render: ({ name, src }) => {
+        return <Pickcode name={name} src={src}></Pickcode>;
+      },
+    },
   },
   categories: {
     containers: {
@@ -248,9 +270,9 @@ export const config: Config = {
     quizzes: {
       components: ["Multiple Choice Quiz", "Text Response"],
     },
-    // interactives: {
-    //   components: ["Unity", "Animation"],
-    // }
+    interactives: {
+      components: ["Pickcode"], // ..."Unity", "Animation"],
+    },
   },
   root: {
     fields: {},
