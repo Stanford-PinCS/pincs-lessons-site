@@ -7,16 +7,18 @@ import CodeOutput from "./CodeOutput";
 export const CodeEditor = ({
   lessonId,
   instructionsMarkdown,
+  height,
 }: {
   lessonId: string;
   instructionsMarkdown: string;
+  height: number;
 }) => {
   const [editorDividerMouseDown, setEditorDividerMouseDown] = useState(false);
   const [instructionsDividerMouseDown, setInstructionsDividerMouseDown] =
     useState(false);
+  const [editorSize, setEditorSize] = useState(50);
   const [codeEditorHeight, setCodeEditorHeight] = useState(0);
-  const [editorSize, setEditorSize] = useState(0);
-  const [instructionsHeight, setInstructionsHeight] = useState(0);
+  const [instructionsHeight, setInstructionsHeight] = useState(50);
 
   const editorDividerRef = useRef<HTMLDivElement>(null);
   const previewDividerRef = useRef<HTMLDivElement>(null);
@@ -81,8 +83,9 @@ export const CodeEditor = ({
     <div
       ref={editorContainerRef}
       className={
-        "flex gap-1 items-center h-full w-full bg-transparent p-1 relative overflow-x-scroll md:overflow-x-hidden lg:overflow-x-hidden flex-row"
+        "flex gap-1 items-center grow w-full bg-transparent relative overflow-x-scroll md:overflow-x-hidden lg:overflow-x-hidden flex-row rounded-lg"
       }
+      style={{ height: `${height}px` }}
       onMouseMove={(e) => {
         resizeEditor(e.clientX, e.clientY);
       }}
@@ -106,11 +109,11 @@ export const CodeEditor = ({
           <TextEditor />
         </div>
       </div>
-      <div className={`flex-col justify-center items-center h-full w-1.5`}>
+      <div className={`flex flex-col items-center h-full w-1.5`}>
         <div
           ref={editorDividerRef}
           id="editor-divider"
-          className={`bg-slate-400 rounded-full h-24 w-1.5 cursor-ew-resize`}
+          className={`bg-slate-400 rounded-full h-24 w-1.5 cursor-ew-resize my-auto`}
           onMouseDown={() => {
             setEditorDividerMouseDown(true);
           }}
@@ -122,7 +125,7 @@ export const CodeEditor = ({
         ></div>
       </div>
       <div
-        className={`flex-col max-w-full w-full grow shrink overflow-hidden min-w-[360px] md:min-w-0 rounded-lg relative gap-1`}
+        className={`flex flex-col max-w-full w-full grow shrink overflow-hidden min-w-[360px] md:min-w-0 rounded-lg relative gap-1`}
         style={{
           width: `${Math.min(Math.max(100 - (editorSize ?? 50), 0), 100)}%`,
           height: "100%",
@@ -133,13 +136,15 @@ export const CodeEditor = ({
             style={{
               height: `${instructionsHeight}%`,
             }}
-            className="flex min-w-[200px] border-2 border-slate-300 rounded-lg"
+            className="flex min-w-[200px] border border-slate-300 rounded-lg"
           >
             <InstructionsRenderer instructionsText={instructionsMarkdown} />
           </div>
         )}
         {instructionsHeight > 0 ? (
-          <div className={"flex-row justify-center items-center w-full h-1.5"}>
+          <div
+            className={"flex flex-row justify-center items-center w-full h-2.5"}
+          >
             <div
               className="bg-slate-400 rounded-full w-24 h-1.5 cursor-ns-resize"
               ref={previewDividerRef}
@@ -155,7 +160,7 @@ export const CodeEditor = ({
           </div>
         ) : (
           <div
-            className="mx-auto my-0.5 py-0.5 px-1 hover:border-slate-300"
+            className="mx-auto my-0.5 py-0.5 px-1 hover:border-slate-300 cursor-pointer"
             onClick={() => setInstructionsHeight(25)}
           >
             <div className="flex flex-row items-center gap-1">
@@ -164,8 +169,8 @@ export const CodeEditor = ({
             </div>
           </div>
         )}
-        <div className="w-full flex-1">
-          <div className="flex-col h-full w-full rounded-lg overflow-y-hidden border-2 border-slate-300">
+        <div className="w-full h-full">
+          <div className="flex-col h-full w-full rounded-lg overflow-y-hidden border border-slate-300">
             <CodeOutput />
           </div>
         </div>

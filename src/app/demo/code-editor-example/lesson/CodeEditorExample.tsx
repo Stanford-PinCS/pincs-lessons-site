@@ -2,6 +2,17 @@
 import { CodeEditor } from "@/components/CodeEditor/CodeEditor";
 import React from "react";
 
+const instructionsMarkdown = `
+
+# Hello world
+
+\`print\` is very important
+
+- Step 1
+- Step 2
+- Step 3
+`;
+
 export const CodeEditorExample: React.FC = () => {
   return (
     <div className="w-[100vw] h-[100vh] p-4">
@@ -9,8 +20,9 @@ export const CodeEditorExample: React.FC = () => {
         Try the coding lesson below!
       </h2>
       <CodeEditor
-        instructionsMarkdown="Hello world"
+        instructionsMarkdown={instructionsMarkdown}
         lessonId="test-code-editor"
+        height={600}
       />
     </div>
   );
