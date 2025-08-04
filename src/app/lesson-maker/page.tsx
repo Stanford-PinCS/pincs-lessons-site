@@ -1,7 +1,7 @@
 "use client";
 import { Puck, Data } from "@measured/puck";
 import "@measured/puck/puck.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { config } from "./puck.config";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -21,6 +21,8 @@ export default function Editor() {
   const [lessonDescription, setLessonDescription] = useState("");
   const [teacherResources, setTeacherResources] = useState("");
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const saveTimeout = useRef<NodeJS.Timeout | null>(null);
+  const secondsBeforeAutoSave = 5; // It will wait 5 seconds after they stop changing stuff to update the sessionStorage.
 
   useEffect(() => {
     setIsMounted(true);
@@ -52,8 +54,7 @@ export default function Editor() {
   }, []);
 
   useEffect(() => {
-    if (isMounted) {
-      // TODO: Make this less often...
+    function saveToSessionStorage() {
       sessionStorage.setItem(
         "slides",
         JSON.stringify(slides.map((slide) => slide.data))
@@ -62,7 +63,25 @@ export default function Editor() {
       sessionStorage.setItem("lessonTitle", lessonTitle);
       sessionStorage.setItem("lessonDescription", lessonDescription);
       sessionStorage.setItem("teacherResources", teacherResources);
+      console.count("saved");
     }
+
+    if (isMounted) {
+      if (saveTimeout.current) {
+        clearTimeout(saveTimeout.current);
+      }
+
+      saveTimeout.current = setTimeout(
+        saveToSessionStorage,
+        secondsBeforeAutoSave * 1000
+      );
+    }
+
+    return () => {
+      if (saveTimeout.current) {
+        clearTimeout(saveTimeout.current);
+      }
+    };
   }, [
     slides,
     currentSlideIndex,
