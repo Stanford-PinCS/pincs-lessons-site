@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
+import Code from "./Code";
 
 export default function UnityGame({ projectName }: { projectName: string }) {
   const { unityProvider, unload, isLoaded, loadingProgression } =
@@ -53,6 +54,12 @@ export default function UnityGame({ projectName }: { projectName: string }) {
       return (
         <div className="absolute top-[10svh] left-1/2 translate-x-[calc(-50%-40px)] bg-red-500 m-4 p-4 rounded-md text-white">
           ERROR: Failed to load Unity plugin.
+          <br />
+          <br />
+          Note: If you are a lesson builder, you may not have configured your
+          unity plugin correctly. Make sure you have put all your files into the{" "}
+          <Code>public/unity-builds/{projectName}/</Code> folder and named your
+          four files <Code>app.___</Code>.
         </div>
       );
     }

@@ -10,9 +10,9 @@ import Text from "@/components/Text";
 import TextQuizQuestion from "@/components/TextQuizQuestion";
 import MultiSelectQuizQuestion from "@/components/MultiSelectQuizQuestion";
 import Pickcode from "@/components/Pickcode";
-import { JSX } from "react";
 import UnityFrame from "@/components/UnityFrame";
-import { Fullscreen } from "lucide-react";
+import { JSX } from "react";
+import PlaceHolder from "@/components/PlaceHolder";
 
 const BlockColor = {
   type: "radio" as const,
@@ -282,6 +282,17 @@ export const config: Config = {
         return <UnityFrame projectName={projectName} fullscreen={fullscreen} />;
       },
     },
+    Custom: {
+      fields: {
+        name: TextType,
+      },
+      defaultProps: {
+        name: "custom",
+      },
+      render: ({ name }) => {
+        return <PlaceHolder name={name} />;
+      },
+    },
   },
   categories: {
     containers: {
@@ -295,6 +306,9 @@ export const config: Config = {
     },
     interactives: {
       components: ["Pickcode", "Unity"], // ..."Animation"],
+    },
+    advanced: {
+      components: ["Custom"],
     },
   },
   root: {

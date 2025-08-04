@@ -13,7 +13,9 @@ export default function UnityFrame({
     // If not in lesson mode, return place holder.
     return (
       <div className="w-full h-[500px] bg-gray-400 flex items-center justify-center">
-        <h1 className="text-white">Unity Component Placeholder</h1>
+        <h1 className="text-white">
+          Unity Component Placeholder: {projectName}
+        </h1>
       </div>
     );
   }

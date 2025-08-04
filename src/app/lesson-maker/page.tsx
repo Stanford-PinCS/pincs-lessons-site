@@ -1,5 +1,5 @@
 "use client";
-import { Puck, Data, Content } from "@measured/puck";
+import { Puck, Data, Content, ComponentData } from "@measured/puck";
 import "@measured/puck/puck.css";
 import { useState, useEffect, useRef } from "react";
 import { config } from "./puck.config";
@@ -8,6 +8,7 @@ import { saveAs } from "file-saver";
 import landingPageTemplate from "@/template/auto-landing-page.template";
 import lessonPageTemplate from "@/template/auto-lesson.template";
 import unityPageTemplate from "@/template/unity-page.template";
+import customComponentTemplate from "@/template/custom-component.template";
 
 export default function Editor() {
   type Slide = { id: number; data: Data };
@@ -142,6 +143,24 @@ export default function Editor() {
   const toKebabCase = (str: string) =>
     str.trim().toLowerCase().replace(/\s+/g, "-");
 
+  function getAll(
+    targetType: string,
+    content: Content<any>
+  ): ComponentData<any>[] {
+    let components = [];
+    for (let component of content) {
+      if (component?.type == targetType) {
+        components.push(component);
+      } else {
+        // Recurse on children.
+        if ("children" in component?.props) {
+          components.push(...getAll(targetType, component.props.children));
+        }
+      }
+    }
+    return components;
+  }
+
   const handleSaveZip = async () => {
     try {
       // Generate Zip object.
@@ -162,46 +181,55 @@ export default function Editor() {
       // Create main files.
       folder.file("lesson/content.json", lessonJson);
       folder.file("page.tsx", landingPageTemplate);
-      folder.file("lesson/page.tsx", lessonPageTemplate);
 
       // Create unity files.
-      function getAllUnityProjectNames(content: Content<any>): Set<string> {
-        let names = new Set<string>();
-        for (let component of content) {
-          if (!("type" in component)) continue; // It should have a type.
-          let type = component.type;
-          if (type == "Unity") {
-            // Bingo!
-            if ("projectName" in component.props) {
-              names.add(component.props.projectName);
-            }
-          } else {
-            // Recurse on children.
-            if ("children" in component?.props) {
-              names = names.union(
-                getAllUnityProjectNames(component.props.children)
-              );
-            }
-          }
-        }
-        return names;
-      }
+      const unityComponents = slides
+        .map((slide) => getAll("Unity", slide.data.content))
+        .flat(1);
       const projectNames: string[] = [
         ...new Set(
-          slides.flatMap((slide) => [
-            ...getAllUnityProjectNames(slide.data.content),
-          ])
+          unityComponents.map(
+            (unityComponent) => unityComponent?.props?.projectName
+          )
         ),
       ];
       for (const projectName of projectNames) {
-        const cleanProjectName = projectName.replace(/\s+/g, "").toLowerCase();
+        const cleanProjectName = projectName
+          ?.replace(/[^A-Za-z0-9_]/g, "")
+          .toLowerCase();
         folder.file(
           `lesson/${cleanProjectName}/page.tsx`,
-          unityPageTemplate.replace("{PROJECT_NAME}", cleanProjectName)
+          unityPageTemplate?.replace("{PROJECT_NAME}", cleanProjectName)
         );
       }
 
-      // TODO: Create custom placeholder files.
+      // Get custom component names.
+      const customComponents = slides
+        .map((slide) => getAll("Custom", slide.data.content))
+        .flat(1);
+      const customComponentNames: string[] = [
+        ...new Set(
+          customComponents.map(
+            (customComponent) => customComponent?.props?.name
+          )
+        ),
+      ];
+      let imports = "";
+      let components = "";
+      // Add each custom file.
+      for (const name of customComponentNames) {
+        const cleanName = name?.replace(/[^A-Za-z0-9_]/g, "");
+        imports += `import custom_${cleanName} from "./custom_${cleanName}";\n`;
+        components += `custom_${cleanName}: custom_${cleanName},`;
+        folder.file(`lesson/custom_${cleanName}.tsx`, customComponentTemplate);
+      }
+      // Add imports to main lesson file.
+      folder.file(
+        "lesson/page.tsx",
+        lessonPageTemplate
+          .replace("{CUSTOM_IMPORTS}", imports)
+          .replace("{CUSTOM_COMPONENTS}", components)
+      );
 
       // Save the Zip object to a file.
       const blob = await zip.generateAsync({ type: "blob" });

@@ -21,7 +21,7 @@ export default function Pickcode({
     // If not in lesson mode, return place holder.
     return (
       <div className="w-full h-[500px] bg-blue-400 flex items-center justify-center">
-        <h1 className="text-white">Pickcode Component Placeholder</h1>
+        <h1 className="text-white">Pickcode Component Placeholder: {name}</h1>
       </div>
     );
   }
