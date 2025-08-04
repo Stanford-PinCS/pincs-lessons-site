@@ -75,15 +75,7 @@ const MultiSelectQuizQuestion = ({
         </ul>
         {!submitted && (
           <button
-            style={{
-              marginTop: "5px",
-              marginBottom: "5px",
-              backgroundColor: "blue",
-              color: "white",
-              padding: "10px",
-              borderRadius: "10px",
-              cursor: "pointer",
-            }}
+            className="my-1 bg-blue-500 text-white p-2 rounded-md cursor-pointer"
             onClick={handleSubmit}
           >
             Submit

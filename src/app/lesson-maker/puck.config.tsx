@@ -13,6 +13,7 @@ import QuizQuestion from "@/components/QuizQuestion";
 import List from "@/components/List";
 import Text from "@/components/Text";
 import TextQuizQuestion from "@/components/TextQuizQuestion";
+import MultiSelectQuizQuestion from "@/components/MultiSelectQuizQuestion";
 
 const BlockColor = {
   type: "radio" as const,
@@ -151,6 +152,19 @@ export const config: Config = {
     },
     "Multiple Choice Quiz": {
       fields: {
+        mode: {
+          type: "radio",
+          options: [
+            {
+              label: "Single-Select",
+              value: "single",
+            },
+            {
+              label: "Multi-Select",
+              value: "multi",
+            },
+          ],
+        },
         question: TextType,
         choices: {
           type: "array",
@@ -174,6 +188,7 @@ export const config: Config = {
         },
       },
       defaultProps: {
+        mode: "single",
         question: "What's 1 + 1?",
         choices: [
           {
@@ -188,8 +203,14 @@ export const config: Config = {
           },
         ],
       },
-      render: ({ question, choices }) => {
-        return <QuizQuestion question={question} choices={choices} />;
+      render: ({ question, choices, mode }) => {
+        if (mode === "single") {
+          return <QuizQuestion question={question} choices={choices} />;
+        } else {
+          return (
+            <MultiSelectQuizQuestion question={question} choices={choices} />
+          );
+        }
       },
     },
     "Text Response": {
@@ -204,9 +225,9 @@ export const config: Config = {
         placeholder: "",
       },
       render: ({ question, answer, placeholder }) => {
-        //TODO: expore more of the regex to teachers.
-        //@ts-ignore
-        let pattern = RegExp.escape(answer.replace(/\s+/g, ""));
+        //TODO: expose more of the regex to teachers.
+        //@ts-ignore (for some reason it thinks RegExp.escape isn't a function).
+        let pattern = "^" + RegExp.escape(answer.replace(/\s+/g, "")) + "$";
         return (
           <TextQuizQuestion
             question={<Text>{question}</Text>}
