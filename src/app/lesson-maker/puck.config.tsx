@@ -98,7 +98,7 @@ export const config: Config = {
         );
       },
     },
-    ColorBox: {
+    "Color Box": {
       fields: {
         children: Slot,
         color: ColorBoxColor,
@@ -117,7 +117,7 @@ export const config: Config = {
         );
       },
     },
-    MultipleChoiceQuiz: {
+    "Multiple Choice Quiz": {
       fields: {
         question: TextType,
         choices: {

@@ -82,14 +82,7 @@ export default function Editor() {
         clearTimeout(saveTimeout.current);
       }
     };
-  }, [
-    slides,
-    currentSlideIndex,
-    isMounted,
-    lessonTitle,
-    lessonDescription,
-    teacherResources,
-  ]);
+  }, [slides, isMounted, lessonTitle, lessonDescription, teacherResources]);
 
   const handlePuckChange = (data: Data) => {
     const newSlides = [...slides];
