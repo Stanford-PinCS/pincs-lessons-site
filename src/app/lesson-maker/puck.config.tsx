@@ -11,7 +11,6 @@ import TextQuizQuestion from "@/components/TextQuizQuestion";
 import MultiSelectQuizQuestion from "@/components/MultiSelectQuizQuestion";
 import Pickcode from "@/components/Pickcode";
 import UnityFrame from "@/components/UnityFrame";
-import { JSX } from "react";
 import PlaceHolder from "@/components/PlaceHolder";
 import Embed from "@/components/Embed";
 import Animation from "@/components/Animation";
@@ -156,8 +155,8 @@ export const config: Config = {
         items: [{ text: "This is a list item" }],
       },
       render: ({ items, type }) => {
-        items = items.map((item: { text: string }) => item.text);
-        return <List type={type} items={items} />;
+        const mappedItems = items.map((item: { text: string }) => item.text);
+        return <List type={type} items={mappedItems} />;
       },
     },
     "Multiple Choice Quiz": {
