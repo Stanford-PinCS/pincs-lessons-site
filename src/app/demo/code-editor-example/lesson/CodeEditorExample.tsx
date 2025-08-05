@@ -3,7 +3,6 @@ import { CodeEditor } from "@/components/CodeEditor/CodeEditor";
 import React from "react";
 
 const instructionsMarkdown = `
-
 # Hello world
 
 \`print\` is very important

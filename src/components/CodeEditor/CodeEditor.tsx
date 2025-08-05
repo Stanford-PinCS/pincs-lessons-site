@@ -105,6 +105,7 @@ export const CodeEditor = ({
       instructionsDividerRef.current?.setPointerCapture(e.pointerId);
       setInstructionsDividerMouseDown(true);
       const stopListening = () => {
+        console.log("stopped listening");
         setInstructionsDividerMouseDown(false);
         instructionsDividerRef.current?.releasePointerCapture(e.pointerId);
         window.removeEventListener("pointerup", stopListening);
@@ -142,12 +143,7 @@ export const CodeEditor = ({
       // if you drag too small, fully collapse
       const newPercent =
         intendedPercent < 15 ? 0 : Math.min(intendedPercent, 80);
-
       setInstructionsHeight(newPercent);
-      if (newPercent === 0) {
-        // divider will be hidden now so mouseup won't fire
-        setInstructionsDividerMouseDown(false);
-      }
     }
   };
 
@@ -175,13 +171,9 @@ export const CodeEditor = ({
       onMouseMove={(e) => {
         resizeEditor(e.clientX, e.clientY);
       }}
-      onTouchMove={(e) => {
-        const touch = e.touches.item(0);
-        resizeEditor(touch.clientX, touch.clientY);
-      }}
     >
       <div
-        className={`w-full h-full min-w-[300px] md:min-w-0 rounded-lg shadow-md bg-slate-900`}
+        className={`w-full h-full min-w-[300px] md:min-w-0 rounded-lg bg-slate-900`}
         style={{
           width: `${Math.min(Math.max(editorSize ?? 50, 0), 100)}%`,
           height: "100%",
@@ -241,7 +233,11 @@ export const CodeEditor = ({
         ) : (
           <div
             className="mx-auto my-0.5 py-0.5 px-1 hover:border-slate-300 cursor-pointer"
-            onClick={() => setInstructionsHeight(25)}
+            // use pointer down instead of click since pointer up was firing
+            // here when the resizer had its pointer up fire causing onClick to fire
+            onPointerDown={() => {
+              setInstructionsHeight(25);
+            }}
           >
             <div className="flex flex-row items-center gap-1">
               <div className="text-sm text-slate-500">Show instructions</div>
@@ -249,10 +245,11 @@ export const CodeEditor = ({
             </div>
           </div>
         )}
-        <div className="w-full h-full">
-          <div className="flex-col h-full w-full rounded-lg overflow-y-hidden border border-slate-300">
-            <CodeOutput />
-          </div>
+        <div
+          className="flex-col rounded-lg overflow-y-hidden border border-slate-300"
+          style={{ height: `${100 - instructionsHeight}%` }}
+        >
+          <CodeOutput pluginId={""} runCode={() => {}} />
         </div>
       </div>
     </div>
