@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Text from "./Text";
 
 const MultiSelectQuizQuestion = ({
   question,
@@ -54,7 +55,7 @@ const MultiSelectQuizQuestion = ({
                   <span className="mr-3 font-medium">
                     {String.fromCharCode(65 + idx)}.
                   </span>{" "}
-                  {choice.text}
+                  <Text>{choice.text}</Text>
                 </label>
                 {isCorrect === true &&
                   submitted &&
@@ -66,7 +67,7 @@ const MultiSelectQuizQuestion = ({
                         color: choice.isCorrect ? "green" : "red",
                       }}
                     >
-                      {choice.explanation}
+                      <Text>{choice.explanation}</Text>
                     </div>
                   )}
               </li>

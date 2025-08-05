@@ -156,7 +156,7 @@ export const config: Config = {
         items: [{ text: "This is a list item" }],
       },
       render: ({ items, type }) => {
-        items = items.map((item: { text: string }) => item.text);
+        items = items.map((item: { text: string }) => <Text>{item.text}</Text>);
         return <List type={type} items={items} />;
       },
     },
@@ -309,6 +309,10 @@ export const config: Config = {
             {
               label: "OpenProcessing",
               value: "openprocessing",
+            },
+            {
+              label: "Desmos",
+              value: "desmos",
             },
             {
               label: "Other",

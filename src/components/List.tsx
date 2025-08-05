@@ -1,8 +1,9 @@
 import ReactKatex from "@pkasila/react-katex";
 import "katex/dist/katex.min.css";
 import React, { ReactNode } from "react";
+import Text from "./Text";
 
-type ListItem = string | ReactNode | { katex: string };
+type ListItem = string | string[];
 type ListType = "bulleted" | "numbered";
 
 export default function List({
@@ -18,11 +19,7 @@ export default function List({
       <>
         {items.map((item, id) => (
           <li key={id}>
-            {typeof item === "object" && item !== null && "katex" in item ? (
-              <ReactKatex>{(item as { katex: string }).katex}</ReactKatex>
-            ) : typeof item === "string" || React.isValidElement(item) ? (
-              item
-            ) : null}
+            <Text>{item}</Text>
           </li>
         ))}
       </>
