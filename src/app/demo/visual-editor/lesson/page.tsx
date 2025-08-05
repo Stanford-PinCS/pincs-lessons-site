@@ -1,6 +1,7 @@
 import AutomaticLesson from "@/components/AutomaticLesson";
-import lessonData from "./lesson.json";
+import lessonData from "./content.json";
 import { Metadata } from "next";
+
 
 export const metadata: Metadata = {
   title: lessonData.title,
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function () {
-  return <AutomaticLesson data={lessonData.slides}></AutomaticLesson>;
+  return (
+    <AutomaticLesson
+      data={lessonData.slides}
+      customComponents={{  }}
+    ></AutomaticLesson>
+  );
 }

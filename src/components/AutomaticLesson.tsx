@@ -14,7 +14,7 @@ export default function ({
   customComponents = {},
 }: {
   data: Data[];
-  customComponents: Record<string, React.ComponentType<any>>;
+  customComponents?: Record<string, React.ComponentType<any>>;
 }) {
   const lessonConfig: Config = {
     ...config,

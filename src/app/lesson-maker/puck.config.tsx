@@ -224,7 +224,7 @@ export const config: Config = {
       fields: {
         question: TextArea,
         answer: TextType,
-        placeHolder: TextType,
+        placeholder: TextType,
       },
       defaultProps: {
         question: "What's 1 + 2?",
@@ -295,11 +295,9 @@ export const config: Config = {
     },
   },
   categories: {
-    containers: {
-      components: ["Block", "Color Box"],
-    },
-    text: {
-      components: ["Paragraph", "List"],
+    basics: {
+      title: "Containers / Text",
+      components: ["Block", "Color Box", "Paragraph", "List"],
     },
     quizzes: {
       components: ["Multiple Choice Quiz", "Text Response"],
@@ -309,6 +307,7 @@ export const config: Config = {
     },
     advanced: {
       components: ["Custom"],
+      defaultExpanded: false,
     },
   },
   root: {
