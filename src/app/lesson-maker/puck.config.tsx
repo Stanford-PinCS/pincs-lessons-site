@@ -329,16 +329,29 @@ export const config: Config = {
         slides: {
           type: "array",
           arrayFields: {
-            components: Slot,
-            text: TextType,
+            content: Slot,
           },
+        },
+        animationType: {
+          type: "radio",
+          options: [
+            {
+              label: "Slides",
+              value: "slides",
+            },
+            {
+              label: "Cumulative",
+              value: "cumulative",
+            },
+          ],
         },
       },
       defaultProps: {
         slides: [],
+        animationType: "slides",
       },
-      render: ({ slides }) => {
-        return <Animation slides={slides} />;
+      render: ({ slides, animationType }) => {
+        return <Animation slides={slides} animationType={animationType} />;
       },
     },
   },
@@ -351,7 +364,7 @@ export const config: Config = {
       components: ["Multiple Choice Quiz", "Text Response"],
     },
     interactives: {
-      components: ["Pickcode", "Embed"], // ..."Animation"],
+      components: ["Pickcode", "Embed", "Animation"],
     },
     advanced: {
       components: ["Custom", "Unity"],

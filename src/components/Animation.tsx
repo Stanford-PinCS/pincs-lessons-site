@@ -4,8 +4,10 @@ import { JSXElementConstructor, useState } from "react";
 
 export default function Animation({
   slides,
+  animationType = "slides",
 }: {
-  slides: { components: JSXElementConstructor<any> }[];
+  slides: { content: JSXElementConstructor<any> }[];
+  animationType?: "slides" | "cumulative";
 }) {
   if (slides.length <= 0) {
     return <>An animation must have at least one slide.</>;
@@ -18,17 +20,10 @@ export default function Animation({
     return (
       <>
         {slides.map((slide, index) => {
-          const Components: any = slide.components;
-          return <Components key={index} />;
+          return <slide.content key={index} />;
         })}
       </>
     );
-  }
-
-  function goBack() {
-    if (index > 0) {
-      setIndex(index - 1);
-    }
   }
 
   function goNext() {
@@ -37,8 +32,35 @@ export default function Animation({
     }
   }
 
-  // Animation.
-  const { components: Components } = slides[index];
+  if (animationType === "cumulative") {
+    const visibleSlides = slides.slice(0, index + 1);
+    return (
+      <div>
+        {visibleSlides.map((slide, i) => {
+          return <slide.content key={i} />;
+        })}
+        {index < slides.length - 1 && (
+          <div className="flex justify-center items-center mt-4">
+            <button
+              className="bg-blue-500 p-3 rounded-md text-white"
+              onClick={goNext}
+            >
+              Next
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Default to "slides" animation
+  function goBack() {
+    if (index > 0) {
+      setIndex(index - 1);
+    }
+  }
+
+  const { content: Content } = slides[index];
   return (
     <div>
       <div className="flex justify-evenly items-center">
@@ -60,7 +82,7 @@ export default function Animation({
           Next
         </button>
       </div>
-      <Components />
+      <Content />
     </div>
   );
 }
