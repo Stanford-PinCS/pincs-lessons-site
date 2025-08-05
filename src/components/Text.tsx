@@ -16,11 +16,7 @@ import Emphasize from "./Emphasize";
  * For example, it uses *, **, `, $, and == to display italicized, bolded, code, LaTeX, and KeyTerm text.
  * Usage: <Text>==Wow==! **This is bold**, `this is code;` and $\pi \approx 3.14$.</Text>
  */
-export default function Text({
-  children,
-}: {
-  children: string | string[] | any;
-}) {
+export default function Text({ children }: { children: string | string[] }) {
   const [html, setHtml] = useState<string>("");
   const text = typeof children === "string" ? children : children.join("");
 

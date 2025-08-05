@@ -403,6 +403,7 @@ export default function Editor() {
 
     const handleDone = () => {
       setSlides(orderedSlides);
+      setCurrentSlideIndex(draggedIndex || 0);
       setIsEditing(false);
     };
 
