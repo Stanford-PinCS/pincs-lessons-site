@@ -13,6 +13,15 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  webpack: (config, { isServer }) => {
+    // Load template files as text
+    config.module.rules.push({
+      test: /\.template$/,
+      use: "raw-loader",
+    });
+
+    return config;
+  },
 };
 
 export default nextConfig;
