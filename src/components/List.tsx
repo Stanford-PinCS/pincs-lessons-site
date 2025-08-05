@@ -3,7 +3,7 @@ import "katex/dist/katex.min.css";
 import React, { ReactNode } from "react";
 import Text from "./Text";
 
-type ListItem = string | string[];
+type ListItem = string | string[] | ReactNode;
 type ListType = "bulleted" | "numbered";
 
 export default function List({
@@ -19,7 +19,13 @@ export default function List({
       <>
         {items.map((item, id) => (
           <li key={id}>
-            <Text>{item}</Text>
+            {typeof item == "string" ||
+            (Array.isArray(item) &&
+              item.every((x) => typeof x === "string")) ? (
+              <Text>{item}</Text>
+            ) : (
+              item
+            )}
           </li>
         ))}
       </>
