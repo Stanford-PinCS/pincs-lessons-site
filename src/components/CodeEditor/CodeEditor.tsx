@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { TextEditor } from "./TextEditor";
 import InstructionsRenderer from "./MarkdownRenderer";
 import { ChevronDownIcon } from "lucide-react";
@@ -13,31 +13,56 @@ export const CodeEditor = ({
   instructionsMarkdown: string;
   height: number;
 }) => {
-  const [editorDividerMouseDown, setEditorDividerMouseDown] = useState(false);
-  const [instructionsDividerMouseDown, setInstructionsDividerMouseDown] =
-    useState(false);
   const [editorSize, setEditorSize] = useState(50);
   const [codeEditorHeight, setCodeEditorHeight] = useState(0);
   const [instructionsHeight, setInstructionsHeight] = useState(50);
+  const [instructionsStep, changeStep] = useState("");
 
-  const editorDividerRef = useRef<HTMLDivElement>(null);
-  const previewDividerRef = useRef<HTMLDivElement>(null);
   const editorContainerRef = useRef<HTMLDivElement>(null);
   const codeEditorContainerRef = useRef<HTMLDivElement>(null);
+
+  // Resizing code window
+  const editorDividerRef = useRef<HTMLDivElement>(null);
+  const [editorDividerMouseDown, setEditorDividerMouseDown] = useState(false);
+
+  const onEditorDividerPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      editorDividerRef.current?.setPointerCapture(e.pointerId);
+      setEditorDividerMouseDown(true);
+      const stopListening = () => {
+        setEditorDividerMouseDown(false);
+        editorDividerRef.current?.releasePointerCapture(e.pointerId);
+        window.removeEventListener("pointerup", stopListening);
+      };
+      window.addEventListener("pointerup", stopListening);
+    },
+    [editorDividerRef, setEditorDividerMouseDown]
+  );
+
+  // Resizing instructions window
+  const instructionsDividerRef = useRef<HTMLDivElement>(null);
+  const [instructionsDividerMouseDown, setInstructionsDividerMouseDown] =
+    useState(false);
+
+  const onInstructionsDividerPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      instructionsDividerRef.current?.setPointerCapture(e.pointerId);
+      setInstructionsDividerMouseDown(true);
+      const stopListening = () => {
+        setInstructionsDividerMouseDown(false);
+        instructionsDividerRef.current?.releasePointerCapture(e.pointerId);
+        window.removeEventListener("pointerup", stopListening);
+      };
+      window.addEventListener("pointerup", stopListening);
+    },
+    [instructionsDividerRef, setInstructionsDividerMouseDown]
+  );
 
   useEffect(() => {
     if (codeEditorContainerRef.current) {
       setCodeEditorHeight(codeEditorContainerRef.current.clientHeight);
     }
   }, [codeEditorContainerRef]);
-
-  //   useOnOutside([editorDividerRef], () => {
-  //     setEditorDividerMouseDown(false);
-  //   });
-
-  //   useOnOutside([previewDividerRef], () => {
-  //     setInstructionsDividerMouseDown(false);
-  //   });
 
   const resizeEditor = (newX: number, newY: number) => {
     if (!editorContainerRef.current) {
@@ -114,14 +139,7 @@ export const CodeEditor = ({
           ref={editorDividerRef}
           id="editor-divider"
           className={`bg-slate-400 rounded-full h-24 w-1.5 cursor-ew-resize my-auto`}
-          onMouseDown={() => {
-            setEditorDividerMouseDown(true);
-          }}
-          onTouchStart={() => {
-            setEditorDividerMouseDown(true);
-          }}
-          onMouseUp={() => setEditorDividerMouseDown(false)}
-          onTouchEnd={() => setEditorDividerMouseDown(false)}
+          onPointerDown={onEditorDividerPointerDown}
         ></div>
       </div>
       <div
@@ -138,7 +156,11 @@ export const CodeEditor = ({
             }}
             className="flex min-w-[200px] border border-slate-300 rounded-lg"
           >
-            <InstructionsRenderer instructionsText={instructionsMarkdown} />
+            <InstructionsRenderer
+              instructionsText={instructionsMarkdown}
+              changeStep={changeStep}
+              // TODO: changing step broken
+            />
           </div>
         )}
         {instructionsHeight > 0 ? (
@@ -147,15 +169,8 @@ export const CodeEditor = ({
           >
             <div
               className="bg-slate-400 rounded-full w-24 h-1.5 cursor-ns-resize"
-              ref={previewDividerRef}
-              onMouseDown={() => {
-                setInstructionsDividerMouseDown(true);
-              }}
-              onTouchStart={() => {
-                setInstructionsDividerMouseDown(true);
-              }}
-              onMouseUp={() => setInstructionsDividerMouseDown(false)}
-              onTouchEnd={() => setInstructionsDividerMouseDown(false)}
+              ref={instructionsDividerRef}
+              onPointerDown={onInstructionsDividerPointerDown}
             ></div>
           </div>
         ) : (
