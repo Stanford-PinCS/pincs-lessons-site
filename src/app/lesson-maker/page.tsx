@@ -1,5 +1,5 @@
 "use client";
-import { Puck, Data, Content, ComponentData } from "@measured/puck";
+import { Puck, Data, Content, ComponentData, Render } from "@measured/puck";
 import "@measured/puck/puck.css";
 import { useState, useEffect, useRef } from "react";
 import { config } from "./puck.config";
@@ -23,6 +23,7 @@ export default function Editor() {
   const [lessonDescription, setLessonDescription] = useState("");
   const [teacherResources, setTeacherResources] = useState("");
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
   const secondsBeforeAutoSave = 5; // It will wait 5 seconds after they stop changing stuff to update the sessionStorage.
 
@@ -368,6 +369,99 @@ export default function Editor() {
     }
   };
 
+  const SlideReorderView = () => {
+    const [orderedSlides, setOrderedSlides] = useState(slides);
+    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+    const [dropIndex, setDropIndex] = useState<number | null>(null);
+
+    const handleDragStart = (
+      e: React.DragEvent<HTMLDivElement>,
+      index: number
+    ) => {
+      setDraggedIndex(index);
+      e.dataTransfer.effectAllowed = "move";
+    };
+
+    const handleDragOver = (
+      e: React.DragEvent<HTMLDivElement>,
+      index: number
+    ) => {
+      e.preventDefault();
+      if (draggedIndex === null) return;
+      if (index !== dropIndex) {
+        setDropIndex(index);
+      }
+    };
+
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+      e.preventDefault();
+      if (draggedIndex === null) return;
+
+      const newSlides = [...orderedSlides];
+      const [draggedSlide] = newSlides.splice(draggedIndex, 1);
+      newSlides.splice(index, 0, draggedSlide);
+
+      setOrderedSlides(newSlides);
+      setDraggedIndex(null);
+      setDropIndex(null);
+    };
+
+    const handleDragEnd = () => {
+      setDraggedIndex(null);
+      setDropIndex(null);
+    };
+
+    const handleDone = () => {
+      setSlides(orderedSlides);
+      setIsEditing(false);
+    };
+
+    return (
+      <div className="p-4 bg-gray-100 flex-grow overflow-y-auto">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-3xl font-bold text-gray-800">Reorder Slides</h2>
+            <button
+              onClick={handleDone}
+              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Done
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {orderedSlides.map((slide, index) => (
+              <div key={slide.id}>
+                {dropIndex === index && draggedIndex !== null && (
+                  <div className="h-48 w-full bg-blue-200 border-2 border-dashed border-blue-500 rounded-lg mb-4"></div>
+                )}
+                <div
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, index)}
+                  onDragOver={(e) => handleDragOver(e, index)}
+                  onDrop={(e) => handleDrop(e, index)}
+                  onDragEnd={handleDragEnd}
+                  onDragEnter={(e) => e.preventDefault()} // Necessary for drop to work
+                  className={`p-4 bg-white border rounded-lg shadow-md flex flex-col gap-4 transition-all duration-200 ${
+                    draggedIndex === index ? "opacity-50 scale-95" : ""
+                  }`}
+                >
+                  <div className="font-bold text-lg text-gray-600">
+                    Slide {index + 1}
+                  </div>
+                  <div className="aspect-square w-full border rounded-md overflow-hidden bg-gray-50">
+                    <div className="pointer-events-none transform scale-[0.25] origin-top-left w-[400%] h-[400%]">
+                      <Render config={config} data={slide.data} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="w-full h-screen flex flex-col">
       {/* Save Modal */}
@@ -482,6 +576,12 @@ export default function Editor() {
           >
             Insert After
           </button>
+          <button
+            onClick={() => setIsEditing(true)}
+            className="px-3 py-2 bg-green-600 hover:bg-green-700 rounded-md text-sm font-medium"
+          >
+            Edit
+          </button>
         </div>
         <div className="flex items-center gap-4">
           <button
@@ -506,45 +606,48 @@ export default function Editor() {
         </div>
       </div>
       {/* Main Page */}
-      {isMounted && (
-        <Puck
-          key={slides[currentSlideIndex].id}
-          config={config}
-          data={slides[currentSlideIndex].data}
-          onChange={handlePuckChange}
-        >
-          <div className="w-full h-[calc(100svh-4.5rem)] p-4 flex gap-4 bg-gray-100">
-            {/* Left Sidebar */}
-            <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px] overflow-y-scroll">
-              <h2 className="text-lg font-semibold">Components</h2>
-              <Puck.Components />
-              <h2 className="text-lg font-semibold mt-4">Outline</h2>
-              <Puck.Outline />
-              <button
-                onClick={deleteSlide}
-                onMouseLeave={() => setConfirmingDelete(false)}
-                disabled={slides.length <= 1}
-                className={`px-3 py-2 border-2 rounded-md text-sm shadow-lg font-medium disabled:opacity-50 ${
-                  confirmingDelete
-                    ? "bg-red-500 text-white border-red-700"
-                    : "hover:enabled:bg-red-500 border-red-500 text-red-500 hover:enabled:text-white"
-                }`}
-              >
-                {confirmingDelete ? "Click again to delete" : "Delete Slide"}
-              </button>
+      {isMounted &&
+        (isEditing ? (
+          <SlideReorderView />
+        ) : (
+          <Puck
+            key={slides[currentSlideIndex].id}
+            config={config}
+            data={slides[currentSlideIndex].data}
+            onChange={handlePuckChange}
+          >
+            <div className="w-full h-[calc(100svh-4.5rem)] p-4 flex gap-4 bg-gray-100">
+              {/* Left Sidebar */}
+              <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px] overflow-y-scroll">
+                <h2 className="text-lg font-semibold">Components</h2>
+                <Puck.Components />
+                <h2 className="text-lg font-semibold mt-4">Outline</h2>
+                <Puck.Outline />
+                <button
+                  onClick={deleteSlide}
+                  onMouseLeave={() => setConfirmingDelete(false)}
+                  disabled={slides.length <= 1}
+                  className={`px-3 py-2 border-2 rounded-md text-sm shadow-lg font-medium disabled:opacity-50 ${
+                    confirmingDelete
+                      ? "bg-red-500 text-white border-red-700"
+                      : "hover:enabled:bg-red-500 border-red-500 text-red-500 hover:enabled:text-white"
+                  }`}
+                >
+                  {confirmingDelete ? "Click again to delete" : "Delete Slide"}
+                </button>
+              </div>
+              {/* Center Preview */}
+              <div className="flex-grow border-2 border-white rounded-lg shadow-inner bg-white">
+                <Puck.Preview />
+              </div>
+              {/* Right Sidebar */}
+              <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px]">
+                <h2 className="text-lg font-semibold">Component Fields</h2>
+                <Puck.Fields />
+              </div>
             </div>
-            {/* Center Preview */}
-            <div className="flex-grow border-2 border-white rounded-lg shadow-inner bg-white">
-              <Puck.Preview />
-            </div>
-            {/* Right Sidebar */}
-            <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px]">
-              <h2 className="text-lg font-semibold">Component Fields</h2>
-              <Puck.Fields />
-            </div>
-          </div>
-        </Puck>
-      )}
+          </Puck>
+        ))}
     </div>
   );
 }
