@@ -156,7 +156,7 @@ export const config: Config = {
         items: [{ text: "This is a list item" }],
       },
       render: ({ items, type }) => {
-        items = items.map((item: { text: string }) => <Text>{item.text}</Text>);
+        items = items.map((item: { text: string }) => item.text);
         return <List type={type} items={items} />;
       },
     },
