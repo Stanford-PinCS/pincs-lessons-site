@@ -13,6 +13,8 @@ import Pickcode from "@/components/Pickcode";
 import UnityFrame from "@/components/UnityFrame";
 import { JSX } from "react";
 import PlaceHolder from "@/components/PlaceHolder";
+import Embed from "@/components/Embed";
+import Animation from "@/components/Animation";
 
 const BlockColor = {
   type: "radio" as const,
@@ -293,6 +295,52 @@ export const config: Config = {
         return <PlaceHolder name={name} />;
       },
     },
+    Embed: {
+      fields: {
+        src: TextType,
+        type: {
+          type: "radio",
+          options: [
+            {
+              label: "YouTube",
+              value: "youtube",
+            },
+            {
+              label: "OpenProcessing",
+              value: "openprocessing",
+            },
+            {
+              label: "Other",
+              value: "",
+            },
+          ],
+        },
+      },
+      defaultProps: {
+        src: "",
+        type: "",
+      },
+      render: ({ src, type }) => {
+        return <Embed src={src} type={type} />;
+      },
+    },
+    Animation: {
+      fields: {
+        slides: {
+          type: "array",
+          arrayFields: {
+            components: Slot,
+            text: TextType,
+          },
+        },
+      },
+      defaultProps: {
+        slides: [],
+      },
+      render: ({ slides }) => {
+        return <Animation slides={slides} />;
+      },
+    },
   },
   categories: {
     basics: {
@@ -303,11 +351,10 @@ export const config: Config = {
       components: ["Multiple Choice Quiz", "Text Response"],
     },
     interactives: {
-      components: ["Pickcode", "Unity"], // ..."Animation"],
+      components: ["Pickcode", "Embed"], // ..."Animation"],
     },
     advanced: {
-      components: ["Custom"],
-      defaultExpanded: false,
+      components: ["Custom", "Unity"],
     },
   },
   root: {
