@@ -249,7 +249,7 @@ const InlineCode: FC<PropsWithChildren<{ fontSize: number }>> = ({
   return (
     <span
       className="font-mono bg-slate-100 rounded-md px-1 py-[0.5] border border-slate-200"
-      style={{ fontSize, lineHeight: fontSize * 1.125 }}
+      style={{ fontSize }}
     >
       {children}
     </span>
@@ -264,14 +264,10 @@ const ListItem: FC<
   }>
 > = ({ children, type, index, fontSize }) => {
   if (type === "unordered") {
-    return (
-      <span style={{ fontSize, lineHeight: fontSize * 1.125 }}>
-        • {children}
-      </span>
-    );
+    return <span style={{ fontSize }}>• {children}</span>;
   }
   return (
-    <span style={{ fontSize, lineHeight: fontSize * 1.125 }}>
+    <span style={{ fontSize }}>
       {index + 1}. {children}
     </span>
   );
@@ -325,67 +321,55 @@ const markdownToJSXOverrides = (fontSize: number): MarkdownToJSX.Overrides => ({
   Collapsible,
   // block elements need w-full to take up space properly
   p: ({ ...rest }) => (
-    <span
-      className={`w-full align-middle`}
-      style={{ fontSize, lineHeight: fontSize * 1.125 }}
-      {...rest}
-    />
+    <span className={`w-full align-middle`} style={{ fontSize }} {...rest} />
   ),
-  span: <span style={{ fontSize, lineHeight: fontSize }} />,
+  span: <span style={{ fontSize }} />,
   strong: ({ ...rest }) => (
-    <span
-      className={"font-bold"}
-      style={{ fontSize, lineHeight: fontSize * 1.125 }}
-      {...rest}
-    />
+    <span className={"font-bold"} style={{ fontSize }} {...rest} />
   ),
   em: ({ ...rest }) => (
-    <span
-      className={"italic"}
-      style={{ fontSize, lineHeight: fontSize * 1.125 }}
-      {...rest}
-    />
+    <span className={"italic"} style={{ fontSize }} {...rest} />
   ),
-  br: () => <br style={{ fontSize, lineHeight: fontSize * 1.125 }} />,
+  br: () => <br style={{ fontSize }} />,
   h1: ({ ...rest }) => (
     <h1
       className={"text-4xl w-full font-bold"}
-      style={{ fontSize: fontSize * 2.25, lineHeight: fontSize * 2.25 }}
+      style={{ fontSize: fontSize * 2.25 }}
       {...rest}
     />
   ),
   h2: ({ ...rest }) => (
     <h2
       className={"text-3xl w-full font-bold"}
-      style={{ fontSize: fontSize * 1.875, lineHeight: fontSize * 1.875 }}
+      style={{ fontSize: fontSize * 1.875 }}
       {...rest}
     />
   ),
   h3: ({ ...rest }) => (
     <h3
       className={"text-2xl w-full font-bold"}
-      style={{ fontSize: fontSize * 1.5, lineHeight: fontSize * 1.5 }}
+      style={{ fontSize: fontSize * 1.5 }}
       {...rest}
     />
   ),
   h4: ({ ...rest }) => (
     <h4
       className={"text-xl w-full font-bold"}
-      style={{ fontSize: fontSize * 1.25, lineHeight: fontSize * 1.25 }}
+      style={{ fontSize: fontSize * 1.25 }}
       {...rest}
     />
   ),
   h5: ({ ...rest }) => (
     <h5
       className={"text-lg w-full font-bold"}
-      style={{ fontSize: fontSize * 1.125, lineHeight: fontSize * 1.125 }}
+      style={{ fontSize: fontSize * 1.125 }}
       {...rest}
     />
   ),
   h6: ({ ...rest }) => (
     <h6
       className={"text-base w-full font-bold"}
-      style={{ fontSize, lineHeight: fontSize }}
+      style={{ fontSize }}
       {...rest}
     />
   ),
@@ -406,7 +390,7 @@ const markdownToJSXOverrides = (fontSize: number): MarkdownToJSX.Overrides => ({
   ul: (props) => <UnorderedList fontSize={fontSize} {...props} />,
   ol: (props) => <OrderedList fontSize={fontSize} {...props} />,
   li: ({ children, ...props }) => (
-    <span style={{ fontSize, lineHeight: fontSize * 1.125 }} {...props}>
+    <span style={{ fontSize }} {...props}>
       {children}
     </span>
   ),
