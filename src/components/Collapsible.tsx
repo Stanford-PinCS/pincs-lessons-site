@@ -1,3 +1,5 @@
+"use client";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const Collapsible = ({
@@ -7,7 +9,10 @@ const Collapsible = ({
   children: React.ReactNode;
   ExampleContent: React.ReactNode;
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(() =>
+    pathname.includes("/lesson-maker")
+  );
   const toggle = () => {
     setIsOpen(!isOpen);
   };

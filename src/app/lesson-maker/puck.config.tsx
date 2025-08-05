@@ -15,6 +15,7 @@ import { JSX } from "react";
 import PlaceHolder from "@/components/PlaceHolder";
 import Embed from "@/components/Embed";
 import Animation from "@/components/Animation";
+import Collapsible from "@/components/Collapsible";
 
 const BlockColor = {
   type: "radio" as const,
@@ -354,6 +355,28 @@ export const config: Config = {
         return <Animation slides={slides} animationType={animationType} />;
       },
     },
+    Collapsible: {
+      fields: {
+        shown: TextType,
+        hidden: TextType,
+      },
+      defaultProps: {
+        shown: "This is always visible",
+        hidden: "This is visible when you click on the component.",
+      },
+      render: ({ shown, hidden }) => {
+        return (
+          <Collapsible
+            children={
+              <div className="inline-block">
+                <Text>{shown}</Text>
+              </div>
+            }
+            ExampleContent={<Text>{hidden}</Text>}
+          />
+        );
+      },
+    },
   },
   categories: {
     basics: {
@@ -364,7 +387,7 @@ export const config: Config = {
       components: ["Multiple Choice Quiz", "Text Response"],
     },
     interactives: {
-      components: ["Pickcode", "Embed", "Animation"],
+      components: ["Pickcode", "Embed", "Animation", "Collapsible"],
     },
     advanced: {
       components: ["Custom", "Unity"],
