@@ -220,7 +220,7 @@ export default function Editor() {
       // Add each custom file.
       for (const name of customComponentNames) {
         const cleanName = name?.replace(/[^A-Za-z0-9_]/g, "");
-        imports += `import custom_${cleanName} from "./custom_${cleanName}";\n`;
+        imports += `import custom_${cleanName} from \"./custom_${cleanName}\";\n`;
         components += `custom_${cleanName}: custom_${cleanName},`;
         folder.file(`lesson/custom_${cleanName}.tsx`, customComponentTemplate);
       }
@@ -372,7 +372,6 @@ export default function Editor() {
   const SlideReorderView = () => {
     const [orderedSlides, setOrderedSlides] = useState(slides);
     const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-    const [dropIndex, setDropIndex] = useState<number | null>(null);
 
     const handleDragStart = (
       e: React.DragEvent<HTMLDivElement>,
@@ -387,28 +386,18 @@ export default function Editor() {
       index: number
     ) => {
       e.preventDefault();
-      if (draggedIndex === null) return;
-      if (index !== dropIndex) {
-        setDropIndex(index);
-      }
-    };
-
-    const handleDrop = (e: React.DragEvent<HTMLDivElement>, index: number) => {
-      e.preventDefault();
-      if (draggedIndex === null) return;
+      if (draggedIndex === null || draggedIndex === index) return;
 
       const newSlides = [...orderedSlides];
       const [draggedSlide] = newSlides.splice(draggedIndex, 1);
       newSlides.splice(index, 0, draggedSlide);
 
       setOrderedSlides(newSlides);
-      setDraggedIndex(null);
-      setDropIndex(null);
+      setDraggedIndex(index);
     };
 
     const handleDragEnd = () => {
       setDraggedIndex(null);
-      setDropIndex(null);
     };
 
     const handleDone = () => {
@@ -430,28 +419,24 @@ export default function Editor() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {orderedSlides.map((slide, index) => (
-              <div key={slide.id}>
-                {dropIndex === index && draggedIndex !== null && (
-                  <div className="h-48 w-full bg-blue-200 border-2 border-dashed border-blue-500 rounded-lg mb-4"></div>
-                )}
-                <div
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, index)}
-                  onDragOver={(e) => handleDragOver(e, index)}
-                  onDrop={(e) => handleDrop(e, index)}
-                  onDragEnd={handleDragEnd}
-                  onDragEnter={(e) => e.preventDefault()} // Necessary for drop to work
-                  className={`p-4 bg-white border rounded-lg shadow-md flex flex-col gap-4 transition-all duration-200 ${
-                    draggedIndex === index ? "opacity-50 scale-95" : ""
-                  }`}
-                >
-                  <div className="font-bold text-lg text-gray-600">
-                    Slide {index + 1}
-                  </div>
-                  <div className="aspect-square w-full border rounded-md overflow-hidden bg-gray-50">
-                    <div className="pointer-events-none transform scale-[0.25] origin-top-left w-[400%] h-[400%]">
-                      <Render config={config} data={slide.data} />
-                    </div>
+              <div
+                key={slide.id}
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragOver={(e) => handleDragOver(e, index)}
+                onDragEnd={handleDragEnd}
+                className={`p-4 bg-white border rounded-lg shadow-md flex flex-col gap-4 transition-all duration-200 ${
+                  draggedIndex === index
+                    ? "opacity-50 scale-95 shadow-2xl"
+                    : "hover:shadow-lg"
+                }`}
+              >
+                <div className="font-bold text-lg text-gray-600">
+                  Slide {index + 1}
+                </div>
+                <div className="aspect-square w-full border rounded-md overflow-hidden">
+                  <div className="pointer-events-none transform scale-[0.3] origin-top-left w-[400%] h-[400%]">
+                    <Render config={config} data={slide.data} />
                   </div>
                 </div>
               </div>
