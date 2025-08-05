@@ -1,25 +1,81 @@
+"use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { TextEditor } from "./TextEditor";
 import InstructionsRenderer from "./MarkdownRenderer";
 import { ChevronDownIcon } from "lucide-react";
 import CodeOutput from "./CodeOutput";
 
+const getInitialEditorState = (
+  lessonId: string,
+  starterCode: string | undefined
+): {
+  initialCode: string;
+  initialEditorSize: number;
+  initialInstructionsHeight: number;
+  initialInstructionsStep: string;
+} => {
+  const defaultEditorSize = 50;
+  const defaultInstructionsHeight = 50;
+
+  const editorStateFromLocalStorage = localStorage.getItem(lessonId);
+  if (editorStateFromLocalStorage) {
+    try {
+      const lessonAndPreferences = JSON.parse(editorStateFromLocalStorage);
+      return {
+        initialCode: lessonAndPreferences["userCode"] || "",
+        initialEditorSize:
+          lessonAndPreferences["editorSize"] || defaultEditorSize,
+        initialInstructionsHeight:
+          lessonAndPreferences["instructionsHeight"] ||
+          defaultInstructionsHeight,
+        initialInstructionsStep: lessonAndPreferences["instructionsStep"] || "",
+      };
+    } catch (e) {
+      console.error("invalid json for lesson ", lessonId);
+    }
+  }
+  return {
+    initialCode: starterCode || "",
+    initialEditorSize: defaultEditorSize,
+    initialInstructionsHeight: defaultInstructionsHeight,
+    initialInstructionsStep: "",
+  };
+};
+
 export const CodeEditor = ({
   lessonId,
   instructionsMarkdown,
   height,
+  starterCode,
+  language,
 }: {
   lessonId: string;
   instructionsMarkdown: string;
   height: number;
+  starterCode?: string;
+  language: "python" | "javascript";
 }) => {
   const [editorSize, setEditorSize] = useState(50);
-  const [codeEditorHeight, setCodeEditorHeight] = useState(0);
   const [instructionsHeight, setInstructionsHeight] = useState(50);
-  const [instructionsStep, changeStep] = useState("");
+  const [userCode, setUserCode] = useState("");
+  const [instructionsStep, setInstructionsStep] = useState("");
 
   const editorContainerRef = useRef<HTMLDivElement>(null);
   const codeEditorContainerRef = useRef<HTMLDivElement>(null);
+
+  // initialize editor
+  useEffect(() => {
+    const {
+      initialCode,
+      initialEditorSize,
+      initialInstructionsHeight,
+      initialInstructionsStep,
+    } = getInitialEditorState(lessonId, starterCode);
+    setEditorSize(initialEditorSize);
+    setInstructionsHeight(initialInstructionsHeight);
+    setUserCode(initialCode);
+    setInstructionsStep(initialInstructionsStep);
+  }, []);
 
   // Resizing code window
   const editorDividerRef = useRef<HTMLDivElement>(null);
@@ -58,12 +114,6 @@ export const CodeEditor = ({
     [instructionsDividerRef, setInstructionsDividerMouseDown]
   );
 
-  useEffect(() => {
-    if (codeEditorContainerRef.current) {
-      setCodeEditorHeight(codeEditorContainerRef.current.clientHeight);
-    }
-  }, [codeEditorContainerRef]);
-
   const resizeEditor = (newX: number, newY: number) => {
     if (!editorContainerRef.current) {
       return;
@@ -99,10 +149,21 @@ export const CodeEditor = ({
         setInstructionsDividerMouseDown(false);
       }
     }
-    if (codeEditorContainerRef.current) {
-      setCodeEditorHeight(codeEditorContainerRef.current.clientHeight);
-    }
   };
+
+  // Persist user code and preferences
+  useEffect(() => {
+    if (typeof window === undefined) return;
+    localStorage.setItem(
+      lessonId,
+      JSON.stringify({
+        userCode,
+        editorSize,
+        instructionsHeight,
+        instructionsStep,
+      })
+    );
+  }, [userCode, editorSize, instructionsHeight, instructionsStep]);
 
   return (
     <div
@@ -131,7 +192,11 @@ export const CodeEditor = ({
           ref={codeEditorContainerRef}
           id="code-editor"
         >
-          <TextEditor />
+          <TextEditor
+            text={userCode}
+            setText={setUserCode}
+            language={language}
+          />
         </div>
       </div>
       <div className={`flex flex-col items-center h-full w-1.5`}>
@@ -158,7 +223,7 @@ export const CodeEditor = ({
           >
             <InstructionsRenderer
               instructionsText={instructionsMarkdown}
-              changeStep={changeStep}
+              changeStep={setInstructionsStep}
               // TODO: changing step broken
             />
           </div>
