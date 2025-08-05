@@ -1,12 +1,15 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
+import { useEffect } from "react";
 
-export const TextEditor = () => {
-  const [monacoEditor, setMonacoEditor] = useState<typeof editor | undefined>(
-    undefined
-  );
-  const [editorRef, setEditorRef] = useState<editor.IStandaloneCodeEditor>();
-
+export const TextEditor = ({
+  text,
+  setText,
+  language,
+}: {
+  text: string;
+  setText: (n: string) => void;
+  language: "python" | "javascript";
+}) => {
   useEffect(() => {
     // For tooltip styling. See index.css
     document.body.classList.add("monaco-editor");
@@ -27,6 +30,9 @@ export const TextEditor = () => {
           automaticLayout: true,
           wordWrap: "on",
         }}
+        value={text}
+        onChange={(n: string | undefined) => setText(n || "")}
+        defaultLanguage={language}
       />
     </div>
   );

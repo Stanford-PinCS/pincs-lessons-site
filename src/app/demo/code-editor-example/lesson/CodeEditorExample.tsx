@@ -23,6 +23,7 @@ export const CodeEditorExample: React.FC = () => {
         instructionsMarkdown={instructionsMarkdown}
         lessonId="test-code-editor"
         height={600}
+        language={"python"}
       />
     </div>
   );
