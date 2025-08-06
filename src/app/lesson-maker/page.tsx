@@ -614,7 +614,7 @@ export default function Editor() {
           </button>
           <button
             onClick={() => setIsEditing(true)}
-            className="px-3 py-2 bg-blue-600 hover:bg-green-700 rounded-md text-sm font-medium"
+            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium"
           >
             Edit
           </button>
