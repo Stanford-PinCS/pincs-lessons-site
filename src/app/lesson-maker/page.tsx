@@ -587,7 +587,7 @@ export default function Editor() {
             onClick={insertSlideBefore}
             className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium"
           >
-            Insert Before
+            Insert before
           </button>
           <button
             onClick={prevSlide}
@@ -610,7 +610,7 @@ export default function Editor() {
             onClick={insertSlideAfter}
             className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium"
           >
-            Insert After
+            Insert after
           </button>
           <button
             onClick={() => setIsEditing(true)}
@@ -643,7 +643,7 @@ export default function Editor() {
             onClick={handlePreview}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium"
           >
-            Open Preview
+            Open preview
           </button>
         </div>
       </div>
