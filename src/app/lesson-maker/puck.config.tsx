@@ -62,6 +62,16 @@ const TextType = { type: "text" as const };
 const TextArea = { type: "textarea" as const };
 const Slot = { type: "slot" as const };
 
+function shorten(text: string) {
+  if (!text) return "(Empty)";
+
+  if (text.length > 10) {
+    return text.substring(0, 8) + "...";
+  } else {
+    return text;
+  }
+}
+
 // Note: Certain tailwind features break down, so styles may need to be slightly different here than in coding React.
 // Ex: spacing-y-4 will add 1rem between items of a container, which adds a margin to the bottom of each component
 // except the last one. However, here, with the way it's rendered, tailwind doesn't find the children to add margin
@@ -150,6 +160,7 @@ export const config: Config = {
           arrayFields: {
             text: TextType,
           },
+          getItemSummary: (item) => shorten(item.text),
         },
       },
       defaultProps: {
@@ -196,6 +207,7 @@ export const config: Config = {
             },
             explanation: TextType,
           },
+          getItemSummary: (item) => shorten(item.text),
         },
       },
       defaultProps: {
@@ -337,6 +349,7 @@ export const config: Config = {
           arrayFields: {
             content: Slot,
           },
+          getItemSummary: (item, index) => `Slide #${(index || 0) + 1}`,
         },
         animationType: {
           type: "radio",
@@ -467,7 +480,7 @@ export const config: Config = {
         if (url == "" || description == "") {
           return (
             <ErrorMessage
-              message="An image must have a URL and description (the description helps accessibility)."
+              message="An image must have a URL and description (the description helps with accessibility)."
               pulsing={true}
             />
           );
