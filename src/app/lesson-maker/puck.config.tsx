@@ -62,11 +62,11 @@ const TextType = { type: "text" as const };
 const TextArea = { type: "textarea" as const };
 const Slot = { type: "slot" as const };
 
-function shorten(text: string) {
+function shorten(text: string, cutoff = 10) {
   if (!text) return "(Empty)";
 
-  if (text.length > 10) {
-    return text.substring(0, 8) + "...";
+  if (text.length > Math.max(cutoff, 3)) {
+    return text.substring(0, cutoff - 2) + "...";
   } else {
     return text;
   }
@@ -160,6 +160,7 @@ export const config: Config = {
           arrayFields: {
             text: TextType,
           },
+          min: 1,
           getItemSummary: (item) => shorten(item.text),
         },
       },
@@ -207,7 +208,9 @@ export const config: Config = {
             },
             explanation: TextType,
           },
-          getItemSummary: (item) => shorten(item.text),
+          min: 1,
+          getItemSummary: (item) =>
+            (item.isCorrect ? "✅" : "❌") + shorten(item.text, 9),
         },
       },
       defaultProps: {
@@ -349,6 +352,7 @@ export const config: Config = {
           arrayFields: {
             content: Slot,
           },
+          min: 1,
           getItemSummary: (item, index) => `Slide #${(index || 0) + 1}`,
         },
         animationType: {
