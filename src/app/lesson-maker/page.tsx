@@ -270,12 +270,16 @@ export default function Editor() {
         await writable.write(blob);
         await writable.close();
         setIsSaveModalOpen(false);
-      } catch (err) {
-        // Handle errors, such as the user canceling the save dialog
-        console.error("Error saving file:", err);
+      } catch (err: any) {
+        // Handle errors, such as the user canceling the save dialog.
+        // If the user didn't hit cancel, show them a message.
+        if (!err?.message?.includes("user aborted a request")) {
+          console.error("Error saving file:", err);
+          alert(`Error saving file: ${err?.message}`);
+        }
       }
     } else {
-      // Fallback for browsers that do not support the API
+      // Fallback for browsers that do not support the API.
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -498,11 +502,13 @@ export default function Editor() {
     );
   };
 
+  const reorderingClasses = isSaveModalOpen ? "pointer-events-none" : "";
+
   return (
     <div className="w-full h-screen flex flex-col">
       {/* Save Modal */}
       {isSaveModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-lg flex-col items-center justify-center">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">
               Save Lesson
@@ -578,7 +584,9 @@ export default function Editor() {
         </div>
       )}
       {/* Tool Bar */}
-      <div className="bg-gray-800 text-white p-4 flex items-center justify-between shadow-md">
+      <div
+        className={`${reorderingClasses} bg-gray-800 text-white p-4 flex items-center justify-between shadow-md`}
+      >
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-bold">PinCS Lesson Maker</h1>
         </div>
@@ -586,14 +594,14 @@ export default function Editor() {
           <button
             onClick={insertSlideBefore}
             disabled={isEditing}
-            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium disabled:opacity-50"
+            className="px-3 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Insert before
           </button>
           <button
             onClick={prevSlide}
             disabled={isEditing || currentSlideIndex === 0}
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md disabled:opacity-50"
+            className="px-4 py-2 bg-gray-700 enabled:hover:bg-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
           >
             &larr;
           </button>
@@ -605,21 +613,21 @@ export default function Editor() {
           <button
             onClick={nextSlide}
             disabled={isEditing || currentSlideIndex === slides.length - 1}
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md disabled:opacity-50"
+            className="px-4 py-2 bg-gray-700 enabled:hover:bg-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
           >
             &rarr;
           </button>
           <button
             onClick={insertSlideAfter}
             disabled={isEditing}
-            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium disabled:opacity-50"
+            className="px-3 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Insert after
           </button>
           <button
             onClick={() => setIsEditing(true)}
             disabled={isEditing}
-            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium disabled:opacity-50"
+            className="px-3 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Edit
           </button>
@@ -627,13 +635,13 @@ export default function Editor() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsSaveModalOpen(true)}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium"
+            className="px-4 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md font-medium"
           >
             Save
           </button>
           <label
             htmlFor="load-lesson"
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium cursor-pointer"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium"
           >
             Load
           </label>
@@ -646,7 +654,7 @@ export default function Editor() {
           />
           <button
             onClick={handlePreview}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium"
+            className="px-4 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md font-medium"
           >
             Open preview
           </button>
@@ -663,7 +671,9 @@ export default function Editor() {
             data={slides[currentSlideIndex].data}
             onChange={handlePuckChange}
           >
-            <div className="w-full h-[calc(100svh-4.5rem)] p-4 flex gap-4 bg-gray-100">
+            <div
+              className={`${reorderingClasses} w-full h-[calc(100svh-4.5rem)] p-4 flex gap-4 bg-gray-100`}
+            >
               {/* Left Sidebar */}
               <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px] overflow-y-scroll">
                 <h2 className="text-lg font-semibold">Components</h2>
@@ -674,7 +684,7 @@ export default function Editor() {
                   onClick={deleteSlide}
                   onMouseLeave={() => setConfirmingDelete(false)}
                   disabled={slides.length <= 1}
-                  className={`px-3 py-2 border-2 rounded-md text-sm shadow-lg font-medium disabled:opacity-50 ${
+                  className={`px-3 py-2 border-2 rounded-md text-sm shadow-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed ${
                     confirmingDelete
                       ? "bg-red-500 text-white border-red-700"
                       : "hover:enabled:bg-red-500 border-red-500 text-red-500 hover:enabled:text-white"
@@ -688,7 +698,7 @@ export default function Editor() {
                 <Puck.Preview />
               </div>
               {/* Right Sidebar */}
-              <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px]">
+              <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px] overflow-y-scroll">
                 <h2 className="text-lg font-semibold">Component Fields</h2>
                 <Puck.Fields />
               </div>

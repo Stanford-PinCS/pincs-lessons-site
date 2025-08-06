@@ -1,6 +1,8 @@
+import ErrorMessage from "./ErrorMessage";
+
 export default function Embed({ src, type }: { src: string; type: string }) {
   if (src == "") {
-    return <>Invalid URL</>;
+    return <ErrorMessage message="ERROR: Invalid URL" pulsing={true} />;
   }
   if (type == "youtube") {
     let url = new URL(src);

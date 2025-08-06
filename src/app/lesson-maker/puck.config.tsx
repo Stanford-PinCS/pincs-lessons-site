@@ -1,7 +1,7 @@
 "use client";
 import Block from "@/components/Block";
 import LessonWrapper from "@/components/LessonWrapper";
-import { Config, WithId, WithPuckProps } from "@measured/puck";
+import { Config, Fields } from "@measured/puck";
 import "katex/dist/katex.min.css";
 import ColorBox from "@/components/ColorBox";
 import QuizQuestion from "@/components/QuizQuestion";
@@ -11,12 +11,12 @@ import TextQuizQuestion from "@/components/TextQuizQuestion";
 import MultiSelectQuizQuestion from "@/components/MultiSelectQuizQuestion";
 import Pickcode from "@/components/Pickcode";
 import UnityFrame from "@/components/UnityFrame";
-import PlaceHolder from "@/components/PlaceHolder";
+import Placeholder from "@/components/Placeholder";
 import Embed from "@/components/Embed";
 import Animation from "@/components/Animation";
 import Collapsible from "@/components/Collapsible";
 import Image from "@/components/Image";
-import { Description } from "@headlessui/react";
+import ErrorMessage from "@/components/ErrorMessage";
 
 const BlockColor = {
   type: "radio" as const,
@@ -294,7 +294,7 @@ export const config: Config = {
         name: "custom",
       },
       render: ({ name }) => {
-        return <PlaceHolder name={name} />;
+        return <Placeholder name={`Custom Component - ${name}`} />;
       },
     },
     Embed: {
@@ -465,10 +465,20 @@ export const config: Config = {
         caption,
       }) => {
         if (url == "" || description == "") {
-          return <>An image must have a URL and description.</>;
+          return (
+            <ErrorMessage
+              message="An image must have a URL and description (the description helps accessibility)."
+              pulsing={true}
+            />
+          );
         }
         if (rights == false) {
-          return <>Please confirm you have rights to use this photo.</>;
+          return (
+            <ErrorMessage
+              message="Please confirm you have rights to use this photo (at the bottom of the right menu for the image settings)."
+              pulsing={true}
+            />
+          );
         }
         return (
           <Image

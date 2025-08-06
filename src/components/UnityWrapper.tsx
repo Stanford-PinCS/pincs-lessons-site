@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import Code from "./Code";
+import ErrorMessage from "./ErrorMessage";
 
 export default function UnityGame({ projectName }: { projectName: string }) {
   const { unityProvider, unload, isLoaded, loadingProgression } =
@@ -52,14 +53,12 @@ export default function UnityGame({ projectName }: { projectName: string }) {
     if (messageIndex > 0 && loadingProgression == 0) {
       // It should have loaded more than nothing by the time it gets to the second message...
       return (
-        <div className="absolute top-[10svh] left-1/2 translate-x-[calc(-50%-40px)] bg-red-500 m-4 p-4 rounded-md text-white">
-          ERROR: Failed to load Unity plugin.
-          <br />
-          <br />
-          Note: If you are a lesson builder, you may not have configured your
-          unity plugin correctly. Make sure you have put all your files into the{" "}
-          <Code>public/unity-builds/{projectName}/</Code> folder and named your
-          four files <Code>app.___</Code>.
+        <div className="absolute top-[10svh] left-1/2 translate-x-[calc(-50%-20px)]">
+          <ErrorMessage
+            message={`**ERROR: Failed to load Unity plugin.** (*Note: If you are a lesson builder, you may not have configured your unity
+            plugin correctly. Make sure you have put all your files into the
+            \`public/unity-builds/${projectName}/\` folder and named your four files \`app.___\`.*)`}
+          />
         </div>
       );
     }

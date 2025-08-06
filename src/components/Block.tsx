@@ -32,6 +32,8 @@ const Block: React.FC<BlockProps> = ({
   const path = usePathname();
   const previewMode =
     !path.split("/").includes("lesson") && !path.includes("/preview");
+  const lessonMakerMode =
+    path.includes("/lesson-maker") && !path.includes("/preview");
 
   const sectionFullscreenClasses =
     mode == "fullscreen" && !previewMode ? "w-screen mt-3 left-0 fixed" : "";
@@ -40,12 +42,18 @@ const Block: React.FC<BlockProps> = ({
       ? "fixed top-7 -translate-x-10 text-center w-full text-[min(4vw,2rem)]"
       : "";
 
+  const sectionLessonMakerStyle =
+    mode == "fullscreen" && lessonMakerMode ? "relative -translate-x-8" : "";
+
+  const h1LessonMakerStyle =
+    mode == "fullscreen" && lessonMakerMode ? "text-center" : "";
+
   return (
     <section
-      className={`border-l-4 pl-6 space-y-6 text-lg ${borderClasses[color]} ${sectionFullscreenClasses}`}
+      className={`border-l-4 pl-6 space-y-6 text-lg ${borderClasses[color]} ${sectionFullscreenClasses} ${sectionLessonMakerStyle}`}
     >
       <h1
-        className={`text-3xl font-bold mb-4 ${textClasses[color]} ${h1FullscreenClasses}`}
+        className={`text-3xl font-bold mb-4 ${textClasses[color]} ${h1FullscreenClasses} ${h1LessonMakerStyle}`}
       >
         {title}
       </h1>
