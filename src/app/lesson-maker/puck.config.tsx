@@ -15,6 +15,8 @@ import PlaceHolder from "@/components/PlaceHolder";
 import Embed from "@/components/Embed";
 import Animation from "@/components/Animation";
 import Collapsible from "@/components/Collapsible";
+import Image from "@/components/Image";
+import { Description } from "@headlessui/react";
 
 const BlockColor = {
   type: "radio" as const,
@@ -380,6 +382,83 @@ export const config: Config = {
         );
       },
     },
+    Image: {
+      fields: {
+        url: TextType,
+        description: TextType,
+        aspectRatio: {
+          type: "radio",
+          options: [
+            {
+              label: "Auto",
+              value: "auto",
+            },
+            {
+              label: "16/9",
+              value: "16/9",
+            },
+            {
+              label: "4/3",
+              value: "4/3",
+            },
+            {
+              label: "Square",
+              value: "1/1",
+            },
+          ],
+        },
+        widthMode: {
+          type: "radio",
+          options: [
+            {
+              label: "Half",
+              value: "half",
+            },
+            {
+              label: "Full",
+              value: "full",
+            },
+          ],
+        },
+        confirmed: {
+          type: "radio",
+          options: [
+            {
+              label:
+                "I have rights to use this image and have given it the proper attribution.",
+              value: true,
+            },
+            {
+              label: "I don't have rights to this image.",
+              value: false,
+            },
+          ],
+        },
+      },
+      defaultProps: {
+        url: "",
+        description: "",
+        aspectRatio: "auto",
+        widthMode: "half",
+        confirmed: false,
+      },
+      render: ({ url, description, aspectRatio, widthMode, confirmed }) => {
+        if (url == "" || description == "") {
+          return <>An image must have a URL and description.</>;
+        }
+        if (confirmed == false) {
+          return <>Please confirm you have rights to use this photo.</>;
+        }
+        return (
+          <Image
+            src={url}
+            alt={description}
+            aspectRatio={aspectRatio}
+            widthMode={widthMode}
+          />
+        );
+      },
+    },
   },
   categories: {
     basics: {
@@ -389,8 +468,8 @@ export const config: Config = {
     quizzes: {
       components: ["Multiple Choice Quiz", "Text Response"],
     },
-    interactives: {
-      components: ["Pickcode", "Embed", "Animation", "Collapsible"],
+    engagement: {
+      components: ["Pickcode", "Embed", "Animation", "Collapsible", "Image"],
     },
     advanced: {
       components: ["Custom", "Unity"],
