@@ -1,6 +1,6 @@
 import { Lesson, Subject, Tag } from "./types";
 
-const DEMO_LESSONS_HIDDEN = false;
+const DEMO_LESSONS_HIDDEN = true;
 const ARCHIVED_LESSONS_HIDDEN = true;
 
 const Lessons: Lesson[] = [
