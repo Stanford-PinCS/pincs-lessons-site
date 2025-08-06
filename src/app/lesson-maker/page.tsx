@@ -288,6 +288,18 @@ export default function Editor() {
     }
   };
 
+  const handlePreview = () => {
+    const lessonData = {
+      title: lessonTitle,
+      description: lessonDescription,
+      teacherResources: teacherResources,
+      slides: slides.map((slide) => slide.data),
+      version: "1.0",
+    };
+    localStorage.setItem("lessonPreview", JSON.stringify(lessonData));
+    window.open("./lesson-maker/preview", "_blank");
+  };
+
   const parseAndLoadLesson = (contents: string) => {
     try {
       const data = JSON.parse(contents);
@@ -627,6 +639,12 @@ export default function Editor() {
             className="hidden"
             onChange={loadLesson}
           />
+          <button
+            onClick={handlePreview}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium"
+          >
+            Open Preview
+          </button>
         </div>
       </div>
       {/* Main Page */}

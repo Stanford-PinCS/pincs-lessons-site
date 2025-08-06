@@ -30,7 +30,8 @@ const Block: React.FC<BlockProps> = ({
   };
 
   const path = usePathname();
-  const previewMode = !path.split("/").includes("lesson");
+  const previewMode =
+    !path.split("/").includes("lesson") && !path.includes("/preview");
 
   const sectionFullscreenClasses =
     mode == "fullscreen" && !previewMode ? "w-screen mt-3 left-0 fixed" : "";

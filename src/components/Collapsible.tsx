@@ -10,8 +10,8 @@ const Collapsible = ({
   ExampleContent: React.ReactNode;
 }) => {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(() =>
-    pathname.includes("/lesson-maker")
+  const [isOpen, setIsOpen] = useState(
+    () => pathname.includes("/lesson-maker") && !pathname.includes("/preview")
   );
   const toggle = () => {
     setIsOpen(!isOpen);

@@ -16,7 +16,7 @@ export default function Animation({
   const pathname = usePathname();
 
   // Slides Preview (shows all slides).
-  if (pathname.includes("/lesson-maker")) {
+  if (pathname.includes("/lesson-maker") && !pathname.includes("/preview")) {
     return (
       <>
         {slides.map((slide, index) => {
@@ -63,7 +63,7 @@ export default function Animation({
   const { content: Content } = slides[index];
   return (
     <div>
-      <div className="flex justify-evenly items-center">
+      <div className="flex justify-evenly gap-4 items-center mb-2">
         <button
           className="bg-blue-500 p-3 rounded-md text-white"
           onClick={goBack}
