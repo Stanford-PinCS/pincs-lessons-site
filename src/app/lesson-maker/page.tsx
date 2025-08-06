@@ -585,36 +585,41 @@ export default function Editor() {
         <div className="flex items-center gap-4">
           <button
             onClick={insertSlideBefore}
-            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium"
+            disabled={isEditing}
+            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium disabled:opacity-50"
           >
             Insert before
           </button>
           <button
             onClick={prevSlide}
-            disabled={currentSlideIndex === 0}
+            disabled={isEditing || currentSlideIndex === 0}
             className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md disabled:opacity-50"
           >
             &larr;
           </button>
           <span className="text-lg">
-            Slide {currentSlideIndex + 1} / {slides.length}
+            {isEditing
+              ? "Editing slides"
+              : `Slide ${currentSlideIndex + 1} / ${slides.length}`}
           </span>
           <button
             onClick={nextSlide}
-            disabled={currentSlideIndex === slides.length - 1}
+            disabled={isEditing || currentSlideIndex === slides.length - 1}
             className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md disabled:opacity-50"
           >
             &rarr;
           </button>
           <button
             onClick={insertSlideAfter}
-            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium"
+            disabled={isEditing}
+            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium disabled:opacity-50"
           >
             Insert after
           </button>
           <button
             onClick={() => setIsEditing(true)}
-            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium"
+            disabled={isEditing}
+            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium disabled:opacity-50"
           >
             Edit
           </button>
