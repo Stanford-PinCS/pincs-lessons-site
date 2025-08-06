@@ -386,6 +386,19 @@ export const config: Config = {
       fields: {
         url: TextType,
         description: TextType,
+        caption: {
+          type: "radio",
+          options: [
+            {
+              label: "On",
+              value: true,
+            },
+            {
+              label: "Off",
+              value: false,
+            },
+          ],
+        },
         aspectRatio: {
           type: "radio",
           options: [
@@ -420,7 +433,7 @@ export const config: Config = {
             },
           ],
         },
-        confirmed: {
+        rights: {
           type: "radio",
           options: [
             {
@@ -440,13 +453,21 @@ export const config: Config = {
         description: "",
         aspectRatio: "auto",
         widthMode: "half",
-        confirmed: false,
+        rights: false,
+        caption: true,
       },
-      render: ({ url, description, aspectRatio, widthMode, confirmed }) => {
+      render: ({
+        url,
+        description,
+        aspectRatio,
+        widthMode,
+        rights,
+        caption,
+      }) => {
         if (url == "" || description == "") {
           return <>An image must have a URL and description.</>;
         }
-        if (confirmed == false) {
+        if (rights == false) {
           return <>Please confirm you have rights to use this photo.</>;
         }
         return (
@@ -455,6 +476,7 @@ export const config: Config = {
             alt={description}
             aspectRatio={aspectRatio}
             widthMode={widthMode}
+            captionMode={caption}
           />
         );
       },

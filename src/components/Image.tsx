@@ -1,15 +1,18 @@
 import React from "react";
+import Text from "@/components/Text";
 
 export default function ResponsiveImage({
   src,
   alt,
   aspectRatio,
   widthMode,
+  captionMode,
 }: {
   src: string;
   alt: string;
   aspectRatio: string;
   widthMode: "half" | "full";
+  captionMode: boolean;
 }) {
   let aspectRatioClass = "";
   switch (aspectRatio) {
@@ -36,6 +39,7 @@ export default function ResponsiveImage({
         alt={alt}
         className={`${aspectRatioClass} w-full object-cover`}
       />
+      {captionMode && <div className="text-center text-sm">{alt}</div>}
     </div>
   );
 }
