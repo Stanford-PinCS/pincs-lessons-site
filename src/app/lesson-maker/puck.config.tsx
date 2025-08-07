@@ -34,6 +34,7 @@ const BlockColor = {
   ],
 };
 const ColorBoxColor = {
+  label: "Color",
   type: "radio" as const,
   options: [
     {
@@ -60,7 +61,7 @@ const ColorBoxColor = {
 };
 const TextType = { type: "text" as const };
 const TextArea = { type: "textarea" as const };
-const Slot = { type: "slot" as const };
+const Slot = { type: "slot" as const, label: "Content" };
 
 function shorten(text: string, cutoff = 10) {
   if (!text) return "(Empty)";
@@ -81,14 +82,15 @@ export const config: Config = {
     Block: {
       fields: {
         mode: {
+          label: "Mode",
           type: "radio",
           options: [
             { label: "Regular", value: "regular" },
             { label: "Full Screen", value: "fullscreen" },
           ],
         },
-        title: TextArea,
-        color: BlockColor,
+        title: { ...TextArea, label: "Title" },
+        color: { ...BlockColor, label: "Color" },
         children: Slot,
       },
       defaultProps: {
@@ -127,7 +129,7 @@ export const config: Config = {
     },
     Paragraph: {
       fields: {
-        text: TextArea,
+        text: { ...TextArea, label: "Text" },
       },
       defaultProps: {
         text: "This is a paragraph.",
@@ -143,6 +145,7 @@ export const config: Config = {
     List: {
       fields: {
         type: {
+          label: "Type",
           type: "radio",
           options: [
             {
@@ -156,9 +159,10 @@ export const config: Config = {
           ],
         },
         items: {
+          label: "Items",
           type: "array",
           arrayFields: {
-            text: TextType,
+            text: { ...TextType, label: "Text" },
           },
           min: 1,
           getItemSummary: (item) => shorten(item.text),
@@ -176,6 +180,7 @@ export const config: Config = {
     "Multiple Choice Quiz": {
       fields: {
         mode: {
+          label: "Mode",
           type: "radio",
           options: [
             {
@@ -188,12 +193,14 @@ export const config: Config = {
             },
           ],
         },
-        question: TextType,
+        question: { ...TextType, label: "Question" },
         choices: {
+          label: "Choices",
           type: "array",
           arrayFields: {
-            text: TextType,
+            text: { ...TextType, label: "Text" },
             isCorrect: {
+              label: "Is correct?",
               type: "radio",
               options: [
                 {
@@ -206,7 +213,7 @@ export const config: Config = {
                 },
               ],
             },
-            explanation: TextType,
+            explanation: { ...TextType, label: "Explanation" },
           },
           min: 1,
           getItemSummary: (item) =>
@@ -241,9 +248,9 @@ export const config: Config = {
     },
     "Text Response": {
       fields: {
-        question: TextArea,
-        answer: TextType,
-        placeholder: TextType,
+        question: { ...TextArea, label: "Question" },
+        answer: { ...TextType, label: "Answer" },
+        placeholder: { ...TextType, label: "Placeholder" },
       },
       defaultProps: {
         question: "What's 1 + 2?",
@@ -265,8 +272,8 @@ export const config: Config = {
     },
     Pickcode: {
       fields: {
-        name: TextType,
-        src: TextType,
+        name: { ...TextType, label: "Name" },
+        src: { ...TextType, label: "Pickcode URL" },
       },
       defaultProps: {
         name: "Example Pickcode Plugin",
@@ -278,8 +285,9 @@ export const config: Config = {
     },
     Unity: {
       fields: {
-        projectName: TextType,
+        projectName: { ...TextType, label: "Project name" },
         fullscreen: {
+          label: "Mode",
           type: "radio",
           options: [
             {
@@ -303,7 +311,7 @@ export const config: Config = {
     },
     Custom: {
       fields: {
-        name: TextType,
+        name: { ...TextType, label: "Name" },
       },
       defaultProps: {
         name: "custom",
@@ -314,8 +322,9 @@ export const config: Config = {
     },
     Embed: {
       fields: {
-        src: TextType,
+        src: { ...TextType, label: "Embed URL (not code)" },
         type: {
+          label: "Type",
           type: "radio",
           options: [
             {
@@ -348,6 +357,7 @@ export const config: Config = {
     Animation: {
       fields: {
         slides: {
+          label: "Slides",
           type: "array",
           arrayFields: {
             content: Slot,
@@ -356,6 +366,7 @@ export const config: Config = {
           getItemSummary: (item, index) => `Slide #${(index || 0) + 1}`,
         },
         animationType: {
+          label: "Animation type",
           type: "radio",
           options: [
             {
@@ -379,8 +390,8 @@ export const config: Config = {
     },
     Collapsible: {
       fields: {
-        shown: TextType,
-        hidden: TextType,
+        shown: { ...TextType, label: "Initial text" },
+        hidden: { ...TextType, label: "Collapsed text" },
       },
       defaultProps: {
         shown: "This is always visible",
@@ -401,9 +412,10 @@ export const config: Config = {
     },
     Image: {
       fields: {
-        url: TextType,
-        description: TextType,
+        url: { ...TextType, label: "URL" },
+        description: { ...TextType, label: "Description" },
         caption: {
+          label: "Caption mode",
           type: "radio",
           options: [
             {
@@ -417,6 +429,7 @@ export const config: Config = {
           ],
         },
         aspectRatio: {
+          label: "Aspect ratio",
           type: "radio",
           options: [
             {
@@ -438,6 +451,7 @@ export const config: Config = {
           ],
         },
         widthMode: {
+          label: "Width mode",
           type: "radio",
           options: [
             {
@@ -451,6 +465,7 @@ export const config: Config = {
           ],
         },
         rights: {
+          label: "Rights confirmation",
           type: "radio",
           options: [
             {
