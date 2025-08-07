@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { Slide } from "./page";
 import { Render } from "@measured/puck";
 import { config } from "./puck.config";
@@ -51,18 +51,21 @@ export default function SlideReorderView({
     setIsEditing(false);
   };
 
-  const handleDuplicate = (index: number) => {
+  const handleDuplicate = (e: MouseEvent, index: number) => {
+    e.stopPropagation();
     const newSlide = { ...orderedSlides[index], id: Date.now() };
     const newSlides = [...orderedSlides];
     newSlides.splice(index + 1, 0, newSlide);
     setOrderedSlides(newSlides);
   };
 
-  const handleDelete = (index: number) => {
+  const handleDelete = (e: MouseEvent, index: number) => {
+    e.stopPropagation();
     if (orderedSlides.length > 1) {
       const newSlides = orderedSlides.filter((_, i) => i !== index);
       setOrderedSlides(newSlides);
     }
+    setSelectedIndex(null);
   };
 
   const slideClick = (index: number) => {
@@ -110,13 +113,13 @@ export default function SlideReorderView({
               {selectedIndex === index && (
                 <div className="absolute top-4 right-4 flex gap-2">
                   <button
-                    onClick={() => handleDuplicate(index)}
+                    onClick={(e) => handleDuplicate(e, index)}
                     className="px-2 py-1 bg-blue-500 text-white rounded-md text-md"
                   >
                     Duplicate
                   </button>
                   <button
-                    onClick={() => handleDelete(index)}
+                    onClick={(e) => handleDelete(e, index)}
                     className="px-2 py-1 bg-red-500 text-white rounded-md text-md"
                   >
                     Delete
