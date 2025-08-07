@@ -9,6 +9,7 @@ import landingPageTemplate from "@/template/auto-landing-page.template";
 import lessonPageTemplate from "@/template/auto-lesson.template";
 import unityPageTemplate from "@/template/unity-page.template";
 import customComponentTemplate from "@/template/custom-component.template";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 export default function Editor() {
   type Slide = { id: number; data: Data };
@@ -672,36 +673,46 @@ export default function Editor() {
             onChange={handlePuckChange}
           >
             <div
-              className={`${reorderingClasses} w-full h-[calc(100svh-4.5rem)] p-4 flex gap-4 bg-gray-100`}
+              className={`${reorderingClasses} w-full h-[calc(100svh-4.5rem)] p-4 bg-gray-100`}
             >
-              {/* Left Sidebar */}
-              <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px] overflow-y-scroll">
-                <h2 className="text-lg font-semibold">Components</h2>
-                <Puck.Components />
-                <h2 className="text-lg font-semibold mt-4">Outline</h2>
-                <Puck.Outline />
-                <button
-                  onClick={deleteSlide}
-                  onMouseLeave={() => setConfirmingDelete(false)}
-                  disabled={slides.length <= 1}
-                  className={`px-3 py-2 border-2 rounded-md text-sm shadow-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed ${
-                    confirmingDelete
-                      ? "bg-red-500 text-white border-red-700"
-                      : "hover:enabled:bg-red-500 border-red-500 text-red-500 hover:enabled:text-white"
-                  }`}
-                >
-                  {confirmingDelete ? "Click again to delete" : "Delete Slide"}
-                </button>
-              </div>
-              {/* Center Preview */}
-              <div className="flex-grow border-2 border-white rounded-lg shadow-inner bg-white">
-                <Puck.Preview />
-              </div>
-              {/* Right Sidebar */}
-              <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow w-[280px] overflow-y-scroll">
-                <h2 className="text-lg font-semibold">Component Fields</h2>
-                <Puck.Fields />
-              </div>
+              <PanelGroup direction="horizontal" className="flex h-full">
+                {/* Left Sidebar */}
+                <Panel defaultSize={20} minSize={15} className="flex flex-col">
+                  <div className="flex flex-col grow-1 gap-4 bg-white p-4 rounded-lg shadow overflow-y-scroll">
+                    <h2 className="text-lg font-semibold">Components</h2>
+                    <Puck.Components />
+                    <h2 className="text-lg font-semibold mt-4">Outline</h2>
+                    <Puck.Outline />
+                    <button
+                      onClick={deleteSlide}
+                      onMouseLeave={() => setConfirmingDelete(false)}
+                      disabled={slides.length <= 1}
+                      className={`px-3 py-2 border-2 rounded-md text-sm shadow-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed ${
+                        confirmingDelete
+                          ? "bg-red-500 text-white border-red-700"
+                          : "hover:enabled:bg-red-500 border-red-500 text-red-500 hover:enabled:text-white"
+                      }`}
+                    >
+                      {confirmingDelete
+                        ? "Click again to delete"
+                        : "Delete Slide"}
+                    </button>
+                  </div>
+                </Panel>
+                <PanelResizeHandle className="w-1 bg-gray-200 hover:bg-blue-500 rounded-full mx-1 transition-colors" />
+                {/* Center Preview */}
+                <Panel className="flex-grow border-2 border-white rounded-lg shadow-inner bg-white overflow-auto">
+                  <Puck.Preview />
+                </Panel>
+                <PanelResizeHandle className="w-1 bg-gray-200 hover:bg-blue-500 rounded-full mx-1 transition-colors" />
+                {/* Right Sidebar */}
+                <Panel defaultSize={20} minSize={15} className="flex flex-col">
+                  <div className="flex flex-col grow-1 gap-4 bg-white p-4 rounded-lg shadow overflow-y-auto">
+                    <h2 className="text-lg font-semibold">Component Fields</h2>
+                    <Puck.Fields />
+                  </div>
+                </Panel>
+              </PanelGroup>
             </div>
           </Puck>
         ))}
