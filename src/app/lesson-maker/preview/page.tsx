@@ -4,6 +4,7 @@ import { Render, Data, PuckComponent, Config } from "@measured/puck";
 import { config } from "../puck.config";
 import Lesson from "@/components/Lesson";
 import LessonWrapper from "@/components/LessonWrapper";
+import Block from "@/components/Block";
 
 export default function Preview() {
   const [lessonData, setLessonData] = useState<{ slides: Data[] } | null>(null);
@@ -34,8 +35,12 @@ export default function Preview() {
   const lessonConfig: Config = {
     ...config,
     root: {
-      render: ({ children }) => {
-        return <>{children}</>;
+      render: ({ children, color, title, mode }) => {
+        return (
+          <Block color={color} title={title} mode={mode}>
+            {children}
+          </Block>
+        );
       },
     },
   };

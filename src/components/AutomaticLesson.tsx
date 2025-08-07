@@ -5,6 +5,7 @@ import LessonWrapper from "./LessonWrapper";
 import Lesson from "./Lesson";
 import { Data } from "@measured/puck";
 import React, { useState } from "react";
+import Block from "./Block";
 
 /**
  * Note: Data cannot change, since it only loads in the data once to avoid rerenders.
@@ -40,8 +41,12 @@ export default function ({
       },
     },
     root: {
-      render: ({ children }) => {
-        return <>{children}</>;
+      render: ({ children, color, title, mode }) => {
+        return (
+          <Block color={color} title={title} mode={mode}>
+            {children}
+          </Block>
+        );
       },
     },
   };

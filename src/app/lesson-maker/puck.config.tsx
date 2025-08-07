@@ -19,6 +19,7 @@ import Image from "@/components/Image";
 import ErrorMessage from "@/components/ErrorMessage";
 
 const BlockColor = {
+  label: "Slide Color",
   type: "radio" as const,
   options: [
     {
@@ -61,7 +62,7 @@ const ColorBoxColor = {
 };
 const TextType = { type: "text" as const };
 const TextArea = { type: "textarea" as const };
-const Slot = { type: "slot" as const, label: "Content" };
+const Slot = { type: "slot" as const, label: "Content", disallow: ["Block"] };
 
 function shorten(text: string, cutoff = 10) {
   if (!text) return "(Empty)";
@@ -79,35 +80,6 @@ function shorten(text: string, cutoff = 10) {
 // to the bottom.
 export const config: Config = {
   components: {
-    Block: {
-      fields: {
-        mode: {
-          label: "Mode",
-          type: "radio",
-          options: [
-            { label: "Regular", value: "regular" },
-            { label: "Full Screen", value: "fullscreen" },
-          ],
-        },
-        title: { ...TextArea, label: "Title" },
-        color: { ...BlockColor, label: "Color" },
-        children: Slot,
-      },
-      defaultProps: {
-        color: "green",
-        title: "Title",
-        mode: "regular",
-      },
-      render: ({ children: Children, color, title, mode }) => {
-        return (
-          <div className="my-2">
-            <Block color={color} title={title} mode={mode}>
-              <Children />
-            </Block>
-          </div>
-        );
-      },
-    },
     "Color Box": {
       fields: {
         children: Slot,
@@ -214,6 +186,11 @@ export const config: Config = {
               ],
             },
             explanation: { ...TextType, label: "Explanation" },
+          },
+          defaultItemProps: {
+            text: "",
+            isCorrect: false,
+            explanation: "",
           },
           min: 1,
           getItemSummary: (item) =>
@@ -412,6 +389,7 @@ export const config: Config = {
     },
     Image: {
       fields: {
+        // TODO: Make custom so that we can add ERRORS where they type!
         url: { ...TextType, label: "URL" },
         description: { ...TextType, label: "Description" },
         caption: {
@@ -526,8 +504,8 @@ export const config: Config = {
   },
   categories: {
     basics: {
-      title: "Containers / Text",
-      components: ["Block", "Color Box", "Paragraph", "List"],
+      title: "Text",
+      components: ["Color Box", "Paragraph", "List"],
     },
     quizzes: {
       components: ["Multiple Choice Quiz", "Text Response"],
@@ -540,9 +518,33 @@ export const config: Config = {
     },
   },
   root: {
-    fields: {},
-    render: ({ children }) => {
-      return <LessonWrapper>{children}</LessonWrapper>;
+    fields: {
+      mode: {
+        label: "Mode",
+        type: "radio",
+        options: [
+          { label: "Regular", value: "regular" },
+          { label: "Full Screen", value: "fullscreen" },
+        ],
+      },
+      title: { ...TextArea, label: "Title" },
+      color: BlockColor,
+    },
+    defaultProps: {
+      color: "green",
+      title: "Title",
+      mode: "regular",
+    },
+    render: ({ children, color, title, mode }) => {
+      return (
+        <LessonWrapper>
+          <div className="w-full m-0 p-0">
+            <Block color={color} title={title} mode={mode}>
+              {children}
+            </Block>
+          </div>
+        </LessonWrapper>
+      );
     },
   },
 };
