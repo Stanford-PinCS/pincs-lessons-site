@@ -1,17 +1,18 @@
-import LessonWrapper from "@/components/LessonWrapper";
+import AutomaticLesson from "@/components/AutomaticLesson";
+import lessonData from "./content.json";
 import { Metadata } from "next";
-import RenaissanceLesson from "./RenaissanceLesson";
+import custom_diagram from "./custom_diagram";
 
 export const metadata: Metadata = {
-  title: "Renaissance Lesson",
-  description:
-    "This lesson takes students on a deep dive about the Renaissance.",
+  title: lessonData.title,
+  description: lessonData.description,
 };
 
-export default function ExampleLesson() {
+export default function () {
   return (
-    <LessonWrapper>
-      <RenaissanceLesson />
-    </LessonWrapper>
+    <AutomaticLesson
+      data={lessonData.slides}
+      customComponents={{ custom_diagram: custom_diagram }}
+    ></AutomaticLesson>
   );
 }

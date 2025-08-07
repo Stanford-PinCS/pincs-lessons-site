@@ -449,7 +449,7 @@ const Step5: React.FC<StepProps> = ({ isVisible }) => (
   </div>
 );
 
-const RPGDataAnimation: React.FC = () => {
+export default function () {
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleNext = () => {
@@ -507,6 +507,4 @@ const RPGDataAnimation: React.FC = () => {
       </div>
     </main>
   );
-};
-
-export default RPGDataAnimation;
+}

@@ -1,14 +1,14 @@
 import LandingPage from "@/components/LandingPage";
-import RenaissanceLesson from "./lesson/RenaissanceLesson";
+import lessonData from "./lesson/content.json";
+import Lesson from "./lesson/page";
 
 export default function ExampleLessonLandingPage() {
   return (
     <LandingPage
-      teacherResources=""
-      lessonDescription="This lesson takes students on a deep dive about the Renaissance."
+      teacherResources={lessonData.teacherResources}
+      lessonDescription={lessonData.description}
     >
-      {" "}
-      <RenaissanceLesson />{" "}
+      <Lesson></Lesson>
     </LandingPage>
   );
 }
