@@ -739,7 +739,10 @@ export default function Editor() {
                 </Panel>
                 <PanelResizeHandle className="w-1 bg-gray-200 hover:bg-blue-500 rounded-full mx-1 transition-colors" />
                 {/* Center Preview */}
-                <Panel className="flex-grow border-2 border-white rounded-lg shadow-inner bg-white overflow-auto">
+                <Panel
+                  minSize={50}
+                  className="flex-grow border-2 border-white rounded-lg shadow-inner bg-white overflow-auto"
+                >
                   <Puck.Preview />
                 </Panel>
                 <PanelResizeHandle className="w-1 bg-gray-200 hover:bg-blue-500 rounded-full mx-1 transition-colors" />
