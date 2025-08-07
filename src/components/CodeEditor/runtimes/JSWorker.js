@@ -1,5 +1,3 @@
-console.log("hello from worker!!!");
-
 const messageSubscribers = {};
 const subscribeToMessages = (onMessage) => {
   const key = Symbol();
