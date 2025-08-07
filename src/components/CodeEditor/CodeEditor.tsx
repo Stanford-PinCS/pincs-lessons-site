@@ -48,12 +48,14 @@ export const CodeEditor = ({
   height,
   starterCode,
   language,
+  pluginId,
 }: {
   lessonId: string;
   instructionsMarkdown: string;
   height: number;
   starterCode?: string;
   language: "python" | "javascript";
+  pluginId: string;
 }) => {
   const [editorSize, setEditorSize] = useState(50);
   const [instructionsHeight, setInstructionsHeight] = useState(50);
@@ -249,7 +251,7 @@ export const CodeEditor = ({
           className="flex-col rounded-lg overflow-y-hidden border border-slate-300"
           style={{ height: `${100 - instructionsHeight}%` }}
         >
-          <CodeOutput pluginId={""} runCode={() => {}} />
+          <CodeOutput pluginId={pluginId} runCode={() => {}} />
         </div>
       </div>
     </div>

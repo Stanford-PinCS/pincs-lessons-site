@@ -21,6 +21,7 @@ export const CodeEditorExample: React.FC = () => {
       <CodeEditor
         instructionsMarkdown={instructionsMarkdown}
         lessonId="test-code-editor"
+        pluginId="force-addition"
         height={600}
         language={"python"}
       />

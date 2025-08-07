@@ -6,6 +6,7 @@ import { PlayIcon } from "@heroicons/react/24/solid";
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { ConsoleOutput } from "./ConsoleOutput";
+import { PluginLoader } from "./PluginLoader";
 
 export const CodeOutput = ({
   pluginId,
@@ -23,7 +24,7 @@ export const CodeOutput = ({
         ref={iframeRef}
         className={classNames("grow", showConsole && "hidden")}
       >
-        plugin code goes here
+        <PluginLoader pluginId={pluginId} />
       </div>
       {showConsole && (
         <div className="grow bg-slate-900">
@@ -34,7 +35,7 @@ export const CodeOutput = ({
         <div className="relative">
           <div
             className={classNames(
-              "border border-slate-400 h-10 w-10 text-slate-400 bg-white rounded-full flex items-center justify-center hover:ring-2 hover:ring-indigo-500 transition-all shrink-0",
+              "cursor-pointer border border-slate-400 h-10 w-10 text-slate-400 bg-white rounded-full flex items-center justify-center hover:ring-2 hover:ring-indigo-500 transition-all shrink-0",
               showConsole && "ring-2 ring-indigo-500"
             )}
             onClick={() => setShowConsole(!showConsole)}
@@ -57,7 +58,7 @@ export const CodeOutput = ({
             id="play"
             onClick={() => runCode()}
             className={
-              "relative bg-green-500 p-2 h-10 w-10 rounded-full ring-green-300 transition-all shadow-xl opacity-90 hover:opacity-100"
+              "cursor-pointer relative bg-green-500 p-2 h-10 w-10 rounded-full ring-green-300 transition-all shadow-xl opacity-90 hover:opacity-100"
             }
           >
             <PlayIcon className={`text-white h-6 w-6`} />
