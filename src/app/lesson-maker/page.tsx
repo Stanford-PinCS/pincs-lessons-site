@@ -1,7 +1,7 @@
 "use client";
 import { Puck, Data, Content, ComponentData, Render } from "@measured/puck";
 import "@measured/puck/puck.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, ReactNode } from "react";
 import { config } from "./puck.config";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -9,7 +9,12 @@ import landingPageTemplate from "@/template/auto-landing-page.template";
 import lessonPageTemplate from "@/template/auto-lesson.template";
 import unityPageTemplate from "@/template/unity-page.template";
 import customComponentTemplate from "@/template/custom-component.template";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import {
+  ImperativePanelHandle,
+  Panel,
+  PanelGroup,
+  PanelResizeHandle,
+} from "react-resizable-panels";
 
 export default function Editor() {
   type Slide = { id: number; data: Data };
@@ -27,6 +32,19 @@ export default function Editor() {
   const [isEditing, setIsEditing] = useState(false);
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
   const secondsBeforeAutoSave = 5; // It will wait 5 seconds after they stop changing stuff to update the sessionStorage.
+  const leftSideBar = useRef<ImperativePanelHandle>(null);
+  const [leftIsCollapsed, setLeftIsCollapsed] = useState(false);
+  const rightSideBar = useRef<ImperativePanelHandle>(null);
+  const [rightIsCollapsed, setRightIsCollapsed] = useState(false);
+
+  function onSidebarChange() {
+    if (leftSideBar.current) {
+      setLeftIsCollapsed(leftSideBar.current.isCollapsed());
+    }
+    if (rightSideBar.current) {
+      setRightIsCollapsed(rightSideBar.current.isCollapsed());
+    }
+  }
 
   useEffect(() => {
     setIsMounted(true);
@@ -677,27 +695,47 @@ export default function Editor() {
             >
               <PanelGroup direction="horizontal" className="flex h-full">
                 {/* Left Sidebar */}
-                <Panel defaultSize={20} minSize={15} className="flex flex-col">
-                  <div className="flex flex-col grow-1 gap-4 bg-white p-4 rounded-lg shadow overflow-y-scroll">
-                    <h2 className="text-lg font-semibold">Components</h2>
-                    <Puck.Components />
-                    <h2 className="text-lg font-semibold mt-4">Outline</h2>
-                    <Puck.Outline />
-                    <button
-                      onClick={deleteSlide}
-                      onMouseLeave={() => setConfirmingDelete(false)}
-                      disabled={slides.length <= 1}
-                      className={`px-3 py-2 border-2 rounded-md text-sm shadow-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed ${
-                        confirmingDelete
-                          ? "bg-red-500 text-white border-red-700"
-                          : "hover:enabled:bg-red-500 border-red-500 text-red-500 hover:enabled:text-white"
-                      }`}
-                    >
-                      {confirmingDelete
-                        ? "Click again to delete"
-                        : "Delete Slide"}
-                    </button>
-                  </div>
+                <Panel
+                  collapsible={true}
+                  collapsedSize={2}
+                  defaultSize={20}
+                  minSize={15}
+                  ref={leftSideBar}
+                  onCollapse={onSidebarChange}
+                  onExpand={onSidebarChange}
+                  className="flex flex-col"
+                >
+                  {leftIsCollapsed ? (
+                    <div className="flex flex-col grow-1 justify-center">
+                      <button
+                        className="h-1/3 bg-white border-2 border-[#dcdcdc] shadow-md rounded-lg p-1 hover:border-blue-500"
+                        onClick={() => leftSideBar?.current?.expand()}
+                      >
+                        &gt;
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col grow-1 gap-4 bg-white p-4 rounded-lg shadow overflow-y-scroll">
+                      <h2 className="text-lg font-semibold">Components</h2>
+                      <Puck.Components />
+                      <h2 className="text-lg font-semibold mt-4">Outline</h2>
+                      <Puck.Outline />
+                      <button
+                        onClick={deleteSlide}
+                        onMouseLeave={() => setConfirmingDelete(false)}
+                        disabled={slides.length <= 1}
+                        className={`px-3 py-2 border-2 rounded-md text-sm shadow-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed ${
+                          confirmingDelete
+                            ? "bg-red-500 text-white border-red-700"
+                            : "hover:enabled:bg-red-500 border-red-500 text-red-500 hover:enabled:text-white"
+                        }`}
+                      >
+                        {confirmingDelete
+                          ? "Click again to delete"
+                          : "Delete Slide"}
+                      </button>
+                    </div>
+                  )}
                 </Panel>
                 <PanelResizeHandle className="w-1 bg-gray-200 hover:bg-blue-500 rounded-full mx-1 transition-colors" />
                 {/* Center Preview */}
@@ -706,11 +744,33 @@ export default function Editor() {
                 </Panel>
                 <PanelResizeHandle className="w-1 bg-gray-200 hover:bg-blue-500 rounded-full mx-1 transition-colors" />
                 {/* Right Sidebar */}
-                <Panel defaultSize={20} minSize={15} className="flex flex-col">
-                  <div className="flex flex-col grow-1 gap-4 bg-white p-4 rounded-lg shadow overflow-y-auto">
-                    <h2 className="text-lg font-semibold">Component Fields</h2>
-                    <Puck.Fields />
-                  </div>
+                <Panel
+                  collapsible={true}
+                  collapsedSize={2}
+                  defaultSize={20}
+                  minSize={15}
+                  ref={rightSideBar}
+                  onCollapse={onSidebarChange}
+                  onExpand={onSidebarChange}
+                  className="flex flex-col"
+                >
+                  {rightIsCollapsed ? (
+                    <div className="flex flex-col grow-1 justify-center">
+                      <button
+                        className="h-1/3 bg-white border-2 border-[#dcdcdc] shadow-md rounded-lg p-1 hover:border-blue-500"
+                        onClick={() => rightSideBar?.current?.expand()}
+                      >
+                        &lt;
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col grow-1 gap-4 bg-white p-4 rounded-lg shadow overflow-y-auto">
+                      <h2 className="text-lg font-semibold">
+                        Component Fields
+                      </h2>
+                      <Puck.Fields />
+                    </div>
+                  )}
                 </Panel>
               </PanelGroup>
             </div>

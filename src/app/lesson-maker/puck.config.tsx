@@ -538,7 +538,7 @@ export const config: Config = {
     render: ({ children, color, title, mode }) => {
       return (
         <LessonWrapper>
-          <div className="w-full m-0 p-0">
+          <div className="w-full max-w-[100svh] m-0 p-0">
             <Block color={color} title={title} mode={mode}>
               {children}
             </Block>

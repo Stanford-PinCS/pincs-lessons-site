@@ -43,7 +43,9 @@ const Block: React.FC<BlockProps> = ({
       : "";
 
   const sectionLessonMakerStyle =
-    mode == "fullscreen" && lessonMakerMode ? "relative -translate-x-8" : "";
+    mode == "fullscreen" && lessonMakerMode
+      ? "fixed left-0 w-[calc(100%-30px)]!"
+      : "";
 
   const h1LessonMakerStyle =
     mode == "fullscreen" && lessonMakerMode ? "text-center" : "";
