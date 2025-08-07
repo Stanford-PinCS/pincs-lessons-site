@@ -1,30 +1,91 @@
-import {
-  ArrowsPointingOutIcon,
-  CommandLineIcon,
-} from "@heroicons/react/24/outline";
+import { CommandLineIcon } from "@heroicons/react/24/outline";
 import { PlayIcon } from "@heroicons/react/24/solid";
-import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
+import { useRef, useState } from "react";
 import { ConsoleOutput } from "./ConsoleOutput";
-import { PluginLoader } from "./PluginLoader";
+import { JSRuntime } from "./runtimes/JSRuntime";
+
+// const loadPluginImplementation = async (pluginId: string) => {
+//         let manifest: any;
+//         try {
+//             const res = await fetch(
+//                 `${process.VITE_PLUGINS_URL}/plugins-manifest.json`
+//             );
+//             if (!res.ok) throw new Error(`API error: ${res.statusText}`);
+//             manifest = await res.json();
+//         } catch (e) {
+//             // eslint-disable-next-line no-console
+//             console.error(
+//                 `Failed to load plugins from ${
+//                     process.VITE_PLUGINS_URL
+//                 }`,
+//                 e
+//             );
+//             return;
+//         }
+//         const results = await Promise.all(
+//             Object.entries(manifest).map(
+//                 async ([pluginName, languages]: [string, any]) => {
+//                     const toReturn = {
+//                         id: pluginName,
+//                         name: pluginName,
+//                         languagesSupported: Object.keys(languages),
+//                     };
+//                     if (!languages.BasicJS?.implUrl) {
+//                         return toReturn;
+//                     }
+//                     try {
+//                         const res = await fetch(
+//                             `${import.meta.env.VITE_PLUGINS_URL}${
+//                                 languages.BasicJS.implUrl
+//                             }`
+//                         );
+//                         if (!res.ok) return toReturn;
+//                         return {
+//                             ...toReturn,
+//                             basicJsImplementation: await res.text(),
+//                         };
+//                     } catch (e) {
+//                         return toReturn;
+//                     }
+//                 }
+//             )
+//         );
+//         results.forEach((preview) => {
+//             this._modulePreviews[preview.id] = preview;
+//         });
+//     }
 
 export const CodeOutput = ({
   pluginId,
-  runCode,
+  userCode,
 }: {
   pluginId: string;
-  runCode: () => void;
+  userCode: string;
 }) => {
   const [showConsole, setShowConsole] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-
+  const jsRuntimeRef = useRef<JSRuntime>(null);
+  const [implementation, setImplementation] = useState<string | undefined>(
+    undefined
+  );
+  console.log(process.env.NEXT_PUBLIC_PLUGINS_URL);
   return (
     <div className="w-full h-full relative flex flex-col">
       <div
         ref={iframeRef}
         className={classNames("grow", showConsole && "hidden")}
       >
-        <PluginLoader pluginId={pluginId} />
+        <iframe
+          ref={(iframe) => {
+            if (!iframe) return;
+            jsRuntimeRef.current = new JSRuntime((message) => {
+              iframe.contentWindow?.postMessage(message, "*");
+            });
+          }}
+          className="h-full w-full"
+          src={`${process.env.NEXT_PUBLIC_PLUGINS_URL}/embed/${pluginId}`}
+        />
       </div>
       {showConsole && (
         <div className="grow bg-slate-900">
@@ -56,7 +117,12 @@ export const CodeOutput = ({
         <div className="ml-auto flex flex-row gap-1 items-end">
           <div
             id="play"
-            onClick={() => runCode()}
+            onClick={() => {
+              jsRuntimeRef.current?.startExecution(
+                userCode,
+                implementation ?? ""
+              );
+            }}
             className={
               "cursor-pointer relative bg-green-500 p-2 h-10 w-10 rounded-full ring-green-300 transition-all shadow-xl opacity-90 hover:opacity-100"
             }
