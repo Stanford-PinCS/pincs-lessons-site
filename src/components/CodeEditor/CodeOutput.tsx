@@ -1,60 +1,43 @@
 import { CommandLineIcon } from "@heroicons/react/24/outline";
 import { PlayIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ConsoleOutput } from "./ConsoleOutput";
 import { JSRuntime } from "./runtimes/JSRuntime";
 
-// const loadPluginImplementation = async (pluginId: string) => {
-//         let manifest: any;
-//         try {
-//             const res = await fetch(
-//                 `${process.VITE_PLUGINS_URL}/plugins-manifest.json`
-//             );
-//             if (!res.ok) throw new Error(`API error: ${res.statusText}`);
-//             manifest = await res.json();
-//         } catch (e) {
-//             // eslint-disable-next-line no-console
-//             console.error(
-//                 `Failed to load plugins from ${
-//                     process.VITE_PLUGINS_URL
-//                 }`,
-//                 e
-//             );
-//             return;
-//         }
-//         const results = await Promise.all(
-//             Object.entries(manifest).map(
-//                 async ([pluginName, languages]: [string, any]) => {
-//                     const toReturn = {
-//                         id: pluginName,
-//                         name: pluginName,
-//                         languagesSupported: Object.keys(languages),
-//                     };
-//                     if (!languages.BasicJS?.implUrl) {
-//                         return toReturn;
-//                     }
-//                     try {
-//                         const res = await fetch(
-//                             `${import.meta.env.VITE_PLUGINS_URL}${
-//                                 languages.BasicJS.implUrl
-//                             }`
-//                         );
-//                         if (!res.ok) return toReturn;
-//                         return {
-//                             ...toReturn,
-//                             basicJsImplementation: await res.text(),
-//                         };
-//                     } catch (e) {
-//                         return toReturn;
-//                     }
-//                 }
-//             )
-//         );
-//         results.forEach((preview) => {
-//             this._modulePreviews[preview.id] = preview;
-//         });
-//     }
+const loadPluginImplementation = async (pluginId: string): Promise<string> => {
+  let manifest: any;
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_PLUGINS_URL}/plugins-manifest.json`
+    );
+    if (!res.ok) throw new Error(`API error: ${res.statusText}`);
+    manifest = await res.json();
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(
+      `Failed to load plugins from ${process.env.NEXT_PUBLIC_PLUGINS_URL}`,
+      e
+    );
+    return "";
+  }
+  const implementationURL = manifest[pluginId]?.BasicJS.implUrl;
+  if (!implementationURL) return "";
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_PLUGINS_URL}${implementationURL}`
+    );
+    if (!res.ok) throw new Error(`Failed to fetch ${name}: ${res.statusText}`);
+
+    return res.text();
+  } catch (e) {
+    console.error(
+      `Failed to load implementation from ${process.env.NEXT_PUBLIC_PLUGINS_URL}`,
+      e
+    );
+    return "";
+  }
+};
 
 export const CodeOutput = ({
   pluginId,
@@ -69,7 +52,11 @@ export const CodeOutput = ({
   const [implementation, setImplementation] = useState<string | undefined>(
     undefined
   );
-  console.log(process.env.NEXT_PUBLIC_PLUGINS_URL);
+  useEffect(() => {
+    loadPluginImplementation(pluginId).then((c) => {
+      setImplementation(c);
+    });
+  }, [pluginId]);
   return (
     <div className="w-full h-full relative flex flex-col">
       <div

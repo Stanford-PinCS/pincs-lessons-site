@@ -5,9 +5,12 @@ export class JSRuntime {
     if (this.executeWorker) {
       this.executeWorker.terminate();
     }
-    this.executeWorker = new Worker("./JSWorker.ts", {
-      type: "module",
-    });
+    this.executeWorker = new window.Worker(
+      new URL("./JSWorker.js", import.meta.url),
+      {
+        type: "module",
+      }
+    );
     const onMessage = (e: { data: any }) => {
       const messageData = e.data;
       switch (messageData.type) {
