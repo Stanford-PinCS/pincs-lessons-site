@@ -20,10 +20,10 @@ export const CodeEditorExample: React.FC = () => {
       </h2>
       <CodeEditor
         instructionsMarkdown={instructionsMarkdown}
-        lessonId="test-code-editor"
-        pluginId="chat-demo"
+        lessonId="particle-simulation-lesson"
+        pluginId="particle-simulation"
         height={600}
-        language={"python"}
+        language={"javascript"}
       />
     </div>
   );
