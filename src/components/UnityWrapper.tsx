@@ -7,10 +7,10 @@ import ErrorMessage from "./ErrorMessage";
 export default function UnityGame({ projectName }: { projectName: string }) {
   const { unityProvider, unload, isLoaded, loadingProgression } =
     useUnityContext({
-      loaderUrl: `/interactive-lessons/unity-builds/${projectName}/app.loader.js`,
-      dataUrl: `/interactive-lessons/unity-builds/${projectName}/app.data.unityweb`,
-      frameworkUrl: `/interactive-lessons/unity-builds/${projectName}/app.framework.js.unityweb`,
-      codeUrl: `/interactive-lessons/unity-builds/${projectName}/app.wasm.unityweb`,
+      loaderUrl: `${process.env.NEXT_PUBLIC_APP_BASE_PATH}/unity-builds/${projectName}/app.loader.js`,
+      dataUrl: `${process.env.NEXT_PUBLIC_APP_BASE_PATH}/unity-builds/${projectName}/app.data.unityweb`,
+      frameworkUrl: `${process.env.NEXT_PUBLIC_APP_BASE_PATH}/unity-builds/${projectName}/app.framework.js.unityweb`,
+      codeUrl: `${process.env.NEXT_PUBLIC_APP_BASE_PATH}/unity-builds/${projectName}/app.wasm.unityweb`,
     });
   const messages = [
     "Loading Assets...",
