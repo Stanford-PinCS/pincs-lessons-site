@@ -80,7 +80,7 @@ function shorten(text: string, cutoff = 10) {
 // to the bottom.
 export const config: Config = {
   components: {
-    "Color Box": {
+    "Color box": {
       fields: {
         children: Slot,
         color: ColorBoxColor,
@@ -149,7 +149,7 @@ export const config: Config = {
         return <List type={type} items={mappedItems} />;
       },
     },
-    "Multiple Choice Quiz": {
+    "Multiple choice quiz": {
       fields: {
         mode: {
           label: "Mode",
@@ -223,7 +223,7 @@ export const config: Config = {
         }
       },
     },
-    "Text Response": {
+    "Text response": {
       fields: {
         question: { ...TextArea, label: "Question" },
         answer: { ...TextType, label: "Answer" },
@@ -505,10 +505,10 @@ export const config: Config = {
   categories: {
     basics: {
       title: "Text",
-      components: ["Color Box", "Paragraph", "List"],
+      components: ["Color box", "Paragraph", "List"],
     },
     quizzes: {
-      components: ["Multiple Choice Quiz", "Text Response"],
+      components: ["Multiple choice quiz", "Text response"],
     },
     engagement: {
       components: ["Pickcode", "Embed", "Animation", "Collapsible", "Image"],
@@ -524,7 +524,7 @@ export const config: Config = {
         type: "radio",
         options: [
           { label: "Regular", value: "regular" },
-          { label: "Full Screen", value: "fullscreen" },
+          { label: "Fullscreen", value: "fullscreen" },
         ],
       },
       title: { ...TextArea, label: "Title" },
