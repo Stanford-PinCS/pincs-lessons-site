@@ -37,6 +37,22 @@ export default function Editor() {
   const [leftIsCollapsed, setLeftIsCollapsed] = useState(false);
   const rightSideBar = useRef<ImperativePanelHandle>(null);
   const [rightIsCollapsed, setRightIsCollapsed] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        event.preventDefault();
+        event.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [hasUnsavedChanges]);
 
   function onSidebarChange() {
     if (leftSideBar.current) {
@@ -86,7 +102,7 @@ export default function Editor() {
       sessionStorage.setItem("lessonTitle", lessonTitle);
       sessionStorage.setItem("lessonDescription", lessonDescription);
       sessionStorage.setItem("teacherResources", teacherResources);
-      console.count("saved");
+      setHasUnsavedChanges(true);
     }
 
     if (isMounted) {
@@ -105,7 +121,7 @@ export default function Editor() {
         clearTimeout(saveTimeout.current);
       }
     };
-  }, [slides, isMounted, lessonTitle, lessonDescription, teacherResources]);
+  }, [slides, lessonTitle, lessonDescription, teacherResources]);
 
   const handlePuckChange = (data: Data) => {
     const newSlides = [...slides];
@@ -256,6 +272,7 @@ export default function Editor() {
       const blob = await zip.generateAsync({ type: "blob" });
       saveAs(blob, `${folderName}.zip`);
       setIsSaveModalOpen(false);
+      setHasUnsavedChanges(false);
     } catch (error) {
       console.error("Error generating ZIP:", error);
     }
@@ -290,6 +307,7 @@ export default function Editor() {
         await writable.write(blob);
         await writable.close();
         setIsSaveModalOpen(false);
+        setHasUnsavedChanges(false);
       } catch (err: any) {
         // Handle errors, such as the user canceling the save dialog.
         // If the user didn't hit cancel, show them a message.
@@ -309,6 +327,7 @@ export default function Editor() {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       setIsSaveModalOpen(false);
+      setHasUnsavedChanges(false);
     }
   };
 
