@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import ReactDOMServer from "react-dom/server";
@@ -21,11 +21,13 @@ export default function Text({ children }: { children: string | string[] }) {
   const text = typeof children === "string" ? children : children.join("");
 
   useEffect(() => {
+    // May want to carefully consider all the items we use/don't use: https://marked.js.org/using_pro#renderer.
     const renderer = {
       codespan({ text }: { text: string }) {
         return ReactDOMServer.renderToStaticMarkup(<Code>{text}</Code>);
       },
       code({ text }: { text: string }) {
+        // TODO: Make a bigger codeblock?
         return ReactDOMServer.renderToStaticMarkup(<Code>{text}</Code>);
       },
       strong({ text }: { text: string }) {
@@ -57,6 +59,13 @@ export default function Text({ children }: { children: string | string[] }) {
         });
 
         return transformed;
+      },
+      // Blocks links and images by just showing the plain text.
+      link({ raw }: { raw: string }) {
+        return raw;
+      },
+      image({ raw }: { raw: string }) {
+        return raw;
       },
     };
 
