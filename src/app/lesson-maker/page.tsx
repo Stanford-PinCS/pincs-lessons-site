@@ -551,7 +551,7 @@ export default function Editor() {
             disabled={isEditing}
             className="px-3 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Edit
+            Edit outline
           </button>
         </div>
         <div className="flex items-center gap-4">
@@ -626,7 +626,9 @@ export default function Editor() {
                     <div className="flex flex-col grow-1 gap-4 bg-white p-4 rounded-lg shadow overflow-y-scroll">
                       <h2 className="text-lg font-semibold">Components</h2>
                       <Puck.Components />
-                      <h2 className="text-lg font-semibold mt-4">Outline</h2>
+                      <h2 className="text-lg font-semibold mt-4">
+                        Slide structure
+                      </h2>
                       <Puck.Outline />
                       <button
                         onClick={deleteSlide}
