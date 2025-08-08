@@ -25,7 +25,7 @@ const TextQuizQuestion = ({
 
   return (
     <div>
-      <p>{question}</p>
+      <div className="block py-4">{question}</div>
       <input
         type="text"
         placeholder={placeholder}

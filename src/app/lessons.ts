@@ -52,6 +52,14 @@ const Lessons: Lesson[] = [
       { type: "hidden", value: false },
     ],
   },
+  {
+    title: "Renaissance",
+    link: "/history/renaissance",
+    tags: [
+      { type: "subject", value: Subject.History },
+      { type: "hidden", value: true },
+    ],
+  },
 ];
 
 const DemoLessons: Lesson[] = [
@@ -67,6 +75,11 @@ const DemoLessons: Lesson[] = [
       { type: "subject", value: Subject.ComputerScience },
       { type: "hidden", value: DEMO_LESSONS_HIDDEN },
     ],
+  },
+  {
+    title: "Visually-Made Lesson",
+    link: "/demo/visual-editor/",
+    tags: [{ type: "hidden", value: DEMO_LESSONS_HIDDEN }],
   },
 ];
 

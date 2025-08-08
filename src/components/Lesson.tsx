@@ -33,6 +33,9 @@ const Lesson: React.FC<LessonProps> = ({ slides }) => {
     if (pathname.split("/").includes("lesson")) {
       setIsPreview(false);
     }
+    if (pathname.split("/").includes("lesson-maker")) {
+      setIsPreview(false);
+    }
 
     if (slideFromUrl !== currentSlide) {
       // Update current slide if needed.
