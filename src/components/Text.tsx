@@ -22,6 +22,7 @@ export default function Text({ children }: { children: string | string[] }) {
 
   useEffect(() => {
     // May want to carefully consider all the items we use/don't use: https://marked.js.org/using_pro#renderer.
+    // Can also see defaults here: https://github.com/markedjs/marked/blob/master/src/Renderer.ts.
     const renderer = {
       codespan({ text }: { text: string }) {
         return ReactDOMServer.renderToStaticMarkup(<Code>{text}</Code>);
