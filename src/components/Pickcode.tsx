@@ -18,7 +18,8 @@ export default function Pickcode({
   // Use path to determine if it's in lesson mode.
   const pathname = usePathname();
   const lessonEditorMode =
-    pathname.includes("/lesson-maker") && !pathname.includes("/preview");
+    pathname.split("/").includes("lesson-maker") &&
+    !pathname.includes("/preview");
   if (src == "" || lessonEditorMode) {
     // If not in lesson mode, return place holder.
     return (

@@ -11,7 +11,9 @@ const Collapsible = ({
 }) => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(
-    () => pathname.includes("/lesson-maker") && !pathname.includes("/preview")
+    () =>
+      pathname.split("/").includes("lesson-maker") &&
+      !pathname.includes("/preview")
   );
   const toggle = () => {
     setIsOpen(!isOpen);

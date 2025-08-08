@@ -31,7 +31,8 @@ export default function Animation({
   const [index, setIndex] = useState(0);
   const pathname = usePathname();
   const lessonEditorMode =
-    pathname.includes("/lesson-maker") && !pathname.includes("/preview");
+    pathname.split("/").includes("lesson-maker") &&
+    !pathname.includes("/preview");
 
   function goBack() {
     if (index > 0) {

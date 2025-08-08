@@ -33,7 +33,7 @@ const Block: React.FC<BlockProps> = ({
   const previewMode =
     !path.split("/").includes("lesson") && !path.includes("/preview");
   const lessonMakerMode =
-    path.includes("/lesson-maker") && !path.includes("/preview");
+    path.split("/").includes("lesson-maker") && !path.includes("/preview");
 
   const sectionFullscreenClasses =
     mode == "fullscreen" && !previewMode ? "w-screen mt-3 left-0 fixed" : "";
