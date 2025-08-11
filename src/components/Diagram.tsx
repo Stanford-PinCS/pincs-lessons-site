@@ -120,13 +120,15 @@ export function Diagram({ title, svg, actions = [] }: DiagramProps) {
       <div
         className={`flex ${hasActions ? "justify-between" : "justify-center"}`}
       >
-        <div
-          ref={svgContainerRef}
-          className={`svg-container w-2/3 ${
-            lessonMakerMode ? "overflow-scroll" : ""
-          }`}
-          dangerouslySetInnerHTML={{ __html: sanitizedSvg }}
-        />
+        <div className={`w-2/3`}>
+          <div
+            className={`svg-container w-full h-full ${
+              lessonMakerMode ? "scale-50" : ""
+            }`}
+            ref={svgContainerRef}
+            dangerouslySetInnerHTML={{ __html: sanitizedSvg }}
+          />
+        </div>
         {hasActions && (
           <div className="description-container w-1/3 pl-4 flex flex-col justify-center items-center">
             <ColorBox color="gray">
