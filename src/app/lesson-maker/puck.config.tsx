@@ -507,13 +507,13 @@ export const config: Config = {
         title: { ...TextType, label: "Title" },
         svg: { ...TextArea, label: "SVG content" },
         actions: {
-          label: "Actions",
+          label: "Descriptions (optional)",
           type: "array",
           arrayFields: {
             svgElementId: { ...TextType, label: "SVG element ID" },
             description: { ...TextArea, label: "Description" },
           },
-          getItemSummary: (item) => item.svgElementId || "Action",
+          getItemSummary: (item) => item.svgElementId || "(Empty)",
         },
       },
       defaultProps: {

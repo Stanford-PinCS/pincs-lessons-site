@@ -4,6 +4,7 @@ import ColorBox from "./ColorBox";
 import Text from "./Text";
 import path from "path";
 import { usePathname } from "next/navigation";
+import ErrorMessage from "./ErrorMessage";
 
 export interface DiagramProps {
   title: string;
@@ -21,6 +22,7 @@ export function Diagram({ title, svg, actions = [] }: DiagramProps) {
   const svgContainerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
+  // Get a clean SVG.
   const sanitizedSvg = useMemo(() => {
     if (typeof window !== "undefined") {
       return DOMPurify.sanitize(svg, {
@@ -30,13 +32,13 @@ export function Diagram({ title, svg, actions = [] }: DiagramProps) {
     return svg;
   }, [svg]);
 
+  // Scale the SVG & add action listeners.
   useEffect(() => {
     if (!svgContainerRef.current) return;
 
     const svgElement = svgContainerRef.current.querySelector("svg");
     if (!svgElement) return;
 
-    // --- Robust SVG Scaling ---
     const width = svgElement.getAttribute("width");
     const height = svgElement.getAttribute("height");
 
@@ -97,12 +99,21 @@ export function Diagram({ title, svg, actions = [] }: DiagramProps) {
     };
   }, [sanitizedSvg, actions, selectedDescription]);
 
-  const hasActions = actions && actions.length > 0;
+  // Check for valid inputs.
+  if (title.trim() == "") {
+    return <ErrorMessage message={"Please provide an SVG title."} />;
+  }
+  if (svg.trim() == "") {
+    return <ErrorMessage message={"Please provide a valid SVG."} />;
+  }
 
+  // Get information toggles.
+  const hasActions = actions && actions.length > 0;
   const lessonMakerMode =
     pathname.split("/").includes("lesson-maker") &&
     !pathname.includes("preview");
 
+  // If all's good, show the diagram.
   return (
     <div className="diagram-container my-4">
       <h2 className="text-2xl font-bold text-center mb-6">{title}</h2>
