@@ -352,6 +352,7 @@ export const config: Config = {
           type: "array",
           arrayFields: {
             content: Slot,
+            // TODO: once dynamic fields supports Slots, make title only appear for "Slides" mode.
             title: { ...TextType, label: "Title" },
           },
           min: 1,
