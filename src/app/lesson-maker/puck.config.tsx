@@ -551,7 +551,11 @@ export const config: Config = {
         if (mode == "external") {
           slide = undefined;
         }
-        return <SafeLink text={text} href={link} slide={slide}></SafeLink>;
+        return (
+          <div className="my-2">
+            <SafeLink text={text} href={link} slide={slide}></SafeLink>
+          </div>
+        );
       },
     },
   },
