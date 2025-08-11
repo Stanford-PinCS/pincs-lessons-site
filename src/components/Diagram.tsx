@@ -1,49 +1,137 @@
-import { memo } from "react";
-import Emphasize from "./Emphasize";
-import ErrorMessage from "./ErrorMessage";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import DOMPurify from "dompurify";
+import ColorBox from "./ColorBox";
+import Text from "./Text";
+import path from "path";
+import { usePathname } from "next/navigation";
 
-const SVG = memo(function ({ svg }: { svg: string }) {
-  // Make sure it's a friendly SVG.
-  const sanitizedHtml = DOMPurify.sanitize(svg, {
-    USE_PROFILES: { svg: true },
-    FORBID_TAGS: ["foreignObject", "script", "iframe"],
-    FORBID_ATTR: ["onload", "onerror", "onclick", "xlink:href", "href"],
-  });
-
-  return <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />;
-});
-
-export default function Diagram({
-  title,
-  svg,
-}: {
+export interface DiagramProps {
   title: string;
   svg: string;
-}) {
-  if (title.trim() == "") {
-    return (
-      <ErrorMessage
-        message={"You must have a title on your SVG."}
-        pulsing={true}
-      ></ErrorMessage>
+  actions?: {
+    svgElementId: string;
+    description: string;
+  }[];
+}
+
+export function Diagram({ title, svg, actions = [] }: DiagramProps) {
+  const [selectedDescription, setSelectedDescription] = useState<string | null>(
+    null
+  );
+  const svgContainerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
+  const sanitizedSvg = useMemo(() => {
+    if (typeof window !== "undefined") {
+      return DOMPurify.sanitize(svg, {
+        USE_PROFILES: { svg: true, svgFilters: true },
+      });
+    }
+    return svg;
+  }, [svg]);
+
+  useEffect(() => {
+    if (!svgContainerRef.current) return;
+
+    const svgElement = svgContainerRef.current.querySelector("svg");
+    if (!svgElement) return;
+
+    // --- Robust SVG Scaling ---
+    const width = svgElement.getAttribute("width");
+    const height = svgElement.getAttribute("height");
+
+    if (!svgElement.getAttribute("viewBox") && width && height) {
+      svgElement.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    }
+
+    svgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
+    svgElement.setAttribute("width", "100%");
+    svgElement.setAttribute("height", "100%");
+    svgElement.style.width = "100%";
+    svgElement.style.height = "auto";
+
+    const actionMap = new Map(
+      actions.map((a) => [a.svgElementId, a.description])
     );
-  }
-  if (svg.trim() == "") {
-    return (
-      <ErrorMessage
-        message={"You must have a valid SVG."}
-        pulsing={true}
-      ></ErrorMessage>
+
+    const handleSvgClick = (e: Event) => {
+      const target = e.target as HTMLElement;
+      const clickableElement = target.closest("[id]") as HTMLElement | null;
+
+      if (clickableElement) {
+        const elementId = clickableElement.id;
+        if (actionMap.has(elementId)) {
+          const newDescription = actionMap.get(elementId)!;
+          if (selectedDescription === newDescription) {
+            setSelectedDescription(null);
+          } else {
+            setSelectedDescription(newDescription);
+          }
+        }
+      }
+    };
+
+    svgElement.addEventListener("click", handleSvgClick);
+
+    const styleElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "style"
     );
-  }
+    const cssRules = actions
+      .map(
+        (action) => `#${action.svgElementId}:hover {
+        cursor: pointer;
+        filter: saturate(1.5);
+      }`
+      )
+      .join("\n");
+
+    styleElement.textContent = cssRules;
+    svgElement.appendChild(styleElement);
+
+    return () => {
+      svgElement.removeEventListener("click", handleSvgClick);
+      if (svgElement.contains(styleElement)) {
+        svgElement.removeChild(styleElement);
+      }
+    };
+  }, [sanitizedSvg, actions, selectedDescription]);
+
+  const hasActions = actions && actions.length > 0;
+
+  const lessonMakerMode =
+    pathname.split("/").includes("lesson-maker") &&
+    !pathname.includes("preview");
 
   return (
-    <div>
-      <div>
-        <Emphasize>{title}</Emphasize>
+    <div className="diagram-container my-4">
+      <h2 className="text-2xl font-bold text-center mb-6">{title}</h2>
+      <div
+        className={`flex ${hasActions ? "justify-between" : "justify-center"}`}
+      >
+        <div
+          ref={svgContainerRef}
+          className={`svg-container w-2/3 ${
+            lessonMakerMode ? "overflow-scroll" : ""
+          }`}
+          dangerouslySetInnerHTML={{ __html: sanitizedSvg }}
+        />
+        {hasActions && (
+          <div className="description-container w-1/3 pl-4 flex flex-col justify-center items-center">
+            <ColorBox color="gray">
+              {selectedDescription ? (
+                <Text>{selectedDescription}</Text>
+              ) : (
+                <p className="text-gray-500">
+                  Click on an element in the diagram to see more.
+                </p>
+              )}
+            </ColorBox>
+          </div>
+        )}
       </div>
-      <SVG svg={svg} />
     </div>
   );
 }
+
+export default Diagram;

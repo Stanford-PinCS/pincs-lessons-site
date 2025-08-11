@@ -505,14 +505,24 @@ export const config: Config = {
     Diagram: {
       fields: {
         title: { ...TextType, label: "Title" },
-        svg: { ...TextArea, label: "SVG Content" },
+        svg: { ...TextArea, label: "SVG content" },
+        actions: {
+          label: "Actions",
+          type: "array",
+          arrayFields: {
+            svgElementId: { ...TextType, label: "SVG element ID" },
+            description: { ...TextArea, label: "Description" },
+          },
+          getItemSummary: (item) => item.svgElementId || "Action",
+        },
       },
       defaultProps: {
         title: "",
         svg: "",
+        actions: [],
       },
-      render: ({ title, svg }) => {
-        return <Diagram title={title} svg={svg}></Diagram>;
+      render: ({ title, svg, actions }) => {
+        return <Diagram title={title} svg={svg} actions={actions} />;
       },
     },
   },
