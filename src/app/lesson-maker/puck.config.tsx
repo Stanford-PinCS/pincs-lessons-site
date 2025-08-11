@@ -64,7 +64,7 @@ const TextType = { type: "text" as const };
 const TextArea = { type: "textarea" as const };
 const Slot = { type: "slot" as const, label: "Content", disallow: ["Block"] };
 
-function shorten(text: string, cutoff = 10) {
+function shorten(text: string, cutoff = 12) {
   if (!text) return "(Empty)";
 
   if (text.length > Math.max(cutoff, 3)) {
@@ -194,7 +194,7 @@ export const config: Config = {
           },
           min: 1,
           getItemSummary: (item) =>
-            (item.isCorrect ? "✅" : "❌") + shorten(item.text, 9),
+            (item.isCorrect ? "✅" : "❌") + shorten(item.text, 11),
         },
       },
       defaultProps: {
@@ -333,15 +333,6 @@ export const config: Config = {
     },
     Animation: {
       fields: {
-        slides: {
-          label: "Slides",
-          type: "array",
-          arrayFields: {
-            content: Slot,
-          },
-          min: 1,
-          getItemSummary: (item, index) => `Slide #${(index || 0) + 1}`,
-        },
         animationType: {
           label: "Animation type",
           type: "radio",
@@ -355,6 +346,17 @@ export const config: Config = {
               value: "cumulative",
             },
           ],
+        },
+        slides: {
+          label: "Slides",
+          type: "array",
+          arrayFields: {
+            content: Slot,
+            title: { ...TextType, label: "Title" },
+          },
+          min: 1,
+          getItemSummary: (item, index) =>
+            item.title ? shorten(item.title) : `Slide #${(index || 0) + 1}`,
         },
       },
       defaultProps: {
