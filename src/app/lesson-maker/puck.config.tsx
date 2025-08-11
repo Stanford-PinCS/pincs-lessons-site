@@ -17,6 +17,7 @@ import Animation from "@/components/Animation";
 import Collapsible from "@/components/Collapsible";
 import Image from "@/components/Image";
 import ErrorMessage from "@/components/ErrorMessage";
+import Diagram from "@/components/Diagram";
 
 const BlockColor = {
   label: "Slide Color",
@@ -501,6 +502,19 @@ export const config: Config = {
         );
       },
     },
+    Diagram: {
+      fields: {
+        title: { ...TextType, label: "Title" },
+        svg: { ...TextArea, label: "SVG Content" },
+      },
+      defaultProps: {
+        title: "",
+        svg: "",
+      },
+      render: ({ title, svg }) => {
+        return <Diagram title={title} svg={svg}></Diagram>;
+      },
+    },
   },
   categories: {
     basics: {
@@ -514,7 +528,7 @@ export const config: Config = {
       components: ["Pickcode", "Embed", "Animation", "Collapsible", "Image"],
     },
     advanced: {
-      components: ["Custom", "Unity"],
+      components: ["Custom", "Unity", "Diagram"],
     },
   },
   root: {
