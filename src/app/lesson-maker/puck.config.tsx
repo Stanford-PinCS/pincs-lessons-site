@@ -1,7 +1,13 @@
 "use client";
 import Block from "@/components/Block";
 import LessonWrapper from "@/components/LessonWrapper";
-import { Config, Fields } from "@measured/puck";
+import {
+  Config,
+  FieldProps,
+  Fields,
+  Overrides,
+  RadioField,
+} from "@measured/puck";
 import "katex/dist/katex.min.css";
 import ColorBox from "@/components/ColorBox";
 import QuizQuestion from "@/components/QuizQuestion";
@@ -18,6 +24,8 @@ import Collapsible from "@/components/Collapsible";
 import Image from "@/components/Image";
 import ErrorMessage from "@/components/ErrorMessage";
 import Diagram from "@/components/Diagram";
+import { CheckCircle } from "lucide-react";
+import { JSXElementConstructor, ReactNode } from "react";
 
 const BlockColor = {
   label: "Slide Color",
@@ -551,7 +559,7 @@ export const config: Config = {
           { label: "Fullscreen", value: "fullscreen" },
         ],
       },
-      title: { ...TextArea, label: "Title" },
+      title: { ...TextType, label: "Title" },
       color: BlockColor,
     },
     defaultProps: {
@@ -568,6 +576,63 @@ export const config: Config = {
             </Block>
           </div>
         </LessonWrapper>
+      );
+    },
+  },
+};
+
+// Can find OG components here: https://github.com/puckeditor/puck/tree/main/packages/core/components
+export const overrides: Partial<Overrides> = {
+  fieldTypes: {
+    radio: ({
+      field,
+      onChange,
+      readOnly,
+      value,
+      name,
+      id,
+      label,
+      labelIcon,
+      Label,
+    }: any) => {
+      if (field.type !== "radio" || !field.options) {
+        return null;
+      }
+
+      return (
+        <Label
+          icon={labelIcon || <CheckCircle size={16} />}
+          label={label || name}
+          readOnly={readOnly}
+          el="div"
+        >
+          <div
+            className="border border-(--puck-color-grey-09) rounded-sm flex flex-wrap"
+            id={id}
+          >
+            {field.options.map((option: any) => (
+              <label
+                className="grow border border-(--puck-color-grey-09) has-checked:bg-blue-100 has-checked:text-blue-800 hover:bg-blue-50 cursor-pointer"
+                key={option.label + option.value}
+              >
+                <input
+                  type="radio"
+                  value={JSON.stringify({ value: option.value })}
+                  name={name}
+                  onChange={(e) => {
+                    onChange(JSON.parse(e.target.value).value);
+                  }}
+                  disabled={readOnly}
+                  checked={value === option.value}
+                  className="hidden"
+                />
+                <div className="my-2 mx-3 text-center text-sm">
+                  {option.label || option.value?.toString()}
+                </div>
+              </label>
+            ))}
+          </div>
+        </Label>
       );
     },
   },

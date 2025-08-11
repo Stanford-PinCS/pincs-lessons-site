@@ -2,7 +2,7 @@
 import { Puck, Data, Content, ComponentData, Render } from "@measured/puck";
 import "@measured/puck/puck.css";
 import { useState, useEffect, useRef, ReactNode } from "react";
-import { config } from "./puck.config";
+import { config, overrides } from "./puck.config";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import landingPageTemplate from "@/template/auto-landing-page.template";
@@ -595,6 +595,7 @@ export default function Editor() {
           <Puck
             key={slides[currentSlideIndex].id}
             config={config}
+            overrides={overrides}
             data={slides[currentSlideIndex].data}
             onChange={handlePuckChange}
           >
