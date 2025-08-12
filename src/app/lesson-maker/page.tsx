@@ -23,7 +23,7 @@ export default function Editor() {
   const [slides, setSlides] = useState<Slide[]>([
     { id: 0, data: { content: [], root: {} } },
   ]);
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
   const [isMounted, setIsMounted] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [lessonTitle, setLessonTitle] = useState("");
@@ -340,7 +340,10 @@ export default function Editor() {
       version: "1.0",
     };
     localStorage.setItem("lessonPreview", JSON.stringify(lessonData));
-    window.open("./lesson-maker/preview", "_blank");
+    window.open(
+      `./lesson-maker/preview?slide=${currentSlideIndex + 1 || 1}`,
+      "_blank"
+    );
   };
 
   const parseAndLoadLesson = (contents: string) => {
