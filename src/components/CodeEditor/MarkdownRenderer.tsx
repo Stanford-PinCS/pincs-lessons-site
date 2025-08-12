@@ -57,7 +57,7 @@ const Slide: FC<PropsWithChildren> = ({ children }) => {
 };
 
 const Step: FC<PropsWithChildren> = ({ children }) => (
-  <div className="flex-row flex-grow flex-shrink flex-wrap p-2 rounded-lg border-2 border-slate-300">
+  <div className="flex flex-row flex-grow flex-shrink flex-wrap p-2 rounded-lg border-2 border-slate-300 mb-1">
     <MaybeInline>{children}</MaybeInline>
   </div>
 );
@@ -121,13 +121,7 @@ const InstructionsMarkdownRenderer: FC<PropsWithChildren> = ({ children }) => {
     return slides;
   }, [children]);
 
-  const { currentLessonStepIndex, changeStepIndex } = useContext(
-    LessonInstructionsContext
-  );
-  const currentIndex = Math.max(
-    0,
-    Math.min(currentLessonStepIndex, childSlides.length - 1)
-  );
+  const [stepIndex, changeStepIndex] = useState(0);
 
   const instructionsContainerRef = useRef<HTMLDivElement>(null);
 
@@ -135,7 +129,7 @@ const InstructionsMarkdownRenderer: FC<PropsWithChildren> = ({ children }) => {
     instructionsContainerRef.current?.scrollTo({
       top: 0,
     });
-  }, [currentLessonStepIndex]);
+  }, [stepIndex]);
 
   const changeStepIndexBounded = useCallback(
     (newIndex: number) => {
@@ -149,8 +143,6 @@ const InstructionsMarkdownRenderer: FC<PropsWithChildren> = ({ children }) => {
     [changeStepIndex, childSlides.length]
   );
 
-  console.log(currentIndex, childSlides);
-
   return (
     <div
       className="flex flex-col flex-1 h-full rounded-lg bg-white shadow-md overflow-hidden"
@@ -160,14 +152,14 @@ const InstructionsMarkdownRenderer: FC<PropsWithChildren> = ({ children }) => {
         ref={instructionsContainerRef}
         className="grow w-full p-2 overflow-y-scroll"
       >
-        <div className="flex-col gap-1">{childSlides[currentIndex]}</div>
+        <div className="flex-col gap-1">{childSlides[stepIndex]}</div>
       </div>
       {childSlides.length > 1 && (
         <div className="mt-auto w-full flex flex-row justify-between items-center bg-slate-50 h-8">
           <div
-            onClick={() => changeStepIndexBounded(currentIndex - 1)}
+            onClick={() => changeStepIndexBounded(stepIndex - 1)}
             className={`flex items-center justify-center shadow-none bg-indigo-500 rounded-full h-6 w-6 px-0 py-0 mx-1 cursor-pointer ${
-              currentIndex === 0 ? "opacity-50" : ""
+              stepIndex === 0 ? "opacity-50" : ""
             }`}
           >
             <ChevronLeftIcon className="h-4 w-4 text-white" />
@@ -177,16 +169,16 @@ const InstructionsMarkdownRenderer: FC<PropsWithChildren> = ({ children }) => {
               className="h-full bg-indigo-500 transition[width] duration-500"
               style={{
                 width: `${Math.max(
-                  (currentIndex / (childSlides.length - 1)) * 100,
+                  (stepIndex / (childSlides.length - 1)) * 100,
                   3
                 )}%`,
               }}
             ></div>
           </div>
           <div
-            onClick={() => changeStepIndexBounded(currentIndex + 1)}
+            onClick={() => changeStepIndexBounded(stepIndex + 1)}
             className={`flex items-center justify-center gap-1 rounded-full h-6 shadow-none bg-indigo-500 mx-1 py-1 pl-2 my-1 cursor-pointer ${
-              currentIndex === childSlides.length - 1 ? "opacity-50" : ""
+              stepIndex === childSlides.length - 1 ? "opacity-50" : ""
             }`}
           >
             <span className="text-white">Next</span>

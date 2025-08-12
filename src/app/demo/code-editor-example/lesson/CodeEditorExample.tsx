@@ -7,11 +7,12 @@ const instructionsMarkdown = `
 
 <Slide>
 # Hello world
-Welcome to the lesson
-\`print\` is very important
+<Step>Welcome to the lesson</Step>
+<Step>\`print\` is very important</Step>
 
 </Slide>
-<Slide
+<Slide>
+# Part 2
 - Step 1
 - Step 2
 - Step 3
