@@ -2,6 +2,7 @@
 import { usePathname } from "next/navigation";
 import { JSXElementConstructor, useState } from "react";
 import ErrorMessage from "./ErrorMessage";
+import Emphasize from "./Emphasize";
 
 function Content({ slides, lessonEditorMode, index }: any) {
   if (!lessonEditorMode) {
@@ -9,6 +10,16 @@ function Content({ slides, lessonEditorMode, index }: any) {
     return <C />;
   }
   return slides.map((slide: any, i: number) => {
+    if (slide.title) {
+      return (
+        <div key={i}>
+          <p>
+            <Emphasize>{slide.title}</Emphasize>
+          </p>
+          <slide.content key={i} />
+        </div>
+      );
+    }
     return <slide.content key={i} />;
   });
 }
@@ -17,7 +28,7 @@ export default function Animation({
   slides,
   animationType = "slides",
 }: {
-  slides: { content: JSXElementConstructor<any> }[];
+  slides: { content: JSXElementConstructor<any>; title?: string }[];
   animationType?: "slides" | "cumulative";
 }) {
   if (slides.length <= 0) {
@@ -74,6 +85,21 @@ export default function Animation({
     );
   }
 
+  const getTitle = () => {
+    // Lesson editor mode (shows all slides).
+    if (lessonEditorMode) {
+      return `${slides.length > 1 ? "All " : ""}${slides.length} slide${
+        slides.length > 1 ? "s" : ""
+      } (editor preview)`;
+    }
+    // Show the title or "Slide" if thre is no title.
+    if (slides[index].title) {
+      return `${slides[index].title} (${index + 1}/${slides.length})`;
+    } else {
+      return `Slide ${index + 1} / ${slides.length}`;
+    }
+  };
+
   // Default to "slides" animation
   return (
     <div>
@@ -85,11 +111,7 @@ export default function Animation({
         >
           ← Back
         </button>
-        <span className="text-lg">
-          {lessonEditorMode
-            ? `All ${slides.length} slides (editor preview)`
-            : `Slide ${index + 1} / ${slides.length}`}
-        </span>
+        <span className="text-lg font-semibold">{getTitle()}</span>
         <button
           className={`${buttonBaseClasses} ${buttonHoverClasses} ${buttonDisabledClasses}`}
           onClick={goNext}
