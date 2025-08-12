@@ -1,14 +1,27 @@
-export const ConsoleOutput = ({ outputLines }: { outputLines: string[] }) => {
+import classNames from "classnames";
+import { ConsoleMessage } from "./runtimes/JSRuntime";
+
+export const ConsoleOutput = ({
+  outputLines,
+}: {
+  outputLines: ConsoleMessage[];
+}) => {
   return (
     <div className="h-full flex-col grow shrink p-1">
-      {outputLines.map((line: string, i: number) => {
+      {outputLines.map((m: ConsoleMessage, i: number) => {
         return (
           <div
             className={`w-full px-2 mr-1 bg-slate-900 place-self-end`}
             key={`${i}`}
           >
-            <pre className={`font-mono w-fit output-line text-slate-100`}>
-              {line}
+            <pre
+              className={classNames(
+                `font-mono w-fit whitespace-pre-wrap`,
+                m.logType === "error" && "text-red-500",
+                m.logType === "log" && "text-slate-100"
+              )}
+            >
+              {m.message}
             </pre>
           </div>
         );

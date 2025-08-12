@@ -24,7 +24,7 @@ export const TextEditor = ({
           minimap: {
             enabled: false,
           },
-          fontSize: 16,
+          fontSize: 14,
           // Make tooltips descendants of body to escape monaco's nested stacking context
           // We tried to do any node other than body, none of them seemed to work
           //   overflowWidgetsDomNode: document.body,

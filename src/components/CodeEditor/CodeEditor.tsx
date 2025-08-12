@@ -107,7 +107,6 @@ export const CodeEditor = ({
       instructionsDividerRef.current?.setPointerCapture(e.pointerId);
       setInstructionsDividerMouseDown(true);
       const stopListening = () => {
-        console.log("stopped listening");
         setInstructionsDividerMouseDown(false);
         instructionsDividerRef.current?.releasePointerCapture(e.pointerId);
         window.removeEventListener("pointerup", stopListening);

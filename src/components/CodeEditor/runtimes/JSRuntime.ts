@@ -1,3 +1,8 @@
+export interface ConsoleMessage {
+  logType: "error" | "log";
+  message: string;
+}
+
 export class JSRuntime {
   executeWorker: Worker | null = null;
 
@@ -11,24 +16,20 @@ export class JSRuntime {
         type: "module",
       }
     );
-    const onMessage = (e: { data: any }) => {
+    const onMessageFromWorker = (e: { data: any }) => {
       const messageData = e.data;
       switch (messageData.type) {
         case "module": {
           this.sendMessageToPlugin(messageData.contents);
           break;
         }
-        case "console": {
-          // TODO: send
-          break;
-        }
-        case "clearConsole": {
-          // TODO: send
+        case "log": {
+          this.onMessage(messageData);
           break;
         }
       }
     };
-    this.executeWorker.onmessage = onMessage;
+    this.executeWorker.onmessage = onMessageFromWorker;
   };
 
   public constructor(private onMessage: (message: any) => void) {
