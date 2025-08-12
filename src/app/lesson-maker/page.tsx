@@ -507,7 +507,7 @@ export default function Editor() {
       )}
       {/* Tool Bar */}
       <div
-        className={`${reorderingClasses} bg-gray-800 text-white p-4 flex items-center justify-between shadow-md`}
+        className={`${reorderingClasses} bg-gray-800 text-white p-4 flex gap-4 items-center justify-between shadow-md`}
       >
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-bold">PinCS Lesson Maker</h1>
@@ -557,13 +557,13 @@ export default function Editor() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsSaveModalOpen(true)}
-            className="px-4 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md font-medium"
+            className="px-4 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md font-medium text-sm"
           >
             Save
           </button>
           <label
             htmlFor="load-lesson"
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium text-sm"
           >
             Load
           </label>
@@ -576,9 +576,9 @@ export default function Editor() {
           />
           <button
             onClick={handlePreview}
-            className="px-4 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md font-medium"
+            className="px-4 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md font-medium text-sm"
           >
-            Open preview
+            Preview
           </button>
         </div>
       </div>
