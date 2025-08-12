@@ -594,7 +594,10 @@ export const overrides: Partial<Overrides> = {
       label,
       labelIcon,
       Label,
-    }: any) => {
+    }: FieldProps<RadioField, any> & {
+      children: ReactNode;
+      name: string;
+    } & any) => {
       if (field.type !== "radio" || !field.options) {
         return null;
       }
@@ -610,7 +613,7 @@ export const overrides: Partial<Overrides> = {
             className="border border-(--puck-color-grey-09) rounded-sm flex flex-wrap"
             id={id}
           >
-            {field.options.map((option: any) => (
+            {field.options.map((option: { label: string; value: string }) => (
               <label
                 className="grow border border-(--puck-color-grey-09) has-checked:bg-blue-100 has-checked:text-blue-800 hover:bg-blue-50 cursor-pointer"
                 key={option.label + option.value}
