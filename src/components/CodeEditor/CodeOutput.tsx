@@ -75,7 +75,7 @@ export const CodeOutput = observer(
         >
           <iframe
             ref={(iframe) => {
-              if (!iframe) return;
+              if (!iframe || jsRuntimeRef.current) return;
               jsRuntimeRef.current = new JSRuntime((message) => {
                 iframe.contentWindow?.postMessage(message, "*");
                 if (message.type === "log") {
