@@ -1,3 +1,10 @@
+/**
+ * Handles displaying the plugin and sending messages to it
+ * Plugins are rendered in iframe
+ * Initializes a JSRuntime and tells it to execute when play is clicked
+ * All messages from user code are routed to iframe, all console logs are displayed in here
+ */
+
 import { CommandLineIcon } from "@heroicons/react/24/outline";
 import { PlayIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
@@ -6,7 +13,9 @@ import { ConsoleOutput } from "./ConsoleOutput";
 import { ConsoleMessage, JSRuntime } from "./runtimes/JSRuntime";
 import { observer } from "mobx-react-lite";
 
-const loadPluginImplementation = async (pluginId: string): Promise<string> => {
+const loadPluginImplementationCode = async (
+  pluginId: string
+): Promise<string> => {
   let manifest: any;
   try {
     const res = await fetch(
@@ -48,12 +57,12 @@ export const CodeOutput = observer(
     const [consoleMessages, setConsoleMessages] = useState<ConsoleMessage[]>(
       []
     );
-    const [implementation, setImplementation] = useState<string | undefined>(
-      undefined
-    );
+    const [pluginImplementationCode, setPluginImplementationCode] = useState<
+      string | undefined
+    >(undefined);
     useEffect(() => {
-      loadPluginImplementation(pluginId).then((c) => {
-        setImplementation(c);
+      loadPluginImplementationCode(pluginId).then((c) => {
+        setPluginImplementationCode(c);
       });
     }, [pluginId]);
 
@@ -114,7 +123,7 @@ export const CodeOutput = observer(
                 setShowConsole(false);
                 jsRuntimeRef.current?.startExecution(
                   userCode,
-                  implementation ?? ""
+                  pluginImplementationCode ?? ""
                 );
               }}
               className={

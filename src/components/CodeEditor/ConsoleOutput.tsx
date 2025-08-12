@@ -1,3 +1,7 @@
+/**
+ * Display console messages in a list, monospace font, red for errors, white otherwise
+ */
+
 import classNames from "classnames";
 import { ConsoleMessage } from "./runtimes/JSRuntime";
 

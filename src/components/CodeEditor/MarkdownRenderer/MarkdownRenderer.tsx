@@ -1,3 +1,10 @@
+/**
+ * Render markdown for lesson instructions in our custom format
+ * markdown-to-jsx parses the markdown, and we provide components
+ * for rendering each type of element
+ * We also get to provide implementations for Slide, Step, and Collapsible
+ */
+
 import {
   ChevronDownIcon,
   ChevronLeftIcon,
@@ -7,14 +14,13 @@ import { isString } from "lodash-es";
 import Markdown, { MarkdownToJSX, RuleType } from "markdown-to-jsx";
 import {
   Children,
-  FC,
-  PropsWithChildren,
-  ReactElement,
   createContext,
   createElement,
+  FC,
   isValidElement,
+  PropsWithChildren,
+  ReactElement,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -23,17 +29,7 @@ import {
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { monacoThemeToHLJS, VSDarkTheme } from "./VSDarkHLJSTheme";
 
-interface LessonInstructionsContext {
-  currentLessonStepIndex: number;
-  changeStepIndex: (newIndex: number) => void;
-}
-const LessonInstructionsContext = createContext<LessonInstructionsContext>({
-  currentLessonStepIndex: 0,
-  changeStepIndex() {
-    throw new Error("Lesson context not set");
-  },
-});
-
+// Regular inline text
 const MaybeInline: FC<PropsWithChildren> = ({ children }) => {
   const containsText =
     Children.map(children, isString)?.some((t) => t) ?? false;
@@ -43,6 +39,7 @@ const MaybeInline: FC<PropsWithChildren> = ({ children }) => {
   return <>{children}</>;
 };
 
+// <Slide> component
 const Slide: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
@@ -56,12 +53,14 @@ const Slide: FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
+// <Step> component
 const Step: FC<PropsWithChildren> = ({ children }) => (
   <div className="flex flex-row flex-grow flex-shrink flex-wrap p-2 rounded-lg border-2 border-slate-300">
     <MaybeInline>{children}</MaybeInline>
   </div>
 );
 
+// TODO: how to get this to be renderered
 const LinkButton: FC<{ href?: string; text?: string }> = ({ href, text }) => (
   <a
     href={href}
@@ -72,6 +71,7 @@ const LinkButton: FC<{ href?: string; text?: string }> = ({ href, text }) => (
   </a>
 );
 
+// <Collapsible text={"Hello"}></Collapsible> component
 const Collapsible: FC<PropsWithChildren<{ title?: string }>> = ({
   title,
   children,
@@ -100,6 +100,7 @@ const Collapsible: FC<PropsWithChildren<{ title?: string }>> = ({
   );
 };
 
+// Renderer the slides and the slide progress bar and forward/back buttons
 const InstructionsMarkdownRenderer: FC<PropsWithChildren> = ({ children }) => {
   const childSlides = useMemo(() => {
     let unwrappedElements: any[] = [];
@@ -188,6 +189,7 @@ const InstructionsMarkdownRenderer: FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
+// Use HighlightJS to do syntax highlighting of code
 const TextCodeBlock: FC<
   PropsWithChildren<{
     className?: string;
@@ -232,6 +234,7 @@ const TextCodeBlock: FC<
   );
 };
 
+// An inline code snippet in backticks, like `print("hello world")`
 const InlineCode: FC<PropsWithChildren<{ fontSize: number }>> = ({
   children,
   fontSize,
@@ -246,6 +249,7 @@ const InlineCode: FC<PropsWithChildren<{ fontSize: number }>> = ({
   );
 };
 
+// <li>
 const ListItem: FC<
   PropsWithChildren<{
     index: number;
@@ -262,6 +266,7 @@ const ListItem: FC<
     </span>
   );
 };
+// <ul>
 const UnorderedList: FC<PropsWithChildren<{ fontSize: number }>> = ({
   children,
   fontSize,
@@ -276,6 +281,7 @@ const UnorderedList: FC<PropsWithChildren<{ fontSize: number }>> = ({
     </div>
   );
 };
+// <ol>
 const OrderedList: FC<PropsWithChildren<{ fontSize: number }>> = ({
   children,
   fontSize,
@@ -291,6 +297,7 @@ const OrderedList: FC<PropsWithChildren<{ fontSize: number }>> = ({
   );
 };
 
+// Utility for cleaning up urls and giving them a protocol
 const forceAbsoluteUrl = (rawUrl: string): string => {
   try {
     // Just construct to see if it throws an exception, which will
@@ -304,6 +311,7 @@ const forceAbsoluteUrl = (rawUrl: string): string => {
   }
 };
 
+// Register our component overrides with MarkdownToJSX
 const markdownToJSXOverrides = (fontSize: number): MarkdownToJSX.Overrides => ({
   Slide,
   Step,
@@ -391,14 +399,13 @@ const markdownToJSXOverrides = (fontSize: number): MarkdownToJSX.Overrides => ({
 
 const FONT_SIZE = 14;
 
+// Tie everything together with MarkdownToJSX
 export const MDXRenderer = ({
   mdxText,
   additionalOverrides,
-  showDetailedParsingErrors = false,
 }: {
   mdxText: string;
   additionalOverrides?: MarkdownToJSX.Overrides;
-  showDetailedParsingErrors?: boolean;
 }) => {
   const overrides = useMemo(
     () => ({
@@ -408,7 +415,7 @@ export const MDXRenderer = ({
     [additionalOverrides, FONT_SIZE]
   );
 
-  // TODO: comment explaining why
+  // TODO TODO: comment explaining why
   const mdxToDisplay = useMemo(() => {
     return mdxText.replaceAll(/Step>\n\n+/g, "Step>\n");
   }, [mdxText]);
@@ -449,49 +456,18 @@ export const MDXRenderer = ({
   );
 };
 
+// Parent component for use in CodeEditor.tsx
 const InstructionsRenderer = ({
   instructionsText,
-  changeStep,
-  currentLessonStepId,
 }: {
   instructionsText: string;
-  currentLessonStepId?: string;
-  changeStep: (newStepId: string) => void;
 }) => {
-  const currentLessonStepIndex = useMemo(() => {
-    const index = parseInt(currentLessonStepId ?? "");
-    // old-style indices were ids, so these out-of-bounds values could happen
-    // if those ids happen to parse as ints. We're gambling that no lessons
-    // have more than 50 slides
-    if (!index || index < 0 || index > 50) {
-      return 0;
-    }
-    return index;
-  }, [currentLessonStepId]);
-
-  const changeStepIndex = useCallback(
-    (newIndex: number) => {
-      changeStep(`${newIndex}`);
-    },
-    [changeStep]
-  );
-
-  const context: LessonInstructionsContext = useMemo(
-    () => ({
-      currentLessonStepIndex,
-      changeStepIndex,
-    }),
-    [currentLessonStepIndex, changeStepIndex]
-  );
-
   const overrides = useMemo(() => {
     return markdownToJSXOverrides(FONT_SIZE);
   }, [FONT_SIZE]);
 
   return (
-    <LessonInstructionsContext.Provider value={context}>
-      <MDXRenderer mdxText={instructionsText} additionalOverrides={overrides} />
-    </LessonInstructionsContext.Provider>
+    <MDXRenderer mdxText={instructionsText} additionalOverrides={overrides} />
   );
 };
 
