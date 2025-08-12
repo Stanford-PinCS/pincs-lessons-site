@@ -23,7 +23,6 @@
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.484.0",
     "markdown-to-jsx": "^7.7.12",
-    "mobx": "^6.13.7",
     "mobx-react-lite": "^4.1.0",
     "motion": "^12.19.1",
     "next": "15.2.4",

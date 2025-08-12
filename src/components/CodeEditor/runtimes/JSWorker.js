@@ -1,12 +1,3 @@
-const messageSubscribers = {};
-const subscribeToMessages = (onMessage) => {
-  const key = Symbol();
-  messageSubscribers[key] = onMessage;
-  return () => {
-    delete messageSubscribers[key];
-  };
-};
-
 const AsyncFunction = async function () {}.constructor;
 
 /**
@@ -35,52 +26,50 @@ function sanitizeMessage(value) {
     return val;
   }
 
-  return JSON.parse(JSON.stringify(value, replacer));
+  // this returns a list
+  return JSON.parse(JSON.stringify(value, replacer))[0];
 }
 
 const overriddenConsole = {
   ...console,
-  clear: () => {
-    postMessage({ type: "clearConsole" });
-  },
   log: (...data) => {
     originalConsole.log(...data);
     postMessage({
-      type: "console",
-      level: "log",
-      data: sanitizeMessage(data),
+      type: "log",
+      logType: "log",
+      message: sanitizeMessage(data),
     });
   },
   debug: (...data) => {
     originalConsole.debug(...data);
     postMessage({
-      type: "console",
-      level: "debug",
-      data: sanitizeMessage(data),
+      type: "log",
+      logType: "debug",
+      message: sanitizeMessage(data),
     });
   },
   info: (...data) => {
     originalConsole.info(...data);
     postMessage({
-      type: "console",
-      level: "info",
-      data: sanitizeMessage(data),
+      type: "log",
+      logType: "info",
+      message: sanitizeMessage(data),
     });
   },
   warn: (...data) => {
     originalConsole.warn(...data);
     postMessage({
-      type: "console",
-      level: "warn",
-      data: sanitizeMessage(data),
+      type: "log",
+      logType: "warn",
+      message: sanitizeMessage(data),
     });
   },
   error: (...data) => {
     originalConsole.error(...data);
     postMessage({
-      type: "console",
-      level: "error",
-      data: sanitizeMessage(data),
+      type: "log",
+      logType: "error",
+      message: sanitizeMessage(data),
     });
   },
 };
@@ -185,7 +174,7 @@ const handleMessage = async (message) => {
               type: "module",
               contents,
             });
-          }, subscribeToMessages)) || {};
+          })) || {};
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error("error executing module code", e);
@@ -202,9 +191,9 @@ const handleMessage = async (message) => {
       } catch (e) {
         if (e instanceof Error) {
           postMessage({
-            type: "console",
-            stream: "stderr",
-            messageText: `${e.name}: ${e.message}\n`,
+            type: "log",
+            logType: "error",
+            message: `${e.name}: ${e.message}\n`,
           });
           maybeTerminate();
         }
@@ -217,9 +206,9 @@ const handleMessage = async (message) => {
       } catch (e) {
         if (e instanceof Error) {
           postMessage({
-            type: "console",
-            stream: "stderr",
-            messageText: `${e.name}: ${e.message}\n`,
+            type: "log",
+            logType: "error",
+            message: `${e.name}: ${e.message}\n`,
           });
         }
         maybeTerminate();
@@ -227,11 +216,6 @@ const handleMessage = async (message) => {
       }
 
       break;
-    }
-    case "module": {
-      Object.getOwnPropertySymbols(messageSubscribers).forEach((key) => {
-        messageSubscribers[key](message.contents);
-      });
     }
   }
 };

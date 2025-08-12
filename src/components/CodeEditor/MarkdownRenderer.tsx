@@ -57,7 +57,7 @@ const Slide: FC<PropsWithChildren> = ({ children }) => {
 };
 
 const Step: FC<PropsWithChildren> = ({ children }) => (
-  <div className="flex flex-row flex-grow flex-shrink flex-wrap p-2 rounded-lg border-2 border-slate-300 mb-1">
+  <div className="flex flex-row flex-grow flex-shrink flex-wrap p-2 rounded-lg border-2 border-slate-300">
     <MaybeInline>{children}</MaybeInline>
   </div>
 );
@@ -79,12 +79,12 @@ const Collapsible: FC<PropsWithChildren<{ title?: string }>> = ({
   const [collapsed, setCollapsed] = useState(true);
 
   return (
-    <div className="flex-col flex-grow flex-shrink">
+    <div className="flex flex-col flex-grow flex-shrink">
       <div
         onClick={() => setCollapsed(!collapsed)}
         className={`w-fit cursor-pointer flex items-center gap-1 px-2 py-1 border-2 border-indigo-500 rounded-lg hover:bg-slate-100`}
       >
-        <div className="flex-row items-center">
+        <div className="flex flex-row items-center">
           <span className="font-bold text-sm text-indigo-500">{title}</span>
           <span>
             {collapsed ? (
@@ -133,11 +133,6 @@ const InstructionsMarkdownRenderer: FC<PropsWithChildren> = ({ children }) => {
 
   const changeStepIndexBounded = useCallback(
     (newIndex: number) => {
-      console.log(
-        "changing index",
-        Math.max(newIndex, 0),
-        childSlides.length - 1
-      );
       changeStepIndex(Math.min(Math.max(newIndex, 0), childSlides.length - 1));
     },
     [changeStepIndex, childSlides.length]
@@ -152,7 +147,7 @@ const InstructionsMarkdownRenderer: FC<PropsWithChildren> = ({ children }) => {
         ref={instructionsContainerRef}
         className="grow w-full p-2 overflow-y-scroll"
       >
-        <div className="flex-col gap-1">{childSlides[stepIndex]}</div>
+        <div className="flex flex-col gap-1">{childSlides[stepIndex]}</div>
       </div>
       {childSlides.length > 1 && (
         <div className="mt-auto w-full flex flex-row justify-between items-center bg-slate-50 h-8">
@@ -226,7 +221,6 @@ const TextCodeBlock: FC<
         display: "flex",
         borderRadius: "0.5em",
         fontSize,
-        lineHeight: 1.25,
       }}
       style={{
         ...(monacoThemeToHLJS(VSDarkTheme) as any),
@@ -273,9 +267,9 @@ const UnorderedList: FC<PropsWithChildren<{ fontSize: number }>> = ({
   fontSize,
 }) => {
   return (
-    <div className="w-full flex flex-col gap-1">
+    <div className="w-full flex flex-col">
       {Children.map(children, (child, index) => (
-        <ListItem index={index} type="unordered" fontSize={fontSize}>
+        <ListItem index={index} type="unordered" fontSize={16}>
           {child}
         </ListItem>
       ))}
@@ -289,7 +283,7 @@ const OrderedList: FC<PropsWithChildren<{ fontSize: number }>> = ({
   return (
     <div className="w-full flex flex-col gap-1">
       {Children.map(children, (child, index) => (
-        <ListItem index={index} type="ordered" fontSize={fontSize}>
+        <ListItem index={index} type="ordered" fontSize={16}>
           {child}
         </ListItem>
       ))}
@@ -365,7 +359,7 @@ const markdownToJSXOverrides = (fontSize: number): MarkdownToJSX.Overrides => ({
   h6: ({ ...rest }) => (
     <h6
       className={"text-base w-full font-bold"}
-      style={{ fontSize }}
+      style={{ fontSize: 14 }}
       {...rest}
     />
   ),
@@ -373,20 +367,20 @@ const markdownToJSXOverrides = (fontSize: number): MarkdownToJSX.Overrides => ({
     return (
       <a
         className={"underline text-blue-500"}
-        style={{ fontSize, lineHeight: 1.125 }}
+        style={{ fontSize }}
         {...props}
         href={forceAbsoluteUrl(href)}
         target="_blank"
       />
     );
   },
-  code: ({ fontSize }) => {
+  code: () => {
     return <TextCodeBlock fontSize={fontSize} />;
   },
   ul: (props) => <UnorderedList fontSize={fontSize} {...props} />,
   ol: (props) => <OrderedList fontSize={fontSize} {...props} />,
   li: ({ children, ...props }) => (
-    <span style={{ fontSize }} {...props}>
+    <span style={{ fontSize: fontSize }} {...props}>
       {children}
     </span>
   ),
@@ -395,7 +389,7 @@ const markdownToJSXOverrides = (fontSize: number): MarkdownToJSX.Overrides => ({
   },
 });
 
-const FONT_SIZE = 12;
+const FONT_SIZE = 14;
 
 export const MDXRenderer = ({
   mdxText,
@@ -436,14 +430,14 @@ export const MDXRenderer = ({
         renderRule(next: any, node: any, renderChildren: any, state: any) {
           if (node.type === RuleType.codeBlock) {
             return (
-              <TextCodeBlock language={node.lang} key={state.key} fontSize={12}>
+              <TextCodeBlock language={node.lang} key={state.key} fontSize={14}>
                 {node.text}
               </TextCodeBlock>
             );
           }
           if (node.type === RuleType.codeInline) {
             return (
-              <InlineCode key={state.key} fontSize={12}>
+              <InlineCode key={state.key} fontSize={14}>
                 {node.text}
               </InlineCode>
             );
