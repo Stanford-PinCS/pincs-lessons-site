@@ -18,6 +18,7 @@ import Collapsible from "@/components/Collapsible";
 import Image from "@/components/Image";
 import ErrorMessage from "@/components/ErrorMessage";
 import SafeLink from "@/components/SafeLink";
+import Diagram from "@/components/Diagram";
 
 const BlockColor = {
   label: "Slide Color",
@@ -557,6 +558,29 @@ export const config: Config = {
         );
       },
     },
+    Diagram: {
+      fields: {
+        title: { ...TextType, label: "Title" },
+        svg: { ...TextArea, label: "SVG content" },
+        actions: {
+          label: "Descriptions (optional)",
+          type: "array",
+          arrayFields: {
+            svgElementId: { ...TextType, label: "SVG element ID" },
+            description: { ...TextArea, label: "Description" },
+          },
+          getItemSummary: (item) => item.svgElementId || "(Empty)",
+        },
+      },
+      defaultProps: {
+        title: "",
+        svg: "",
+        actions: [],
+      },
+      render: ({ title, svg, actions }) => {
+        return <Diagram title={title} svg={svg} actions={actions} />;
+      },
+    },
   },
   categories: {
     basics: {
@@ -577,7 +601,7 @@ export const config: Config = {
       ],
     },
     advanced: {
-      components: ["Custom", "Unity"],
+      components: ["Custom", "Unity", "Diagram"],
     },
   },
   root: {
