@@ -36,14 +36,13 @@ export class JSRuntime {
     this.executeWorker.onmessage = onMessageFromWorker;
   };
 
-  public constructor(private onMessage: (message: any) => void) {
-    this.resetWorker();
-  }
+  public constructor(private onMessage: (message: any) => void) {}
 
   public async startExecution(
     userCode: string,
     pluginImplementationCode: string
   ) {
+    this.resetWorker();
     this.onMessage({ type: "start" });
     this.sendMessageToExecution({
       type: "startJS",

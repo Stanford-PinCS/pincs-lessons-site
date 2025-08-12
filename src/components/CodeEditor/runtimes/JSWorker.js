@@ -86,8 +86,8 @@ const overriddenConsole = {
 };
 
 /**
- * Override timing-based functions so that when user code
- * is terminated, old timers don't fire. TODO: this doesn't work
+ * Override timing-based functions so that the program doesn't declare it
+ * has finished until all timers are done
  */
 const originalConsole = console;
 const overrideGlobalFns = (onTermination) => {
@@ -175,6 +175,9 @@ function importString(str) {
  * as the implementation code for the plugin
  */
 const handleMessage = async (message) => {
+  const { terminate } = overrideGlobalFns(() =>
+    postMessage({ type: "finished" })
+  );
   switch (message.type) {
     case "startJS": {
       const { maybeTerminate } = overrideGlobalFns(() =>
@@ -234,7 +237,7 @@ const handleMessage = async (message) => {
             message: `${e.name}: ${e.message}\n`,
           });
         }
-        maybeTerminate();
+        terminate();
         throw e;
       }
 
