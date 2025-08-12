@@ -50,3 +50,7 @@ const authOptions: NextAuthOptions = {
 };
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
+
+// Ensure cache is disabled for all auth endpoints
+export const dynamic = "force-dynamic";
+export const revalidate = 0;

@@ -3,6 +3,25 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   basePath: "/interactive-lessons",
   assetPrefix: "/interactive-lessons",
+  skipTrailingSlashRedirect: true,
+  skipMiddlewareUrlNormalize: true,
+  async rewrites() {
+    return [
+      { source: "/api/auth/", destination: "/api/auth" },
+      { source: "/api/auth/:path*/", destination: "/api/auth/:path*" },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/api/auth/:path*",
+        headers: [
+          { key: "Cache-Control", value: "no-store, max-age=0" },
+          { key: "Vary", value: "Cookie" },
+        ],
+      },
+    ];
+  },
   experimental: {
     turbo: {
       rules: {
