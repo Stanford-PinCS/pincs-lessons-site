@@ -59,7 +59,7 @@ export const CodeOutput = observer(
 
     const hasConsoleError = consoleMessages.some((m) => m.logType === "error");
     return (
-      <div className="w-full h-full relative flex flex-col">
+      <div className="w-full h-full flex flex-col">
         <div
           ref={iframeRef}
           className={classNames("grow", showConsole && "hidden")}
@@ -82,7 +82,7 @@ export const CodeOutput = observer(
           />
         </div>
         {showConsole && (
-          <div className="grow bg-slate-900">
+          <div className="grow bg-slate-900 overflow-y-scroll">
             <ConsoleOutput outputLines={consoleMessages} />
           </div>
         )}

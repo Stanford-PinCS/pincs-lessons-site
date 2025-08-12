@@ -1,20 +1,24 @@
+"use client";
+/*
+ * Use VSCode's Monaco editor to support users typing code
+ * Monaco provides syntax highlighting
+ * This is a controlled component, the text and setText are provided by parent
+ */
+
 import Editor from "@monaco-editor/react";
-import { useEffect } from "react";
 
 export const TextEditor = ({
   text,
   setText,
   language,
 }: {
+  // The user's current code text
   text: string;
+  // Update the current code text
   setText: (n: string) => void;
+  // The language used for syntax highlighting
   language: "python" | "javascript";
 }) => {
-  useEffect(() => {
-    // For tooltip styling. See index.css
-    document.body.classList.add("monaco-editor");
-  }, []);
-
   return (
     <div className="w-full h-full" id="code-text-editor">
       <Editor
