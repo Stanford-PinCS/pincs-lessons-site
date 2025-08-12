@@ -58,7 +58,6 @@ export const CodeOutput = observer(
     }, [pluginId]);
 
     const hasConsoleError = consoleMessages.some((m) => m.logType === "error");
-    console.log(consoleMessages);
     return (
       <div className="w-full h-full relative flex flex-col">
         <div
@@ -71,7 +70,10 @@ export const CodeOutput = observer(
               jsRuntimeRef.current = new JSRuntime((message) => {
                 iframe.contentWindow?.postMessage(message, "*");
                 if (message.type === "log") {
-                  setConsoleMessages([...consoleMessages, message]);
+                  setConsoleMessages((consoleMessages) => [
+                    ...consoleMessages,
+                    message,
+                  ]);
                 }
               });
             }}
@@ -109,6 +111,7 @@ export const CodeOutput = observer(
               id="play"
               onClick={() => {
                 setConsoleMessages([]);
+                setShowConsole(false);
                 jsRuntimeRef.current?.startExecution(
                   userCode,
                   implementation ?? ""
