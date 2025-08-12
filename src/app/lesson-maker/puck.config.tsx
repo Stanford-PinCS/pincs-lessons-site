@@ -18,7 +18,6 @@ import Collapsible from "@/components/Collapsible";
 import Image from "@/components/Image";
 import ErrorMessage from "@/components/ErrorMessage";
 import SafeLink from "@/components/SafeLink";
-import { external } from "jszip";
 
 const BlockColor = {
   label: "Slide Color",
