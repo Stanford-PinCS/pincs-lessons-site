@@ -3,13 +3,19 @@ import { CodeEditor } from "@/components/CodeEditor/CodeEditor";
 import React from "react";
 
 const instructionsMarkdown = `
-# Hello world
 
+
+<Slide>
+# Hello world
+Welcome to the lesson
 \`print\` is very important
 
+</Slide>
+<Slide
 - Step 1
 - Step 2
 - Step 3
+</Slide>
 `;
 
 export const CodeEditorExample: React.FC = () => {
