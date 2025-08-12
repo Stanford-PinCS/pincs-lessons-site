@@ -1,3 +1,9 @@
+/**
+ * Run user's code in web worker
+ * Handles overriding of console methods and sending messages from user code
+ * back to the main page to be routed to the plugin
+ */
+
 const AsyncFunction = async function () {}.constructor;
 
 /**
@@ -30,6 +36,11 @@ function sanitizeMessage(value) {
   return JSON.parse(JSON.stringify(value, replacer))[0];
 }
 
+/**
+ * Override all console methods to send their messages back to main page
+ * so that we can show them to the user in our console
+ * See ConsoleOutput.tsx
+ */
 const overriddenConsole = {
   ...console,
   log: (...data) => {
@@ -74,6 +85,10 @@ const overriddenConsole = {
   },
 };
 
+/**
+ * Override timing-based functions so that when user code
+ * is terminated, old timers don't fire. TODO: this doesn't work
+ */
 const originalConsole = console;
 const overrideGlobalFns = (onTermination) => {
   const originalSetTimeout = globalThis.setTimeout;
@@ -143,14 +158,22 @@ const overrideGlobalFns = (onTermination) => {
   return { maybeTerminate };
 };
 
+/**
+ * Utility for importing the plugin's implementation file
+ */
 function importString(str) {
   const blob = new Blob([str], { type: "text/javascript" });
   const url = URL.createObjectURL(blob);
-  const module = import(/* @vite-ignore */ url);
+  const pluginImplementationCode = import(/* @vite-ignore */ url);
   URL.revokeObjectURL(url);
-  return module;
+  return pluginImplementationCode;
 }
 
+/**
+ * Handle messages coming from main page
+ * startJS => start the program, comes with the user's code as well
+ * as the implementation code for the plugin
+ */
 const handleMessage = async (message) => {
   switch (message.type) {
     case "startJS": {
@@ -158,26 +181,26 @@ const handleMessage = async (message) => {
         postMessage({ type: "finished" })
       );
 
-      let moduleCode;
+      let pluginImplementation;
       try {
-        moduleCode = await importString(message.moduleCode);
+        pluginImplementation = await importString(
+          message.pluginImplementationCode
+        );
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error("error importing module code", e);
+        console.error("error importing plugin implementation code", e);
         throw e;
       }
       let exports;
       try {
         exports =
-          (await moduleCode.default((contents) => {
+          (await pluginImplementation.default((contents) => {
             postMessage({
-              type: "module",
+              type: "plugin",
               contents,
             });
           })) || {};
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error("error executing module code", e);
+        console.error("error executing plugin implementation code code", e);
         throw e;
       }
 

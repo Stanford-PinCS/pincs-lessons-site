@@ -1,9 +1,21 @@
 "use client";
+/**
+ * The parent component for the whole code editor
+ * Holds the TextEditor, the MarkdownRenderer, and CodeOutput
+ * Most of this component loads the editor state and handles resizing of editor panes
+ */
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { TextEditor } from "./TextEditor";
-import InstructionsRenderer from "./MarkdownRenderer";
+import InstructionsRenderer from "./MarkdownRenderer/MarkdownRenderer";
 import { ChevronDownIcon } from "lucide-react";
 import CodeOutput from "./CodeOutput";
+
+/**
+ * Retrieve the editor's state from local storage
+ * Local storage format is map of lessonId => {userCode, editorSize, instructionsHeight, instructionsStep}
+ * If starter code is provided and no user code is found, default to starter code
+ */
 
 const getInitialEditorState = (
   lessonId: string,
@@ -65,7 +77,8 @@ export const CodeEditor = ({
   const editorContainerRef = useRef<HTMLDivElement>(null);
   const codeEditorContainerRef = useRef<HTMLDivElement>(null);
 
-  // initialize editor
+  // Retrieve editor state
+  // Done in this useEffect so that NextJS has localStorage available
   useEffect(() => {
     const {
       initialCode,
@@ -124,7 +137,7 @@ export const CodeEditor = ({
       const containerBox = editorContainerRef.current.getBoundingClientRect();
       const totalW = containerBox.width;
       if (totalW <= 180) return;
-      // make sure no pane is smaller than 360px
+      // make sure no pane is smaller than 180px
       const minPanePercent = (180 / totalW) * 100;
 
       setEditorSize(
@@ -234,7 +247,7 @@ export const CodeEditor = ({
         ) : (
           <div
             className="mx-auto my-0.5 py-0.5 px-1 hover:border-slate-300 cursor-pointer"
-            // use pointer down instead of click since pointer up was firing
+            // Use pointer down instead of click since pointer up was firing
             // here when the resizer had its pointer up fire causing onClick to fire
             onPointerDown={() => {
               setInstructionsHeight(25);

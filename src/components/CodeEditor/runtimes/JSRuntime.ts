@@ -1,3 +1,7 @@
+/**
+ * Routes messages to and from the main page to the web worker
+ */
+
 export interface ConsoleMessage {
   logType: "error" | "log";
   message: string;
@@ -19,7 +23,7 @@ export class JSRuntime {
     const onMessageFromWorker = (e: { data: any }) => {
       const messageData = e.data;
       switch (messageData.type) {
-        case "module": {
+        case "plugin": {
           this.sendMessageToPlugin(messageData.contents);
           break;
         }
@@ -36,12 +40,15 @@ export class JSRuntime {
     this.resetWorker();
   }
 
-  public async startExecution(userCode: string, pluginCode: string) {
+  public async startExecution(
+    userCode: string,
+    pluginImplementationCode: string
+  ) {
     this.onMessage({ type: "start" });
     this.sendMessageToExecution({
       type: "startJS",
       userCode,
-      moduleCode: pluginCode,
+      pluginImplementationCode,
     });
   }
 
