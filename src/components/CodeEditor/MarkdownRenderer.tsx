@@ -131,8 +131,6 @@ const InstructionsMarkdownRenderer: FC<PropsWithChildren> = ({ children }) => {
 
   const instructionsContainerRef = useRef<HTMLDivElement>(null);
 
-  const [hasScrolled, setHasScrolled] = useState(false);
-
   useEffect(() => {
     instructionsContainerRef.current?.scrollTo({
       top: 0,
@@ -141,28 +139,34 @@ const InstructionsMarkdownRenderer: FC<PropsWithChildren> = ({ children }) => {
 
   const changeStepIndexBounded = useCallback(
     (newIndex: number) => {
+      console.log(
+        "changing index",
+        Math.max(newIndex, 0),
+        childSlides.length - 1
+      );
       changeStepIndex(Math.min(Math.max(newIndex, 0), childSlides.length - 1));
     },
     [changeStepIndex, childSlides.length]
   );
 
+  console.log(currentIndex, childSlides);
+
   return (
     <div
-      className="flex-col flex-1 h-full rounded-lg bg-white shadow-md overflow-hidden"
+      className="flex flex-col flex-1 h-full rounded-lg bg-white shadow-md overflow-hidden"
       id="instructions-area"
     >
       <div
         ref={instructionsContainerRef}
-        className="h-full w-full p-2 overflow-y-scroll"
-        onScroll={() => setHasScrolled(true)}
+        className="grow w-full p-2 overflow-y-scroll"
       >
         <div className="flex-col gap-1">{childSlides[currentIndex]}</div>
       </div>
       {childSlides.length > 1 && (
-        <div className="mt-auto w-full flex-row justify-between items-center bg-slate-50">
+        <div className="mt-auto w-full flex flex-row justify-between items-center bg-slate-50 h-8">
           <div
             onClick={() => changeStepIndexBounded(currentIndex - 1)}
-            className={`flex items-center justify-center shadow-none bg-indigo-500 rounded-full h-6 w-6 px-0 py-0 mx-1 ${
+            className={`flex items-center justify-center shadow-none bg-indigo-500 rounded-full h-6 w-6 px-0 py-0 mx-1 cursor-pointer ${
               currentIndex === 0 ? "opacity-50" : ""
             }`}
           >
@@ -181,7 +185,7 @@ const InstructionsMarkdownRenderer: FC<PropsWithChildren> = ({ children }) => {
           </div>
           <div
             onClick={() => changeStepIndexBounded(currentIndex + 1)}
-            className={`flex items-center justify-center gap-1 rounded-full h-6 shadow-none bg-indigo-500 mx-1 py-1 pl-2 my-1 ${
+            className={`flex items-center justify-center gap-1 rounded-full h-6 shadow-none bg-indigo-500 mx-1 py-1 pl-2 my-1 cursor-pointer ${
               currentIndex === childSlides.length - 1 ? "opacity-50" : ""
             }`}
           >
