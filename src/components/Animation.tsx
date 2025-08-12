@@ -88,7 +88,9 @@ export default function Animation({
   const getTitle = () => {
     // Lesson editor mode (shows all slides).
     if (lessonEditorMode) {
-      return `All ${slides.length} slides (editor preview)`;
+      return `${slides.length > 1 ? "All " : ""}${slides.length} slide${
+        slides.length > 1 ? "s" : ""
+      } (editor preview)`;
     }
     // Show the title or "Slide" if thre is no title.
     if (slides[index].title) {
