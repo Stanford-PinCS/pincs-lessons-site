@@ -1,3 +1,4 @@
+// This is VS Code's Dark theme CSS styles, copy pasted directly from their repo
 export const VSDarkTheme = {
   base: "vs-dark",
   inherit: false,
@@ -66,6 +67,8 @@ export const VSDarkTheme = {
   },
 };
 
+// We use HighlightJS (HLJS) to do syntax highlighting in the markdown
+// renderer. This function converts the monaco-style theme into HLJS's format
 export const monacoThemeToHLJS = (theme: any) => {
   const hljsRules = Object.fromEntries(
     theme.rules.map((rule: any) => [

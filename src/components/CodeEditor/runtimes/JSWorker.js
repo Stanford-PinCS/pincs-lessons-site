@@ -128,7 +128,7 @@ const overrideGlobalFns = (onTermination) => {
     return result;
   };
 
-  globalThis.setInterva = (...args) => {
+  globalThis.setInterval = (...args) => {
     const id = originalSetInterval(...args);
     intervals.add(id);
     return id;

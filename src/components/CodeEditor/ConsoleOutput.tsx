@@ -7,7 +7,7 @@ export const ConsoleOutput = ({
   outputLines: ConsoleMessage[];
 }) => {
   return (
-    <div className="h-full flex-col grow shrink p-1">
+    <div className="flex flex-col p-1">
       {outputLines.map((m: ConsoleMessage, i: number) => {
         return (
           <div
