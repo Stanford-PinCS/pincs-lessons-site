@@ -10,8 +10,10 @@ import { PlayIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { ConsoleOutput } from "./ConsoleOutput";
-import { ConsoleMessage, JSRuntime } from "./runtimes/JSRuntime";
+import { JSRuntime } from "./runtimes/JSRuntime";
+import { PyRuntime } from "./runtimes/PyRuntime";
 import { observer } from "mobx-react-lite";
+import { ConsoleMessage, Runtime } from "./runtimes/Runtime";
 
 const loadPluginImplementationCode = async (
   pluginId: string
@@ -50,10 +52,18 @@ const loadPluginImplementationCode = async (
 };
 
 export const CodeOutput = observer(
-  ({ pluginId, userCode }: { pluginId: string; userCode: string }) => {
+  ({
+    pluginId,
+    userCode,
+    language,
+  }: {
+    pluginId: string;
+    userCode: string;
+    language: "python" | "javascript";
+  }) => {
     const [showConsole, setShowConsole] = useState(false);
     const iframeRef = useRef<HTMLIFrameElement>(null);
-    const jsRuntimeRef = useRef<JSRuntime>(null);
+    const runtimeRef = useRef<Runtime>(null);
     const [consoleMessages, setConsoleMessages] = useState<ConsoleMessage[]>(
       []
     );
@@ -75,8 +85,9 @@ export const CodeOutput = observer(
         >
           <iframe
             ref={(iframe) => {
-              if (!iframe || jsRuntimeRef.current) return;
-              jsRuntimeRef.current = new JSRuntime((message) => {
+              if (!iframe || runtimeRef.current) return;
+              // Define onmessage for any runtime.
+              const onMessage = (message: any) => {
                 iframe.contentWindow?.postMessage(message, "*");
                 if (message.type === "log") {
                   setConsoleMessages((consoleMessages) => [
@@ -84,7 +95,18 @@ export const CodeOutput = observer(
                     message,
                   ]);
                 }
-              });
+              };
+              // Make proper runtime.
+              switch (language) {
+                case "javascript":
+                  runtimeRef.current = new JSRuntime(onMessage);
+                  break;
+                case "python":
+                  runtimeRef.current = new PyRuntime(onMessage);
+                  break;
+                default:
+                  throw new Error("Invalid language!");
+              }
             }}
             className="h-full w-full"
             src={`${process.env.NEXT_PUBLIC_PLUGINS_URL}/embed/${pluginId}`}
@@ -121,7 +143,7 @@ export const CodeOutput = observer(
               onClick={() => {
                 setConsoleMessages([]);
                 setShowConsole(false);
-                jsRuntimeRef.current?.startExecution(
+                runtimeRef.current?.startExecution(
                   userCode,
                   pluginImplementationCode ?? ""
                 );

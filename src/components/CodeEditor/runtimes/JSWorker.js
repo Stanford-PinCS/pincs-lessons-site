@@ -164,7 +164,7 @@ const overrideGlobalFns = (onTermination) => {
 function importString(str) {
   const blob = new Blob([str], { type: "text/javascript" });
   const url = URL.createObjectURL(blob);
-  const pluginImplementationCode = import(/* @vite-ignore */ url);
+  const pluginImplementationCode = import(/* webpackIgnore: true */ url);
   URL.revokeObjectURL(url);
   return pluginImplementationCode;
 }

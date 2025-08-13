@@ -263,7 +263,11 @@ export const CodeEditor = ({
           className="flex-col rounded-lg overflow-y-hidden border border-slate-300"
           style={{ height: `${100 - instructionsHeight}%` }}
         >
-          <CodeOutput pluginId={pluginId} userCode={userCode} />
+          <CodeOutput
+            pluginId={pluginId}
+            userCode={userCode}
+            language={language}
+          />
         </div>
       </div>
     </div>

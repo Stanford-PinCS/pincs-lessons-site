@@ -1,13 +1,10 @@
+import { Runtime } from "./Runtime";
+
 /**
  * Routes messages to and from the main page to the web worker
  */
 
-export interface ConsoleMessage {
-  logType: "error" | "log";
-  message: string;
-}
-
-export class JSRuntime {
+export class JSRuntime implements Runtime {
   executeWorker: Worker | null = null;
 
   private resetWorker = () => {
