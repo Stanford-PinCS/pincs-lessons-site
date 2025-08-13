@@ -23,6 +23,7 @@ import Animation from "@/components/Animation";
 import Collapsible from "@/components/Collapsible";
 import Image from "@/components/Image";
 import ErrorMessage from "@/components/ErrorMessage";
+import SafeLink from "@/components/SafeLink";
 import Diagram from "@/components/Diagram";
 import { CheckCircle } from "lucide-react";
 import { JSXElementConstructor, ReactNode } from "react";
@@ -513,6 +514,61 @@ export const config: Config = {
         );
       },
     },
+    Link: {
+      resolveFields: (data) => {
+        const baseFields = {
+          text: {
+            ...TextType,
+            label: "Text",
+          },
+          mode: {
+            label: "Mode",
+            type: "radio" as const,
+            options: [
+              { label: "Slide", value: "slide" },
+              { label: "External", value: "external" },
+            ],
+          },
+        };
+
+        if (data.props.mode === "slide") {
+          return {
+            ...baseFields,
+            slide: {
+              label: "Slide",
+              type: "number",
+              min: 1,
+            },
+          };
+        } else if (data.props.mode === "external") {
+          return {
+            ...baseFields,
+            link: {
+              label: "Link (URL)",
+              type: "text",
+              pattern: "https?://.*",
+              placeholder: "https://example.com",
+            },
+          };
+        }
+
+        return baseFields;
+      },
+      defaultProps: {
+        text: "",
+        link: "",
+      },
+      render: ({ text, link, slide, mode }) => {
+        if (mode == "external") {
+          slide = undefined;
+        }
+        return (
+          <div className="my-2">
+            <SafeLink text={text} href={link} slide={slide}></SafeLink>
+          </div>
+        );
+      },
+    },
     Diagram: {
       fields: {
         title: { ...TextType, label: "Title" },
@@ -546,7 +602,14 @@ export const config: Config = {
       components: ["Multiple choice quiz", "Text response"],
     },
     engagement: {
-      components: ["Pickcode", "Embed", "Animation", "Collapsible", "Image"],
+      components: [
+        "Pickcode",
+        "Embed",
+        "Animation",
+        "Collapsible",
+        "Image",
+        "Link",
+      ],
     },
     advanced: {
       components: ["Custom", "Unity", "Diagram"],
