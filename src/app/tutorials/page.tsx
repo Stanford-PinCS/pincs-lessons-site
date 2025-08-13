@@ -21,7 +21,7 @@ export default function () {
               className="text-blue-500"
               href={"./tutorials/pincs-overview/lesson"}
             >
-              PinCS Resource Overview (5 minutes)
+              PinCS resource overview (5 minutes)
             </Link>,
             <Link
               className="text-blue-500"
@@ -30,7 +30,7 @@ export default function () {
               Your first lesson (10 minutes)
             </Link>,
             <Link className="text-blue-500" href={"."}>
-              Making the computer science portion (10 minutes)
+              Computer science portion (10 minutes)
             </Link>,
           ]}
         />
@@ -42,7 +42,7 @@ export default function () {
             <>Interactive diagrams (10 minutes)</>,
             <>Custom components (10 minutes)</>,
             <>Custom coding portion (50 minutes)</>,
-            <>Making a Unity plugin (50 minutes)</>,
+            <>Unity plugin (50 minutes)</>,
           ]}
         />
       </Block>
