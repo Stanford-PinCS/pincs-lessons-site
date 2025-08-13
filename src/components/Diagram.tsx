@@ -26,7 +26,17 @@ export function Diagram({ title, svg, actions = [] }: DiagramProps) {
   const sanitizedSvg = useMemo(() => {
     if (typeof window !== "undefined") {
       return DOMPurify.sanitize(svg, {
-        USE_PROFILES: { svg: true, svgFilters: true },
+        USE_PROFILES: { svg: true },
+        FORBID_TAGS: ["a", "script", "foreignObject"],
+        FORBID_ATTR: [
+          "href",
+          "xlink:href",
+          "src",
+          "onload",
+          "onclick",
+          "onmouseover",
+          "onerror",
+        ],
       });
     }
     return svg;
@@ -57,19 +67,21 @@ export function Diagram({ title, svg, actions = [] }: DiagramProps) {
     );
 
     const handleSvgClick = (e: Event) => {
-      const target = e.target as HTMLElement;
-      const clickableElement = target.closest("[id]") as HTMLElement | null;
+      let target = e.target as Element | null;
 
-      if (clickableElement) {
-        const elementId = clickableElement.id;
-        if (actionMap.has(elementId)) {
-          const newDescription = actionMap.get(elementId)!;
+      // Keep looking at element/ancestors until we find an element
+      // with an id in the map or we've reached the end.
+      while (target && target.tagName !== "svg" && target.tagName !== "body") {
+        if (target.id && actionMap.has(target.id)) {
+          const newDescription = actionMap.get(target.id)!;
           if (selectedDescription === newDescription) {
             setSelectedDescription(null);
           } else {
             setSelectedDescription(newDescription);
           }
+          return; // Found a clickable element, so we stop.
         }
+        target = target.parentElement;
       }
     };
 

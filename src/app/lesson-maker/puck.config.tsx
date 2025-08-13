@@ -1,7 +1,13 @@
 "use client";
 import Block from "@/components/Block";
 import LessonWrapper from "@/components/LessonWrapper";
-import { Config, Fields } from "@measured/puck";
+import {
+  Config,
+  FieldProps,
+  Fields,
+  Overrides,
+  RadioField,
+} from "@measured/puck";
 import "katex/dist/katex.min.css";
 import ColorBox from "@/components/ColorBox";
 import QuizQuestion from "@/components/QuizQuestion";
@@ -17,7 +23,10 @@ import Animation from "@/components/Animation";
 import Collapsible from "@/components/Collapsible";
 import Image from "@/components/Image";
 import ErrorMessage from "@/components/ErrorMessage";
+import SafeLink from "@/components/SafeLink";
 import Diagram from "@/components/Diagram";
+import { CheckCircle } from "lucide-react";
+import { JSXElementConstructor, ReactNode } from "react";
 
 const BlockColor = {
   label: "Slide Color",
@@ -505,6 +514,61 @@ export const config: Config = {
         );
       },
     },
+    Link: {
+      resolveFields: (data) => {
+        const baseFields = {
+          text: {
+            ...TextType,
+            label: "Text",
+          },
+          mode: {
+            label: "Mode",
+            type: "radio" as const,
+            options: [
+              { label: "Slide", value: "slide" },
+              { label: "External", value: "external" },
+            ],
+          },
+        };
+
+        if (data.props.mode === "slide") {
+          return {
+            ...baseFields,
+            slide: {
+              label: "Slide",
+              type: "number",
+              min: 1,
+            },
+          };
+        } else if (data.props.mode === "external") {
+          return {
+            ...baseFields,
+            link: {
+              label: "Link (URL)",
+              type: "text",
+              pattern: "https?://.*",
+              placeholder: "https://example.com",
+            },
+          };
+        }
+
+        return baseFields;
+      },
+      defaultProps: {
+        text: "",
+        link: "",
+      },
+      render: ({ text, link, slide, mode }) => {
+        if (mode == "external") {
+          slide = undefined;
+        }
+        return (
+          <div className="my-2">
+            <SafeLink text={text} href={link} slide={slide}></SafeLink>
+          </div>
+        );
+      },
+    },
     Diagram: {
       fields: {
         title: { ...TextType, label: "Title" },
@@ -538,7 +602,14 @@ export const config: Config = {
       components: ["Multiple choice quiz", "Text response"],
     },
     engagement: {
-      components: ["Pickcode", "Embed", "Animation", "Collapsible", "Image"],
+      components: [
+        "Pickcode",
+        "Embed",
+        "Animation",
+        "Collapsible",
+        "Image",
+        "Link",
+      ],
     },
     advanced: {
       components: ["Custom", "Unity", "Diagram"],
@@ -554,7 +625,7 @@ export const config: Config = {
           { label: "Fullscreen", value: "fullscreen" },
         ],
       },
-      title: { ...TextArea, label: "Title" },
+      title: { ...TextType, label: "Title" },
       color: BlockColor,
     },
     defaultProps: {
@@ -571,6 +642,66 @@ export const config: Config = {
             </Block>
           </div>
         </LessonWrapper>
+      );
+    },
+  },
+};
+
+// Can find OG components here: https://github.com/puckeditor/puck/tree/main/packages/core/components
+export const overrides: Partial<Overrides> = {
+  fieldTypes: {
+    radio: ({
+      field,
+      onChange,
+      readOnly,
+      value,
+      name,
+      id,
+      label,
+      labelIcon,
+      Label,
+    }: FieldProps<RadioField, any> & {
+      children: ReactNode;
+      name: string;
+    } & any) => {
+      if (field.type !== "radio" || !field.options) {
+        return null;
+      }
+
+      return (
+        <Label
+          icon={labelIcon || <CheckCircle size={16} />}
+          label={label || name}
+          readOnly={readOnly}
+          el="div"
+        >
+          <div
+            className="border border-(--puck-color-grey-09) rounded-sm flex flex-wrap"
+            id={id}
+          >
+            {field.options.map((option: { label: string; value: string }) => (
+              <label
+                className="grow border border-(--puck-color-grey-09) has-checked:bg-blue-100 has-checked:text-blue-800 hover:bg-blue-50 cursor-pointer"
+                key={option.label + option.value}
+              >
+                <input
+                  type="radio"
+                  value={JSON.stringify({ value: option.value })}
+                  name={name}
+                  onChange={(e) => {
+                    onChange(JSON.parse(e.target.value).value);
+                  }}
+                  disabled={readOnly}
+                  checked={value === option.value}
+                  className="hidden"
+                />
+                <div className="my-2 mx-3 text-center text-sm">
+                  {option.label || option.value?.toString()}
+                </div>
+              </label>
+            ))}
+          </div>
+        </Label>
       );
     },
   },

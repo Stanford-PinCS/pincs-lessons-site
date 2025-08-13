@@ -2,7 +2,7 @@
 import { Puck, Data, Content, ComponentData, Render } from "@measured/puck";
 import "@measured/puck/puck.css";
 import { useState, useEffect, useRef, ReactNode } from "react";
-import { config } from "./puck.config";
+import { config, overrides } from "./puck.config";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import landingPageTemplate from "@/template/auto-landing-page.template";
@@ -23,7 +23,7 @@ export default function Editor() {
   const [slides, setSlides] = useState<Slide[]>([
     { id: 0, data: { content: [], root: {} } },
   ]);
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
   const [isMounted, setIsMounted] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [lessonTitle, setLessonTitle] = useState("");
@@ -340,7 +340,10 @@ export default function Editor() {
       version: "1.0",
     };
     localStorage.setItem("lessonPreview", JSON.stringify(lessonData));
-    window.open("./lesson-maker/preview", "_blank");
+    window.open(
+      `./lesson-maker/preview?slide=${currentSlideIndex + 1 || 1}`,
+      "_blank"
+    );
   };
 
   const parseAndLoadLesson = (contents: string) => {
@@ -507,7 +510,7 @@ export default function Editor() {
       )}
       {/* Tool Bar */}
       <div
-        className={`${reorderingClasses} bg-gray-800 text-white p-4 flex items-center justify-between shadow-md`}
+        className={`${reorderingClasses} bg-gray-800 text-white p-4 flex gap-4 items-center justify-between shadow-md`}
       >
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-bold">PinCS Lesson Maker</h1>
@@ -557,13 +560,13 @@ export default function Editor() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsSaveModalOpen(true)}
-            className="px-4 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md font-medium"
+            className="px-4 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md font-medium text-sm"
           >
             Save
           </button>
           <label
             htmlFor="load-lesson"
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium text-sm"
           >
             Load
           </label>
@@ -576,9 +579,9 @@ export default function Editor() {
           />
           <button
             onClick={handlePreview}
-            className="px-4 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md font-medium"
+            className="px-4 py-2 bg-blue-600 enabled:hover:bg-blue-700 rounded-md font-medium text-sm"
           >
-            Open preview
+            Preview
           </button>
         </div>
       </div>
@@ -595,6 +598,7 @@ export default function Editor() {
           <Puck
             key={slides[currentSlideIndex].id}
             config={config}
+            overrides={overrides}
             data={slides[currentSlideIndex].data}
             onChange={handlePuckChange}
           >
