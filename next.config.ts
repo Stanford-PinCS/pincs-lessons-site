@@ -3,13 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   basePath: "/interactive-lessons",
   assetPrefix: "/interactive-lessons",
-  skipMiddlewareUrlNormalize: true,
-  async rewrites() {
-    return [
-      { source: "/api/auth/", destination: "/api/auth" },
-      { source: "/api/auth/:path*/", destination: "/api/auth/:path*" },
-    ];
-  },
+  trailingSlash: false,
   async headers() {
     return [
       {
