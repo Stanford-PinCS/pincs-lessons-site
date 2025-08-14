@@ -138,11 +138,15 @@ function proxyToJSObj(arbitraryValue: any) {
 
 function getMessage(error: Error) {
   let message = `${error.name}: ${error.message}\n`;
-  // If it has a type, just print the nice part of the message.
+  // If it has a type, print the nice part of the message first.
   // @ts-ignore
   let type = error.type;
   if (type && message.includes(type)) {
-    message = message.substring(message.indexOf(type));
+    let typeSpot = message.indexOf(type);
+    message = `${message.substring(typeSpot).trimEnd()}\n${message.substring(
+      0,
+      typeSpot
+    )}\n`;
   }
   return message;
 }
