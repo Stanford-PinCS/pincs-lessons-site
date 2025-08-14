@@ -12,15 +12,7 @@ const { loadPyodide } = await import(
 // Load pyodide when web worker is made.
 let pyodide: any = loadPyodide();
 
-const messageSubscribers: { [key: symbol]: (message: any) => void } = {};
-const subscribeToMessages = (onMessage: any) => {
-  const key = Symbol();
-  messageSubscribers[key] = onMessage;
-  return () => {
-    delete messageSubscribers[key];
-  };
-};
-
+// Override's the intervals & timeouts so it all wraps up nicely.
 const overrideGlobalFns = (onTermination: () => void) => {
   const originalSetTimeout = globalThis.setTimeout;
   const originalClearTimeout = globalThis.clearTimeout;
@@ -183,7 +175,7 @@ const handleMessage = async (message: any) => {
               type: "plugin",
               contents,
             });
-          }, subscribeToMessages)) || {};
+          })) || {};
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error("error executing module code", e);
@@ -228,8 +220,8 @@ const handleMessage = async (message: any) => {
       } catch (e) {
         if (e instanceof Error) {
           postMessage({
-            type: "console",
-            stream: "stderr",
+            type: "log",
+            stream: "error",
             messageText: `${e.name}: ${e.message}\n`,
           });
           maybeTerminate();
@@ -245,8 +237,8 @@ const handleMessage = async (message: any) => {
       } catch (e) {
         if (e instanceof Error) {
           postMessage({
-            type: "console",
-            stream: "stderr",
+            type: "log",
+            stream: "error",
             messageText: `${e.name}: ${e.message}\n`,
           });
         }
@@ -254,11 +246,6 @@ const handleMessage = async (message: any) => {
         throw e;
       }
       break;
-    }
-    case "module": {
-      Object.getOwnPropertySymbols(messageSubscribers).forEach((key) => {
-        messageSubscribers[key](message.contents);
-      });
     }
   }
 };
