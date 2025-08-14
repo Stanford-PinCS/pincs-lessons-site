@@ -7,7 +7,7 @@ import { Runtime } from "./Runtime";
 
 export class PyRuntime implements Runtime {
   executeWorker: Worker | null = null;
-  private sendMessage: (message: any) => void;
+  private sendMessageToMainPage: (message: any) => void;
 
   /**
    * Terminate the previous webworker and create a new webworker.
@@ -28,7 +28,7 @@ export class PyRuntime implements Runtime {
           break;
         }
         case "log": {
-          this.sendMessage(messageData);
+          this.sendMessageToMainPage(messageData);
           break;
         }
       }
@@ -36,13 +36,24 @@ export class PyRuntime implements Runtime {
     this.executeWorker.onmessage = onMessageFromWorker;
   };
 
+  /**
+   * This will create a new webworker.
+   * @param onMessage The message listener from the main page.
+   */
   public constructor(onMessage: (message: any) => void) {
-    this.sendMessage = onMessage;
+    this.sendMessageToMainPage = onMessage;
     this.resetWorker();
   }
 
+  /**
+   * This runs the student's code.
+   * @param userCode The code the student writes.
+   * @param pluginCode The code to implement the plugin.
+   */
   public async startExecution(userCode: string, pluginCode: string) {
-    this.sendMessage({ type: "start" });
+    // Resets the plugin's state in plugin repo's /src/common/plugin.tsx (may want to consider making this optional).
+    this.sendMessageToMainPage({ type: "start" });
+    // This starts the webworker.
     this.sendMessageToExecution({
       type: "startPy",
       userCode,
@@ -50,13 +61,21 @@ export class PyRuntime implements Runtime {
     });
   }
 
+  /**
+   * This sends a message to the webworker.
+   * @param message The message to send.
+   */
   public sendMessageToExecution(message: any) {
     if (this.executeWorker) {
       this.executeWorker.postMessage(message);
     }
   }
 
+  /**
+   * This sends a message to the plugin.
+   * @param message The message to send.
+   */
   private sendMessageToPlugin(message: any) {
-    this.sendMessage({ type: "message", message });
+    this.sendMessageToMainPage({ type: "message", message });
   }
 }

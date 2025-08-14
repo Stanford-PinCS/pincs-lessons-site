@@ -88,7 +88,9 @@ export const CodeOutput = observer(
               if (!iframe || runtimeRef.current) return;
               // Define onmessage for any runtime.
               const onMessage = (message: any) => {
+                // Sends messages to the plugin.
                 iframe.contentWindow?.postMessage(message, "*");
+                // Handles log messages.
                 if (message.type === "log") {
                   setConsoleMessages((consoleMessages) => [
                     ...consoleMessages,
