@@ -227,11 +227,7 @@ export const CodeEditor = ({
             }}
             className="flex min-w-[200px] border border-slate-300 rounded-lg"
           >
-            <InstructionsRenderer
-              instructionsText={instructionsMarkdown}
-              changeStep={setInstructionsStep}
-              // TODO: changing step broken
-            />
+            <InstructionsRenderer instructionsText={instructionsMarkdown} />
           </div>
         )}
         {instructionsHeight > 0 ? (

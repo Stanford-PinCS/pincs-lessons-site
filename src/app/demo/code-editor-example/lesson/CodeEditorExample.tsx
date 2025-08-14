@@ -67,6 +67,7 @@ export const CodeEditorExample: React.FC = () => {
         pluginId="particle-simulation"
         height={600}
         language={"javascript"}
+        starterCode={`console.log("hello")`}
       />
     </div>
   );
