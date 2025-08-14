@@ -180,19 +180,41 @@ const handleMessage = async (message: any) => {
         throw e;
       }
 
-      // Add the exports to the globals of Python.
+      // Configure the Pyodide to include implementation, stdin, and stdout.
       try {
-        // Register each function from the implementation as a function in Python
+        // Register each function from the implementation as a function in Python.
         for (let [functionName, functionImplementation] of Object.entries(
           exports
         )) {
           pyodide.globals.set(functionName, (...args: any[]) => {
             // Convert arguments from Python-JS Proxies to JS Objects
-            // (e.g. Nested Dictionaries to Nested JS Objects)
+            // (e.g. Nested Dictionaries to Nested JS Objects).
             args = args.map(proxyToJSObj);
             functionImplementation(...args);
           });
         }
+        // Override stdout & stderr.
+        pyodide.setStdout({
+          batched: (msg: string) => {
+            console.log(msg);
+            postMessage({
+              type: "log",
+              logType: "log",
+              message: msg,
+            });
+          },
+        });
+        // TODO: This error doesn't work yet...
+        pyodide.setStderr({
+          batched: (msg: string) => {
+            console.log(msg);
+            postMessage({
+              type: "log",
+              logType: "error",
+              message: msg,
+            });
+          },
+        });
       } catch (e) {
         if (e instanceof Error) {
           postMessage({

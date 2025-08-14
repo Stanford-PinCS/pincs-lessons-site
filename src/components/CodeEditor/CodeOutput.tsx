@@ -96,7 +96,7 @@ export const CodeOutput = observer(
                   ]);
                 }
               };
-              // Make proper runtime.
+              // Make proper runtime based on language.
               switch (language) {
                 case "javascript":
                   runtimeRef.current = new JSRuntime(onMessage);

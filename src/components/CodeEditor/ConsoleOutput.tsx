@@ -3,7 +3,7 @@
  */
 
 import classNames from "classnames";
-import { ConsoleMessage } from "./runtimes/JSRuntime";
+import { ConsoleMessage } from "./runtimes/Runtime";
 
 export const ConsoleOutput = ({
   outputLines,
