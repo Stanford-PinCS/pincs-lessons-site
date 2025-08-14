@@ -1,8 +1,8 @@
-import { Runtime } from "./Runtime";
-
 /**
  * Routes messages to and from the main page to the web worker
  */
+
+import { Runtime } from "./Runtime";
 
 export class JSRuntime implements Runtime {
   executeWorker: Worker | null = null;
