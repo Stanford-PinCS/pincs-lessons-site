@@ -38,8 +38,6 @@ const overrideGlobalFns = (onTermination: () => void) => {
     onTermination();
   };
 
-  // globalThis.console = overriddenConsole;
-
   const timeouts = new Set<any>();
   const intervals = new Set<any>();
   const maybeTerminate = () => {
@@ -98,7 +96,7 @@ const overrideGlobalFns = (onTermination: () => void) => {
 };
 
 /**
- * Utility for importing the plugin's implementation file
+ * Utility for importing the plugin's implementation file.
  */
 function importString(str: string) {
   const blob = new Blob([str], { type: "text/javascript" });
@@ -146,8 +144,15 @@ function proxyToJSObj(arbitraryValue: any) {
   return obj;
 }
 
-// Main window messages get sent here.
+/**
+ * Handle messages coming from main page.
+ * startPy => start the program, comes with the user's code as well
+ * as the implementation code for the plugin.
+ */
 const handleMessage = async (message: any) => {
+  const { maybeTerminate: terminate } = overrideGlobalFns(() =>
+    postMessage({ type: "finished" })
+  );
   switch (message.type) {
     case "startPy": {
       // Make sure pyodide has loaded. Wait if it hasn't.
@@ -236,6 +241,7 @@ const handleMessage = async (message: any) => {
       let userCode = message.userCode;
       try {
         pyodide.runPython(userCode);
+        maybeTerminate();
       } catch (e) {
         if (e instanceof Error) {
           postMessage({
@@ -243,8 +249,8 @@ const handleMessage = async (message: any) => {
             stream: "stderr",
             messageText: `${e.name}: ${e.message}\n`,
           });
-          maybeTerminate();
         }
+        terminate();
         throw e;
       }
       break;
