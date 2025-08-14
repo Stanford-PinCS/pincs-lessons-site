@@ -136,6 +136,17 @@ function proxyToJSObj(arbitraryValue: any) {
   return obj;
 }
 
+function getMessage(error: Error) {
+  let message = `${error.name}: ${error.message}\n`;
+  // If it has a type, prepend it.
+  // @ts-ignore
+  let type = error.type;
+  if (type) {
+    message = `--- ${type} ---\n${message}`;
+  }
+  return message;
+}
+
 /**
  * Handle messages coming from main page.
  * startPy => start the program, comes with the user's code as well
@@ -178,7 +189,7 @@ const handleMessage = async (message: any) => {
           })) || {};
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.error("error executing module code", e);
+        console.error("error executing plugin code", e);
         throw e;
       }
 
@@ -206,23 +217,12 @@ const handleMessage = async (message: any) => {
             });
           },
         });
-        // TODO: This error doesn't work yet...
-        pyodide.setStderr({
-          batched: (msg: string) => {
-            console.log(msg);
-            postMessage({
-              type: "log",
-              logType: "error",
-              message: msg,
-            });
-          },
-        });
       } catch (e) {
         if (e instanceof Error) {
           postMessage({
             type: "log",
-            stream: "error",
-            messageText: `${e.name}: ${e.message}\n`,
+            logType: "error",
+            message: getMessage(e),
           });
           maybeTerminate();
         }
@@ -238,8 +238,8 @@ const handleMessage = async (message: any) => {
         if (e instanceof Error) {
           postMessage({
             type: "log",
-            stream: "error",
-            messageText: `${e.name}: ${e.message}\n`,
+            logType: "error",
+            message: getMessage(e),
           });
         }
         terminate();
