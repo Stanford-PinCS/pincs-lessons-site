@@ -73,7 +73,7 @@ const DemoLessons: Lesson[] = [
     link: "/demo/code-editor-example/lesson",
     tags: [
       { type: "subject", value: Subject.ComputerScience },
-      { type: "hidden", value: DEMO_LESSONS_HIDDEN },
+      { type: "hidden", value: false },
     ],
   },
   {
