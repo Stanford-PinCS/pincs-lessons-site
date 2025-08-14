@@ -1,3 +1,8 @@
+/**
+ * Run user's code in web worker.
+ * Sends console and plugin messages back to the Runtime.
+ */
+
 // @ts-ignore
 const { loadPyodide } = await import(
   /* webpackIgnore: true */
@@ -170,7 +175,7 @@ const handleMessage = async (message: any) => {
         exports =
           (await moduleCode.default((contents: any) => {
             postMessage({
-              type: "module",
+              type: "plugin",
               contents,
             });
           }, subscribeToMessages)) || {};
