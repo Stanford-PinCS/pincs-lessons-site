@@ -119,7 +119,7 @@ export default function Example() {
       </p>
       <a
         className="text-blue-500"
-        href="/interactive-lessons/components-showcase"
+        href={process.env.NEXT_PUBLIC_APP_BASE_PATH + "/components-showcase"}
       >
         Component Showcase
       </a>

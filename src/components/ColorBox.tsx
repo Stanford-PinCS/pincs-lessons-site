@@ -25,7 +25,7 @@ const ColorBox: React.FC<ColorBoxProps> = ({
 
   return (
     <div
-      className={`border rounded-lg p-4 mt-4 text-lg ${colorClasses[color]} ${flex}`}
+      className={`border rounded-lg p-4 my-2 text-lg ${colorClasses[color]} ${flex}`}
     >
       {children}
     </div>

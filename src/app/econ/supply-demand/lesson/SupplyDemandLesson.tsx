@@ -367,7 +367,7 @@ const SupplyDemandLesson: React.FC = () => {
               The graph shifts to the _____
             </>
           }
-          pattern="^right"
+          pattern="^right$"
         />
       </ColorBox>
     </Block>,
@@ -580,19 +580,16 @@ const SupplyDemandLesson: React.FC = () => {
       <ColorBox color="blue">
         <div>
           <Emphasize>👉 Check in: </Emphasize>
-          <br />
           <TextQuizQuestion
             placeholder="e.g. (0.3, 1.5)"
             question="What is the equilibrium point?"
             pattern={`^\\(1, 1\\)$`}
           />
-          <br />
           <TextQuizQuestion
             placeholder="e.g. (0.5, 0.8), (0.3, 1.5)"
             question="What were the two points of the shortage? (to make things simple, make sure one of your values is 1.5)."
-            pattern="^\\(0\\.5, 1\\.5\\), \\(1\\.5, 1\\.5\\)$"
+            pattern={`^\\(0\\.5, 1\\.5\\), \\(1\\.5, 1\\.5\\)$`}
           />
-          <br />
           <TextQuizQuestion
             placeholder="e.g. (0.5, 0.8), (0.3, 1.5)"
             question="What were the two points of the surplus? (to make things simple, make sure one of your values is 0.5)."
@@ -683,12 +680,12 @@ const SupplyDemandLesson: React.FC = () => {
             </>
           }
           placeholder="e.g. increase/decrease/stay the same"
-          pattern={`decrease`}
+          pattern={`^decrease$`}
         />
         <TextQuizQuestion
           question="The quantity of french fries will:"
           placeholder="e.g. increase/decrease/stay the same"
-          pattern={`increase`}
+          pattern={`^increase$`}
         />
       </Block>
       <Block color="green" title="Question 4">

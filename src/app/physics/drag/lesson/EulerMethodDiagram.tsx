@@ -68,7 +68,7 @@ const CustomYAxisTick = (props: any) => {
 export const EulerMethodDiagram: React.FC = () => {
   return (
     <div className="flex flex-col items-center p-4 my-6 bg-slate-50 rounded-lg border border-slate-200 w-full max-w-2xl mx-auto">
-      <ResponsiveContainer width="100%" aspect={2}>
+      <ResponsiveContainer width="100%" height="300px" aspect={2}>
         <LineChart
           data={chartData}
           margin={{ top: 40, right: 80, left: 100, bottom: 60 }}

@@ -19,6 +19,7 @@ import FreeBodyDiagramStepper from "./FreeBodyDiagramStepper";
 import ForcesBulletsWalkThrough from "./ForcesBulletsWalkThrough";
 import pulleyProblem from "./Pulley Problem.png";
 import MultiSelectQuizQuestion from "@/components/MultiSelectQuizQuestion";
+import List from "@/components/List";
 
 export const metadata: Metadata = {
   title: "Forces",
@@ -33,11 +34,13 @@ export default function ForcesLesson() {
       <p>
         <Emphasize>In this lesson, you'll...</Emphasize>
       </p>
-      <ul className="list-disc list-outside pl-6">
-        <li>Learn what forces are.</li>
-        <li>Understand and practice using free body diagrams.</li>
-        <li>Learn how to use force components.</li>
-      </ul>
+      <List
+        items={[
+          <>Learn what forces are.</>,
+          <>Understand and practice using free body diagrams.</>,
+          <>Learn how to use force components.</>,
+        ]}
+      />
       <p>
         <Emphasize>
           Click the arrow at the top right to continue with the lesson.
@@ -99,7 +102,7 @@ export default function ForcesLesson() {
         often given the force and want to find the acceleration, it can be
         helpful to rewrite it as:{" "}
         <ReactKatex>{`$a = \\frac{F}{m}$`}</ReactKatex>. This also helps us
-        understand that a large force can get cancelled out by a large mass.
+        understand that a large mass can resist a large force.
       </ColorBox>
       <p>
         <Emphasize>Newton's Third Law</Emphasize> says that for every action,
@@ -204,7 +207,7 @@ export default function ForcesLesson() {
     </Block>,
 
     // Slide 7: Coding up how to split a force.
-    <Block color="yellow" title="Code Force Components" mode="pickcode">
+    <Block color="yellow" title="Code Force Components" mode="fullscreen">
       <iframe
         id="forceComponentsPlugin"
         title="Code Force Components"
@@ -269,49 +272,51 @@ export default function ForcesLesson() {
         Understanding each allows us to model interactions accurately. Here are
         a few examples you may see in this physics course:
       </p>
-      <ul className="list-disc list-outside pl-6">
-        <li>
-          <KeyTerm>
-            Gravity <ReactKatex>($F_g$)</ReactKatex>
-          </KeyTerm>{" "}
-          — the universal attraction between masses, acting downward near
-          Earth's surface.
-        </li>
-        <li>
-          <KeyTerm>
-            Normal force <ReactKatex>($F_N$)</ReactKatex>
-          </KeyTerm>{" "}
-          — the force when two objects are touching each other, such as you
-          standing on the ground.
-        </li>
-        <li>
-          <KeyTerm>
-            Tension <ReactKatex>($F_T$)</ReactKatex>
-          </KeyTerm>{" "}
-          — a pulling force transmitted through a string, rope, or cable.
-        </li>
-        <li>
-          <KeyTerm>
-            Friction <ReactKatex>($F_f$)</ReactKatex>
-          </KeyTerm>{" "}
-          — a resistive force tangent to the interface between surfaces;
-          includes static and kinetic forms. An example is a car using its
-          breaks.
-        </li>
-        <li>
-          <KeyTerm>
-            Spring force <ReactKatex>($F_s$)</ReactKatex>
-          </KeyTerm>{" "}
-          — the restoring force that increases the farther it is from
-          equilibrium.
-        </li>
-        <li>
-          <KeyTerm>
-            Applied force <ReactKatex>($F_A$)</ReactKatex>
-          </KeyTerm>{" "}
-          — a generic external push or pull.
-        </li>
-      </ul>
+      <List
+        items={[
+          <>
+            <KeyTerm>
+              Gravity <ReactKatex>($F_g$)</ReactKatex>
+            </KeyTerm>{" "}
+            — the universal attraction between masses, acting downward near
+            Earth's surface.
+          </>,
+          <>
+            <KeyTerm>
+              Normal force <ReactKatex>($F_N$)</ReactKatex>
+            </KeyTerm>{" "}
+            — the force when two objects are touching each other, such as you
+            standing on the ground.
+          </>,
+          <>
+            <KeyTerm>
+              Tension <ReactKatex>($F_T$)</ReactKatex>
+            </KeyTerm>{" "}
+            — a pulling force transmitted through a string, rope, or cable.
+          </>,
+          <>
+            <KeyTerm>
+              Friction <ReactKatex>($F_f$)</ReactKatex>
+            </KeyTerm>{" "}
+            — a resistive force tangent to the interface between surfaces;
+            includes static and kinetic forms. An example is a car using its
+            breaks.
+          </>,
+          <>
+            <KeyTerm>
+              Spring force <ReactKatex>($F_s$)</ReactKatex>
+            </KeyTerm>{" "}
+            — the restoring force that increases the farther it is from
+            equilibrium.
+          </>,
+          <>
+            <KeyTerm>
+              Applied force <ReactKatex>($F_A$)</ReactKatex>
+            </KeyTerm>{" "}
+            — a generic external push or pull.
+          </>,
+        ]}
+      />
       <ColorBox color="blue">
         Most introductory problems combine only two or three of these forces,
         yet the underlying principles scale to complex systems.
@@ -386,7 +391,8 @@ export default function ForcesLesson() {
         The <KeyTerm>normal force</KeyTerm> is the contact force applied
         perpendicular to a surface. It is not fixed, but it adjusts to prevent
         objects from passing through the surface. For example, when standing
-        still, the normal force equals your weight.
+        still, the normal force equals your weight so you don't fall through the
+        ground.
       </p>
 
       <h2 className="font-semibold text-center">Friction</h2>
@@ -394,16 +400,18 @@ export default function ForcesLesson() {
         Friction resists motion between surfaces in contact. There are two
         kinds:
       </p>
-      <ul className="list-disc list-outside pl-6">
-        <li>
-          <KeyTerm>Static friction</KeyTerm> prevents motion from starting and
-          is governed by <ReactKatex>$F_s \leq \mu_s F_N$</ReactKatex>.
-        </li>
-        <li>
-          <KeyTerm>Kinetic friction</KeyTerm> resists motion already in progress
-          and is given by <ReactKatex>$F_k = \mu_k F_N$</ReactKatex>.
-        </li>
-      </ul>
+      <List
+        items={[
+          <>
+            <KeyTerm>Static friction</KeyTerm> prevents motion from starting and
+            is governed by <ReactKatex>$F_s \leq \mu_s F_N$</ReactKatex>.
+          </>,
+          <>
+            <KeyTerm>Kinetic friction</KeyTerm> resists motion already in
+            progress and is given by <ReactKatex>$F_k = \mu_k F_N$</ReactKatex>.
+          </>,
+        ]}
+      />
       <p>
         Both friction forces depend on the <KeyTerm>normal force</KeyTerm>,
         since that determines how tightly the surfaces are pressed together.
@@ -424,16 +432,19 @@ export default function ForcesLesson() {
         These are super useful to solving any problem with forces. Here's how
         you make a free body diagram:
       </p>
-      <ol className="list-decimal list-outside pl-6">
-        <li>Represent the object as a simple dot or box.</li>
-        <li>
-          Draw arrows for <Emphasize>each</Emphasize> external force, with
-          length proportionate to magnitude and orientation indicating
-          direction.
-        </li>
-        <li>Label each arrow.</li>
-        <li>Indicate a coordinate system and positive directions.</li>
-      </ol>
+      <List
+        type="numbered"
+        items={[
+          <>Represent the object as a simple dot or box.</>,
+          <>
+            Draw arrows for <Emphasize>each</Emphasize> external force, with
+            length proportionate to magnitude and orientation indicating
+            direction.
+          </>,
+          <>Label each arrow.</>,
+          <>Indicate a coordinate system and positive directions.</>,
+        ]}
+      />
       <ColorBox color="blue">
         Once complete, by Newton's second law of motion, the sum of all of the
         forces{" "}
@@ -444,7 +455,8 @@ export default function ForcesLesson() {
         <KeyTerm>
           <ReactKatex> $ma$</ReactKatex>
         </KeyTerm>
-        , allowing us to find the acceleration.
+        , allowing us to find the acceleration (if we're given the mass, or vice
+        versa).
       </ColorBox>
       <p>Here's a free body diagram for a person standing:</p>
       <PersonFreeBodyDiagram />
@@ -605,7 +617,7 @@ export default function ForcesLesson() {
           </ReactKatex>
           <Emphasize>
             <ReactKatex>
-              {` we get that our force applied is $F \\gt \\mu_s N = (0.2) (\\text{100 Newtons}) = 20 \\text{ Newtons}$.`}
+              {` we get that our force applied must be $F \\gt \\mu_s N = (0.2) (\\text{100 Newtons}) = 20 \\text{ Newtons}$.`}
             </ReactKatex>
           </Emphasize>
         </p>
@@ -632,7 +644,7 @@ export default function ForcesLesson() {
       </ColorBox>
     </Block>,
     // Slide 15: Coding up force addition.
-    <Block color="yellow" title="Code force addition" mode="pickcode">
+    <Block color="yellow" title="Code force addition" mode="fullscreen">
       <iframe
         id="forceAdditionPlugin"
         title="Code Force Addition"
@@ -645,41 +657,42 @@ export default function ForcesLesson() {
     // Slide 16: Checking in on different force types.
     <Block color="green" title="Lesson Recap">
       <p>Here's what we learned about forces:</p>
-      <ul className="list-disc list-outside pl-6">
-        <li>
-          A <KeyTerm>force</KeyTerm> a push or a pull, that causes objects to
-          accelerate.
-        </li>
-        <li>
-          Often, we want to split a force into its{" "}
-          <KeyTerm>force components</KeyTerm>. To do so, we we use trigonometry
-          and get back two <Emphasize>perpendicular</Emphasize> parts of a force
-          as a result.
-        </li>
-        <li>
-          <KeyTerm>Newton's Laws of Motions</KeyTerm> describe how forces
-          interact with objects, such as how objects don't change their speed or
-          direction unless there's a force <KeyTerm>(1st law)</KeyTerm>, Force
-          is equal to Mass times Acceleration <KeyTerm>(2nd law)</KeyTerm>, and
-          that every force has an opposite force of equal strength{" "}
-          <KeyTerm>(3rd law)</KeyTerm>.
-        </li>
-        <li>
-          There are <Emphasize>many types of forces</Emphasize>, including{" "}
-          <KeyTerm>gravitational</KeyTerm>, <KeyTerm>frictional</KeyTerm>,{" "}
-          <KeyTerm>normal forces</KeyTerm>, <KeyTerm>tension forces</KeyTerm>,
-          and
-          <KeyTerm>springs forces</KeyTerm>.
-        </li>
-        <li>
-          <KeyTerm>Free Body Diagrams (FBDs)</KeyTerm> are a standard way to
-          represent all the forces in a problem, which is helpful for using
-          equations to solve the problem.
-        </li>
-        <li>
-          How to <KeyTerm>add together forces</KeyTerm> to solve problems.
-        </li>
-      </ul>
+      <List
+        items={[
+          <>
+            A <KeyTerm>force</KeyTerm> a push or a pull, that causes objects to
+            accelerate.
+          </>,
+          <>
+            Often, we want to split a force into its{" "}
+            <KeyTerm>force components</KeyTerm>. To do so, we we use
+            trigonometry and get back two <Emphasize>perpendicular</Emphasize>{" "}
+            parts of a force as a result.
+          </>,
+          <>
+            <KeyTerm>Newton's Laws of Motions</KeyTerm> describe how forces
+            interact with objects, such as how objects don't change their speed
+            or direction unless there's a force <KeyTerm>(1st law)</KeyTerm>,
+            Force is equal to Mass times Acceleration{" "}
+            <KeyTerm>(2nd law)</KeyTerm>, and that every force has an opposite
+            force of equal strength <KeyTerm>(3rd law)</KeyTerm>.
+          </>,
+          <>
+            There are <Emphasize>many types of forces</Emphasize>, including{" "}
+            <KeyTerm>gravitational</KeyTerm>, <KeyTerm>frictional</KeyTerm>,{" "}
+            <KeyTerm>normal forces</KeyTerm>, <KeyTerm>tension forces</KeyTerm>,
+            and <KeyTerm>spring forces</KeyTerm>.
+          </>,
+          <>
+            <KeyTerm>Free Body Diagrams (FBDs)</KeyTerm> are a standard way to
+            represent all the forces in a problem, which is helpful for using
+            equations to solve the problem.
+          </>,
+          <>
+            How to <KeyTerm>add together forces</KeyTerm> to solve problems.
+          </>,
+        ]}
+      />
     </Block>,
   ];
 

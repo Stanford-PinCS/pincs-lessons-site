@@ -67,6 +67,7 @@ export const CodeEditorExample: React.FC = () => {
         pluginId="graph"
         height={600}
         language={"python"}
+        starterCode={`drawPoint(10,10)`}
       />
     </div>
   );

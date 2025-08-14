@@ -19,6 +19,7 @@ import Block from "@/components/Block";
 import Emphasize from "@/components/Emphasize";
 import ColorBox from "@/components/ColorBox";
 import KeyTerm from "@/components/KeyTerm";
+import List from "@/components/List";
 
 const marginalUtilities = [10, 7, 4, 1, -2, -5, -8, -11];
 
@@ -165,11 +166,11 @@ const CoinPickingExample: React.FC<CoinPickingExampleProps> = ({
                 onClick={() => useCoin(coin)}
                 disabled={changeLeft < coin}
                 className={`
-                  w-16 h-16 rounded-full flex items-center justify-center text-xl font-medium text-slate-700
-                  bg-slate-200 transition-colors duration-200
-                  hover:enabled:bg-slate-300
-                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400
-                  disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed
+                  w-16 h-16 rounded-full flex items-center justify-center text-xl font-medium text-black
+                  bg-yellow-200 transition-colors duration-200
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400
+                  disabled:bg-yellow-100 disabled:text-slate-400 disabled:cursor-not-allowed
+                  border-2 border-dashed border-yellow-800
                 `}
               >
                 {coin}
@@ -753,10 +754,14 @@ const IceCreamUtilityTable = () => {
 
   const getHighlightClass = (flavor: Flavor, scoopIndex: number) => {
     if (scoopCounts[flavor] > scoopIndex) {
+      // We've selected this scoop, so show highlight it in that color.
       if (flavor === "vanilla") {
         return `${flavorColors[flavor]} text-black font-bold`;
       }
       return `${flavorColors[flavor]} text-white font-bold`;
+    } else if (scoopCounts[flavor] == scoopIndex) {
+      // This scoop is next, so highlight it in a fun way.
+      return "bg-blue-50 text-black font-bold rounded-sm inset-ring-2 inset-ring-blue-200/50";
     }
     return "";
   };
@@ -1460,7 +1465,7 @@ const UtilityGraph = () => {
   );
 };
 
-export default function MarginalUtility() {
+export default function UtilityMaximization() {
   const slides = [
     // Slide 1: Introduction
     <div className="space-y-4">
@@ -1468,15 +1473,17 @@ export default function MarginalUtility() {
         Utility Maximization
       </h1>
       <Block color="green" title="Learning Targets">
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Learn about utility and marginal utility.</li>
-          <li>Apply maximization in economics.</li>
-          <li>Learn about greedy algorithms.</li>
-        </ul>
+        <List
+          items={[
+            <>Learn about utility and marginal utility.</>,
+            <>Apply maximization in economics.</>,
+            <>Learn about greedy algorithms.</>,
+          ]}
+        />
         <p>
           In this lesson, we're going to start with the basics of what utility
-          is and how it looks in economics. Then, we'll look into an important
-          application in economics. We'll then learn about how this ties in with
+          is and how it looks in economics. Then, we'll look into how utility is
+          used in economics. We'll then learn about how this is an example of
           the greedy approach to problem solving. We'll end by piecing it all
           together in an interactive logic puzzle.
         </p>
@@ -1808,7 +1815,7 @@ export default function MarginalUtility() {
     </Block>,
 
     // Slide 11: Defining MU/P.
-    <Block color="yellow" title="Practice: Marginal Utility per Price">
+    <Block color="yellow" title="Practice: Marginal Utility over Price">
       <p>
         If ice cream wasn't enough, let's try some different desserts! Below is
         practice problem showing the marginal utility (MU) and price of each
@@ -1816,14 +1823,17 @@ export default function MarginalUtility() {
       </p>
       <ColorBox color="gray">
         <Emphasize>Instructions:</Emphasize>
-        <ol className="list-decimal list-inside mt-2 space-y-1">
-          <li>Calculate MU/P for each item (Marginal Utility ÷ Price)</li>
-          <li>Click "Check Calculations & Start Shopping" when done</li>
-          <li>
-            Always choose the item with the highest MU/P ratio you can afford
-          </li>
-          <li>Watch your budget decrease and get feedback on your choices!</li>
-        </ol>
+        <List
+          type="numbered"
+          items={[
+            <>Calculate MU/P for each item (Marginal Utility ÷ Price)</>,
+            <>Click "Check Calculations & Start Shopping" when done</>,
+            <>
+              Always choose the item with the highest MU/P ratio you can afford
+            </>,
+            <>Watch your budget decrease and get feedback on your choices!</>,
+          ]}
+        />
       </ColorBox>
       <CupcakesCookiesUtilityTable />
     </Block>,
@@ -1836,7 +1846,7 @@ export default function MarginalUtility() {
         optimal choice at each step. In the context of utility maximization, it
         means{" "}
         <Emphasize>
-          always choosing the item with the highest marginal utility per price
+          always choosing the item with the highest marginal utility over price
           (MU/P) ratio that you can afford
         </Emphasize>
         .
@@ -1864,15 +1874,18 @@ export default function MarginalUtility() {
         <Emphasize>
           (Bonus) More Applications of The Greedy Algorithm:
         </Emphasize>
-        <ol className="list-decimal list-inside mt-2 space-y-1">
-          <li>
-            Finding nearly-optimal solutions to extremely difficult problems.
-          </li>
-          <li>Map routing algorithms, data compression, and more!</li>
-          <li>
-            Making change with the fewest number of coins (we'll see next).
-          </li>
-        </ol>
+        <List
+          type="numbered"
+          items={[
+            <>
+              Finding nearly-optimal solutions to extremely difficult problems.
+            </>,
+            <>Map routing algorithms, data compression, and more!</>,
+            <>
+              Making change with the fewest number of coins (we'll see next).
+            </>,
+          ]}
+        />
       </div>
     </Block>,
 
@@ -1889,12 +1902,14 @@ export default function MarginalUtility() {
             . For example, if you need to make 63 cents using coins of 1, 5, 10,
             and 25 cents, the optimal solution would use:
           </p>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>2 quarters (50 cents)</li>
-            <li>1 dime (10 cents)</li>
-            <li>1 nickel (5 cents)</li>
-            <li>3 pennies (3 cents)</li>
-          </ul>
+          <List
+            items={[
+              <>2 quarters (50 cents)</>,
+              <>1 dime (10 cents)</>,
+              <>1 nickel (5 cents)</>,
+              <>3 pennies (3 cents)</>,
+            ]}
+          />
           <p>
             This gives you a total of 7 coins, which is the fewest possible in
             this case.
@@ -1976,14 +1991,16 @@ export default function MarginalUtility() {
           Constraints: you know the greedy approach works if...
         </Emphasize>
       </p>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>There are two items to choose from.</li>
-        <li>You spend your whole budget.</li>
-        <li>
-          When you're done, the MU/P ratios for the last purchased items had the
-          same values.
-        </li>
-      </ul>
+      <List
+        items={[
+          <>There are two items to choose from.</>,
+          <>You spend your whole budget.</>,
+          <>
+            When you're done, the MU/P ratios for the last purchased items had
+            the same values.
+          </>,
+        ]}
+      />
     </Block>,
 
     // Slide 16: Check-in on greedy approach.
@@ -2017,7 +2034,7 @@ export default function MarginalUtility() {
     </Block>,
 
     // Section 15: Coding it up.
-    <Block color="yellow" title="Try Coding it up Yourself!" mode="pickcode">
+    <Block color="yellow" title="Try Coding it up Yourself!" mode="fullscreen">
       <iframe
         id="inlinePickcodePlugin"
         title="Code Up a Greedy Algorithm"
