@@ -63,11 +63,11 @@ export const CodeEditorExample: React.FC = () => {
       </h2>
       <CodeEditor
         instructionsMarkdown={instructionsMarkdown}
-        lessonId="particle-simulation-lesson"
-        pluginId="particle-simulation"
+        lessonId="graphing"
+        pluginId="graph"
         height={600}
-        language={"javascript"}
-        starterCode={`console.log("hello")`}
+        language={"python"}
+        starterCode={`drawPoint(10,10)`}
       />
     </div>
   );
